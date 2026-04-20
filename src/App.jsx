@@ -2,9 +2,11 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import AlphaScannerPanel from './components/AlphaScannerPanel';
 import EventStudyPanel from './components/EventStudyPanel';
+import QuantBotChat from './components/QuantBotChat';
 
 const TABS = [
   { key: 'scanner', label: '📡 Alpha Scanner' },
+  { key: 'quant-chat', label: '🤖 Quant 探勘大腦' },
   { key: 'edge', label: '🧠 Alpha Edge (Deep)' },
   { key: 'event-study', label: '🎯 Event Study (事件研究)' },
   { key: 'macro', label: '🌡️ Macro Sentiment' },
@@ -22,6 +24,7 @@ function App() {
 
   const panels = {
     scanner: <AlphaScannerPanel />,
+    'quant-chat': <QuantBotChat />,
     'event-study': <EventStudyPanel />,
     edge: <div className="fade-in"><h2 className="section-title">Coming Soon</h2></div>,
     macro: <div className="fade-in"><h2 className="section-title">Coming Soon</h2></div>,

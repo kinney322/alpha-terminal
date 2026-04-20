@@ -386,3 +386,210 @@ body {
     padding: 12px 16px;
   }
 }
+
+/* =========================================
+   QuantBot Chat UI
+========================================= */
+.quant-chat-container {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 160px); /* 扣除 header 與 padding */
+  background: var(--surface-color);
+  border: 1px solid var(--border-light);
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.02);
+  overflow: hidden;
+}
+
+.chat-messages-area {
+  flex-grow: 1;
+  padding: 24px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  background-color: var(--bg-color); /* 內嵌式背景 */
+}
+
+/* 隱藏滾動條但保留功能 */
+.chat-messages-area::-webkit-scrollbar {
+  width: 6px;
+}
+.chat-messages-area::-webkit-scrollbar-thumb {
+  background: rgba(0,0,0,0.1);
+  border-radius: 10px;
+}
+
+.chat-message {
+  max-width: 85%;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.chat-message.user {
+  align-self: flex-end;
+  align-items: flex-end;
+}
+
+.chat-message.assistant {
+  align-self: flex-start;
+  align-items: flex-start;
+}
+
+.message-header {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: var(--text-muted);
+}
+
+.chat-message.user .message-header {
+  color: var(--accent-gold);
+}
+
+.message-content {
+  background: var(--surface-color);
+  padding: 16px;
+  border-radius: 8px;
+  border: 1px solid var(--border-light);
+  font-size: 14px;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  color: var(--text-main);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+}
+
+.chat-message.user .message-content {
+  background: var(--text-main);
+  color: var(--bg-color);
+  border: 1px solid var(--text-main);
+  border-bottom-right-radius: 2px;
+}
+
+.chat-message.assistant .message-content {
+  border-bottom-left-radius: 2px;
+}
+
+.error-text {
+  color: var(--signal-sell);
+  font-weight: 600;
+}
+
+.sql-box {
+  margin-top: 8px;
+  background: #f1f0e9;
+  border: 1px solid #dcd7ca;
+  border-radius: 6px;
+  padding: 12px;
+  width: 100%;
+}
+
+.sql-box-title, .data-box-title {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+}
+
+.sql-box code {
+  font-family: 'JetBrains Mono', 'Courier New', monospace;
+  font-size: 12px;
+  color: #333;
+  display: block;
+}
+
+.data-box {
+  margin-top: 4px;
+  background: #27272a;
+  border-radius: 6px;
+  padding: 12px;
+  width: 100%;
+  color: #a1a1aa;
+}
+
+.data-box pre {
+  font-family: 'JetBrains Mono', 'Courier New', monospace;
+  font-size: 11px;
+  margin: 0;
+  overflow-x: auto;
+  white-space: pre-wrap;
+}
+
+.model-badge {
+  align-self: flex-end;
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--text-muted);
+  background: #f1f0e9;
+  padding: 2px 6px;
+  border-radius: 4px;
+  margin-top: -2px;
+}
+
+.loading-pulse {
+  animation: pulse 1.5s infinite alternate;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+@keyframes pulse {
+  from { opacity: 0.5; }
+  to { opacity: 1; }
+}
+
+.chat-input-area {
+  display: flex;
+  padding: 16px 24px;
+  background: var(--surface-color);
+  border-top: 1px solid var(--border-light);
+  gap: 12px;
+  align-items: center;
+}
+
+.chat-input-area input {
+  flex-grow: 1;
+  background: #f8f6f2;
+  border: 1px solid var(--border-light);
+  padding: 12px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  color: var(--text-main);
+  outline: none;
+  transition: border-color 0.2s;
+  font-family: inherit;
+}
+
+.chat-input-area input:focus {
+  border-color: var(--accent-gold);
+}
+
+.chat-input-area input::placeholder {
+  color: #a1a1aa;
+}
+
+.chat-input-area button {
+  background: #eae6db;
+  color: var(--text-muted);
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 13px;
+  cursor: not-allowed;
+  transition: all 0.2s;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.chat-input-area button.active {
+  background: var(--text-main);
+  color: var(--surface-color);
+  cursor: pointer;
+}
+
+.chat-input-area button.active:hover {
+  background: #000;
+  transform: translateY(-1px);
+}
