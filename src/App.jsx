@@ -6,7 +6,7 @@ import QuantBotChat from './components/QuantBotChat';
 
 const TABS = [
   { key: 'scanner', label: '📡 Alpha Scanner' },
-  { key: 'quant-chat', label: '🤖 Quant 探勘大腦' },
+  { key: 'quant-chat', label: '🤖 Quant Chatbot' },
   { key: 'edge', label: '🧠 Alpha Edge (Deep)' },
   { key: 'event-study', label: '🎯 Event Study (事件研究)' },
   { key: 'macro', label: '🌡️ Macro Sentiment' },

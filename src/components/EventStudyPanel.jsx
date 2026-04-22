@@ -337,6 +337,9 @@ export default function EventStudyPanel() {
                 <option value="Earnings">財報 (Earnings)</option>
                 <option value="FOMC">議息會議 (FOMC)</option>
                 <option value="CPI">通膨數據 (CPI)</option>
+                <option value="PPI">生產者物價指數 (PPI)</option>
+                <option value="GDP">國內生產毛額 (GDP)</option>
+                <option value="NFP">非農就業 (NFP)</option>
               </select>
             </div>
             <button
@@ -378,9 +381,9 @@ export default function EventStudyPanel() {
         </div>
 
         {leaderboardError ? (
-          <div className="event-study-soft-alert">
+          <div className="event-study-soft-alert" style={{ background: 'rgba(251, 191, 36, 0.1)', color: '#b45309', borderColor: 'rgba(217, 119, 6, 0.2)' }}>
             <AlertCircle size={16} />
-            <span>Radar feed 連線失敗，已優雅降級為 demo 資料：{leaderboardError}</span>
+            <span>智能連線超時，啟動備用迴路。目前顯示 Demo Data 展示用數據。</span>
           </div>
         ) : null}
 

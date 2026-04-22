@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 
 export default function QuantBotChat() {
   const [messages, setMessages] = useState([
-    { role: 'assistant', content: '我是你的 Quant 探勘大腦。\n請問你要什麼公司股價歷史數據？' }
+    { role: 'assistant', content: '我是你的 Quant Chatbot。\n請問你要什麼公司股價歷史數據？' }
   ]);
   const [inputUrl, setInputUrl] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -26,7 +26,8 @@ export default function QuantBotChat() {
     setIsLoading(true);
 
     try {
-      const apiUrl = (import.meta.env.VITE_KW_API || 'http://127.0.0.1:8787') + '/quant-chat';
+      const baseUrl = import.meta.env.DEV ? 'http://127.0.0.1:8787' : 'https://kw-terminal-api.myfootballplaces.workers.dev';
+      const apiUrl = `${baseUrl}/quant-chat`;
       const response = await fetch(apiUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -69,7 +70,7 @@ export default function QuantBotChat() {
   return (
     <div className="quant-chat-container fade-in">
       <div className="section-title">
-        <h2 style={{ margin: 0, fontSize: '20px', fontFamily: '"Playfair Display", serif' }}>Quant 探勘終端</h2>
+        <h2 style={{ margin: 0, fontSize: '20px', fontFamily: '"Playfair Display", serif' }}>Quant Chatbot</h2>
         <span style={{ fontSize: '12px', background: 'var(--accent-gold-bg)', color: 'var(--accent-gold)', padding: '2px 8px', borderRadius: '12px', marginLeft: '12px', fontWeight: 'bold' }}>Llama 4 / 3.1 Edge Engine</span>
       </div>
 
@@ -83,24 +84,6 @@ export default function QuantBotChat() {
             <div className="message-content">
               <span className={msg.error ? 'error-text' : ''}>{msg.content}</span>
             </div>
-
-            {msg.sql && (
-              <div className="sql-box">
-                <div className="sql-box-title">執行之 SQL (D1 SQLite)</div>
-                <code>{msg.sql}</code>
-              </div>
-            )}
-            
-            {msg.raw_data && (
-              <div className="data-box">
-                <div className="data-box-title">冷數據回傳快照</div>
-                <pre>{formatDataPreview(msg.raw_data)}</pre>
-              </div>
-            )}
-            
-            {msg.model && (
-              <div className="model-badge">Engine: {msg.model}</div>
-            )}
           </div>
         ))}
         {isLoading && (
