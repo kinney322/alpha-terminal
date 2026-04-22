@@ -126,8 +126,8 @@ export default function OpportunityXRayCard({ row, onClose, eventStudy, eventStu
             <InsightRow label="Mu +1D" value={formatPercent(row.mu1)} tone={metricTone(row.mu1)} />
             <InsightRow label="Mu +3D" value={formatPercent(row.mu3)} tone={metricTone(row.mu3)} />
             <InsightRow label="Mu +10D" value={formatPercent(row.mu10)} tone={metricTone(row.mu10)} />
-            <InsightRow label="Win Long" value={formatPercent(row.winLong, 0)} tone="positive" />
-            <InsightRow label="Win Short" value={formatPercent(row.winShort, 0)} tone="negative" />
+            <InsightRow label="Win Long" value={formatPercent(row.winLong * 100, 0)} tone="positive" />
+            <InsightRow label="Win Short" value={formatPercent(row.winShort * 100, 0)} tone="negative" />
           </div>
         </section>
 
