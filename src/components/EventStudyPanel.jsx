@@ -6,6 +6,7 @@ import OpportunityXRayCard from './OpportunityXRayCard';
 
 const API_BASE = 'https://kw-terminal-api.myfootballplaces.workers.dev';
 const LEADERBOARD_FALLBACK_URLS = [
+  'https://pub-03e0405010774afe9ca6d569e0cb43b1.r2.dev/event-study/leaderboard-latest.json.gz',
   import.meta.env.VITE_EVENT_LEADERBOARD_URL,
   `${API_BASE}/leaderboard-latest.json`,
   `${API_BASE}/event-opportunity/leaderboard-latest`,
