@@ -2097,3 +2097,15 @@ body {
     padding: 0.85rem;
   }
 }
+
+.event-study-decision-grid > * {
+  min-width: 0;
+}
+.best-setup-hint-card {
+  box-sizing: border-box;
+}
+
+.best-setup-hint-card__reason {
+  word-break: break-word;
+  white-space: normal;
+}
