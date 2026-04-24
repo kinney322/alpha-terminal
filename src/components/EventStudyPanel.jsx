@@ -785,37 +785,7 @@ export default function EventStudyPanel() {
             className="event-study-results"
           >
             <div className="event-study-decision-grid">
-              <div className={`glass-panel event-study-workbench decision-hero decision-hero--${decisionModel?.posture ?? 'balanced'}`}>
-                <div className="decision-hero__header">
-                  <div>
-                    <span className="decision-hero__eyebrow">Decision Snapshot</span>
-                    <h2 className="decision-hero__title">
-                      {symbol || 'Ticker'} / {category}
-                    </h2>
-                  </div>
-                  <div className={`decision-bias-pill decision-bias-pill--${decisionModel?.posture ?? 'balanced'}`}>
-                    {decisionModel?.posture === 'balanced' ? <Scale size={16} /> : <Layers3 size={16} />}
-                    {decisionModel?.title}
-                  </div>
-                </div>
-
-                <p className="decision-hero__summary">{decisionModel?.summaryText}</p>
-
-                <div className="decision-chip-row">
-                  <span className="decision-chip">{decisionModel?.confidence}</span>
-                  <span className="decision-chip">{decisionModel?.risk}</span>
-                  <span className="decision-chip">樣本 {formatCount(data.summary.total_events)}</span>
-                </div>
-
-                <div className="decision-alert-list">
-                  {(decisionModel?.flags ?? []).map((flag) => (
-                    <div key={flag} className="decision-alert-item">
-                      <ShieldAlert size={14} />
-                      <span>{flag}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
+              <BestSetupHintCard hint={data?.best_setup_hint} />
 
               <div className="decision-trading-grid">
                 <div className="decision-trading-card decision-trading-card--long">
@@ -915,7 +885,7 @@ export default function EventStudyPanel() {
               </div>
             </div>
 
-            <BestSetupHintCard hint={data?.best_setup_hint} />
+
             <TradeSetupMatrix conditionalSummary={data?.conditional_summary} />
 
             <div className="glass-panel w-full event-study-workbench">
