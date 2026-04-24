@@ -361,44 +361,6 @@ export default function EventStudyPanel() {
         </div>
       </div>
 
-      <div className="glass-panel event-study-workbench">
-        <div className="panel-header">
-          <Radar size={18} className="text-accent" />
-          <span>Catalyst Radar</span>
-          <span className="badge panel-badge radar-panel-badge">{leaderboardMeta.usingFallback ? 'Demo Fallback' : 'R2 Live Feed'}</span>
-        </div>
-
-        <div className="event-study-feedbar">
-          <div className="event-study-feedbar__meta">
-            <Database size={14} />
-            <span>Source: {leaderboardMeta.source}</span>
-            <span>Rows: {radarRows.length}</span>
-            <span>Updated: {leaderboardMeta.lastUpdated ? new Date(leaderboardMeta.lastUpdated).toLocaleString() : 'n/a'}</span>
-          </div>
-          <button className="event-study-refresh" onClick={fetchLeaderboard} disabled={leaderboardLoading}>
-            <RefreshCcw size={14} />
-            {leaderboardLoading ? '同步中...' : '刷新 Radar'}
-          </button>
-        </div>
-
-        {leaderboardError ? (
-          <div className="event-study-soft-alert" style={{ background: 'rgba(251, 191, 36, 0.1)', color: '#b45309', borderColor: 'rgba(217, 119, 6, 0.2)' }}>
-            <AlertCircle size={16} />
-            <span>智能連線超時，啟動備用迴路。目前顯示 Demo Data 展示用數據。</span>
-          </div>
-        ) : null}
-
-        {leaderboardLoading ? (
-          <RadarSkeleton />
-        ) : (
-          <CatalystRadarTable
-            rows={radarRows}
-            selectedTicker={selectedRadarRow?.ticker}
-            onSelect={handleSelectRadarRow}
-          />
-        )}
-      </div>
-
       <AnimatePresence>
         {data && data.summary && (
           <motion.div
@@ -475,6 +437,43 @@ export default function EventStudyPanel() {
           </motion.div>
         )}
       </AnimatePresence>
+      <div className="glass-panel event-study-workbench">
+        <div className="panel-header">
+          <Radar size={18} className="text-accent" />
+          <span>Catalyst Radar</span>
+          <span className="badge panel-badge radar-panel-badge">{leaderboardMeta.usingFallback ? 'Demo Fallback' : 'R2 Live Feed'}</span>
+        </div>
+
+        <div className="event-study-feedbar">
+          <div className="event-study-feedbar__meta">
+            <Database size={14} />
+            <span>Source: {leaderboardMeta.source}</span>
+            <span>Rows: {radarRows.length}</span>
+            <span>Updated: {leaderboardMeta.lastUpdated ? new Date(leaderboardMeta.lastUpdated).toLocaleString() : 'n/a'}</span>
+          </div>
+          <button className="event-study-refresh" onClick={fetchLeaderboard} disabled={leaderboardLoading}>
+            <RefreshCcw size={14} />
+            {leaderboardLoading ? '同步中...' : '刷新 Radar'}
+          </button>
+        </div>
+
+        {leaderboardError ? (
+          <div className="event-study-soft-alert" style={{ background: 'rgba(251, 191, 36, 0.1)', color: '#b45309', borderColor: 'rgba(217, 119, 6, 0.2)' }}>
+            <AlertCircle size={16} />
+            <span>智能連線超時，啟動備用迴路。目前顯示 Demo Data 展示用數據。</span>
+          </div>
+        ) : null}
+
+        {leaderboardLoading ? (
+          <RadarSkeleton />
+        ) : (
+          <CatalystRadarTable
+            rows={radarRows}
+            selectedTicker={selectedRadarRow?.ticker}
+            onSelect={handleSelectRadarRow}
+          />
+        )}
+      </div>
 
       <AnimatePresence>
         {drawerOpen && selectedRadarRow ? (
