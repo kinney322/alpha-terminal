@@ -269,31 +269,28 @@ body {
 .data-table {
   width: 100%;
   border-collapse: collapse;
-  background: var(--surface-color);
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.02);
+  background: transparent;
   font-size: 13px;
 }
 
 .data-table th, .data-table td {
   padding: 16px 24px;
   text-align: left;
-  border-bottom: 1px solid var(--border-light);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
   white-space: nowrap;
 }
 
 .data-table th {
   color: var(--text-muted);
   font-weight: 600;
-  background: var(--bg-color);
+  background: transparent;
   text-transform: uppercase;
   letter-spacing: 0.5px;
   font-size: 11px;
 }
 
 .data-table tr:hover {
-  background: #FAFAFA;
+  background: rgba(0, 0, 0, 0.02);
 }
 
 .tag {
@@ -633,32 +630,28 @@ body {
   gap: 1.5rem;
 }
 .event-study-shell {
-  --eink-bg: #f5f5f0;
-  --eink-panel: #fffdf7;
-  --eink-panel-strong: #fbfaf4;
-  --eink-border: rgba(44, 62, 80, 0.12);
-  --eink-ink: #2c3e50;
-  --eink-muted: #6b7280;
-  --eink-gold: #c5a880;
-  --eink-gold-deep: #9f7f52;
-  --eink-red: #8b0000;
-  --eink-blue: #4f6d7a;
-  --eink-green: #355e3b;
-  --eink-shadow: 0 18px 40px rgba(91, 74, 55, 0.08);
+  --eink-bg: #F8F6F2;
+  --eink-panel: #FFFFFF;
+  --eink-panel-strong: #FFFFFF;
+  --eink-border: rgba(0, 0, 0, 0.06);
+  --eink-ink: #27272A;
+  --eink-muted: #71717A;
+  --eink-gold: #D97706;
+  --eink-gold-deep: #B45309;
+  --eink-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
 }
 
 .event-study-workbench {
-  background:
-    linear-gradient(180deg, rgba(255, 253, 247, 0.98), rgba(247, 243, 232, 0.94)),
-    var(--eink-panel);
+  background: var(--eink-panel);
   border: 1px solid var(--eink-border);
   color: var(--eink-ink);
   box-shadow: var(--eink-shadow);
+  border-radius: 12px;
 }
 
 .event-study-workbench:hover {
-  border-color: rgba(197, 168, 128, 0.38);
-  box-shadow: 0 20px 44px rgba(91, 74, 55, 0.1);
+  border-color: rgba(217, 119, 6, 0.3);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06);
 }
 
 .event-study-workbench .panel-header {
@@ -674,10 +667,10 @@ body {
 
 .event-study-input {
   width: 100%;
-  background: rgba(255, 253, 247, 0.95);
-  border: 1px solid rgba(44, 62, 80, 0.12);
+  background: var(--bg-color);
+  border: 1px solid rgba(0, 0, 0, 0.08);
   padding: 0.75rem 0.85rem;
-  border-radius: 10px;
+  border-radius: 8px;
   color: var(--eink-ink);
   font-family: inherit;
   outline: none;
@@ -685,17 +678,17 @@ body {
 }
 
 .event-study-input:focus {
-  border-color: rgba(197, 168, 128, 0.8);
-  box-shadow: 0 0 0 4px rgba(197, 168, 128, 0.12);
+  border-color: var(--eink-gold);
+  box-shadow: 0 0 0 4px rgba(217, 119, 6, 0.12);
 }
 
 .event-study-submit {
-  background: linear-gradient(180deg, #d2b590, var(--eink-gold));
-  color: #33251a;
+  background: var(--eink-gold);
+  color: #FFFFFF;
   font-weight: 700;
   padding: 0.75rem 1.5rem;
-  border-radius: 10px;
-  border: 1px solid rgba(159, 127, 82, 0.3);
+  border-radius: 8px;
+  border: none;
   cursor: pointer;
   display: flex;
   gap: 0.5rem;
@@ -705,7 +698,8 @@ body {
 
 .event-study-submit:hover:not(:disabled) {
   transform: translateY(-1px);
-  box-shadow: 0 10px 18px rgba(159, 127, 82, 0.18);
+  background: var(--eink-gold-deep);
+  box-shadow: 0 4px 12px rgba(217, 119, 6, 0.2);
 }
 
 .event-study-submit:disabled {

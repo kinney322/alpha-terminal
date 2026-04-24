@@ -10,6 +10,7 @@ const LEADERBOARD_FALLBACK_URLS = [
   'https://pub-03e0405010774afe9ca6d569e0cb43b1.r2.dev/event-study/leaderboard-latest.json.gz',
   import.meta.env.VITE_EVENT_LEADERBOARD_URL,
 ].filter(Boolean);
+const CATALYST_WINDOW_DAYS = 14;
 
 const DEMO_RADAR_ROWS = [
   {
@@ -109,6 +110,27 @@ function normalizeLeaderboardRow(row) {
   };
 }
 
+function parseEventDate(row) {
+  const date = new Date(`${row.eventDate}T00:00:00Z`);
+  return Number.isNaN(date.getTime()) ? null : date;
+}
+
+function rankCatalystRows(rows, now = new Date()) {
+  const today = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()));
+  const windowEnd = new Date(today);
+  windowEnd.setUTCDate(today.getUTCDate() + CATALYST_WINDOW_DAYS);
+
+  return rows
+    .map((row) => ({ row, eventDate: parseEventDate(row) }))
+    .filter(({ eventDate }) => eventDate && eventDate >= today && eventDate <= windowEnd)
+    .sort((a, b) => {
+      const byDate = a.eventDate.getTime() - b.eventDate.getTime();
+      if (byDate !== 0) return byDate;
+      return String(a.row.ticker).localeCompare(String(b.row.ticker));
+    })
+    .map(({ row }) => row);
+}
+
 async function fetchLeaderboardPayload(signal) {
   let lastError = null;
 
@@ -116,17 +138,22 @@ async function fetchLeaderboardPayload(signal) {
     try {
       const res = await fetch(url, { signal, headers: { Accept: 'application/json' } });
       if (!res.ok) {
-        throw new Error(`Fetch failed ${res.status} @ ${url}`);
+        throw new Error(`Fetch failed ${res.status}`);
       }
 
       const json = await res.json();
       const rows = Array.isArray(json) ? json : Array.isArray(json?.leaderboard) ? json.leaderboard : [];
       if (rows.length === 0) {
-        throw new Error(`Empty leaderboard payload @ ${url}`);
+        throw new Error(`Empty leaderboard payload`);
+      }
+
+      const rankedRows = rankCatalystRows(rows.map(normalizeLeaderboardRow));
+      if (rankedRows.length === 0) {
+        throw new Error(`No earnings events inside ${CATALYST_WINDOW_DAYS}D window`);
       }
 
       return {
-        rows: rows.map(normalizeLeaderboardRow),
+        rows: rankedRows,
         source: url,
         lastUpdated: json?.meta?.generated_at ?? null,
       };
@@ -294,7 +321,7 @@ export default function EventStudyPanel() {
 
   const radarRows = useMemo(() => {
     if (Array.isArray(data?.leaderboard) && data.leaderboard.length > 0) {
-      return data.leaderboard.map(normalizeLeaderboardRow);
+      return rankCatalystRows(data.leaderboard.map(normalizeLeaderboardRow));
     }
     return leaderboardRows;
   }, [data, leaderboardRows]);
@@ -368,7 +395,7 @@ export default function EventStudyPanel() {
             exit={{ opacity: 0, y: -10 }}
             style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}
           >
-            <div className="grid-4" style={{ gridTemplateColumns: 'repeat(5, 1fr)' }}>
+            <div className="grid-4" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '1.25rem', marginBottom: '1.5rem' }}>
               <div className="glass-panel stat-card event-study-workbench">
                 <span className="stat-label">有效事件樣本</span>
                 <div className="stat-value text-accent">{data.summary.total_events}<span style={{ fontSize: '1rem' }}>次</span></div>
