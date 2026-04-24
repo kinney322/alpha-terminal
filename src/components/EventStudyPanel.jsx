@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState, useCallback } from 'react';
-import { Search, Crosshair, BarChart3, Clock, Radar, Database, RefreshCcw, AlertCircle } from 'lucide-react';
+import { Search, Crosshair, BarChart3, Clock, Radar, Database, RefreshCcw, AlertCircle, Scale, ShieldAlert, Layers3, Lightbulb } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import CatalystRadarTable from './CatalystRadarTable';
 import OpportunityXRayCard from './OpportunityXRayCard';
@@ -180,6 +180,298 @@ function RadarSkeleton() {
   );
 }
 
+function formatPercent(value, digits = 2, withSign = false) {
+  const numeric = Number(value);
+  if (Number.isNaN(numeric)) return '—';
+  const prefix = withSign && numeric > 0 ? '+' : '';
+  return `${prefix}${numeric.toFixed(digits)}%`;
+}
+
+function formatCount(value) {
+  const numeric = Number(value);
+  if (Number.isNaN(numeric)) return '—';
+  return `${numeric}次`;
+}
+
+function formatDecimal(value, digits = 2) {
+  const numeric = Number(value);
+  if (Number.isNaN(numeric)) return '—';
+  return numeric.toFixed(digits);
+}
+
+function firstDefined(...values) {
+  return values.find((value) => value !== undefined && value !== null && value !== '');
+}
+
+function extractEstimate(row) {
+  return firstDefined(
+    row?.eps_estimate,
+    row?.estimate_eps,
+    row?.estimated_eps,
+    row?.epsEstimate,
+    row?.eps_est,
+    row?.est_eps,
+    row?.est
+  );
+}
+
+function extractActual(row) {
+  return firstDefined(
+    row?.reported_eps,
+    row?.actual_eps,
+    row?.eps_actual,
+    row?.epsActual,
+    row?.act_eps,
+    row?.act
+  );
+}
+
+function extractSurprise(row) {
+  return firstDefined(
+    row?.surprise_percent,
+    row?.surprise_pct,
+    row?.surprisePercent,
+    row?.surprisePct,
+    row?.surprise
+  );
+}
+
+function mergeHistoryIntoDetails(details = [], historyRows = []) {
+  const historyMap = new Map(
+    historyRows.map((row) => [String(row.event_date), row])
+  );
+
+  return details.map((detail) => {
+    const historyRow = historyMap.get(String(detail.event_date));
+    return {
+      ...detail,
+      eps_estimate: extractEstimate(detail) ?? extractEstimate(historyRow),
+      actual_eps: extractActual(detail) ?? extractActual(historyRow),
+      surprise_percent: extractSurprise(detail) ?? extractSurprise(historyRow),
+    };
+  });
+}
+
+function getLatestEarningsSnapshot(rows = []) {
+  const enriched = rows.find((row) =>
+    extractEstimate(row) !== undefined ||
+    extractActual(row) !== undefined ||
+    extractSurprise(row) !== undefined
+  );
+
+  if (!enriched) return null;
+
+  return {
+    eventDate: enriched.event_date,
+    estimate: extractEstimate(enriched),
+    actual: extractActual(enriched),
+    surprise: extractSurprise(enriched),
+  };
+}
+
+function getDecisionModel(summary) {
+  if (!summary) return null;
+
+  const sample = Number(summary.total_events ?? 0);
+  const winRate = Number(summary.win_rate ?? 0);
+  const runup = Number(summary.avg_drift_m5 ?? 0);
+  const volatility = Number(summary.avg_t1_abs_volatility ?? 0);
+  const maxDrawdown = Number(summary.avg_max_dd_5 ?? 0);
+  const drawdownAbs = Math.abs(maxDrawdown);
+
+  let posture = 'balanced';
+  let title = '雙邊等待定價錯配';
+  let summaryText = '這組事件資料更適合拿來比較多空兩邊的賠率差，而不是直接預設單一方向。';
+
+  if ((winRate >= 58 && runup <= 2.5) || (winRate >= 65 && maxDrawdown > -5)) {
+    posture = 'expansion';
+    title = '偏向順勢，但先比對 short 賠率';
+    summaryText = '歷史 base rate 偏正向，但你應該把它視為 long baseline，再拿 crowding 與事件日波動去檢查 short 是否更有賠率。';
+  } else if ((winRate <= 45 && runup >= 1.5) || (runup >= 3 && volatility >= 4)) {
+    posture = 'compression';
+    title = '偏向反身性回吐，但保留 squeeze 劇本';
+    summaryText = '事件前擁擠度與事後波動偏高，代表 fade 劇本變強；但若市場預期過低，也要保留 squeeze 對 short 不利的情境。';
+  }
+
+  const confidence = sample >= 20 ? '高信度' : sample >= 10 ? '中信度' : '低信度';
+  const risk = volatility >= 5 || drawdownAbs >= 7 ? '高風險' : volatility >= 3 || drawdownAbs >= 4 ? '中風險' : '低風險';
+
+  const flags = [];
+  if (sample < 8) flags.push('樣本偏少，結論僅供參考');
+  if (runup >= 3) flags.push('事件前偷步偏高，須防追價');
+  if (volatility >= 4) flags.push('事件日波動大，倉位需縮小');
+  if (drawdownAbs >= 5) flags.push('歷史最大回撤偏深，停損要先定義');
+  if (winRate > 45 && winRate < 55) flags.push('勝率優勢不明顯，應依賴價位與風控');
+
+  return {
+    posture,
+    title,
+    summaryText,
+    confidence,
+    risk,
+    flags,
+    longPayoff:
+      winRate >= 58 && runup <= 2.5
+        ? '歷史勝率與 run-up 結構對 long 較友善，適合等事件前後 pullback 再接。'
+        : winRate >= 50
+          ? 'long 仍有 base rate 支撐，但需要更好的 entry，不能用勝率硬追。'
+          : 'long 缺乏明確統計優勢，若要做，必須依賴價格錯殺或預期過低的情境。',
+    shortPayoff:
+      runup >= 3 || volatility >= 4
+        ? '偷步與波動偏高，short payoff 提升，特別要盯 sell-the-news 或反身性回吐。'
+        : winRate <= 45
+          ? '歷史結果對 short 較有利，但要留意事件後 squeeze 風險。'
+          : 'short 沒有天然優勢，除非看到 pre-event crowding 或 options 定價過滿。',
+    sizingText:
+      volatility >= 5 || drawdownAbs >= 7
+        ? '事件風險偏大，適合縮倉位、分批進出，避免單點重押。'
+        : volatility >= 3 || drawdownAbs >= 4
+          ? '可做，但倉位應低於平時，並先定義 event-day 失敗條件。'
+          : '波動與回撤仍在可控區間，可以把焦點放在 entry quality 與 payoff ratio。',
+  };
+}
+
+function DecisionMetricCard({ label, value, tone = 'neutral', footnote }) {
+  return (
+    <div className={`decision-metric-card decision-metric-card--${tone}`}>
+      <span className="decision-metric-card__label">{label}</span>
+      <strong className="decision-metric-card__value">{value}</strong>
+      <span className="decision-metric-card__footnote">{footnote}</span>
+    </div>
+  );
+}
+
+function BucketCard({ title, bucket, compact = false }) {
+  if (!bucket) return null;
+  const { count, win_rate, avg_t10, avg_t1, avg_max_dd_5, avg_t1_abs_volatility, sample_warning } = bucket;
+
+  return (
+    <div className={`bucket-card ${sample_warning ? 'bucket-card--warning' : ''}`}>
+      <div className="bucket-card__header">
+        <span className="bucket-card__title">{title}</span>
+        {sample_warning === 'very_low_sample' && <span className="bucket-badge bucket-badge--red">Very Low Sample</span>}
+        {sample_warning === 'low_sample' && <span className="bucket-badge bucket-badge--amber">Low Sample</span>}
+      </div>
+      <div className="bucket-card__metrics">
+        <div className="bucket-metric">
+          <span>樣本數</span>
+          <strong>{count ?? 0}</strong>
+        </div>
+        <div className="bucket-metric">
+          <span>勝率</span>
+          <strong>{win_rate != null ? `${win_rate}%` : '—'}</strong>
+        </div>
+        <div className="bucket-metric">
+          <span>T+10</span>
+          <strong className={avg_t10 > 0 ? 'text-success' : avg_t10 < 0 ? 'text-danger' : ''}>{avg_t10 != null ? `${avg_t10}%` : '—'}</strong>
+        </div>
+        {compact ? (
+          <>
+            <div className="bucket-metric">
+              <span>T+1</span>
+              <strong className={avg_t1 > 0 ? 'text-success' : avg_t1 < 0 ? 'text-danger' : ''}>{avg_t1 != null ? `${avg_t1}%` : '—'}</strong>
+            </div>
+            <div className="bucket-metric">
+              <span>5D DD</span>
+              <strong className="text-danger">{avg_max_dd_5 != null ? `${avg_max_dd_5}%` : '—'}</strong>
+            </div>
+          </>
+        ) : (
+          <div className="bucket-metric">
+            <span>T+1 波動</span>
+            <strong>{avg_t1_abs_volatility != null ? `${avg_t1_abs_volatility}%` : '—'}</strong>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+function BestSetupHintCard({ hint }) {
+  if (!hint) return null;
+
+  const { label, title, confidence, reason, primary_bucket, sample_warning } = hint;
+
+  let toneClass = 'neutral';
+  if (label === 'clean_long_continuation') toneClass = 'positive';
+  else if (label === 'crowded_fade') toneClass = 'negative';
+  else if (label === 'balanced_two_sided') toneClass = 'neutral';
+  else if (label === 'insufficient_signal') toneClass = 'warning';
+
+  return (
+    <div className={`glass-panel w-full event-study-workbench best-setup-hint-card best-setup-hint-card--${toneClass}`}>
+      <div className="best-setup-hint-card__header">
+        <div className="best-setup-hint-card__title-group">
+          <Lightbulb size={18} />
+          <span>{title}</span>
+          <span className={`hint-confidence-badge hint-confidence-badge--${confidence}`}>{confidence}</span>
+        </div>
+        {sample_warning && (
+          <span className="hint-sample-badge">
+            {sample_warning === 'very_low_sample' ? 'Very Low Sample' : 'Low Sample'}
+          </span>
+        )}
+      </div>
+      <p className="best-setup-hint-card__reason">{reason}</p>
+      <div className="best-setup-hint-card__footer">
+        <span>Primary Bucket:</span>
+        <code className="mono">{primary_bucket}</code>
+      </div>
+    </div>
+  );
+}
+
+function TradeSetupMatrix({ conditionalSummary }) {
+  if (!conditionalSummary) return null;
+  const {
+    thresholds,
+    positive_surprise,
+    negative_surprise,
+    high_runup,
+    low_runup,
+    high_surprise_low_runup,
+    high_runup_negative_or_weak_surprise
+  } = conditionalSummary;
+
+  return (
+    <div className="glass-panel w-full event-study-workbench">
+      <div className="panel-header">
+        <Database size={18} className="text-accent" />
+        <span>條件化交易框架 (Trade Setup Matrix)</span>
+        <span className="badge panel-badge radar-panel-badge">Cross-Sectional Edge</span>
+      </div>
+
+      <div className="trade-setup-matrix">
+        {thresholds && (
+          <div className="trade-setup-thresholds">
+            <span><strong>High Run-up</strong> &ge; {thresholds.high_runup_threshold}%</span>
+            <span><strong>Weak Surprise</strong> &le; {thresholds.weak_surprise_threshold}%</span>
+            <span><strong>High Surprise</strong> &ge; {thresholds.high_surprise_threshold}%</span>
+          </div>
+        )}
+
+        <div>
+          <h4 style={{ fontSize: '0.85rem', color: 'var(--eink-gold-deep)', textTransform: 'uppercase', marginBottom: '0.8rem', fontWeight: 700 }}>Single Factor (單一維度)</h4>
+          <div className="bucket-grid">
+            <BucketCard title="Positive Surprise" bucket={positive_surprise} />
+            <BucketCard title="Negative Surprise" bucket={negative_surprise} />
+            <BucketCard title="High Run-up" bucket={high_runup} />
+            <BucketCard title="Low Run-up" bucket={low_runup} />
+          </div>
+        </div>
+
+        <div>
+          <h4 style={{ fontSize: '0.85rem', color: 'var(--eink-gold-deep)', textTransform: 'uppercase', marginBottom: '0.8rem', fontWeight: 700 }}>Cross Setup (多因子情境)</h4>
+          <div className="bucket-grid">
+            <BucketCard title="High Surprise + Low Run-up" bucket={high_surprise_low_runup} compact />
+            <BucketCard title="High Run-up + Weak/Negative Surprise" bucket={high_runup_negative_or_weak_surprise} compact />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function EventStudyPanel() {
   const [symbol, setSymbol] = useState('');
   const [category, setCategory] = useState('Earnings');
@@ -191,6 +483,7 @@ export default function EventStudyPanel() {
   const [leaderboardLoading, setLeaderboardLoading] = useState(true);
   const [leaderboardError, setLeaderboardError] = useState(null);
   const [leaderboardMeta, setLeaderboardMeta] = useState({ source: 'demo', lastUpdated: null, usingFallback: true });
+  const [historyRows, setHistoryRows] = useState([]);
 
   const [selectedRadarRow, setSelectedRadarRow] = useState(DEMO_RADAR_ROWS[0]);
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -220,6 +513,22 @@ export default function EventStudyPanel() {
       }
 
       setData(json);
+
+      if (category === 'Earnings') {
+        try {
+          const historyRes = await fetch(`${API_BASE}/event-study/history?ticker=${nextSymbol.toUpperCase()}`);
+          const historyJson = await historyRes.json();
+          if (historyRes.ok && Array.isArray(historyJson?.rows)) {
+            setHistoryRows(historyJson.rows);
+          } else {
+            setHistoryRows([]);
+          }
+        } catch {
+          setHistoryRows([]);
+        }
+      } else {
+        setHistoryRows([]);
+      }
     } catch (err) {
       setError(err.message);
     } finally {
@@ -326,6 +635,10 @@ export default function EventStudyPanel() {
     return leaderboardRows;
   }, [data, leaderboardRows]);
 
+  const decisionModel = useMemo(() => getDecisionModel(data?.summary), [data]);
+  const mergedDetails = useMemo(() => mergeHistoryIntoDetails(data?.details ?? [], historyRows), [data?.details, historyRows]);
+  const latestEarningsSnapshot = useMemo(() => getLatestEarningsSnapshot(historyRows), [historyRows]);
+
   const handleSelectRadarRow = useCallback((row) => {
     setSelectedRadarRow(row);
     setDrawerOpen(true);
@@ -343,7 +656,7 @@ export default function EventStudyPanel() {
         </div>
 
         <div>
-          <form onSubmit={handleSubmit} className="flex gap-4 items-end" style={{ display: 'flex', gap: '1rem', alignItems: 'flex-end' }}>
+          <form onSubmit={handleSubmit} className="event-study-toolbar">
             <div style={{ flex: 1 }}>
               <label style={{ display: 'block', fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: '0.5rem' }}>股票代號 (Ticker)</label>
               <input
@@ -379,6 +692,24 @@ export default function EventStudyPanel() {
             </button>
           </form>
 
+          <div className="decision-pillar-grid">
+            <div className="decision-pillar-card">
+              <span className="decision-pillar-card__eyebrow">1. Edge</span>
+              <strong>先看歷史勝率與樣本數</strong>
+              <p>T+10 勝率若高，但樣本太少，不能直接當成可下注優勢。</p>
+            </div>
+            <div className="decision-pillar-card">
+              <span className="decision-pillar-card__eyebrow">2. Crowding</span>
+              <strong>再看事件前偷步有沒有過熱</strong>
+              <p>T-5 run-up 越高，越要懷疑好消息是否早已被 price in。</p>
+            </div>
+            <div className="decision-pillar-card">
+              <span className="decision-pillar-card__eyebrow">3. Risk</span>
+              <strong>最後才看可承受的波動與回撤</strong>
+              <p>T+1 波動與 5D 最大回撤決定倉位大小，不只是方向判斷。</p>
+            </div>
+          </div>
+
           {error && (
             <div style={{ marginTop: '1rem', padding: '1rem', background: 'rgba(139,0,0,0.08)', border: '1px solid rgba(139,0,0,0.18)', borderRadius: '10px', color: '#8b0000' }}>
               <p>{error}</p>
@@ -393,35 +724,147 @@ export default function EventStudyPanel() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
-            style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}
+            className="event-study-results"
           >
-            <div className="grid-4" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '1.25rem', marginBottom: '1.5rem' }}>
-              <div className="glass-panel stat-card event-study-workbench">
-                <span className="stat-label">有效事件樣本</span>
-                <div className="stat-value text-accent">{data.summary.total_events}<span style={{ fontSize: '1rem' }}>次</span></div>
+            <div className="event-study-decision-grid">
+              <div className={`glass-panel event-study-workbench decision-hero decision-hero--${decisionModel?.posture ?? 'balanced'}`}>
+                <div className="decision-hero__header">
+                  <div>
+                    <span className="decision-hero__eyebrow">Decision Snapshot</span>
+                    <h2 className="decision-hero__title">
+                      {symbol || 'Ticker'} / {category}
+                    </h2>
+                  </div>
+                  <div className={`decision-bias-pill decision-bias-pill--${decisionModel?.posture ?? 'balanced'}`}>
+                    {decisionModel?.posture === 'balanced' ? <Scale size={16} /> : <Layers3 size={16} />}
+                    {decisionModel?.title}
+                  </div>
+                </div>
+
+                <p className="decision-hero__summary">{decisionModel?.summaryText}</p>
+
+                <div className="decision-chip-row">
+                  <span className="decision-chip">{decisionModel?.confidence}</span>
+                  <span className="decision-chip">{decisionModel?.risk}</span>
+                  <span className="decision-chip">樣本 {formatCount(data.summary.total_events)}</span>
+                </div>
+
+                <div className="decision-alert-list">
+                  {(decisionModel?.flags ?? []).map((flag) => (
+                    <div key={flag} className="decision-alert-item">
+                      <ShieldAlert size={14} />
+                      <span>{flag}</span>
+                    </div>
+                  ))}
+                </div>
               </div>
-              <div className="glass-panel stat-card event-study-workbench">
-                <span className="stat-label">T+10 日勝率</span>
-                <div className={`stat-value ${data.summary.win_rate >= 50 ? 'text-success' : 'text-danger'}`}>{data.summary.win_rate}%</div>
-              </div>
-              <div className="glass-panel stat-card event-study-workbench">
-                <span className="stat-label">T-5 日偷步 (Run-up)</span>
-                <div className={`stat-value ${data.summary.avg_drift_m5 > 0 ? 'text-success' : 'text-danger'}`}>{data.summary.avg_drift_m5}%</div>
-              </div>
-              <div className="glass-panel stat-card event-study-workbench">
-                <span className="stat-label">T+1 日裂口波動</span>
-                <div className="stat-value text-warning">{data.summary.avg_t1_abs_volatility}%</div>
-              </div>
-              <div className="glass-panel stat-card event-study-workbench">
-                <span className="stat-label">T+5 日最大回撤</span>
-                <div className="stat-value text-danger">{data.summary.avg_max_dd_5}%</div>
+
+              <div className="decision-trading-grid">
+                <div className="decision-trading-card decision-trading-card--long">
+                  <span className="decision-trading-card__eyebrow">Long Payoff</span>
+                  <strong>{formatPercent(data.summary.win_rate, 0)} base rate</strong>
+                  <p>{decisionModel?.longPayoff}</p>
+                  <DecisionMetricCard
+                    label="T+10 勝率"
+                    value={formatPercent(data.summary.win_rate, 0)}
+                    tone={data.summary.win_rate >= 50 ? 'positive' : 'negative'}
+                    footnote="先看 long baseline 是否成立"
+                  />
+                </div>
+
+                <div className="decision-trading-card decision-trading-card--short">
+                  <span className="decision-trading-card__eyebrow">Short Payoff</span>
+                  <strong>{formatPercent(data.summary.avg_drift_m5, 2, true)} pre-event run-up</strong>
+                  <p>{decisionModel?.shortPayoff}</p>
+                  <DecisionMetricCard
+                    label="T-5 偷步"
+                    value={formatPercent(data.summary.avg_drift_m5, 2, true)}
+                    tone={data.summary.avg_drift_m5 > 0 ? 'warning' : 'positive'}
+                    footnote="越高越要檢查是否 price in"
+                  />
+                </div>
+
+                <div className="decision-trading-card decision-trading-card--risk">
+                  <span className="decision-trading-card__eyebrow">Position Sizing</span>
+                  <strong>{formatPercent(data.summary.avg_t1_abs_volatility)} / {formatPercent(data.summary.avg_max_dd_5, 2, true)}</strong>
+                  <p>{decisionModel?.sizingText}</p>
+                  <div className="decision-mini-metrics">
+                    <DecisionMetricCard
+                      label="T+1 波動"
+                      value={formatPercent(data.summary.avg_t1_abs_volatility)}
+                      tone="warning"
+                      footnote="決定事件後第一天倉位大小"
+                    />
+                    <DecisionMetricCard
+                      label="5D 最大回撤"
+                      value={formatPercent(data.summary.avg_max_dd_5, 2, true)}
+                      tone="negative"
+                      footnote="用來定義 stop 與 risk budget"
+                    />
+                    <DecisionMetricCard
+                      label="有效事件樣本"
+                      value={formatCount(data.summary.total_events)}
+                      tone="neutral"
+                      footnote="少於 8 次時要降低信任度"
+                    />
+                  </div>
+                </div>
               </div>
             </div>
+
+            <div className="glass-panel w-full event-study-workbench event-study-evidence">
+              <div className="panel-header">
+                <BarChart3 size={18} className="text-accent" />
+                <span>Historical Evidence</span>
+                <span className="badge panel-badge radar-panel-badge">Why This Matters</span>
+              </div>
+
+              <div className="event-study-evidence-grid">
+                <div className="event-study-evidence-card">
+                  <span className="event-study-evidence-card__eyebrow">Base Rate</span>
+                  <strong>{formatPercent(data.summary.win_rate, 0)}</strong>
+                  <p>先回答「這事件 historically 有沒有 edge」。沒有 edge，就不要急著討論方向。</p>
+                </div>
+                <div className="event-study-evidence-card">
+                  <span className="event-study-evidence-card__eyebrow">Crowding</span>
+                  <strong>{formatPercent(data.summary.avg_drift_m5, 2, true)}</strong>
+                  <p>偷步越大，越要分辨是健康提前佈局，還是過熱後等著 sell-the-news。</p>
+                </div>
+                <div className="event-study-evidence-card">
+                  <span className="event-study-evidence-card__eyebrow">Risk Budget</span>
+                  <strong>{formatPercent(data.summary.avg_t1_abs_volatility)}</strong>
+                  <p>高波動代表不能拿大倉位硬賭方向，應先決定你能承受的 gap risk。</p>
+                </div>
+                <div className="event-study-evidence-card event-study-evidence-card--earnings">
+                  <span className="event-study-evidence-card__eyebrow">Latest Earnings Snapshot</span>
+                  <strong>{latestEarningsSnapshot?.eventDate ?? 'n/a'}</strong>
+                  <div className="earnings-snapshot-grid">
+                    <div className="earnings-snapshot-metric">
+                      <span>EST</span>
+                      <strong>{formatDecimal(latestEarningsSnapshot?.estimate)}</strong>
+                    </div>
+                    <div className="earnings-snapshot-metric">
+                      <span>ACT</span>
+                      <strong>{formatDecimal(latestEarningsSnapshot?.actual)}</strong>
+                    </div>
+                    <div className="earnings-snapshot-metric">
+                      <span>Surprise</span>
+                      <strong>{formatPercent(latestEarningsSnapshot?.surprise, 2, true)}</strong>
+                    </div>
+                  </div>
+                  <p>目前前端已支援顯示 EST / ACT / Surprise；若 backend payload 尚未提供，這裡會先顯示 `n/a`。</p>
+                </div>
+              </div>
+            </div>
+
+            <BestSetupHintCard hint={data?.best_setup_hint} />
+            <TradeSetupMatrix conditionalSummary={data?.conditional_summary} />
 
             <div className="glass-panel w-full event-study-workbench">
               <div className="panel-header">
                 <BarChart3 size={18} className="text-accent" />
                 <span>T±10 歷史對撞矩陣清單</span>
+                <span className="badge panel-badge radar-panel-badge">Row-Level Audit Trail</span>
               </div>
               <div style={{ overflowX: 'auto' }}>
                 <table className="data-table">
@@ -431,6 +874,9 @@ export default function EventStudyPanel() {
                       <th>Sentiment</th>
                       <th style={{ textAlign: 'right' }}>T-10 (%)</th>
                       <th style={{ textAlign: 'right' }}>T-5 (%)</th>
+                      <th style={{ textAlign: 'right' }}>EST</th>
+                      <th style={{ textAlign: 'right' }}>ACT</th>
+                      <th style={{ textAlign: 'right' }}>Surprise (%)</th>
                       <th style={{ textAlign: 'right' }}>T+1 (%)</th>
                       <th style={{ textAlign: 'right' }}>Max DD 5D (%)</th>
                       <th style={{ textAlign: 'right' }}>T+10 (%)</th>
@@ -438,7 +884,7 @@ export default function EventStudyPanel() {
                     </tr>
                   </thead>
                   <tbody>
-                    {data.details.map((row, i) => (
+                    {mergedDetails.map((row, i) => (
                       <tr key={i}>
                         <td className="mono text-accent">{row.event_date}</td>
                         <td>
@@ -448,6 +894,9 @@ export default function EventStudyPanel() {
                         </td>
                         <td style={{ textAlign: 'right' }} className={row.drift_m10 > 0 ? 'text-success' : 'text-danger'}>{row.drift_m10}</td>
                         <td style={{ textAlign: 'right' }} className={row.drift_m5 > 0 ? 'text-success' : 'text-danger'}>{row.drift_m5}</td>
+                        <td style={{ textAlign: 'right' }}>{formatDecimal(row.eps_estimate)}</td>
+                        <td style={{ textAlign: 'right' }}>{formatDecimal(row.actual_eps)}</td>
+                        <td style={{ textAlign: 'right' }} className={Number(row.surprise_percent) >= 0 ? 'text-success' : 'text-danger'}>{formatPercent(row.surprise_percent, 2, true)}</td>
                         <td style={{ textAlign: 'right', fontWeight: 'bold' }} className={row.t1_return > 0 ? 'text-success' : 'text-danger'}>{row.t1_return}</td>
                         <td style={{ textAlign: 'right' }} className="text-danger">{row.max_dd_5}</td>
                         <td style={{ textAlign: 'right', fontWeight: 'bold' }} className={row.t10_return > 0 ? 'text-success' : 'text-danger'}>{row.t10_return}</td>
