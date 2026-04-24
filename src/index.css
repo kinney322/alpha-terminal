@@ -2043,6 +2043,16 @@ body {
 
   .best-setup-hint-card__title-group {
     gap: 0.35rem;
+    font-size: 0.95rem;
+  }
+
+  .best-setup-hint-card__reason {
+    font-size: 0.8rem;
+    line-height: 1.55;
+  }
+
+  .best-setup-hint-card__footer {
+    font-size: 0.7rem;
   }
 
   .trade-setup-thresholds {
