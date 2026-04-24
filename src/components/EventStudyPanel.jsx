@@ -472,6 +472,64 @@ function TradeSetupMatrix({ conditionalSummary }) {
   );
 }
 
+function MobileAuditCard({ row, index }) {
+  return (
+    <article className="event-audit-card" key={`${row.event_date}-${index}`}>
+      <div className="event-audit-card__header">
+        <div>
+          <span className="event-audit-card__eyebrow">Event Date</span>
+          <strong className="mono text-accent">{row.event_date}</strong>
+        </div>
+        <span className={`badge ${row.sentiment.toLowerCase() === 'beat' ? 'active' : row.sentiment.toLowerCase() === 'miss' ? 'inactive' : 'pending'}`}>
+          {row.sentiment}
+        </span>
+      </div>
+
+      <div className="event-audit-card__grid">
+        <div className="event-audit-card__metric">
+          <span>T-10</span>
+          <strong className={row.drift_m10 > 0 ? 'text-success' : 'text-danger'}>{row.drift_m10}</strong>
+        </div>
+        <div className="event-audit-card__metric">
+          <span>T-5</span>
+          <strong className={row.drift_m5 > 0 ? 'text-success' : 'text-danger'}>{row.drift_m5}</strong>
+        </div>
+        <div className="event-audit-card__metric">
+          <span>EST</span>
+          <strong>{formatDecimal(row.eps_estimate)}</strong>
+        </div>
+        <div className="event-audit-card__metric">
+          <span>ACT</span>
+          <strong>{formatDecimal(row.actual_eps)}</strong>
+        </div>
+        <div className="event-audit-card__metric">
+          <span>Surprise</span>
+          <strong className={Number(row.surprise_percent) >= 0 ? 'text-success' : 'text-danger'}>
+            {formatPercent(row.surprise_percent, 2, true)}
+          </strong>
+        </div>
+        <div className="event-audit-card__metric">
+          <span>T+1</span>
+          <strong className={row.t1_return > 0 ? 'text-success' : 'text-danger'}>{row.t1_return}</strong>
+        </div>
+        <div className="event-audit-card__metric">
+          <span>Max DD 5D</span>
+          <strong className="text-danger">{row.max_dd_5}</strong>
+        </div>
+        <div className="event-audit-card__metric">
+          <span>T+10</span>
+          <strong className={row.t10_return > 0 ? 'text-success' : 'text-danger'}>{row.t10_return}</strong>
+        </div>
+      </div>
+
+      <div className="event-audit-card__footer">
+        <span>Result</span>
+        {row.win ? <strong className="text-success">W</strong> : <strong className="text-danger">L</strong>}
+      </div>
+    </article>
+  );
+}
+
 export default function EventStudyPanel() {
   const [symbol, setSymbol] = useState('');
   const [category, setCategory] = useState('Earnings');
@@ -866,48 +924,54 @@ export default function EventStudyPanel() {
                 <span>T±10 歷史對撞矩陣清單</span>
                 <span className="badge panel-badge radar-panel-badge">Row-Level Audit Trail</span>
               </div>
-              <div style={{ overflowX: 'auto' }}>
-                <table className="data-table">
-                  <thead>
-                    <tr>
-                      <th>Event Date</th>
-                      <th>Sentiment</th>
-                      <th style={{ textAlign: 'right' }}>T-10 (%)</th>
-                      <th style={{ textAlign: 'right' }}>T-5 (%)</th>
-                      <th style={{ textAlign: 'right' }}>EST</th>
-                      <th style={{ textAlign: 'right' }}>ACT</th>
-                      <th style={{ textAlign: 'right' }}>Surprise (%)</th>
-                      <th style={{ textAlign: 'right' }}>T+1 (%)</th>
-                      <th style={{ textAlign: 'right' }}>Max DD 5D (%)</th>
-                      <th style={{ textAlign: 'right' }}>T+10 (%)</th>
-                      <th style={{ textAlign: 'center' }}>Result</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {mergedDetails.map((row, i) => (
-                      <tr key={i}>
-                        <td className="mono text-accent">{row.event_date}</td>
-                        <td>
-                          <span className={`badge ${row.sentiment.toLowerCase() === 'beat' ? 'active' : row.sentiment.toLowerCase() === 'miss' ? 'inactive' : 'pending'}`}>
-                            {row.sentiment}
-                          </span>
-                        </td>
-                        <td style={{ textAlign: 'right' }} className={row.drift_m10 > 0 ? 'text-success' : 'text-danger'}>{row.drift_m10}</td>
-                        <td style={{ textAlign: 'right' }} className={row.drift_m5 > 0 ? 'text-success' : 'text-danger'}>{row.drift_m5}</td>
-                        <td style={{ textAlign: 'right' }}>{formatDecimal(row.eps_estimate)}</td>
-                        <td style={{ textAlign: 'right' }}>{formatDecimal(row.actual_eps)}</td>
-                        <td style={{ textAlign: 'right' }} className={Number(row.surprise_percent) >= 0 ? 'text-success' : 'text-danger'}>{formatPercent(row.surprise_percent, 2, true)}</td>
-                        <td style={{ textAlign: 'right', fontWeight: 'bold' }} className={row.t1_return > 0 ? 'text-success' : 'text-danger'}>{row.t1_return}</td>
-                        <td style={{ textAlign: 'right' }} className="text-danger">{row.max_dd_5}</td>
-                        <td style={{ textAlign: 'right', fontWeight: 'bold' }} className={row.t10_return > 0 ? 'text-success' : 'text-danger'}>{row.t10_return}</td>
-                        <td style={{ textAlign: 'center' }}>
-                          {row.win ? <span className="text-success font-bold">W</span> : <span className="text-danger font-bold">L</span>}
-                        </td>
+              {isMobile ? (
+                <div className="event-audit-card-list">
+                  {mergedDetails.map((row, i) => <MobileAuditCard row={row} index={i} key={i} />)}
+                </div>
+              ) : (
+                <div style={{ overflowX: 'auto' }}>
+                  <table className="data-table">
+                    <thead>
+                      <tr>
+                        <th>Event Date</th>
+                        <th>Sentiment</th>
+                        <th style={{ textAlign: 'right' }}>T-10 (%)</th>
+                        <th style={{ textAlign: 'right' }}>T-5 (%)</th>
+                        <th style={{ textAlign: 'right' }}>EST</th>
+                        <th style={{ textAlign: 'right' }}>ACT</th>
+                        <th style={{ textAlign: 'right' }}>Surprise (%)</th>
+                        <th style={{ textAlign: 'right' }}>T+1 (%)</th>
+                        <th style={{ textAlign: 'right' }}>Max DD 5D (%)</th>
+                        <th style={{ textAlign: 'right' }}>T+10 (%)</th>
+                        <th style={{ textAlign: 'center' }}>Result</th>
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
+                    </thead>
+                    <tbody>
+                      {mergedDetails.map((row, i) => (
+                        <tr key={i}>
+                          <td className="mono text-accent">{row.event_date}</td>
+                          <td>
+                            <span className={`badge ${row.sentiment.toLowerCase() === 'beat' ? 'active' : row.sentiment.toLowerCase() === 'miss' ? 'inactive' : 'pending'}`}>
+                              {row.sentiment}
+                            </span>
+                          </td>
+                          <td style={{ textAlign: 'right' }} className={row.drift_m10 > 0 ? 'text-success' : 'text-danger'}>{row.drift_m10}</td>
+                          <td style={{ textAlign: 'right' }} className={row.drift_m5 > 0 ? 'text-success' : 'text-danger'}>{row.drift_m5}</td>
+                          <td style={{ textAlign: 'right' }}>{formatDecimal(row.eps_estimate)}</td>
+                          <td style={{ textAlign: 'right' }}>{formatDecimal(row.actual_eps)}</td>
+                          <td style={{ textAlign: 'right' }} className={Number(row.surprise_percent) >= 0 ? 'text-success' : 'text-danger'}>{formatPercent(row.surprise_percent, 2, true)}</td>
+                          <td style={{ textAlign: 'right', fontWeight: 'bold' }} className={row.t1_return > 0 ? 'text-success' : 'text-danger'}>{row.t1_return}</td>
+                          <td style={{ textAlign: 'right' }} className="text-danger">{row.max_dd_5}</td>
+                          <td style={{ textAlign: 'right', fontWeight: 'bold' }} className={row.t10_return > 0 ? 'text-success' : 'text-danger'}>{row.t10_return}</td>
+                          <td style={{ textAlign: 'center' }}>
+                            {row.win ? <span className="text-success font-bold">W</span> : <span className="text-danger font-bold">L</span>}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
             </div>
           </motion.div>
         )}

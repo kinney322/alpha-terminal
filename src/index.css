@@ -1301,6 +1301,68 @@ body {
   color: var(--eink-ink);
 }
 
+.event-audit-card-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+.event-audit-card {
+  padding: 1rem;
+  border-radius: 14px;
+  border: 1px solid rgba(44, 62, 80, 0.08);
+  background: rgba(255, 253, 247, 0.86);
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.event-audit-card__header,
+.event-audit-card__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.8rem;
+}
+
+.event-audit-card__eyebrow {
+  display: block;
+  margin-bottom: 0.2rem;
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--eink-gold-deep);
+}
+
+.event-audit-card__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.7rem;
+}
+
+.event-audit-card__metric {
+  padding: 0.75rem 0.8rem;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(44, 62, 80, 0.06);
+}
+
+.event-audit-card__metric span {
+  display: block;
+  margin-bottom: 0.18rem;
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--eink-muted);
+}
+
+.event-audit-card__metric strong {
+  font-size: 0.98rem;
+  color: var(--eink-ink);
+}
+
 .event-study-refresh {
   display: inline-flex;
   align-items: center;
@@ -1909,12 +1971,99 @@ body {
     align-items: stretch;
   }
 
+  .event-study-workbench {
+    padding: 1rem;
+    border-radius: 18px;
+  }
+
+  .event-study-results {
+    gap: 0.85rem;
+  }
+
+  .decision-hero {
+    padding: 1rem;
+  }
+
+  .decision-hero__title {
+    font-size: 1.55rem;
+    line-height: 1.1;
+  }
+
+  .decision-hero__summary {
+    font-size: 0.92rem;
+    line-height: 1.65;
+  }
+
+  .decision-chip-row {
+    gap: 0.45rem;
+  }
+
+  .decision-chip {
+    width: 100%;
+    justify-content: center;
+  }
+
   .decision-trading-grid {
     grid-template-columns: 1fr;
   }
 
+  .decision-trading-card {
+    padding: 0.95rem;
+  }
+
+  .decision-mini-metrics,
+  .bucket-card__metrics,
+  .event-audit-card__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .event-study-evidence-card,
+  .bucket-card {
+    padding: 0.9rem;
+  }
+
   .earnings-snapshot-grid {
     grid-template-columns: 1fr;
+  }
+
+  .best-setup-hint-card {
+    padding: 1rem;
+  }
+
+  .best-setup-hint-card__header,
+  .best-setup-hint-card__title-group,
+  .best-setup-hint-card__footer {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .best-setup-hint-card__title-group {
+    gap: 0.35rem;
+  }
+
+  .trade-setup-thresholds {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.55rem;
+  }
+
+  .trade-setup-thresholds span {
+    align-items: flex-start;
+  }
+
+  .bucket-grid {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+
+  .bucket-card__header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .bucket-card__title {
+    font-size: 0.95rem;
+    line-height: 1.35;
   }
 
   .catalyst-radar__table {
