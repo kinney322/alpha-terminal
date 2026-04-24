@@ -6,10 +6,9 @@ import OpportunityXRayCard from './OpportunityXRayCard';
 
 const API_BASE = 'https://kw-terminal-api.myfootballplaces.workers.dev';
 const LEADERBOARD_FALLBACK_URLS = [
+  `${API_BASE}/event-opportunity/leaderboard-latest`,
   'https://pub-03e0405010774afe9ca6d569e0cb43b1.r2.dev/event-study/leaderboard-latest.json.gz',
   import.meta.env.VITE_EVENT_LEADERBOARD_URL,
-  `${API_BASE}/leaderboard-latest.json`,
-  `${API_BASE}/event-opportunity/leaderboard-latest`,
 ].filter(Boolean);
 
 const DEMO_RADAR_ROWS = [
@@ -447,7 +446,6 @@ export default function EventStudyPanel() {
         <div className="event-study-feedbar">
           <div className="event-study-feedbar__meta">
             <Database size={14} />
-            <span>Source: {leaderboardMeta.source}</span>
             <span>Rows: {radarRows.length}</span>
             <span>Updated: {leaderboardMeta.lastUpdated ? new Date(leaderboardMeta.lastUpdated).toLocaleString() : 'n/a'}</span>
           </div>
