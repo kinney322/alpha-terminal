@@ -1969,10 +1969,44 @@ body {
 }
 
 @media (max-width: 720px) {
+  .main-content {
+    padding: 12px;
+    overflow-x: hidden;
+  }
+
+  .dashboard-grid,
+  .event-study-shell,
+  .event-study-results,
+  .event-study-decision-grid {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    overflow-x: clip;
+  }
+
+  .event-study-workbench,
+  .decision-hero,
+  .decision-trading-card,
+  .event-study-evidence-card,
+  .best-setup-hint-card,
+  .bucket-card,
+  .event-audit-card {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+  }
+
   .event-study-toolbar,
-  .decision-hero__header {
+  .decision-hero__header,
+  .panel-header {
     flex-direction: column;
     align-items: stretch;
+  }
+
+  .panel-badge {
+    margin-left: 0;
+    align-self: flex-start;
   }
 
   .event-study-workbench {
@@ -1996,6 +2030,8 @@ body {
   .decision-hero__summary {
     font-size: 0.92rem;
     line-height: 1.65;
+    max-width: 100%;
+    overflow-wrap: anywhere;
   }
 
   .decision-chip-row {
@@ -2013,6 +2049,21 @@ body {
 
   .decision-trading-card {
     padding: 0.95rem;
+  }
+
+  .decision-trading-card strong {
+    font-size: clamp(0.98rem, 7vw, 1.22rem);
+    line-height: 1.22;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+  }
+
+  .decision-trading-card p,
+  .event-study-evidence-card p,
+  .bucket-metric strong,
+  .event-audit-card__metric strong {
+    overflow-wrap: anywhere;
+    word-break: break-word;
   }
 
   .decision-mini-metrics,
@@ -2043,21 +2094,43 @@ body {
 
   .best-setup-hint-card__title-group {
     gap: 0.35rem;
-    font-size: 0.85rem;
+    width: 100%;
+    min-width: 0;
+    font-size: 0.9rem;
+    line-height: 1.15;
+  }
+
+  .best-setup-hint-card__title-group > span:first-of-type {
+    min-width: 0;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+  }
+
+  .hint-confidence-badge,
+  .hint-sample-badge {
+    align-self: flex-start;
   }
 
   .best-setup-hint-card__reason {
-    font-size: 0.72rem;
-    line-height: 1.5;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    font-size: 0.82rem;
+    line-height: 1.55;
+    display: block;
+    overflow-wrap: anywhere;
+    word-break: break-word;
   }
 
   .best-setup-hint-card__footer {
-    font-size: 0.65rem;
+    font-size: 0.72rem;
+    width: 100%;
+    min-width: 0;
+  }
+
+  .best-setup-hint-card__footer .mono {
+    display: block;
+    max-width: 100%;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    word-break: break-word;
   }
 
   .trade-setup-thresholds {
@@ -2083,6 +2156,7 @@ body {
   .bucket-card__title {
     font-size: 0.95rem;
     line-height: 1.35;
+    overflow-wrap: anywhere;
   }
 
   .catalyst-radar__table {
