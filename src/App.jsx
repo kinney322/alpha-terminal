@@ -3,17 +3,27 @@ import { motion, AnimatePresence } from 'framer-motion';
 import AlphaScannerPanel from './components/AlphaScannerPanel';
 import EventStudyPanel from './components/EventStudyPanel';
 import QuantBotChat from './components/QuantBotChat';
+import CatalystRadarShell from './components/CatalystRadarShell';
 
-const TABS = [
+const PRODUCT_MODE = import.meta.env.VITE_PRODUCT_MODE || 'crowdrisk';
+
+const PUBLIC_TABS = [
+  { key: 'earnings-radar', label: '📡 Earnings Radar' },
+  { key: 'event-study', label: '🎯 Event Study' },
+  { key: 'peer-reactions', label: '🔗 Peer Reactions' },
+  { key: 'methodology', label: '📖 Methodology' },
+];
+
+const INTERNAL_TABS = [
   { key: 'scanner', label: '📡 Alpha Scanner' },
   { key: 'quant-chat', label: '🤖 Quant Chatbot' },
   { key: 'edge', label: '🧠 Alpha Edge (Deep)' },
-  { key: 'event-study', label: '🎯 Event Study (事件研究)' },
   { key: 'macro', label: '🌡️ Macro Sentiment' },
+  { key: 'sports', label: '⚾ Sports Quant' },
 ];
 
 function App() {
-  const [activeTab, setActiveTab] = useState('scanner');
+  const [activeTab, setActiveTab] = useState(PRODUCT_MODE === 'crowdrisk' ? 'earnings-radar' : 'scanner');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const pageVariants = {
@@ -23,12 +33,22 @@ function App() {
   };
 
   const panels = {
+    // CrowdRisk Panels
+    'earnings-radar': <CatalystRadarShell />,
+    'event-study': <EventStudyPanel />,
+    'peer-reactions': <div className="fade-in"><h2 className="section-title">Coming Soon</h2></div>,
+    'methodology': <div className="fade-in"><h2 className="section-title">Coming Soon</h2></div>,
+    
+    // Internal Panels
     scanner: <AlphaScannerPanel />,
     'quant-chat': <QuantBotChat />,
-    'event-study': <EventStudyPanel />,
     edge: <div className="fade-in"><h2 className="section-title">Coming Soon</h2></div>,
     macro: <div className="fade-in"><h2 className="section-title">Coming Soon</h2></div>,
+    sports: <div className="fade-in"><h2 className="section-title">Coming Soon</h2></div>,
   };
+
+  const brandName = PRODUCT_MODE === 'crowdrisk' ? 'CrowdRisk' : 'AlphaTerminal';
+  const pageTitle = PRODUCT_MODE === 'crowdrisk' ? 'Intelligence Terminal' : 'Omni-Scanner v4';
 
   return (
     <div className="app-container">
@@ -36,7 +56,7 @@ function App() {
       {/* 左側邊欄 */}
       <aside className={`sidebar ${isMobileMenuOpen ? 'open' : ''}`}>
         <div className="sidebar-header">
-          <div className="brand">Alpha<span>Terminal</span></div>
+          <div className="brand">{PRODUCT_MODE === 'crowdrisk' ? 'CrowdRisk' : <>Alpha<span>Terminal</span></>}</div>
           <button className="mobile-menu-btn" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               {isMobileMenuOpen ? (
@@ -49,25 +69,39 @@ function App() {
         </div>
         
         <div className="nav-container">
-          <div className="nav-split">Core Ops</div>
+          <div className="nav-split">CrowdRisk Core</div>
           
-          {TABS.map(tab => (
+          {PUBLIC_TABS.map(tab => (
             <div 
               key={tab.key}
               className={`nav-item ${activeTab === tab.key ? 'active' : ''}`}
               onClick={() => {
                 setActiveTab(tab.key);
-                setIsMobileMenuOpen(false); // Close menu on selection
+                setIsMobileMenuOpen(false);
               }}
             >
               {tab.label}
             </div>
           ))}
           
-          <div className="nav-split">Separated Sandbox</div>
-          <div className="nav-item" style={{ color: '#A1A1AA', opacity: 0.7 }}>
-            ⚾ Sports Quant
-          </div>
+          {PRODUCT_MODE !== 'crowdrisk' && (
+            <>
+              <div className="nav-split">Internal / Lab nav</div>
+              {INTERNAL_TABS.map(tab => (
+                <div 
+                  key={tab.key}
+                  className={`nav-item ${activeTab === tab.key ? 'active' : ''}`}
+                  onClick={() => {
+                    setActiveTab(tab.key);
+                    setIsMobileMenuOpen(false);
+                  }}
+                  style={tab.key === 'sports' ? { color: '#A1A1AA', opacity: 0.7 } : {}}
+                >
+                  {tab.label}
+                </div>
+              ))}
+            </>
+          )}
         </div>
       </aside>
 
@@ -75,12 +109,14 @@ function App() {
       <main className="main-content">
         <header className="page-header">
           <div className="page-title">
-            <h1>Omni-Scanner v4</h1>
+            <h1>{pageTitle}</h1>
             <p>Live Polling • EST Timezone • E-Ink Light Mode Active</p>
           </div>
-          <div style={{ fontSize: '12px', color: 'var(--text-muted)', fontWeight: '600', background: 'var(--surface-color)', padding: '8px 16px', borderRadius: '20px', border: '1px solid var(--border-light)' }}>
-            🔴 Kill Switch: 0 Active
-          </div>
+          {PRODUCT_MODE !== 'crowdrisk' && (
+            <div style={{ fontSize: '12px', color: 'var(--text-muted)', fontWeight: '600', background: 'var(--surface-color)', padding: '8px 16px', borderRadius: '20px', border: '1px solid var(--border-light)' }}>
+              🔴 Kill Switch: 0 Active
+            </div>
+          )}
         </header>
 
         <AnimatePresence mode="wait">
@@ -91,6 +127,7 @@ function App() {
             exit="out"
             variants={pageVariants}
             transition={{ type: 'tween', ease: 'easeOut', duration: 0.25 }}
+            style={{ height: 'calc(100% - 80px)', overflow: 'hidden' }} // Make sure we have space for inner scrolling
           >
             {panels[activeTab]}
           </motion.div>
