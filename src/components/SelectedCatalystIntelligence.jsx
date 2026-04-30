@@ -58,6 +58,92 @@ const SpilloverWatchPanel = ({ eventDetail }) => {
   );
 };
 
+const HistoricalSetupMatrixPanel = ({ eventDetail }) => {
+  const matrix = eventDetail?.historical_setup_matrix;
+  
+  if (!matrix || matrix.status === 'unavailable') {
+    return null;
+  }
+
+  const renderBucket = (label, bucket) => {
+    if (!bucket) return null;
+    if (bucket.status === 'insufficient_data') {
+      return (
+        <tr key={label} style={{ borderBottom: '1px solid var(--border-light)' }}>
+          <td style={{ padding: '8px 4px' }}>{label}</td>
+          <td colSpan="5" className="warning-text" style={{ padding: '8px 4px', textAlign: 'center' }}>Insufficient Surprise Data</td>
+        </tr>
+      );
+    }
+    
+    const count = bucket.count ?? 0;
+    if (count === 0) {
+      return (
+        <tr key={label} style={{ borderBottom: '1px solid var(--border-light)' }}>
+          <td style={{ padding: '8px 4px' }}>{label}</td>
+          <td colSpan="5" className="warning-text" style={{ padding: '8px 4px', textAlign: 'center' }}>No Samples</td>
+        </tr>
+      );
+    }
+
+    return (
+      <tr key={label} style={{ borderBottom: '1px solid var(--border-light)' }}>
+        <td style={{ padding: '8px 4px' }}>
+          {label}
+          {bucket.sample_warning && <div className="warning-text" style={{fontSize: '0.8em'}}>{bucket.sample_warning}</div>}
+        </td>
+        <td style={{ padding: '8px 4px' }}>{count}</td>
+        <td style={{ padding: '8px 4px' }}>{bucket.win_rate != null ? bucket.win_rate.toFixed(1) + '%' : '-'}</td>
+        <td style={{ padding: '8px 4px' }}>{bucket.avg_t10 != null ? bucket.avg_t10.toFixed(1) + '%' : '-'}</td>
+        <td style={{ padding: '8px 4px' }}>{bucket.avg_max_dd_5 != null ? bucket.avg_max_dd_5.toFixed(1) + '%' : '-'}</td>
+        <td style={{ padding: '8px 4px' }}>{bucket.avg_mfe_5 != null ? bucket.avg_mfe_5.toFixed(1) + '%' : '-'}</td>
+      </tr>
+    );
+  };
+
+  return (
+    <div className="historical-setup-matrix-panel card">
+      <h3>True Historical Setup Matrix</h3>
+      {matrix.status === 'insufficient_sample' && (
+        <div className="warning-text" style={{marginBottom: '12px'}}>Warning: Insufficient total samples for reliable statistical baseline.</div>
+      )}
+      
+      <div className="grid-2col" style={{marginBottom: '16px', fontSize: '0.9em', color: 'var(--text-muted)'}}>
+        <div><strong>Total Samples:</strong> {matrix.data_quality?.total_rows || 0}</div>
+        <div><strong>Surprise Coverage:</strong> {matrix.data_quality?.surprise_coverage_pct || 0}%</div>
+        {matrix.data_quality?.coverage_warning && (
+          <div className="warning-text" style={{gridColumn: '1 / -1', marginTop: '4px'}}>
+            <strong>Warning:</strong> {matrix.data_quality.coverage_warning}
+          </div>
+        )}
+      </div>
+
+      <div style={{ overflowX: 'auto' }}>
+        <table style={{ width: '100%', textAlign: 'left', borderCollapse: 'collapse', fontSize: '0.9em' }}>
+          <thead>
+            <tr style={{ borderBottom: '2px solid var(--border-color)', color: 'var(--text-muted)' }}>
+              <th style={{ padding: '8px 4px' }}>Bucket Strategy</th>
+              <th style={{ padding: '8px 4px' }}>N</th>
+              <th style={{ padding: '8px 4px' }}>Win Rate</th>
+              <th style={{ padding: '8px 4px' }}>Avg T+10</th>
+              <th style={{ padding: '8px 4px' }}>Max DD(5)</th>
+              <th style={{ padding: '8px 4px' }}>MFE(5)</th>
+            </tr>
+          </thead>
+          <tbody>
+            {renderBucket('High Runup (>=3%)', matrix.single_factor?.high_runup)}
+            {renderBucket('Low Runup (<3%)', matrix.single_factor?.low_runup)}
+            {renderBucket('Positive Surprise', matrix.single_factor?.positive_surprise)}
+            {renderBucket('Negative Surprise', matrix.single_factor?.negative_surprise)}
+            {renderBucket('High Surp & Low Runup', matrix.cross_setup?.high_surprise_low_runup)}
+            {renderBucket('High Runup & Weak Surp', matrix.cross_setup?.high_runup_negative_or_weak_surprise)}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+};
+
 const RowLevelAuditTrail = ({ eventDetail }) => (
   <div className="audit-trail-panel card">
     <h3>Row-Level Audit Trail</h3>
@@ -68,6 +154,10 @@ const RowLevelAuditTrail = ({ eventDetail }) => (
 // Main Component
 const SelectedCatalystIntelligence = ({ eventDetail, onClose }) => {
   if (!eventDetail) return null;
+
+  const hasHistoricalSetupMatrix =
+    eventDetail?.historical_setup_matrix &&
+    eventDetail.historical_setup_matrix.status !== 'unavailable';
 
   return (
     <div className="catalyst-intelligence-panel">
@@ -123,7 +213,8 @@ const SelectedCatalystIntelligence = ({ eventDetail, onClose }) => {
         )}
       </div>
 
-      <EventStudyEvidencePanel eventDetail={eventDetail} />
+      <HistoricalSetupMatrixPanel eventDetail={eventDetail} />
+      {!hasHistoricalSetupMatrix && <EventStudyEvidencePanel eventDetail={eventDetail} />}
       <PostEarningsBaseRatePanel eventDetail={eventDetail} />
       <SpilloverWatchPanel eventDetail={eventDetail} />
       <RowLevelAuditTrail eventDetail={eventDetail} />
