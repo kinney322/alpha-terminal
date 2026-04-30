@@ -1,5 +1,59 @@
 import React from 'react';
 
+const formatLifecycleTime = (value) => {
+  if (!value) return '--';
+  try {
+    const d = new Date(value);
+    if (isNaN(d.getTime())) return '--';
+    return new Intl.DateTimeFormat('en-US', {
+      month: 'short',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false,
+      timeZone: 'America/New_York',
+      timeZoneName: 'short',
+    }).format(d);
+  } catch (e) {
+    return '--';
+  }
+};
+
+const STATUS_MAPPING = {
+  new: 'New',
+  active: 'Active',
+  event_day: 'Event Day',
+  post_event_watch: 'Post-event Watch',
+  dropped: 'Dropped',
+  expired: 'Expired',
+};
+
+const ThesisLifecyclePanel = ({ eventDetail }) => {
+  const lifecycle = eventDetail?.thesis_lifecycle;
+  if (!lifecycle) return null;
+
+  const displayStatus = STATUS_MAPPING[lifecycle.status] || 'Unknown';
+  
+  return (
+    <div className="thesis-lifecycle-panel card">
+      <h3>Thesis Lifecycle</h3>
+      <div className="grid-2col">
+        <div><strong>Status:</strong> {displayStatus}</div>
+        <div><strong>Phase:</strong> {lifecycle.phase || '--'}</div>
+        <div><strong>First Detected:</strong> {formatLifecycleTime(lifecycle.first_detected_at)}</div>
+        <div><strong>Last Seen:</strong> {formatLifecycleTime(lifecycle.last_seen_at)}</div>
+        <div><strong>Status Changed:</strong> {formatLifecycleTime(lifecycle.status_changed_at)}</div>
+        <div><strong>Review State:</strong> {lifecycle.review_state?.reviewed ? 'Reviewed' : 'Not Reviewed'}</div>
+      </div>
+      {lifecycle.review_state?.notes && (
+        <div style={{ marginTop: '12px', fontSize: '0.9em' }}>
+          <strong>Notes:</strong> {lifecycle.review_state.notes}
+        </div>
+      )}
+    </div>
+  );
+};
+
 // Placeholder Components
 const EventStudyEvidencePanel = ({ eventDetail }) => (
   <div className="event-study-evidence-panel card">
@@ -173,12 +227,20 @@ const SelectedCatalystIntelligence = ({ eventDetail, onClose }) => {
     eventDetail?.historical_setup_matrix &&
     eventDetail.historical_setup_matrix.status !== 'unavailable';
 
+  const lifecycle = eventDetail?.thesis_lifecycle;
+  const displayStatus = lifecycle ? (STATUS_MAPPING[lifecycle.status] || 'Unknown') : null;
+
   return (
     <div className="catalyst-intelligence-panel">
       <div className="panel-header">
         <div className="header-title">
           <h2>{eventDetail.ticker}</h2>
           <span className="phase-badge">{eventDetail.event_phase}</span>
+          {displayStatus && (
+            <span className="phase-badge" style={{ marginLeft: '8px', opacity: 0.8 }}>
+              {displayStatus}
+            </span>
+          )}
         </div>
         <button className="close-btn" onClick={onClose}>×</button>
       </div>
@@ -195,6 +257,8 @@ const SelectedCatalystIntelligence = ({ eventDetail, onClose }) => {
           )}
         </div>
       </div>
+
+      <ThesisLifecyclePanel eventDetail={eventDetail} />
 
       <div className="market-state-panel card">
         <h3>Market State</h3>
