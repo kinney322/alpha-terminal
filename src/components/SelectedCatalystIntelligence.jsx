@@ -65,13 +65,23 @@ const HistoricalSetupMatrixPanel = ({ eventDetail }) => {
     return null;
   }
 
+  const formatSampleWarning = (warning) => {
+    if (!warning) return null;
+    const known = {
+      very_low_sample: 'Very Low Sample',
+      low_sample: 'Low Sample',
+      insufficient_surprise_data: 'Insufficient Surprise Data',
+    };
+    return known[warning] || warning.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+  };
+
   const renderBucket = (label, bucket) => {
     if (!bucket) return null;
     if (bucket.status === 'insufficient_data') {
       return (
         <tr key={label} style={{ borderBottom: '1px solid var(--border-light)' }}>
           <td style={{ padding: '8px 4px' }}>{label}</td>
-          <td colSpan="5" className="warning-text" style={{ padding: '8px 4px', textAlign: 'center' }}>Insufficient Surprise Data</td>
+          <td colSpan="5" style={{ padding: '8px 4px', textAlign: 'center', color: 'var(--text-muted)' }}>Insufficient Surprise Data</td>
         </tr>
       );
     }
@@ -81,7 +91,7 @@ const HistoricalSetupMatrixPanel = ({ eventDetail }) => {
       return (
         <tr key={label} style={{ borderBottom: '1px solid var(--border-light)' }}>
           <td style={{ padding: '8px 4px' }}>{label}</td>
-          <td colSpan="5" className="warning-text" style={{ padding: '8px 4px', textAlign: 'center' }}>No Samples</td>
+          <td colSpan="5" style={{ padding: '8px 4px', textAlign: 'center', color: 'var(--text-muted)' }}>No Samples</td>
         </tr>
       );
     }
@@ -90,7 +100,11 @@ const HistoricalSetupMatrixPanel = ({ eventDetail }) => {
       <tr key={label} style={{ borderBottom: '1px solid var(--border-light)' }}>
         <td style={{ padding: '8px 4px' }}>
           {label}
-          {bucket.sample_warning && <div className="warning-text" style={{fontSize: '0.8em'}}>{bucket.sample_warning}</div>}
+          {bucket.sample_warning && (
+            <div style={{ marginTop: '4px' }}>
+              <span className="risk-flag-mini">{formatSampleWarning(bucket.sample_warning)}</span>
+            </div>
+          )}
         </td>
         <td style={{ padding: '8px 4px' }}>{count}</td>
         <td style={{ padding: '8px 4px' }}>{bucket.win_rate != null ? bucket.win_rate.toFixed(1) + '%' : '-'}</td>
@@ -122,12 +136,12 @@ const HistoricalSetupMatrixPanel = ({ eventDetail }) => {
         <table style={{ width: '100%', textAlign: 'left', borderCollapse: 'collapse', fontSize: '0.9em' }}>
           <thead>
             <tr style={{ borderBottom: '2px solid var(--border-color)', color: 'var(--text-muted)' }}>
-              <th style={{ padding: '8px 4px' }}>Bucket Strategy</th>
+              <th style={{ padding: '8px 4px' }}>Setup Bucket</th>
               <th style={{ padding: '8px 4px' }}>N</th>
               <th style={{ padding: '8px 4px' }}>Win Rate</th>
-              <th style={{ padding: '8px 4px' }}>Avg T+10</th>
-              <th style={{ padding: '8px 4px' }}>Max DD(5)</th>
-              <th style={{ padding: '8px 4px' }}>MFE(5)</th>
+              <th style={{ padding: '8px 4px' }}>Avg 10D Return</th>
+              <th style={{ padding: '8px 4px' }}>Max Risk (5D)</th>
+              <th style={{ padding: '8px 4px' }}>Max Reward (5D)</th>
             </tr>
           </thead>
           <tbody>
@@ -135,8 +149,8 @@ const HistoricalSetupMatrixPanel = ({ eventDetail }) => {
             {renderBucket('Low Runup (<3%)', matrix.single_factor?.low_runup)}
             {renderBucket('Positive Surprise', matrix.single_factor?.positive_surprise)}
             {renderBucket('Negative Surprise', matrix.single_factor?.negative_surprise)}
-            {renderBucket('High Surp & Low Runup', matrix.cross_setup?.high_surprise_low_runup)}
-            {renderBucket('High Runup & Weak Surp', matrix.cross_setup?.high_runup_negative_or_weak_surprise)}
+            {renderBucket('High Surprise + Low Runup', matrix.cross_setup?.high_surprise_low_runup)}
+            {renderBucket('High Runup + Weak Surprise', matrix.cross_setup?.high_runup_negative_or_weak_surprise)}
           </tbody>
         </table>
       </div>
