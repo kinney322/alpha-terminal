@@ -55,12 +55,81 @@ const ThesisLifecyclePanel = ({ eventDetail }) => {
 };
 
 // Placeholder Components
-const EventStudyEvidencePanel = ({ eventDetail }) => (
-  <div className="event-study-evidence-panel card">
-    <h3>Event Study Evidence</h3>
-    <div className="warning-text">Historical reaction scatter plots and detailed edge gap analysis (Coming Soon)</div>
-  </div>
-);
+const HistoricalEarningsTapePanel = ({ eventDetail }) => {
+  const tape = eventDetail?.historical_earnings_tape;
+
+  if (!tape || tape.status !== 'available' || !tape.rows || tape.rows.length === 0) {
+    return (
+      <div className="historical-earnings-tape-panel card">
+        <h3>Historical Earnings Tape</h3>
+        <div className="warning-text">No completed earnings tape available.</div>
+      </div>
+    );
+  }
+
+  const formatSurpriseLabel = (label) => {
+    if (!label) return 'Unknown';
+    const l = label.toLowerCase();
+    if (l === 'beat') return 'Beat';
+    if (l === 'miss') return 'Miss';
+    if (l === 'inline') return 'Inline';
+    return 'Unknown';
+  };
+
+  const getReturnColor = (val) => {
+    if (val == null) return 'var(--text-muted)';
+    if (val > 0) return 'var(--text-green, #4caf50)';
+    if (val < 0) return 'var(--text-red, #f44336)';
+    return 'inherit';
+  };
+
+  const formatPct = (val) => val != null ? `${val.toFixed(1)}%` : '--';
+
+  return (
+    <div className="historical-earnings-tape-panel card">
+      <h3>Historical Earnings Tape</h3>
+      <div className="grid-2col" style={{ marginBottom: '16px', fontSize: '0.9em', color: 'var(--text-muted)' }}>
+        <div><strong>Total:</strong> {tape.data_quality?.total_rows || 0}</div>
+        <div><strong>Completed:</strong> {tape.data_quality?.completed_rows || 0}</div>
+        <div><strong>Shown:</strong> {tape.data_quality?.returned_rows || tape.rows.length}</div>
+        <div><strong>Surprise Coverage:</strong> {tape.data_quality?.surprise_rows || 0}</div>
+      </div>
+
+      <div style={{ overflowX: 'auto' }}>
+        <table style={{ width: '100%', textAlign: 'left', borderCollapse: 'collapse', fontSize: '0.9em' }}>
+          <thead>
+            <tr style={{ borderBottom: '2px solid var(--border-color)', color: 'var(--text-muted)' }}>
+              <th style={{ padding: '8px 4px' }}>Date</th>
+              <th style={{ padding: '8px 4px' }}>Result</th>
+              <th style={{ padding: '8px 4px' }}>Est / Actual</th>
+              <th style={{ padding: '8px 4px' }}>Surprise</th>
+              <th style={{ padding: '8px 4px' }}>T+1</th>
+              <th style={{ padding: '8px 4px' }}>T+10</th>
+              <th style={{ padding: '8px 4px' }}>Max Risk</th>
+              <th style={{ padding: '8px 4px' }}>Max Reward</th>
+            </tr>
+          </thead>
+          <tbody>
+            {tape.rows.map((r, idx) => (
+              <tr key={idx} style={{ borderBottom: '1px solid var(--border-light)' }}>
+                <td style={{ padding: '8px 4px' }}>{r.event_date}</td>
+                <td style={{ padding: '8px 4px', fontWeight: 'bold' }}>{formatSurpriseLabel(r.surprise_label)}</td>
+                <td style={{ padding: '8px 4px', color: 'var(--text-muted)' }}>
+                  {r.eps_estimate != null ? r.eps_estimate.toFixed(2) : '--'} / {r.actual_eps != null ? r.actual_eps.toFixed(2) : '--'}
+                </td>
+                <td style={{ padding: '8px 4px', color: getReturnColor(r.surprise_percent) }}>{formatPct(r.surprise_percent)}</td>
+                <td style={{ padding: '8px 4px', color: getReturnColor(r.t1_return) }}>{formatPct(r.t1_return)}</td>
+                <td style={{ padding: '8px 4px', color: getReturnColor(r.t10_return) }}>{formatPct(r.t10_return)}</td>
+                <td style={{ padding: '8px 4px', color: 'var(--text-muted)' }}>{formatPct(r.max_drawdown_5d)}</td>
+                <td style={{ padding: '8px 4px', color: 'var(--text-muted)' }}>{formatPct(r.max_favorable_excursion_5d)}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+};
 
 const PostEarningsBaseRatePanel = ({ eventDetail }) => {
   if (eventDetail.event_phase !== 'post_earnings' || eventDetail.post_earnings_base_rate?.status === 'not_applicable_pre_event') {
@@ -223,10 +292,6 @@ const RowLevelAuditTrail = ({ eventDetail }) => (
 const SelectedCatalystIntelligence = ({ eventDetail, onClose }) => {
   if (!eventDetail) return null;
 
-  const hasHistoricalSetupMatrix =
-    eventDetail?.historical_setup_matrix &&
-    eventDetail.historical_setup_matrix.status !== 'unavailable';
-
   const lifecycle = eventDetail?.thesis_lifecycle;
   const displayStatus = lifecycle ? (STATUS_MAPPING[lifecycle.status] || 'Unknown') : null;
 
@@ -292,7 +357,7 @@ const SelectedCatalystIntelligence = ({ eventDetail, onClose }) => {
       </div>
 
       <HistoricalSetupMatrixPanel eventDetail={eventDetail} />
-      {!hasHistoricalSetupMatrix && <EventStudyEvidencePanel eventDetail={eventDetail} />}
+      <HistoricalEarningsTapePanel eventDetail={eventDetail} />
       <PostEarningsBaseRatePanel eventDetail={eventDetail} />
       <SpilloverWatchPanel eventDetail={eventDetail} />
       <RowLevelAuditTrail eventDetail={eventDetail} />
