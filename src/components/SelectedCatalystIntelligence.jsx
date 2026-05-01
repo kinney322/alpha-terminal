@@ -159,11 +159,24 @@ const HistoricalEarningsTapePanel = ({ eventDetail }) => {
 };
 
 const PostEarningsBaseRatePanel = ({ eventDetail }) => {
-  if (eventDetail.event_phase !== 'post_earnings' || eventDetail.post_earnings_base_rate?.status === 'not_applicable_pre_event') {
+  if (eventDetail.event_phase !== 'post_earnings') {
+    return null;
+  }
+
+  const baseRate = eventDetail.post_earnings_base_rate;
+  const hasValue = (value) => value !== null && value !== undefined && !Number.isNaN(Number(value));
+  const formatRate = (value) => hasValue(value) ? `${(Number(value) * 100).toFixed(1)}%` : 'Unknown';
+  const formatPct = (value) => hasValue(value) ? `${Number(value).toFixed(1)}%` : 'Unknown';
+  const formatFilter = (value) => {
+    if (!value) return 'Unknown';
+    return value.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+  };
+
+  if (!baseRate || baseRate.status !== 'available') {
     return (
       <div className="pead-panel card">
         <h3>Post-Earnings Base Rate</h3>
-        <div className="warning-text">Not Applicable (Pre-Event Phase)</div>
+        <div className="warning-text">No comparable post-earnings base rate available.</div>
       </div>
     );
   }
@@ -172,10 +185,21 @@ const PostEarningsBaseRatePanel = ({ eventDetail }) => {
     <div className="pead-panel card">
       <h3>Post-Earnings Base Rate</h3>
       <div className="grid-2col">
-        <div><strong>Sample Size:</strong> {eventDetail.post_earnings_base_rate?.similar_reaction_sample_size || 'Unknown'}</div>
-        <div><strong>Continuation Rate:</strong> {eventDetail.post_earnings_base_rate?.drift_rate ? (eventDetail.post_earnings_base_rate.drift_rate * 100).toFixed(1) + '%' : 'Unknown'}</div>
-        <div><strong>Reversal Rate:</strong> {eventDetail.post_earnings_base_rate?.fade_rate ? (eventDetail.post_earnings_base_rate.fade_rate * 100).toFixed(1) + '%' : 'Unknown'}</div>
-        <div><strong>Median T1-T10 Return:</strong> {eventDetail.post_earnings_base_rate?.median_t1_to_t10_return ? (eventDetail.post_earnings_base_rate.median_t1_to_t10_return * 100).toFixed(1) + '%' : 'Unknown'}</div>
+        <div><strong>Sample Size:</strong> {baseRate.similar_reaction_sample_size ?? 'Unknown'}</div>
+        <div><strong>Filter:</strong> {formatFilter(baseRate.filter_mode)}</div>
+        <div><strong>Continuation Rate:</strong> {formatRate(baseRate.continuation_rate ?? baseRate.drift_rate)}</div>
+        <div><strong>Reversal Rate:</strong> {formatRate(baseRate.reversal_rate ?? baseRate.fade_rate)}</div>
+        <div><strong>Median T+1:</strong> {formatPct(baseRate.median_t1_return_pct)}</div>
+        <div><strong>Median T+10:</strong> {formatPct(baseRate.median_t10_return_pct)}</div>
+        <div><strong>Median T+1 → T+10:</strong> {formatPct(baseRate.median_t1_to_t10_return_pct)}</div>
+        <div><strong>Median Max Risk (5D):</strong> {formatPct(baseRate.median_max_risk_5d)}</div>
+        <div><strong>Median Max Reward (5D):</strong> {formatPct(baseRate.median_max_reward_5d)}</div>
+        {baseRate.sample_warning && (
+          <div className="warning-text"><strong>Warning:</strong> {formatFilter(baseRate.sample_warning)}</div>
+        )}
+      </div>
+      <div style={{ marginTop: '12px', fontSize: '0.85em', color: 'var(--text-muted)' }}>
+        5D = five trading days after the earnings event. Continuation/Reversal is measured from T+1 close to T+10, excluding the current event row.
       </div>
     </div>
   );
