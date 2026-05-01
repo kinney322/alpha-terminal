@@ -146,8 +146,8 @@ const PostEarningsBaseRatePanel = ({ eventDetail }) => {
       <h3>Post-Earnings Base Rate</h3>
       <div className="grid-2col">
         <div><strong>Sample Size:</strong> {eventDetail.post_earnings_base_rate?.similar_reaction_sample_size || 'Unknown'}</div>
-        <div><strong>Drift Rate:</strong> {eventDetail.post_earnings_base_rate?.drift_rate ? (eventDetail.post_earnings_base_rate.drift_rate * 100).toFixed(1) + '%' : 'Unknown'}</div>
-        <div><strong>Fade Rate:</strong> {eventDetail.post_earnings_base_rate?.fade_rate ? (eventDetail.post_earnings_base_rate.fade_rate * 100).toFixed(1) + '%' : 'Unknown'}</div>
+        <div><strong>Continuation Rate:</strong> {eventDetail.post_earnings_base_rate?.drift_rate ? (eventDetail.post_earnings_base_rate.drift_rate * 100).toFixed(1) + '%' : 'Unknown'}</div>
+        <div><strong>Reversal Rate:</strong> {eventDetail.post_earnings_base_rate?.fade_rate ? (eventDetail.post_earnings_base_rate.fade_rate * 100).toFixed(1) + '%' : 'Unknown'}</div>
         <div><strong>Median T1-T10 Return:</strong> {eventDetail.post_earnings_base_rate?.median_t1_to_t10_return ? (eventDetail.post_earnings_base_rate.median_t1_to_t10_return * 100).toFixed(1) + '%' : 'Unknown'}</div>
       </div>
     </div>
@@ -360,7 +360,7 @@ const SelectedCatalystIntelligence = ({ eventDetail, onClose }) => {
         <div className={`pead-reaction-panel card strength-${eventDetail.pead_signal.strength?.toLowerCase()}`}>
           <h3>Post-Earnings Reaction</h3>
           <div className="grid-2col" style={{ marginBottom: '12px' }}>
-            <div><strong>Direction:</strong> <span style={{ textTransform: 'capitalize', fontWeight: 'bold' }}>{eventDetail.pead_signal.direction}</span></div>
+            <div><strong>Direction:</strong> <span style={{ textTransform: 'capitalize', fontWeight: 'bold' }}>{eventDetail.pead_signal.direction === 'drift' ? 'Continuation' : eventDetail.pead_signal.direction === 'fade' ? 'Reversal' : eventDetail.pead_signal.direction}</span></div>
             <div><strong>Strength:</strong> <span style={{ textTransform: 'capitalize' }}>{eventDetail.pead_signal.strength}</span></div>
           </div>
           <div style={{ marginBottom: '16px', fontSize: '0.9em' }}>

@@ -22,8 +22,8 @@ const RadarMasterView = ({ payload, selectedEventId, onSelectEvent }) => {
 
   const formatPeadDirection = (value) => {
     if (!value) return 'Unavailable';
-    if (value === 'drift') return 'Drift';
-    if (value === 'fade') return 'Fade';
+    if (value === 'drift') return 'Continuation';
+    if (value === 'fade') return 'Reversal';
     if (value === 'neutral') return 'Neutral';
     return value;
   };
@@ -72,15 +72,11 @@ const RadarMasterView = ({ payload, selectedEventId, onSelectEvent }) => {
               <button 
                 className={listType === 'top_opportunities' ? 'active' : ''} 
                 onClick={() => setListType('top_opportunities')}
-              >
-                Drift
-              </button>
+              >Continuation</button>
               <button 
                 className={listType === 'top_risk_alerts' ? 'active' : ''} 
                 onClick={() => setListType('top_risk_alerts')}
-              >
-                Fade
-              </button>
+              >Reversal</button>
               <button 
                 className={listType === 'pead_watch' ? 'active' : ''} 
                 onClick={() => setListType('pead_watch')}
