@@ -20,12 +20,31 @@ const RadarMasterView = ({ payload, selectedEventId, onSelectEvent }) => {
     return n > 0 ? 'var(--text-green, #4caf50)' : 'var(--text-red, #f44336)';
   };
 
-  const formatPeadDirection = (value) => {
-    if (!value) return 'Unavailable';
-    if (value === 'drift') return 'Continuation';
-    if (value === 'fade') return 'Reversal';
-    if (value === 'neutral') return 'Neutral';
-    return value;
+  const getPeadDisplay = (peadSignal) => {
+    const direction = peadSignal?.direction;
+    const reaction = peadSignal?.reaction || {};
+    const t1 = Number(reaction.t1_return);
+    const current = Number(reaction.current_post_return);
+
+    if (!direction || Number.isNaN(t1) || Number.isNaN(current)) {
+      return { label: 'Unavailable', tone: 'neutral' };
+    }
+
+    const currentTone = current > 0 ? 'bullish' : current < 0 ? 'bearish' : 'neutral';
+
+    if (direction === 'drift') {
+      if (currentTone === 'bullish') return { label: 'Bullish Continuation', tone: 'bullish' };
+      if (currentTone === 'bearish') return { label: 'Bearish Continuation', tone: 'bearish' };
+      return { label: 'Neutral Continuation', tone: 'neutral' };
+    }
+
+    if (direction === 'fade') {
+      if (currentTone === 'bullish') return { label: 'Bullish Reversal', tone: 'bullish' };
+      if (currentTone === 'bearish') return { label: 'Bearish Reversal', tone: 'bearish' };
+      return { label: 'Neutral Reversal', tone: 'neutral' };
+    }
+
+    return { label: 'Neutral', tone: 'neutral' };
   };
 
   const formatStrength = (value) => {
@@ -127,6 +146,8 @@ const RadarMasterView = ({ payload, selectedEventId, onSelectEvent }) => {
                 const item = payload.events_detail[eventId];
                 if (!item) return null;
                 const isSelected = selectedEventId === eventId;
+                const peadDisplay = isPostEarnings ? getPeadDisplay(item.pead_signal) : null;
+                const biasClass = peadDisplay?.tone === 'bullish' ? 'long' : peadDisplay?.tone === 'bearish' ? 'short' : 'neutral';
                 
                 return (
                   <tr 
@@ -148,8 +169,8 @@ const RadarMasterView = ({ payload, selectedEventId, onSelectEvent }) => {
                     {isPostEarnings ? (
                       <>
                         <td>
-                          <span className={`bias-indicator bias-${item.pead_signal?.direction === 'fade' ? 'short' : item.pead_signal?.direction === 'drift' ? 'long' : 'neutral'}`}>
-                            {formatPeadDirection(item.pead_signal?.direction)}
+                          <span className={`bias-indicator bias-${biasClass}`}>
+                            {peadDisplay.label}
                           </span>
                           <div style={{ fontSize: '0.78em', color: 'var(--text-muted)', marginTop: '4px' }}>
                             {item.pead_signal?.reaction?.surprise_label || 'unknown'} / T+1 {formatPct(item.pead_signal?.reaction?.t1_return)}

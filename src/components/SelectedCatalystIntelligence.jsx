@@ -1,5 +1,32 @@
 import React from 'react';
 
+const getPeadDisplay = (peadSignal) => {
+  const direction = peadSignal?.direction;
+  const reaction = peadSignal?.reaction || {};
+  const t1 = Number(reaction.t1_return);
+  const current = Number(reaction.current_post_return);
+
+  if (!direction || Number.isNaN(t1) || Number.isNaN(current)) {
+    return { label: 'Unavailable', tone: 'neutral' };
+  }
+
+  const currentTone = current > 0 ? 'bullish' : current < 0 ? 'bearish' : 'neutral';
+
+  if (direction === 'drift') {
+    if (currentTone === 'bullish') return { label: 'Bullish Continuation', tone: 'bullish' };
+    if (currentTone === 'bearish') return { label: 'Bearish Continuation', tone: 'bearish' };
+    return { label: 'Neutral Continuation', tone: 'neutral' };
+  }
+
+  if (direction === 'fade') {
+    if (currentTone === 'bullish') return { label: 'Bullish Reversal', tone: 'bullish' };
+    if (currentTone === 'bearish') return { label: 'Bearish Reversal', tone: 'bearish' };
+    return { label: 'Neutral Reversal', tone: 'neutral' };
+  }
+
+  return { label: 'Neutral', tone: 'neutral' };
+};
+
 const formatLifecycleTime = (value) => {
   if (!value) return '--';
   try {
@@ -360,8 +387,19 @@ const SelectedCatalystIntelligence = ({ eventDetail, onClose }) => {
         <div className={`pead-reaction-panel card strength-${eventDetail.pead_signal.strength?.toLowerCase()}`}>
           <h3>Post-Earnings Reaction</h3>
           <div className="grid-2col" style={{ marginBottom: '12px' }}>
-            <div><strong>Direction:</strong> <span style={{ textTransform: 'capitalize', fontWeight: 'bold' }}>{eventDetail.pead_signal.direction === 'drift' ? 'Continuation' : eventDetail.pead_signal.direction === 'fade' ? 'Reversal' : eventDetail.pead_signal.direction}</span></div>
+            <div>
+              <strong>Signal:</strong>{' '}
+              <span 
+                style={{ 
+                  fontWeight: 'bold', 
+                  color: getPeadDisplay(eventDetail.pead_signal).tone === 'bullish' ? 'var(--text-green, #4caf50)' : getPeadDisplay(eventDetail.pead_signal).tone === 'bearish' ? 'var(--text-red, #f44336)' : 'inherit'
+                }}
+              >
+                {getPeadDisplay(eventDetail.pead_signal).label}
+              </span>
+            </div>
             <div><strong>Strength:</strong> <span style={{ textTransform: 'capitalize' }}>{eventDetail.pead_signal.strength}</span></div>
+            <div><strong>Direction:</strong> <span style={{ textTransform: 'capitalize' }}>{eventDetail.pead_signal.direction === 'drift' ? 'Continuation' : eventDetail.pead_signal.direction === 'fade' ? 'Reversal' : eventDetail.pead_signal.direction}</span></div>
           </div>
           <div style={{ marginBottom: '16px', fontSize: '0.9em' }}>
             <strong>Reason:</strong> {eventDetail.pead_signal.reason}
