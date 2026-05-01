@@ -42,18 +42,43 @@ const RadarMasterView = ({ payload, selectedEventId, onSelectEvent }) => {
 
       {activeTab !== 'tracked' && (
         <div className="radar-list-switch">
-          <button 
-            className={listType === 'top_opportunities' ? 'active' : ''} 
-            onClick={() => setListType('top_opportunities')}
-          >
-            Top Opportunities
-          </button>
-          <button 
-            className={listType === 'top_risk_alerts' ? 'active' : ''} 
-            onClick={() => setListType('top_risk_alerts')}
-          >
-            Risk Alerts
-          </button>
+          {activeTab === 'post_earnings' ? (
+            <>
+              <button 
+                className={listType === 'top_opportunities' ? 'active' : ''} 
+                onClick={() => setListType('top_opportunities')}
+              >
+                Drift
+              </button>
+              <button 
+                className={listType === 'top_risk_alerts' ? 'active' : ''} 
+                onClick={() => setListType('top_risk_alerts')}
+              >
+                Fade
+              </button>
+              <button 
+                className={listType === 'pead_watch' ? 'active' : ''} 
+                onClick={() => setListType('pead_watch')}
+              >
+                PEAD Watch
+              </button>
+            </>
+          ) : (
+            <>
+              <button 
+                className={listType === 'top_opportunities' ? 'active' : ''} 
+                onClick={() => setListType('top_opportunities')}
+              >
+                Top Opportunities
+              </button>
+              <button 
+                className={listType === 'top_risk_alerts' ? 'active' : ''} 
+                onClick={() => setListType('top_risk_alerts')}
+              >
+                Risk Alerts
+              </button>
+            </>
+          )}
         </div>
       )}
 

@@ -356,6 +356,56 @@ const SelectedCatalystIntelligence = ({ eventDetail, onClose }) => {
         )}
       </div>
 
+      {eventDetail.pead_signal?.status === 'available' && (
+        <div className={`pead-reaction-panel card strength-${eventDetail.pead_signal.strength?.toLowerCase()}`}>
+          <h3>Post-Earnings Reaction</h3>
+          <div className="grid-2col" style={{ marginBottom: '12px' }}>
+            <div><strong>Direction:</strong> <span style={{ textTransform: 'capitalize', fontWeight: 'bold' }}>{eventDetail.pead_signal.direction}</span></div>
+            <div><strong>Strength:</strong> <span style={{ textTransform: 'capitalize' }}>{eventDetail.pead_signal.strength}</span></div>
+          </div>
+          <div style={{ marginBottom: '16px', fontSize: '0.9em' }}>
+            <strong>Reason:</strong> {eventDetail.pead_signal.reason}
+          </div>
+          
+          <div style={{ overflowX: 'auto' }}>
+            <table style={{ width: '100%', textAlign: 'left', borderCollapse: 'collapse', fontSize: '0.9em' }}>
+              <thead>
+                <tr style={{ borderBottom: '2px solid var(--border-color)', color: 'var(--text-muted)' }}>
+                  <th style={{ padding: '8px 4px' }}>Result</th>
+                  <th style={{ padding: '8px 4px' }}>Surprise</th>
+                  <th style={{ padding: '8px 4px' }}>T+1</th>
+                  <th style={{ padding: '8px 4px' }}>Current Post Return</th>
+                  <th style={{ padding: '8px 4px' }}>Max Risk</th>
+                  <th style={{ padding: '8px 4px' }}>Max Reward</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style={{ padding: '8px 4px', fontWeight: 'bold', textTransform: 'capitalize' }}>
+                    {eventDetail.pead_signal.reaction?.surprise_label || 'Unknown'}
+                  </td>
+                  <td style={{ padding: '8px 4px', color: eventDetail.pead_signal.reaction?.surprise_percent > 0 ? 'var(--text-green, #4caf50)' : eventDetail.pead_signal.reaction?.surprise_percent < 0 ? 'var(--text-red, #f44336)' : 'inherit' }}>
+                    {eventDetail.pead_signal.reaction?.surprise_percent != null ? `${eventDetail.pead_signal.reaction.surprise_percent.toFixed(1)}%` : '--'}
+                  </td>
+                  <td style={{ padding: '8px 4px', color: eventDetail.pead_signal.reaction?.t1_return > 0 ? 'var(--text-green, #4caf50)' : eventDetail.pead_signal.reaction?.t1_return < 0 ? 'var(--text-red, #f44336)' : 'inherit' }}>
+                    {eventDetail.pead_signal.reaction?.t1_return != null ? `${(Math.abs(eventDetail.pead_signal.reaction.t1_return) <= 1.0 && eventDetail.pead_signal.reaction.t1_return !== 0 ? eventDetail.pead_signal.reaction.t1_return * 100 : eventDetail.pead_signal.reaction.t1_return).toFixed(1)}%` : '--'}
+                  </td>
+                  <td style={{ padding: '8px 4px', color: eventDetail.pead_signal.reaction?.current_post_return > 0 ? 'var(--text-green, #4caf50)' : eventDetail.pead_signal.reaction?.current_post_return < 0 ? 'var(--text-red, #f44336)' : 'inherit' }}>
+                    {eventDetail.pead_signal.reaction?.current_post_return != null ? `${(Math.abs(eventDetail.pead_signal.reaction.current_post_return) <= 1.0 && eventDetail.pead_signal.reaction.current_post_return !== 0 ? eventDetail.pead_signal.reaction.current_post_return * 100 : eventDetail.pead_signal.reaction.current_post_return).toFixed(1)}%` : '--'}
+                  </td>
+                  <td style={{ padding: '8px 4px', color: 'var(--text-muted)' }}>
+                    {eventDetail.pead_signal.reaction?.max_drawdown_5d != null ? `${(Math.abs(eventDetail.pead_signal.reaction.max_drawdown_5d) <= 1.0 && eventDetail.pead_signal.reaction.max_drawdown_5d !== 0 ? eventDetail.pead_signal.reaction.max_drawdown_5d * 100 : eventDetail.pead_signal.reaction.max_drawdown_5d).toFixed(1)}%` : '--'}
+                  </td>
+                  <td style={{ padding: '8px 4px', color: 'var(--text-muted)' }}>
+                    {eventDetail.pead_signal.reaction?.max_favorable_excursion_5d != null ? `${(Math.abs(eventDetail.pead_signal.reaction.max_favorable_excursion_5d) <= 1.0 && eventDetail.pead_signal.reaction.max_favorable_excursion_5d !== 0 ? eventDetail.pead_signal.reaction.max_favorable_excursion_5d * 100 : eventDetail.pead_signal.reaction.max_favorable_excursion_5d).toFixed(1)}%` : '--'}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
+
       <HistoricalSetupMatrixPanel eventDetail={eventDetail} />
       <HistoricalEarningsTapePanel eventDetail={eventDetail} />
       <PostEarningsBaseRatePanel eventDetail={eventDetail} />
