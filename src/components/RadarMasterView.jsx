@@ -3,10 +3,26 @@ import React, { useState } from 'react';
 const RadarMasterView = ({ payload, selectedEventId, onSelectEvent }) => {
   const [activeTab, setActiveTab] = useState('pre_earnings'); // pre_earnings, event_day, post_earnings, tracked
   const [listType, setListType] = useState('top_opportunities'); // top_opportunities, top_risk_alerts
+  const [searchQuery, setSearchQuery] = useState('');
 
-  const currentListIds = activeTab === 'tracked' 
+  const baseListIds = activeTab === 'tracked'
     ? payload?.radar_lists?.tracked?.reviewed_watch || []
     : payload?.radar_lists?.[activeTab]?.[listType] || [];
+  const normalizedSearch = searchQuery.trim().toUpperCase();
+  const currentListIds = normalizedSearch
+    ? Object.entries(payload?.events_detail || {})
+        .filter(([eventId, detail]) => {
+          const ticker = String(detail?.ticker || '').toUpperCase();
+          return ticker.includes(normalizedSearch) || eventId.toUpperCase().includes(normalizedSearch);
+        })
+        .map(([eventId]) => eventId)
+        .sort((a, b) => {
+          const tickerA = payload?.events_detail?.[a]?.ticker || '';
+          const tickerB = payload?.events_detail?.[b]?.ticker || '';
+          return tickerA.localeCompare(tickerB) || a.localeCompare(b);
+        })
+    : baseListIds;
+  const isSearchMode = Boolean(normalizedSearch);
   const isPostEarnings = activeTab === 'post_earnings';
 
   const formatPct = (value) => {
@@ -122,6 +138,21 @@ const RadarMasterView = ({ payload, selectedEventId, onSelectEvent }) => {
         </div>
       )}
 
+      <div className="radar-search-row">
+        <input
+          className="radar-search-input"
+          type="search"
+          value={searchQuery}
+          onChange={(event) => setSearchQuery(event.target.value)}
+          placeholder="Search ticker across all catalyst events"
+        />
+        {isSearchMode && (
+          <button className="radar-search-clear" onClick={() => setSearchQuery('')}>
+            Clear
+          </button>
+        )}
+      </div>
+
       <div className="radar-table-container">
         <table className="radar-table">
           <thead>
@@ -137,8 +168,12 @@ const RadarMasterView = ({ payload, selectedEventId, onSelectEvent }) => {
           <tbody>
             {currentListIds.length === 0 ? (
               <tr>
-                <td colSpan="5" style={{ textAlign: 'center', padding: '20px' }}>
-                  {activeTab === 'tracked' ? 'No tracked catalyst setups.' : 'No data available for this view.'}
+                <td colSpan={isPostEarnings ? 6 : 5} style={{ textAlign: 'center', padding: '20px' }}>
+                  {isSearchMode
+                    ? `No catalyst events match "${searchQuery.trim()}".`
+                    : activeTab === 'tracked'
+                      ? 'No tracked catalyst setups.'
+                      : 'No data available for this view.'}
                 </td>
               </tr>
             ) : (
