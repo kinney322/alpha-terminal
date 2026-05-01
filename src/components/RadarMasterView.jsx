@@ -7,6 +7,31 @@ const RadarMasterView = ({ payload, selectedEventId, onSelectEvent }) => {
   const currentListIds = activeTab === 'tracked' 
     ? payload?.radar_lists?.tracked?.reviewed_watch || []
     : payload?.radar_lists?.[activeTab]?.[listType] || [];
+  const isPostEarnings = activeTab === 'post_earnings';
+
+  const formatPct = (value) => {
+    if (value === undefined || value === null || Number.isNaN(Number(value))) return '--';
+    return `${Number(value).toFixed(1)}%`;
+  };
+
+  const getReturnColor = (value) => {
+    const n = Number(value);
+    if (Number.isNaN(n) || n === 0) return 'inherit';
+    return n > 0 ? 'var(--text-green, #4caf50)' : 'var(--text-red, #f44336)';
+  };
+
+  const formatPeadDirection = (value) => {
+    if (!value) return 'Unavailable';
+    if (value === 'drift') return 'Drift';
+    if (value === 'fade') return 'Fade';
+    if (value === 'neutral') return 'Neutral';
+    return value;
+  };
+
+  const formatStrength = (value) => {
+    if (!value) return '--';
+    return value.charAt(0).toUpperCase() + value.slice(1);
+  };
 
   return (
     <div className="radar-master-view">
@@ -88,9 +113,10 @@ const RadarMasterView = ({ payload, selectedEventId, onSelectEvent }) => {
             <tr>
               <th>Ticker</th>
               <th>Phase</th>
-              <th>Bias</th>
+              <th>{isPostEarnings ? 'PEAD' : 'Bias'}</th>
+              {isPostEarnings && <th>Strength</th>}
               <th>Risk Flags</th>
-              <th>Score</th>
+              <th>{isPostEarnings ? 'Current Move' : 'Score'}</th>
             </tr>
           </thead>
           <tbody>
@@ -123,18 +149,42 @@ const RadarMasterView = ({ payload, selectedEventId, onSelectEvent }) => {
                         ? `T${item.trading_days_to_event > 0 ? `+${item.trading_days_to_event}` : item.trading_days_to_event}`
                         : (item.event_phase || item.thesis_lifecycle?.phase || 'unknown')}
                     </td>
-                    <td>
-                      <span className={`bias-indicator bias-${item.market_state?.bias?.toLowerCase()}`}>
-                        {item.market_state?.bias}
-                      </span>
-                    </td>
+                    {isPostEarnings ? (
+                      <>
+                        <td>
+                          <span className={`bias-indicator bias-${item.pead_signal?.direction === 'fade' ? 'short' : item.pead_signal?.direction === 'drift' ? 'long' : 'neutral'}`}>
+                            {formatPeadDirection(item.pead_signal?.direction)}
+                          </span>
+                          <div style={{ fontSize: '0.78em', color: 'var(--text-muted)', marginTop: '4px' }}>
+                            {item.pead_signal?.reaction?.surprise_label || 'unknown'} / T+1 {formatPct(item.pead_signal?.reaction?.t1_return)}
+                          </div>
+                        </td>
+                        <td>
+                          <span className="risk-flag-mini">
+                            {formatStrength(item.pead_signal?.strength)}
+                          </span>
+                        </td>
+                      </>
+                    ) : (
+                      <td>
+                        <span className={`bias-indicator bias-${item.market_state?.bias?.toLowerCase()}`}>
+                          {item.market_state?.bias}
+                        </span>
+                      </td>
+                    )}
                     <td>
                       {item.market_state?.risk_flags?.map((flag, idx) => (
                         <span key={idx} className="risk-flag-mini">{flag}</span>
                       ))}
                     </td>
                     <td style={{ fontWeight: 'bold' }}>
-                      {item.attention_score?.total_score || item.attention_score || '-'}
+                      {isPostEarnings ? (
+                        <span style={{ color: getReturnColor(item.pead_signal?.reaction?.current_post_return) }}>
+                          {formatPct(item.pead_signal?.reaction?.current_post_return)}
+                        </span>
+                      ) : (
+                        item.attention_score?.total_score || item.attention_score || '-'
+                      )}
                     </td>
                   </tr>
                 );
