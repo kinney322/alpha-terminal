@@ -46,12 +46,19 @@ const CatalystRadarShell = () => {
       </div>
       
       {selectedEventId && (
-        <div className="radar-detail-pane fade-in">
-          <SelectedCatalystIntelligence 
-            eventDetail={payload.events_detail[selectedEventId]}
-            onClose={() => setSelectedEventId(null)}
+        <>
+          <button
+            className="radar-detail-backdrop"
+            aria-label="Close catalyst detail"
+            onClick={() => setSelectedEventId(null)}
           />
-        </div>
+          <aside className="radar-detail-pane fade-in" role="dialog" aria-modal="true">
+            <SelectedCatalystIntelligence 
+              eventDetail={payload.events_detail[selectedEventId]}
+              onClose={() => setSelectedEventId(null)}
+            />
+          </aside>
+        </>
       )}
     </div>
   );
