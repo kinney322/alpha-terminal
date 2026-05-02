@@ -423,6 +423,70 @@ const PostEarningsReactionPanel = ({ eventDetail }) => {
   );
 };
 
+const TrendSetupPanel = ({ eventDetail }) => {
+  const setup = eventDetail?.trend_setup;
+  
+  if (!setup || setup.status !== 'available') {
+    return (
+      <div className="trend-setup-panel card">
+        <h3>Trend Setup Layer</h3>
+        <div className="warning-text" style={{ color: 'var(--text-muted)' }}>No trend setup available.</div>
+      </div>
+    );
+  }
+
+  const formatLabel = (val) => val ? val.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase()) : '--';
+
+  return (
+    <div className="trend-setup-panel card">
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+        <h3>Trend Setup Layer</h3>
+        <span className={`badge-${setup.stage}`} style={{ padding: '4px 8px', borderRadius: '4px', fontWeight: 'bold', fontSize: '0.85em' }}>
+          {formatLabel(setup.stage)}
+        </span>
+      </div>
+      
+      <div className="reaction-summary-grid">
+        <div>
+          <span className="panel-kicker">Supply Chain</span>
+          <strong>{formatLabel(setup.supply_chain_stage)}</strong>
+        </div>
+        <div>
+          <span className="panel-kicker">Setup Score</span>
+          <strong>{setup.score ?? '--'}</strong>
+        </div>
+        <div>
+          <span className="panel-kicker">Base Duration</span>
+          <strong>{setup.metrics?.base_duration_days ?? '--'} Days</strong>
+        </div>
+      </div>
+
+      <div className="panel-note">
+        <strong>Explanation:</strong> {setup.explanation}
+      </div>
+
+      {setup.setup_tags?.length > 0 && (
+        <div style={{ marginBottom: '16px' }}>
+          {setup.setup_tags.map((tag, i) => (
+            <span key={i} className="quality-pill" style={{ background: 'rgba(37,99,235,0.1)', color: '#1d4ed8', borderColor: '#bfdbfe' }}>{tag}</span>
+          ))}
+        </div>
+      )}
+
+      <div className="grid-2col" style={{ fontSize: '0.95em' }}>
+        <div><strong>MA200 Slope:</strong> {setup.metrics?.ma200_slope_pct != null ? setup.metrics.ma200_slope_pct.toFixed(1) + '%' : '--'}</div>
+        <div><strong>Z-Score 200D:</strong> {setup.metrics?.zscore_200d != null ? setup.metrics.zscore_200d.toFixed(2) : '--'}</div>
+        <div><strong>Days &gt; 200MA + 1.5σ Band:</strong> {setup.metrics?.days_above_upper_band_60d ?? '--'}</div>
+        <div><strong>52W Range Position:</strong> {setup.metrics?.range_position_52w != null ? setup.metrics.range_position_52w.toFixed(2) : '--'}</div>
+        <div><strong>RS vs SPY (63D):</strong> {setup.metrics?.relative_strength_vs_spy_63d != null ? setup.metrics.relative_strength_vs_spy_63d.toFixed(1) + '%' : '--'}</div>
+        <div><strong>RS vs QQQ (63D):</strong> {setup.metrics?.relative_strength_vs_qqq_63d != null ? setup.metrics.relative_strength_vs_qqq_63d.toFixed(1) + '%' : '--'}</div>
+        <div><strong>Latest Close:</strong> {setup.metrics?.latest_close != null ? setup.metrics.latest_close.toFixed(2) : '--'}</div>
+        <div><strong>MA200 / Upper Band:</strong> {setup.metrics?.ma200 != null ? setup.metrics.ma200.toFixed(2) : '--'} / {setup.metrics?.upper_band_200d_1_5sigma != null ? setup.metrics.upper_band_200d_1_5sigma.toFixed(2) : '--'}</div>
+      </div>
+    </div>
+  );
+};
+
 // Main Component
 const SelectedCatalystIntelligence = ({ eventDetail, onClose }) => {
   const [activeDetailTab, setActiveDetailTab] = useState('reaction');
@@ -437,11 +501,13 @@ const SelectedCatalystIntelligence = ({ eventDetail, onClose }) => {
   const detailTabs = hasPostEarningsSignal
     ? [
         { id: 'reaction', label: 'Reaction' },
+        { id: 'trend', label: 'Trend' },
         { id: 'history', label: 'History' },
         { id: 'trust', label: 'Trust' },
       ]
     : [
         { id: 'overview', label: 'Overview' },
+        { id: 'trend', label: 'Trend' },
         { id: 'history', label: 'History' },
         { id: 'trust', label: 'Trust' },
       ];
@@ -577,6 +643,10 @@ const SelectedCatalystIntelligence = ({ eventDetail, onClose }) => {
           <PostEarningsReactionPanel eventDetail={eventDetail} />
           <PostEarningsBaseRatePanel eventDetail={eventDetail} />
         </>
+      )}
+
+      {currentDetailTab === 'trend' && (
+        <TrendSetupPanel eventDetail={eventDetail} />
       )}
 
       {currentDetailTab === 'overview' && (

@@ -171,6 +171,12 @@ const RadarMasterView = ({ payload, selectedEventId, onSelectEvent }) => {
               >
                 PEAD Watch
               </button>
+              <button 
+                className={listType === 'trend_pullbacks' ? 'active' : ''} 
+                onClick={() => setListType('trend_pullbacks')}
+              >
+                Pullbacks
+              </button>
             </>
           ) : (
             <>
@@ -237,7 +243,9 @@ const RadarMasterView = ({ payload, selectedEventId, onSelectEvent }) => {
                     ? `No catalyst events match "${searchQuery.trim()}".`
                     : activeTab === 'tracked'
                       ? 'No tracked catalyst setups.'
-                      : 'No data available for this view.'}
+                      : isPostEarnings && listType === 'trend_pullbacks'
+                        ? 'No trend pullback setups.'
+                        : 'No data available for this view.'}
                 </td>
               </tr>
             ) : (
@@ -245,6 +253,7 @@ const RadarMasterView = ({ payload, selectedEventId, onSelectEvent }) => {
                 const item = payload.events_detail[eventId];
                 if (!item) return null;
                 const isSelected = selectedEventId === eventId;
+                const isPullbacksView = isPostEarnings && listType === 'trend_pullbacks';
                 const peadDisplay = isPostEarnings ? getPeadDisplay(item.pead_signal) : null;
                 const biasClass = isPostEarnings
                   ? (peadDisplay?.tone === 'bullish' ? 'long' : peadDisplay?.tone === 'bearish' ? 'short' : 'neutral')
@@ -268,12 +277,25 @@ const RadarMasterView = ({ payload, selectedEventId, onSelectEvent }) => {
                     {isPostEarnings ? (
                       <>
                         <td className="post-result-cell">
-                          <span className={`bias-indicator bias-${biasClass}`}>
-                            {peadDisplay.label}
-                          </span>
-                          <div className="post-result-subline">
-                            {formatResultLabel(reaction.surprise_label)} {formatSignedPct(reaction.surprise_percent)}
-                          </div>
+                          {isPullbacksView && item.trend_setup?.status === 'available' ? (
+                            <>
+                              <span className={`bias-indicator badge-${item.trend_setup.stage}`}>
+                                {formatResultLabel(item.trend_setup.stage)}
+                              </span>
+                              <div className="post-result-subline">
+                                Score: {item.trend_setup.score || '--'} | {item.trend_setup.supply_chain_stage ? formatResultLabel(item.trend_setup.supply_chain_stage) : ''}
+                              </div>
+                            </>
+                          ) : (
+                            <>
+                              <span className={`bias-indicator bias-${biasClass}`}>
+                                {peadDisplay.label}
+                              </span>
+                              <div className="post-result-subline">
+                                {formatResultLabel(reaction.surprise_label)} {formatSignedPct(reaction.surprise_percent)}
+                              </div>
+                            </>
+                          )}
                         </td>
                         <td>
                           <div className="metric-stack">
