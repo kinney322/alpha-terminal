@@ -446,7 +446,7 @@ const TrendSetupPanel = ({ eventDetail }) => {
         </span>
       </div>
       
-      <div className="reaction-summary-grid">
+      <div className="reaction-summary-grid" style={{ gridTemplateColumns: 'repeat(4, minmax(0, 1fr))' }}>
         <div>
           <span className="panel-kicker">Supply Chain</span>
           <strong>{formatLabel(setup.supply_chain_stage)}</strong>
@@ -456,13 +456,20 @@ const TrendSetupPanel = ({ eventDetail }) => {
           <strong>{setup.score ?? '--'}</strong>
         </div>
         <div>
-          <span className="panel-kicker">Base Duration</span>
-          <strong>{setup.metrics?.base_duration_days ?? '--'} Days</strong>
+          <span className="panel-kicker">Range Duration</span>
+          <strong>{setup.metrics?.base_duration_days ?? '--'} Trading Days</strong>
+        </div>
+        <div>
+          <span className="panel-kicker">Base Quality</span>
+          <strong>{formatLabel(setup.base_quality?.label ?? 'Not Classified')}</strong>
         </div>
       </div>
 
       <div className="panel-note">
         <strong>Explanation:</strong> {setup.explanation}
+      </div>
+      <div className="panel-note" style={{ fontSize: '0.85em', marginTop: '-8px' }}>
+        <em>Range Duration measures how long price stayed in a contained 52W range. It does not by itself imply a bullish base.</em>
       </div>
 
       {setup.setup_tags?.length > 0 && (
@@ -477,7 +484,7 @@ const TrendSetupPanel = ({ eventDetail }) => {
         <div><strong>MA200 Slope:</strong> {setup.metrics?.ma200_slope_pct != null ? setup.metrics.ma200_slope_pct.toFixed(1) + '%' : '--'}</div>
         <div><strong>Z-Score 200D:</strong> {setup.metrics?.zscore_200d != null ? setup.metrics.zscore_200d.toFixed(2) : '--'}</div>
         <div><strong>Days &gt; 200MA + 1.5σ Band:</strong> {setup.metrics?.days_above_upper_band_60d ?? '--'}</div>
-        <div><strong>52W Range Position:</strong> {setup.metrics?.range_position_52w != null ? setup.metrics.range_position_52w.toFixed(2) : '--'}</div>
+        <div><strong>52W Range Position (0=Low, 1=High):</strong> {setup.metrics?.range_position_52w != null ? setup.metrics.range_position_52w.toFixed(2) : '--'}</div>
         <div><strong>RS vs SPY (63D):</strong> {setup.metrics?.relative_strength_vs_spy_63d != null ? setup.metrics.relative_strength_vs_spy_63d.toFixed(1) + '%' : '--'}</div>
         <div><strong>RS vs QQQ (63D):</strong> {setup.metrics?.relative_strength_vs_qqq_63d != null ? setup.metrics.relative_strength_vs_qqq_63d.toFixed(1) + '%' : '--'}</div>
         <div><strong>Latest Close:</strong> {setup.metrics?.latest_close != null ? setup.metrics.latest_close.toFixed(2) : '--'}</div>
