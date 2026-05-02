@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 const getPeadDisplay = (peadSignal) => {
   const direction = peadSignal?.direction;
@@ -339,12 +339,177 @@ const RowLevelAuditTrail = ({ eventDetail }) => (
   </div>
 );
 
+const PostEarningsReactionPanel = ({ eventDetail }) => {
+  if (eventDetail.pead_signal?.status !== 'available') {
+    return (
+      <div className="pead-reaction-panel card">
+        <h3>Post-Earnings Reaction</h3>
+        <div className="warning-text">No completed post-earnings reaction signal available.</div>
+      </div>
+    );
+  }
+
+  const reaction = eventDetail.pead_signal.reaction || {};
+  const peadDisplay = getPeadDisplay(eventDetail.pead_signal);
+  const toneColor = peadDisplay.tone === 'bullish'
+    ? 'var(--text-green, #4caf50)'
+    : peadDisplay.tone === 'bearish'
+      ? 'var(--text-red, #f44336)'
+      : 'inherit';
+
+  const normalizePct = (value) => {
+    if (value === undefined || value === null || Number.isNaN(Number(value))) return null;
+    const n = Number(value);
+    return Math.abs(n) <= 1.0 && n !== 0 ? n * 100 : n;
+  };
+  const formatPct = (value) => {
+    const n = normalizePct(value);
+    if (n === null) return '--';
+    return `${n > 0 ? '+' : ''}${n.toFixed(1)}%`;
+  };
+  const getReturnColor = (value) => {
+    const n = normalizePct(value);
+    if (n === null || n === 0) return 'inherit';
+    return n > 0 ? 'var(--text-green, #4caf50)' : 'var(--text-red, #f44336)';
+  };
+
+  return (
+    <div className={`pead-reaction-panel card strength-${eventDetail.pead_signal.strength?.toLowerCase()}`}>
+      <h3>Post-Earnings Reaction</h3>
+      <div className="reaction-summary-grid">
+        <div>
+          <span className="panel-kicker">Signal</span>
+          <strong style={{ color: toneColor }}>{peadDisplay.label}</strong>
+        </div>
+        <div>
+          <span className="panel-kicker">Strength</span>
+          <strong style={{ textTransform: 'capitalize' }}>{eventDetail.pead_signal.strength || '--'}</strong>
+        </div>
+        <div>
+          <span className="panel-kicker">Current</span>
+          <strong style={{ color: getReturnColor(reaction.current_post_return) }}>{formatPct(reaction.current_post_return)}</strong>
+        </div>
+      </div>
+
+      <div className="panel-note">
+        <strong>Reason:</strong> {eventDetail.pead_signal.reason}
+      </div>
+
+      <div style={{ overflowX: 'auto' }}>
+        <table className="compact-metric-table">
+          <thead>
+            <tr>
+              <th>Result</th>
+              <th>Surprise</th>
+              <th>T+1</th>
+              <th>Current</th>
+              <th>Max Risk (5D)</th>
+              <th>Max Reward (5D)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style={{ fontWeight: 'bold', textTransform: 'capitalize' }}>{reaction.surprise_label || 'Unknown'}</td>
+              <td style={{ color: getReturnColor(reaction.surprise_percent) }}>{formatPct(reaction.surprise_percent)}</td>
+              <td style={{ color: getReturnColor(reaction.t1_return) }}>{formatPct(reaction.t1_return)}</td>
+              <td style={{ color: getReturnColor(reaction.current_post_return) }}>{formatPct(reaction.current_post_return)}</td>
+              <td>{formatPct(reaction.max_drawdown_5d)}</td>
+              <td>{formatPct(reaction.max_favorable_excursion_5d)}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+};
+
 // Main Component
 const SelectedCatalystIntelligence = ({ eventDetail, onClose }) => {
+  const [activeDetailTab, setActiveDetailTab] = useState('reaction');
+
   if (!eventDetail) return null;
 
   const lifecycle = eventDetail?.thesis_lifecycle;
   const displayStatus = lifecycle ? (STATUS_MAPPING[lifecycle.status] || 'Unknown') : null;
+  const hasPostEarningsSignal = eventDetail.pead_signal?.status === 'available';
+  const peadDisplay = hasPostEarningsSignal ? getPeadDisplay(eventDetail.pead_signal) : null;
+  const reaction = eventDetail.pead_signal?.reaction || {};
+  const detailTabs = hasPostEarningsSignal
+    ? [
+        { id: 'reaction', label: 'Reaction' },
+        { id: 'history', label: 'History' },
+        { id: 'trust', label: 'Trust' },
+      ]
+    : [
+        { id: 'overview', label: 'Overview' },
+        { id: 'history', label: 'History' },
+        { id: 'trust', label: 'Trust' },
+      ];
+  const currentDetailTab = detailTabs.some(tab => tab.id === activeDetailTab)
+    ? activeDetailTab
+    : detailTabs[0].id;
+
+  const formatDrawerPct = (value) => {
+    if (value === undefined || value === null || Number.isNaN(Number(value))) return '--';
+    const n = Number(value);
+    return `${n > 0 ? '+' : ''}${n.toFixed(1)}%`;
+  };
+
+  const getDrawerReturnColor = (value) => {
+    const n = Number(value);
+    if (Number.isNaN(n) || n === 0) return 'inherit';
+    return n > 0 ? 'var(--text-green, #4caf50)' : 'var(--text-red, #f44336)';
+  };
+
+  const renderTrustLayer = () => (
+    <div className="trust-layer-status card">
+      <h3>Trust Layer Status</h3>
+      <div className="grid-2col">
+        <div><strong>Event Date:</strong> {eventDetail.event_date} ({eventDetail.event_date_status})</div>
+        <div><strong>Timing:</strong> {eventDetail.trust_layer?.earnings_timing || '--'}</div>
+        <div><strong>Options Data:</strong> {eventDetail.trust_layer?.options_data_status || '--'}</div>
+        <div><strong>Sample Size:</strong> {eventDetail.trust_layer?.sample_size ?? '--'}</div>
+        {eventDetail.trust_layer?.missing_fields?.length > 0 && (
+          <div className="warning-text"><strong>Missing:</strong> {eventDetail.trust_layer.missing_fields.join(', ')}</div>
+        )}
+      </div>
+    </div>
+  );
+
+  const renderMarketState = () => (
+    <div className="market-state-panel card">
+      <h3>Market State</h3>
+      <div className="grid-2col">
+        <div><strong>Bias:</strong> <span className={`bias-${eventDetail.market_state?.bias?.toLowerCase()}`}>{eventDetail.market_state?.bias || '--'}</span></div>
+        <div><strong>Edge Gap:</strong> {eventDetail.market_state?.edge_gap ?? '--'}</div>
+        <div><strong>T-5 Runup Pct:</strong> {eventDetail.market_state?.runup_t5_percentile !== undefined ? eventDetail.market_state?.runup_t5_percentile + '%' : 'Unknown'}</div>
+        <div><strong>Vol Pricing:</strong> {eventDetail.market_state?.vol_pricing_status || '--'}</div>
+        <div><strong>Liquidity Risk:</strong> {eventDetail.market_state?.liquidity_risk || '--'}</div>
+        <div className="risk-flags-container">
+          <strong>Risk Flags:</strong>
+          {eventDetail.market_state?.risk_flags?.length > 0 ? eventDetail.market_state.risk_flags.map((flag, idx) => (
+            <span key={idx} className="risk-flag-mini">{flag}</span>
+          )) : <span className="warning-text" style={{display: 'inline-block', margin: 0}}>None</span>}
+        </div>
+      </div>
+    </div>
+  );
+
+  const renderExpectedMove = () => (
+    <div className="expected-move-panel card">
+      <h3>Expected Move</h3>
+      {eventDetail.expected_move?.status === 'fresh' ? (
+        <div className="grid-2col">
+          <div><strong>Value:</strong> {(eventDetail.expected_move.value * 100).toFixed(1)}%</div>
+          <div><strong>Method:</strong> {eventDetail.expected_move.method}</div>
+          <div><strong>Quote Time:</strong> {new Date(eventDetail.expected_move.quote_timestamp).toLocaleString()}</div>
+          <div><strong>Bid-Ask Width:</strong> {(eventDetail.expected_move.bid_ask_width_pct * 100).toFixed(1)}%</div>
+        </div>
+      ) : (
+        <div className="warning-text">Data Unavailable</div>
+      )}
+    </div>
+  );
 
   return (
     <div className="catalyst-intelligence-panel">
@@ -361,119 +526,83 @@ const SelectedCatalystIntelligence = ({ eventDetail, onClose }) => {
         <button className="close-btn" onClick={onClose}>×</button>
       </div>
 
-      <div className="trust-layer-status card">
-        <h3>Trust Layer Status</h3>
-        <div className="grid-2col">
-          <div><strong>Event Date:</strong> {eventDetail.event_date} ({eventDetail.event_date_status})</div>
-          <div><strong>Timing:</strong> {eventDetail.trust_layer?.earnings_timing}</div>
-          <div><strong>Options Data:</strong> {eventDetail.trust_layer?.options_data_status}</div>
-          <div><strong>Sample Size:</strong> {eventDetail.trust_layer?.sample_size}</div>
-          {eventDetail.trust_layer?.missing_fields?.length > 0 && (
-            <div className="warning-text"><strong>Missing:</strong> {eventDetail.trust_layer.missing_fields.join(', ')}</div>
-          )}
-        </div>
-      </div>
-
-      <ThesisLifecyclePanel eventDetail={eventDetail} />
-
-      <div className="market-state-panel card">
-        <h3>Market State</h3>
-        <div className="grid-2col">
-          <div><strong>Bias:</strong> <span className={`bias-${eventDetail.market_state?.bias?.toLowerCase()}`}>{eventDetail.market_state?.bias}</span></div>
-          <div><strong>Edge Gap:</strong> {eventDetail.market_state?.edge_gap}</div>
-          <div><strong>T-5 Runup Pct:</strong> {eventDetail.market_state?.runup_t5_percentile !== undefined ? eventDetail.market_state?.runup_t5_percentile + '%' : 'Unknown'}</div>
-          <div><strong>Vol Pricing:</strong> {eventDetail.market_state?.vol_pricing_status}</div>
-          <div><strong>Liquidity Risk:</strong> {eventDetail.market_state?.liquidity_risk}</div>
-          <div className="risk-flags-container">
-            <strong>Risk Flags:</strong>
-            {eventDetail.market_state?.risk_flags?.length > 0 ? eventDetail.market_state.risk_flags.map((flag, idx) => (
-              <span key={idx} className="risk-flag-mini">{flag}</span>
-            )) : <span className="warning-text" style={{display: 'inline-block', margin: 0}}>None</span>}
-          </div>
-        </div>
-      </div>
-
-      <div className="expected-move-panel card">
-        <h3>Expected Move</h3>
-        {eventDetail.expected_move?.status === 'fresh' ? (
-          <div className="grid-2col">
-            <div><strong>Value:</strong> {(eventDetail.expected_move.value * 100).toFixed(1)}%</div>
-            <div><strong>Method:</strong> {eventDetail.expected_move.method}</div>
-            <div><strong>Quote Time:</strong> {new Date(eventDetail.expected_move.quote_timestamp).toLocaleString()}</div>
-            <div><strong>Bid-Ask Width:</strong> {(eventDetail.expected_move.bid_ask_width_pct * 100).toFixed(1)}%</div>
-          </div>
+      <div className="drawer-summary-strip">
+        {hasPostEarningsSignal ? (
+          <>
+            <div>
+              <span className="panel-kicker">Signal</span>
+              <strong>{peadDisplay.label}</strong>
+            </div>
+            <div>
+              <span className="panel-kicker">T+1</span>
+              <strong style={{ color: getDrawerReturnColor(reaction.t1_return) }}>{formatDrawerPct(reaction.t1_return)}</strong>
+            </div>
+            <div>
+              <span className="panel-kicker">Current</span>
+              <strong style={{ color: getDrawerReturnColor(reaction.current_post_return) }}>{formatDrawerPct(reaction.current_post_return)}</strong>
+            </div>
+          </>
         ) : (
-          <div className="warning-text">Data Unavailable</div>
+          <>
+            <div>
+              <span className="panel-kicker">Bias</span>
+              <strong>{eventDetail.market_state?.bias || '--'}</strong>
+            </div>
+            <div>
+              <span className="panel-kicker">Score</span>
+              <strong>{eventDetail.attention_score?.total_score || eventDetail.attention_score || '--'}</strong>
+            </div>
+            <div>
+              <span className="panel-kicker">Event Date</span>
+              <strong>{eventDetail.event_date || '--'}</strong>
+            </div>
+          </>
         )}
       </div>
 
-      {eventDetail.pead_signal?.status === 'available' && (
-        <div className={`pead-reaction-panel card strength-${eventDetail.pead_signal.strength?.toLowerCase()}`}>
-          <h3>Post-Earnings Reaction</h3>
-          <div className="grid-2col" style={{ marginBottom: '12px' }}>
-            <div>
-              <strong>Signal:</strong>{' '}
-              <span 
-                style={{ 
-                  fontWeight: 'bold', 
-                  color: getPeadDisplay(eventDetail.pead_signal).tone === 'bullish' ? 'var(--text-green, #4caf50)' : getPeadDisplay(eventDetail.pead_signal).tone === 'bearish' ? 'var(--text-red, #f44336)' : 'inherit'
-                }}
-              >
-                {getPeadDisplay(eventDetail.pead_signal).label}
-              </span>
-            </div>
-            <div><strong>Strength:</strong> <span style={{ textTransform: 'capitalize' }}>{eventDetail.pead_signal.strength}</span></div>
-            <div><strong>Direction:</strong> <span style={{ textTransform: 'capitalize' }}>{eventDetail.pead_signal.direction === 'drift' ? 'Continuation' : eventDetail.pead_signal.direction === 'fade' ? 'Reversal' : eventDetail.pead_signal.direction}</span></div>
-          </div>
-          <div style={{ marginBottom: '16px', fontSize: '0.9em' }}>
-            <strong>Reason:</strong> {eventDetail.pead_signal.reason}
-          </div>
-          
-          <div style={{ overflowX: 'auto' }}>
-            <table style={{ width: '100%', textAlign: 'left', borderCollapse: 'collapse', fontSize: '0.9em' }}>
-              <thead>
-                <tr style={{ borderBottom: '2px solid var(--border-color)', color: 'var(--text-muted)' }}>
-                  <th style={{ padding: '8px 4px' }}>Result</th>
-                  <th style={{ padding: '8px 4px' }}>Surprise</th>
-                  <th style={{ padding: '8px 4px' }}>T+1</th>
-                  <th style={{ padding: '8px 4px' }}>Current Post Return</th>
-                  <th style={{ padding: '8px 4px' }}>Max Risk</th>
-                  <th style={{ padding: '8px 4px' }}>Max Reward</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td style={{ padding: '8px 4px', fontWeight: 'bold', textTransform: 'capitalize' }}>
-                    {eventDetail.pead_signal.reaction?.surprise_label || 'Unknown'}
-                  </td>
-                  <td style={{ padding: '8px 4px', color: eventDetail.pead_signal.reaction?.surprise_percent > 0 ? 'var(--text-green, #4caf50)' : eventDetail.pead_signal.reaction?.surprise_percent < 0 ? 'var(--text-red, #f44336)' : 'inherit' }}>
-                    {eventDetail.pead_signal.reaction?.surprise_percent != null ? `${eventDetail.pead_signal.reaction.surprise_percent.toFixed(1)}%` : '--'}
-                  </td>
-                  <td style={{ padding: '8px 4px', color: eventDetail.pead_signal.reaction?.t1_return > 0 ? 'var(--text-green, #4caf50)' : eventDetail.pead_signal.reaction?.t1_return < 0 ? 'var(--text-red, #f44336)' : 'inherit' }}>
-                    {eventDetail.pead_signal.reaction?.t1_return != null ? `${(Math.abs(eventDetail.pead_signal.reaction.t1_return) <= 1.0 && eventDetail.pead_signal.reaction.t1_return !== 0 ? eventDetail.pead_signal.reaction.t1_return * 100 : eventDetail.pead_signal.reaction.t1_return).toFixed(1)}%` : '--'}
-                  </td>
-                  <td style={{ padding: '8px 4px', color: eventDetail.pead_signal.reaction?.current_post_return > 0 ? 'var(--text-green, #4caf50)' : eventDetail.pead_signal.reaction?.current_post_return < 0 ? 'var(--text-red, #f44336)' : 'inherit' }}>
-                    {eventDetail.pead_signal.reaction?.current_post_return != null ? `${(Math.abs(eventDetail.pead_signal.reaction.current_post_return) <= 1.0 && eventDetail.pead_signal.reaction.current_post_return !== 0 ? eventDetail.pead_signal.reaction.current_post_return * 100 : eventDetail.pead_signal.reaction.current_post_return).toFixed(1)}%` : '--'}
-                  </td>
-                  <td style={{ padding: '8px 4px', color: 'var(--text-muted)' }}>
-                    {eventDetail.pead_signal.reaction?.max_drawdown_5d != null ? `${(Math.abs(eventDetail.pead_signal.reaction.max_drawdown_5d) <= 1.0 && eventDetail.pead_signal.reaction.max_drawdown_5d !== 0 ? eventDetail.pead_signal.reaction.max_drawdown_5d * 100 : eventDetail.pead_signal.reaction.max_drawdown_5d).toFixed(1)}%` : '--'}
-                  </td>
-                  <td style={{ padding: '8px 4px', color: 'var(--text-muted)' }}>
-                    {eventDetail.pead_signal.reaction?.max_favorable_excursion_5d != null ? `${(Math.abs(eventDetail.pead_signal.reaction.max_favorable_excursion_5d) <= 1.0 && eventDetail.pead_signal.reaction.max_favorable_excursion_5d !== 0 ? eventDetail.pead_signal.reaction.max_favorable_excursion_5d * 100 : eventDetail.pead_signal.reaction.max_favorable_excursion_5d).toFixed(1)}%` : '--'}
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
+      <div className="radar-detail-tabs">
+        {detailTabs.map(tab => (
+          <button
+            key={tab.id}
+            className={currentDetailTab === tab.id ? 'active' : ''}
+            onClick={() => setActiveDetailTab(tab.id)}
+          >
+            {tab.label}
+          </button>
+        ))}
+      </div>
+
+      {currentDetailTab === 'reaction' && (
+        <>
+          <PostEarningsReactionPanel eventDetail={eventDetail} />
+          <PostEarningsBaseRatePanel eventDetail={eventDetail} />
+        </>
       )}
 
-      <HistoricalSetupMatrixPanel eventDetail={eventDetail} />
-      <HistoricalEarningsTapePanel eventDetail={eventDetail} />
-      <PostEarningsBaseRatePanel eventDetail={eventDetail} />
-      <SpilloverWatchPanel eventDetail={eventDetail} />
-      <RowLevelAuditTrail eventDetail={eventDetail} />
+      {currentDetailTab === 'overview' && (
+        <>
+          {renderMarketState()}
+          {renderExpectedMove()}
+        </>
+      )}
 
+      {currentDetailTab === 'history' && (
+        <>
+          <HistoricalSetupMatrixPanel eventDetail={eventDetail} />
+          <HistoricalEarningsTapePanel eventDetail={eventDetail} />
+        </>
+      )}
+
+      {currentDetailTab === 'trust' && (
+        <>
+          {renderTrustLayer()}
+          <ThesisLifecyclePanel eventDetail={eventDetail} />
+          {renderMarketState()}
+          {renderExpectedMove()}
+          <SpilloverWatchPanel eventDetail={eventDetail} />
+          <RowLevelAuditTrail eventDetail={eventDetail} />
+        </>
+      )}
     </div>
   );
 };
