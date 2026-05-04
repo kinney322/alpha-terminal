@@ -55,6 +55,11 @@ const STATUS_MAPPING = {
   expired: 'Expired',
 };
 
+const formatDetailLabel = (value) => {
+  if (!value) return '--';
+  return String(value).replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+};
+
 const ThesisLifecyclePanel = ({ eventDetail }) => {
   const lifecycle = eventDetail?.thesis_lifecycle;
   if (!lifecycle) return null;
@@ -605,7 +610,7 @@ const PeerReadthroughPanel = ({ eventDetail, peerReadthroughCases = {} }) => {
             <strong>{c.news_checked ? 'Yes' : 'No'}</strong>
           </div>
           <div>
-            <span className="panel-kicker">After-Hours Move</span>
+            <span className="panel-kicker">External Move Check</span>
             <strong>Not verified</strong>
           </div>
           <div>
@@ -634,7 +639,7 @@ const PeerReadthroughPanel = ({ eventDetail, peerReadthroughCases = {} }) => {
     <div className="peer-readthrough-panel card">
       <h3>Peer Read-Through</h3>
       <div className="panel-note">
-        Deterministic peer-map monitor using current pipeline price reaction and earnings status only. This panel does not check news, transcripts, or after-hours moves.
+        Deterministic peer-map monitor using current pipeline price reaction and earnings status only. This panel does not check news, transcripts, or external intraday/after-hours quotes.
       </div>
 
       {incomingIds.length > 0 && (
@@ -654,6 +659,88 @@ const PeerReadthroughPanel = ({ eventDetail, peerReadthroughCases = {} }) => {
   );
 };
 
+const MomentumEvidencePanel = ({ eventDetail }) => {
+  const momentum = eventDetail?.momentum_evidence;
+  const evidence = momentum?.evidence || {};
+
+  if (!momentum || momentum.status !== 'available') {
+    return (
+      <div className="momentum-evidence-panel card">
+        <h3>Momentum Evidence</h3>
+        <div className="warning-text" style={{ color: 'var(--text-muted)' }}>
+          No momentum evidence available for this event yet.
+        </div>
+      </div>
+    );
+  }
+
+  const formatPct = (value) => {
+    if (value === undefined || value === null || Number.isNaN(Number(value))) return '--';
+    const n = Number(value);
+    return `${n > 0 ? '+' : ''}${n.toFixed(1)}%`;
+  };
+
+  const formatNumber = (value, digits = 2) => {
+    if (value === undefined || value === null || Number.isNaN(Number(value))) return '--';
+    return Number(value).toFixed(digits);
+  };
+
+  return (
+    <div className="momentum-evidence-panel card">
+      <div className="momentum-evidence-header">
+        <div>
+          <h3>Momentum Evidence</h3>
+          <div className="panel-note">Market-data-only evidence across active and off-cycle thesis rows. Not a trade recommendation.</div>
+        </div>
+        <span className={`quality-pill momentum-regime-pill momentum-${momentum.regime === 'crowded_momentum' ? 'crowded' : momentum.regime === 'pullback_watch' ? 'pullback' : momentum.regime === 'weak_momentum' ? 'weak' : momentum.regime === 'neutral' ? 'neutral' : 'positive'}`}>
+          {formatDetailLabel(momentum.regime)}
+        </span>
+      </div>
+
+      <div className="reaction-summary-grid">
+        <div>
+          <span className="panel-kicker">Evidence Score</span>
+          <strong>{momentum.score ?? '--'}</strong>
+        </div>
+        <div>
+          <span className="panel-kicker">Evidence Status</span>
+          <strong>{formatDetailLabel(momentum.evidence_status)}</strong>
+        </div>
+        <div>
+          <span className="panel-kicker">Trade Signal</span>
+          <strong>{momentum.trade_recommendation === false ? 'No trade signal' : 'Evidence only'}</strong>
+        </div>
+      </div>
+
+      {momentum.interpretation && (
+        <div className="panel-note">
+          <strong>Interpretation:</strong> {momentum.interpretation}
+        </div>
+      )}
+
+      <div className="grid-2col" style={{ fontSize: '0.95em', marginBottom: '16px' }}>
+        <div><strong>MA200 Slope:</strong> {formatPct(evidence.ma200_slope_pct)}</div>
+        <div><strong>Z-Score 200D:</strong> {formatNumber(evidence.zscore_200d)}</div>
+        <div><strong>Days &gt; 200MA + 1.5σ Band:</strong> {evidence.days_above_upper_band_60d ?? '--'}</div>
+        <div><strong>52W Range Position:</strong> {formatNumber(evidence.range_position_52w)}</div>
+        <div><strong>RS vs SPY (63D):</strong> {formatPct(evidence.relative_strength_vs_spy_63d)}</div>
+        <div><strong>RS vs QQQ (63D):</strong> {formatPct(evidence.relative_strength_vs_qqq_63d)}</div>
+      </div>
+
+      <div className="momentum-evidence-footnotes">
+        {momentum.labels?.map((label, idx) => (
+          <span key={`label-${idx}`} className="quality-pill">{formatDetailLabel(label)}</span>
+        ))}
+        {momentum.caution_flags?.map((flag, idx) => (
+          <span key={`flag-${idx}`} className="quality-pill">{formatDetailLabel(flag)}</span>
+        ))}
+        {momentum.news_checked === false && <span className="quality-pill">News not checked</span>}
+        <span className="quality-pill">Not a trade recommendation</span>
+      </div>
+    </div>
+  );
+};
+
 // Main Component
 const SelectedCatalystIntelligence = ({ eventDetail, peerReadthroughCases = {}, onClose }) => {
   const [activeDetailTab, setActiveDetailTab] = useState('reaction');
@@ -667,6 +754,7 @@ const SelectedCatalystIntelligence = ({ eventDetail, peerReadthroughCases = {}, 
     (eventDetail.peer_readthrough.incoming || []).length > 0 ||
     (eventDetail.peer_readthrough.outgoing_candidates || []).length > 0
   );
+  const hasMomentumEvidence = eventDetail.momentum_evidence?.status === 'available';
   const peadDisplay = hasPostEarningsSignal ? getPeadDisplay(eventDetail.pead_signal) : null;
   const reaction = eventDetail.pead_signal?.reaction || {};
   const baseDetailTabs = hasPostEarningsSignal
@@ -680,6 +768,7 @@ const SelectedCatalystIntelligence = ({ eventDetail, peerReadthroughCases = {}, 
       ];
   const detailTabs = [
     ...baseDetailTabs,
+    ...(hasMomentumEvidence ? [{ id: 'momentum', label: 'Momentum' }] : []),
     ...(hasPeerReadthrough ? [{ id: 'peer', label: 'Peer' }] : []),
     { id: 'history', label: 'History' },
     { id: 'trust', label: 'Trust' },
@@ -839,6 +928,10 @@ const SelectedCatalystIntelligence = ({ eventDetail, peerReadthroughCases = {}, 
 
       {currentDetailTab === 'peer' && (
         <PeerReadthroughPanel eventDetail={eventDetail} peerReadthroughCases={peerReadthroughCases} />
+      )}
+
+      {currentDetailTab === 'momentum' && (
+        <MomentumEvidencePanel eventDetail={eventDetail} />
       )}
 
       {currentDetailTab === 'overview' && (

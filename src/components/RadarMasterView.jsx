@@ -82,6 +82,7 @@ const findSearchContext = (query, payload, currentListIds, activeTab, listType) 
     if (radarLists.post_earnings?.top_opportunities?.includes(eventId)) return { type: 'other_view', ticker: detail.ticker, suggest: 'Continuation', action: { tab: 'post_earnings', list: 'top_opportunities' } };
     if (radarLists.post_earnings?.top_risk_alerts?.includes(eventId)) return { type: 'other_view', ticker: detail.ticker, suggest: 'Reversal', action: { tab: 'post_earnings', list: 'top_risk_alerts' } };
     if (radarLists.post_earnings?.trend_pullbacks?.includes(eventId)) return { type: 'other_view', ticker: detail.ticker, suggest: 'Pullbacks', action: { tab: 'post_earnings', list: 'trend_pullbacks' } };
+    if (radarLists.momentum?.watch?.includes(eventId)) return { type: 'other_view', ticker: detail.ticker, suggest: 'Momentum', action: { tab: 'momentum' } };
     if (radarLists.tracked?.reviewed_watch?.includes(eventId)) return { type: 'tracked', ticker: detail.ticker, action: { tab: 'tracked' } };
     if (radarLists.off_cycle_watch?.thesis_watch?.includes(eventId)) return { type: 'other_view', ticker: detail.ticker, suggest: 'Between Catalysts', action: { tab: 'between_catalysts' } };
     
@@ -149,12 +150,14 @@ const SearchEmptyState = ({ context, onSwitch }) => {
 };
 
 const RadarMasterView = ({ payload, selectedEventId, onSelectEvent }) => {
-  const [activeTab, setActiveTab] = useState('pre_earnings'); // pre_earnings, event_day, post_earnings, tracked, between_catalysts
+  const [activeTab, setActiveTab] = useState('pre_earnings'); // pre_earnings, event_day, post_earnings, momentum, tracked, between_catalysts
   const [listType, setListType] = useState('top_opportunities'); // top_opportunities, top_risk_alerts
   const [searchQuery, setSearchQuery] = useState('');
 
   const baseListIds = activeTab === 'tracked'
     ? payload?.radar_lists?.tracked?.reviewed_watch || []
+    : activeTab === 'momentum'
+      ? payload?.radar_lists?.momentum?.watch || []
     : activeTab === 'between_catalysts'
       ? payload?.radar_lists?.off_cycle_watch?.thesis_watch || []
       : payload?.radar_lists?.[activeTab]?.[listType] || [];
@@ -169,6 +172,7 @@ const RadarMasterView = ({ payload, selectedEventId, onSelectEvent }) => {
   const isSearchMode = Boolean(normalizedSearch);
   const isPostEarnings = activeTab === 'post_earnings';
   const isBetweenCatalysts = activeTab === 'between_catalysts';
+  const isMomentum = activeTab === 'momentum';
 
   const handleSwitchView = (action) => {
     if (action.tab) setActiveTab(action.tab);
@@ -297,6 +301,20 @@ const RadarMasterView = ({ payload, selectedEventId, onSelectEvent }) => {
     };
   };
 
+  const getMomentumToneClass = (regime) => {
+    if (regime === 'confirmed_momentum' || regime === 'constructive_momentum') return 'momentum-positive';
+    if (regime === 'crowded_momentum') return 'momentum-crowded';
+    if (regime === 'pullback_watch') return 'momentum-pullback';
+    if (regime === 'weak_momentum') return 'momentum-weak';
+    return 'momentum-neutral';
+  };
+
+  const getMomentumGroup = (item) => (
+    item?.trend_setup?.supply_chain_stage ||
+    item?.momentum_evidence?.evidence?.supply_chain_stage ||
+    'unmapped'
+  );
+
   return (
     <div className="radar-master-view">
       <div className="radar-header">
@@ -321,6 +339,12 @@ const RadarMasterView = ({ payload, selectedEventId, onSelectEvent }) => {
             Post-Earnings
           </button>
           <button 
+            className={activeTab === 'momentum' ? 'active' : ''} 
+            onClick={() => setActiveTab('momentum')}
+          >
+            Momentum
+          </button>
+          <button 
             className={activeTab === 'tracked' ? 'active' : ''} 
             onClick={() => setActiveTab('tracked')}
           >
@@ -339,7 +363,14 @@ const RadarMasterView = ({ payload, selectedEventId, onSelectEvent }) => {
         <CompletedEarningsRefreshStatus refresh={payload?.meta?.completed_earnings_refresh} />
       )}
 
-      {(activeTab !== 'tracked' && activeTab !== 'between_catalysts') && (
+      {isMomentum && (
+        <div className="momentum-board-note">
+          <strong>Momentum Evidence Board</strong>
+          <span>Market-data-only ranking across active and off-cycle thesis rows. Not a trade recommendation.</span>
+        </div>
+      )}
+
+      {(activeTab !== 'tracked' && activeTab !== 'between_catalysts' && activeTab !== 'momentum') && (
         <div className="radar-list-switch">
           {activeTab === 'post_earnings' ? (
             <>
@@ -418,6 +449,15 @@ const RadarMasterView = ({ payload, selectedEventId, onSelectEvent }) => {
                   <th>Review</th>
                   <th>Last Seen</th>
                 </>
+              ) : isMomentum ? (
+                <>
+                  <th>Industry / Theme</th>
+                  <th>Regime</th>
+                  <th>Quality Score</th>
+                  <th>200D Setup</th>
+                  <th>Relative Strength</th>
+                  <th>Cautions</th>
+                </>
               ) : (
                 <>
                   <th>Phase</th>
@@ -431,7 +471,7 @@ const RadarMasterView = ({ payload, selectedEventId, onSelectEvent }) => {
           <tbody>
             {filteredListIds.length === 0 ? (
               <tr>
-                <td colSpan={isPostEarnings ? 6 : 5} style={{ textAlign: 'center', padding: '20px' }}>
+                <td colSpan={isPostEarnings ? 6 : isMomentum ? 7 : 5} style={{ textAlign: 'center', padding: '20px' }}>
                   {isSearchMode ? (
                     <SearchEmptyState 
                       context={findSearchContext(searchQuery, payload, filteredListIds, activeTab, listType)}
@@ -441,6 +481,11 @@ const RadarMasterView = ({ payload, selectedEventId, onSelectEvent }) => {
                     <div style={{ padding: '20px' }}>
                       <div style={{ fontWeight: 'bold', marginBottom: '8px', fontSize: '1.05em' }}>No between-catalyst thesis watches.</div>
                       <div style={{ color: 'var(--text-muted)' }}>This means no reviewed thesis notes are currently retained outside the active earnings window.</div>
+                    </div>
+                  ) : activeTab === 'momentum' ? (
+                    <div style={{ padding: '20px' }}>
+                      <div style={{ fontWeight: 'bold', marginBottom: '8px', fontSize: '1.05em' }}>No momentum evidence rows.</div>
+                      <div style={{ color: 'var(--text-muted)' }}>The backend has not published a momentum watch list yet.</div>
                     </div>
                   ) : activeTab === 'tracked'
                     ? 'No tracked catalyst setups.'
@@ -463,6 +508,8 @@ const RadarMasterView = ({ payload, selectedEventId, onSelectEvent }) => {
                 const baseRateSummary = isPostEarnings ? getPostBaseRateSummary(item) : null;
                 const postQuality = isPostEarnings ? getPostQuality(item) : [];
                 const peerSummary = getPeerReadthroughSummary(item);
+                const momentum = item.momentum_evidence || {};
+                const momentumEvidence = momentum.evidence || {};
                 
                 return (
                   <tr 
@@ -526,6 +573,43 @@ const RadarMasterView = ({ payload, selectedEventId, onSelectEvent }) => {
                           {postQuality.map((label, idx) => (
                             <span key={idx} className="quality-pill">{label}</span>
                           ))}
+                        </td>
+                      </>
+                    ) : isMomentum ? (
+                      <>
+                        <td>
+                          <span className="quality-pill">{formatResultLabel(getMomentumGroup(item))}</span>
+                          <div className="post-result-subline">{formatResultLabel(item.event_phase || 'unknown')}</div>
+                        </td>
+                        <td>
+                          <span className={`quality-pill momentum-regime-pill ${getMomentumToneClass(momentum.regime)}`}>
+                            {formatResultLabel(momentum.regime)}
+                          </span>
+                          <div className="post-result-subline">{momentum.evidence_status === 'market_data_only' ? 'Market data only' : formatResultLabel(momentum.evidence_status)}</div>
+                        </td>
+                        <td>
+                          <div className="metric-stack">
+                            <strong>{momentum.score ?? '--'}</strong>
+                            <span>{momentum.trade_recommendation === false ? 'No trade signal' : 'Evidence score'}</span>
+                          </div>
+                        </td>
+                        <td>
+                          <div className="metric-stack">
+                            <strong>MA200 {formatSignedPct(momentumEvidence.ma200_slope_pct)}</strong>
+                            <span>Z {momentumEvidence.zscore_200d != null ? Number(momentumEvidence.zscore_200d).toFixed(2) : '--'} · Band days {momentumEvidence.days_above_upper_band_60d ?? '--'}</span>
+                          </div>
+                        </td>
+                        <td>
+                          <div className="metric-stack">
+                            <strong>SPY {formatSignedPct(momentumEvidence.relative_strength_vs_spy_63d)}</strong>
+                            <span>QQQ {formatSignedPct(momentumEvidence.relative_strength_vs_qqq_63d)}</span>
+                          </div>
+                        </td>
+                        <td>
+                          {(momentum.caution_flags || []).slice(0, 3).map((flag, idx) => (
+                            <span key={idx} className="quality-pill">{flag}</span>
+                          ))}
+                          {momentum.news_checked === false && <span className="quality-pill">News not checked</span>}
                         </td>
                       </>
                     ) : isBetweenCatalysts ? (
