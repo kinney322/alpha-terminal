@@ -81,6 +81,38 @@ const ThesisLifecyclePanel = ({ eventDetail }) => {
   );
 };
 
+const OffCycleWatchPanel = ({ eventDetail }) => {
+  if (eventDetail.status !== 'off_cycle_watch' && eventDetail.event_phase !== 'off_cycle') return null;
+
+  const lifecycle = eventDetail.thesis_lifecycle || {};
+  const reason = eventDetail.off_cycle_reason || {};
+  const review = lifecycle.review_state || {};
+  
+  const formatLabel = (val) => val ? val.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase()) : '--';
+
+  return (
+    <div className="off-cycle-panel card">
+      <h3>Off-Cycle Thesis Watch</h3>
+      <div className="grid-2col">
+        <div><strong>Status:</strong> {formatLabel(eventDetail.status)}</div>
+        <div><strong>Source:</strong> {formatLabel(eventDetail.source)}</div>
+        <div><strong>Reason Labels:</strong> {reason.labels?.length ? reason.labels.map(l => formatLabel(l)).join(', ') : '--'}</div>
+        <div><strong>Review State:</strong> {review.reviewed ? 'Reviewed' : 'Not Reviewed'}</div>
+        <div><strong>Last Seen:</strong> {formatLifecycleTime(lifecycle.last_seen_at)}</div>
+        <div><strong>Status Changed:</strong> {formatLifecycleTime(lifecycle.status_changed_at)}</div>
+      </div>
+      {review.notes && (
+        <div style={{ marginTop: '16px', fontSize: '0.9em' }}>
+          <strong>Notes:</strong>
+          <div style={{ whiteSpace: 'pre-wrap', marginTop: '8px', background: 'var(--surface-color, #fff)', padding: '12px', borderRadius: '6px', border: '1px solid var(--border-light)' }}>
+            {review.notes}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
 // Placeholder Components
 const HistoricalEarningsTapePanel = ({ eventDetail }) => {
   const tape = eventDetail?.historical_earnings_tape;
@@ -658,8 +690,13 @@ const SelectedCatalystIntelligence = ({ eventDetail, onClose }) => {
 
       {currentDetailTab === 'overview' && (
         <>
-          {renderMarketState()}
-          {renderExpectedMove()}
+          <OffCycleWatchPanel eventDetail={eventDetail} />
+          {eventDetail.status !== 'off_cycle_watch' && eventDetail.event_phase !== 'off_cycle' && (
+            <>
+              {renderMarketState()}
+              {renderExpectedMove()}
+            </>
+          )}
         </>
       )}
 

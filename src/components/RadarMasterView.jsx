@@ -83,6 +83,7 @@ const findSearchContext = (query, payload, currentListIds, activeTab, listType) 
     if (radarLists.post_earnings?.top_risk_alerts?.includes(eventId)) return { type: 'other_view', ticker: detail.ticker, suggest: 'Reversal', action: { tab: 'post_earnings', list: 'top_risk_alerts' } };
     if (radarLists.post_earnings?.trend_pullbacks?.includes(eventId)) return { type: 'other_view', ticker: detail.ticker, suggest: 'Pullbacks', action: { tab: 'post_earnings', list: 'trend_pullbacks' } };
     if (radarLists.tracked?.reviewed_watch?.includes(eventId)) return { type: 'tracked', ticker: detail.ticker, action: { tab: 'tracked' } };
+    if (radarLists.off_cycle_watch?.thesis_watch?.includes(eventId)) return { type: 'other_view', ticker: detail.ticker, suggest: 'Between Catalysts', action: { tab: 'between_catalysts' } };
     
     if (detail.event_phase === 'pre_earnings' || detail.thesis_lifecycle?.phase === 'pre_earnings') return { type: 'other_view', ticker: detail.ticker, suggest: 'Pre-Earnings', action: { tab: 'pre_earnings' } };
     if (detail.event_phase === 'event_day' || detail.thesis_lifecycle?.phase === 'event_day') return { type: 'other_view', ticker: detail.ticker, suggest: 'Event Day', action: { tab: 'event_day' } };
@@ -148,13 +149,15 @@ const SearchEmptyState = ({ context, onSwitch }) => {
 };
 
 const RadarMasterView = ({ payload, selectedEventId, onSelectEvent }) => {
-  const [activeTab, setActiveTab] = useState('pre_earnings'); // pre_earnings, event_day, post_earnings, tracked
+  const [activeTab, setActiveTab] = useState('pre_earnings'); // pre_earnings, event_day, post_earnings, tracked, between_catalysts
   const [listType, setListType] = useState('top_opportunities'); // top_opportunities, top_risk_alerts
   const [searchQuery, setSearchQuery] = useState('');
 
   const baseListIds = activeTab === 'tracked'
     ? payload?.radar_lists?.tracked?.reviewed_watch || []
-    : payload?.radar_lists?.[activeTab]?.[listType] || [];
+    : activeTab === 'between_catalysts'
+      ? payload?.radar_lists?.off_cycle_watch?.thesis_watch || []
+      : payload?.radar_lists?.[activeTab]?.[listType] || [];
   const normalizedSearch = searchQuery.trim().toUpperCase();
   const filteredListIds = normalizedSearch
     ? baseListIds.filter(eventId => {
@@ -165,10 +168,22 @@ const RadarMasterView = ({ payload, selectedEventId, onSelectEvent }) => {
     : baseListIds;
   const isSearchMode = Boolean(normalizedSearch);
   const isPostEarnings = activeTab === 'post_earnings';
+  const isBetweenCatalysts = activeTab === 'between_catalysts';
 
   const handleSwitchView = (action) => {
     if (action.tab) setActiveTab(action.tab);
     if (action.list) setListType(action.list);
+  };
+
+  const formatShortDate = (value) => {
+    if (!value) return '--';
+    try {
+      const d = new Date(value);
+      if (isNaN(d.getTime())) return '--';
+      return d.toISOString().split('T')[0];
+    } catch (e) {
+      return '--';
+    }
   };
 
   const formatSignedPct = (value) => {
@@ -296,6 +311,12 @@ const RadarMasterView = ({ payload, selectedEventId, onSelectEvent }) => {
           >
             Tracked
           </button>
+          <button 
+            className={activeTab === 'between_catalysts' ? 'active' : ''} 
+            onClick={() => setActiveTab('between_catalysts')}
+          >
+            Between Catalysts
+          </button>
         </div>
       </div>
 
@@ -303,7 +324,7 @@ const RadarMasterView = ({ payload, selectedEventId, onSelectEvent }) => {
         <CompletedEarningsRefreshStatus refresh={payload?.meta?.completed_earnings_refresh} />
       )}
 
-      {activeTab !== 'tracked' && (
+      {(activeTab !== 'tracked' && activeTab !== 'between_catalysts') && (
         <div className="radar-list-switch">
           {activeTab === 'post_earnings' ? (
             <>
@@ -375,6 +396,13 @@ const RadarMasterView = ({ payload, selectedEventId, onSelectEvent }) => {
                   <th>Base Rate</th>
                   <th>Quality</th>
                 </>
+              ) : isBetweenCatalysts ? (
+                <>
+                  <th>Thesis State</th>
+                  <th>Reason</th>
+                  <th>Review</th>
+                  <th>Last Seen</th>
+                </>
               ) : (
                 <>
                   <th>Phase</th>
@@ -394,6 +422,11 @@ const RadarMasterView = ({ payload, selectedEventId, onSelectEvent }) => {
                       context={findSearchContext(searchQuery, payload, filteredListIds, activeTab, listType)}
                       onSwitch={handleSwitchView}
                     />
+                  ) : activeTab === 'between_catalysts' ? (
+                    <div style={{ padding: '20px' }}>
+                      <div style={{ fontWeight: 'bold', marginBottom: '8px', fontSize: '1.05em' }}>No between-catalyst thesis watches.</div>
+                      <div style={{ color: 'var(--text-muted)' }}>This means no reviewed thesis notes are currently retained outside the active earnings window.</div>
+                    </div>
                   ) : activeTab === 'tracked'
                     ? 'No tracked catalyst setups.'
                     : isPostEarnings && listType === 'trend_pullbacks'
@@ -477,6 +510,23 @@ const RadarMasterView = ({ payload, selectedEventId, onSelectEvent }) => {
                           {postQuality.map((label, idx) => (
                             <span key={idx} className="quality-pill">{label}</span>
                           ))}
+                        </td>
+                      </>
+                    ) : isBetweenCatalysts ? (
+                      <>
+                        <td>
+                          <span className="quality-pill">{formatResultLabel(item.thesis_lifecycle?.status || 'Unknown')}</span>
+                        </td>
+                        <td>
+                          {item.off_cycle_reason?.labels?.length > 0 ? item.off_cycle_reason.labels.map((l, i) => <span key={i} className="quality-pill">{formatResultLabel(l)}</span>) : '--'}
+                        </td>
+                        <td>
+                          {item.thesis_lifecycle?.review_state?.reviewed ? 'Reviewed' : '--'}
+                        </td>
+                        <td>
+                          <div style={{ fontSize: '0.85em', color: 'var(--text-muted)' }}>
+                            {formatShortDate(item.thesis_lifecycle?.last_seen_at)}
+                          </div>
                         </td>
                       </>
                     ) : (
