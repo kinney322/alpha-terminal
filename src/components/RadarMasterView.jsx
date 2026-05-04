@@ -156,18 +156,12 @@ const RadarMasterView = ({ payload, selectedEventId, onSelectEvent }) => {
     ? payload?.radar_lists?.tracked?.reviewed_watch || []
     : payload?.radar_lists?.[activeTab]?.[listType] || [];
   const normalizedSearch = searchQuery.trim().toUpperCase();
-  const currentListIds = normalizedSearch
-    ? Object.entries(payload?.events_detail || {})
-        .filter(([eventId, detail]) => {
-          const ticker = String(detail?.ticker || '').toUpperCase();
-          return ticker.includes(normalizedSearch) || eventId.toUpperCase().includes(normalizedSearch);
-        })
-        .map(([eventId]) => eventId)
-        .sort((a, b) => {
-          const tickerA = payload?.events_detail?.[a]?.ticker || '';
-          const tickerB = payload?.events_detail?.[b]?.ticker || '';
-          return tickerA.localeCompare(tickerB) || a.localeCompare(b);
-        })
+  const filteredListIds = normalizedSearch
+    ? baseListIds.filter(eventId => {
+        const detail = payload?.events_detail?.[eventId];
+        const ticker = String(detail?.ticker || '').toUpperCase();
+        return ticker.includes(normalizedSearch) || eventId.toUpperCase().includes(normalizedSearch);
+      })
     : baseListIds;
   const isSearchMode = Boolean(normalizedSearch);
   const isPostEarnings = activeTab === 'post_earnings';
@@ -392,12 +386,12 @@ const RadarMasterView = ({ payload, selectedEventId, onSelectEvent }) => {
             </tr>
           </thead>
           <tbody>
-            {currentListIds.length === 0 ? (
+            {filteredListIds.length === 0 ? (
               <tr>
                 <td colSpan={isPostEarnings ? 6 : 5} style={{ textAlign: 'center', padding: '20px' }}>
                   {isSearchMode ? (
                     <SearchEmptyState 
-                      context={findSearchContext(searchQuery, payload, currentListIds, activeTab, listType)}
+                      context={findSearchContext(searchQuery, payload, filteredListIds, activeTab, listType)}
                       onSwitch={handleSwitchView}
                     />
                   ) : activeTab === 'tracked'
@@ -408,7 +402,7 @@ const RadarMasterView = ({ payload, selectedEventId, onSelectEvent }) => {
                 </td>
               </tr>
             ) : (
-              currentListIds.map(eventId => {
+              filteredListIds.map(eventId => {
                 const item = payload.events_detail[eventId];
                 if (!item) return null;
                 const isSelected = selectedEventId === eventId;
