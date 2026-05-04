@@ -254,6 +254,12 @@
   margin-bottom: 4px;
 }
 
+.peer-readthrough-pill {
+  background: rgba(37, 99, 235, 0.08);
+  border-color: rgba(37, 99, 235, 0.2);
+  color: #1d4ed8;
+}
+
 .catalyst-intelligence-panel .panel-header {
   position: sticky;
   top: -24px;
@@ -355,6 +361,62 @@
   margin-bottom: 12px;
 }
 
+.peer-readthrough-section {
+  margin-top: 16px;
+}
+
+.peer-readthrough-section h4 {
+  margin: 0 0 10px;
+}
+
+.peer-readthrough-case {
+  border: 1px solid var(--border-light);
+  border-radius: 6px;
+  padding: 14px;
+  margin-bottom: 12px;
+  background: var(--surface-color, #fff);
+}
+
+.peer-readthrough-case__header {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: flex-start;
+  margin-bottom: 12px;
+}
+
+.peer-readthrough-case__subline {
+  color: var(--text-muted);
+  font-size: 0.85em;
+  margin-top: 3px;
+}
+
+.peer-readthrough-case__badges,
+.peer-readthrough-footnotes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.peer-readthrough-metrics {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.peer-readthrough-metrics > div {
+  border: 1px solid var(--border-light);
+  border-radius: 6px;
+  padding: 10px 12px;
+  min-width: 0;
+}
+
+.peer-readthrough-metrics strong {
+  display: block;
+  overflow-wrap: anywhere;
+}
+
 .panel-note {
   color: var(--text-muted);
   font-size: 0.92em;
@@ -432,8 +494,13 @@
   }
 
   .drawer-summary-strip,
-  .reaction-summary-grid {
+  .reaction-summary-grid,
+  .peer-readthrough-metrics {
     grid-template-columns: 1fr;
+  }
+
+  .peer-readthrough-case__header {
+    display: block;
   }
 
   .radar-detail-tabs {

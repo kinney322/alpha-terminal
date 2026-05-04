@@ -531,8 +531,131 @@ const TrendSetupPanel = ({ eventDetail }) => {
   );
 };
 
+const PeerReadthroughPanel = ({ eventDetail, peerReadthroughCases = {} }) => {
+  const peer = eventDetail?.peer_readthrough;
+  const incomingIds = Array.isArray(peer?.incoming) ? peer.incoming : [];
+  const outgoingIds = Array.isArray(peer?.outgoing_candidates) ? peer.outgoing_candidates : [];
+
+  if (!peer || peer.status !== 'available' || (incomingIds.length === 0 && outgoingIds.length === 0)) {
+    return (
+      <div className="peer-readthrough-panel card">
+        <h3>Peer Read-Through</h3>
+        <div className="warning-text" style={{ color: 'var(--text-muted)' }}>
+          No deterministic peer read-through cases mapped for this event.
+        </div>
+      </div>
+    );
+  }
+
+  const formatLabel = (val) => val ? String(val).replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase()) : '--';
+  const formatPct = (value) => {
+    if (value === undefined || value === null || Number.isNaN(Number(value))) return 'Not available';
+    const n = Number(value);
+    return `${n > 0 ? '+' : ''}${n.toFixed(1)}%`;
+  };
+  const pctColor = (value) => {
+    const n = Number(value);
+    if (Number.isNaN(n) || n === 0) return 'inherit';
+    return n > 0 ? 'var(--text-green, #4caf50)' : 'var(--text-red, #f44336)';
+  };
+
+  const renderCase = (caseId, directionLabel) => {
+    const c = peerReadthroughCases?.[caseId];
+
+    if (!c) {
+      return (
+        <div key={caseId} className="peer-readthrough-case">
+          <div className="peer-readthrough-case__header">
+            <strong>{caseId}</strong>
+            <span className="quality-pill">Case detail missing</span>
+          </div>
+          <div className="warning-text">This case id was attached to the event, but the case payload is unavailable.</div>
+        </div>
+      );
+    }
+
+    return (
+      <div key={caseId} className="peer-readthrough-case">
+        <div className="peer-readthrough-case__header">
+          <div>
+            <strong>{c.source_ticker} → {c.target_ticker}</strong>
+            <div className="peer-readthrough-case__subline">{directionLabel} · {formatLabel(c.relationship)} · {formatLabel(c.theme)}</div>
+          </div>
+          <div className="peer-readthrough-case__badges">
+            <span className="quality-pill">{formatLabel(c.status)}</span>
+            <span className="quality-pill">Score {c.score ?? '--'}</span>
+          </div>
+        </div>
+
+        <div className="peer-readthrough-metrics">
+          <div>
+            <span className="panel-kicker">Pipeline Reaction</span>
+            <strong style={{ color: pctColor(c.source_reaction_pct) }}>{formatPct(c.source_reaction_pct)}</strong>
+          </div>
+          <div>
+            <span className="panel-kicker">Target Pipeline Reaction</span>
+            <strong style={{ color: pctColor(c.target_reaction_pct) }}>{formatPct(c.target_reaction_pct)}</strong>
+          </div>
+          <div>
+            <span className="panel-kicker">Evidence</span>
+            <strong>{formatLabel(c.evidence_status)}</strong>
+          </div>
+          <div>
+            <span className="panel-kicker">News Checked</span>
+            <strong>{c.news_checked ? 'Yes' : 'No'}</strong>
+          </div>
+          <div>
+            <span className="panel-kicker">After-Hours Move</span>
+            <strong>Not verified</strong>
+          </div>
+          <div>
+            <span className="panel-kicker">Review State</span>
+            <strong>{formatLabel(c.review_state)}</strong>
+          </div>
+        </div>
+
+        {c.auto_rationale && (
+          <div className="panel-note">
+            <strong>Auto Rationale:</strong> {c.auto_rationale}
+          </div>
+        )}
+
+        <div className="peer-readthrough-footnotes">
+          <span className="quality-pill">Human review required</span>
+          {c.not_verified?.map((item, idx) => (
+            <span key={idx} className="quality-pill">{formatLabel(item)}</span>
+          ))}
+        </div>
+      </div>
+    );
+  };
+
+  return (
+    <div className="peer-readthrough-panel card">
+      <h3>Peer Read-Through</h3>
+      <div className="panel-note">
+        Deterministic peer-map monitor using current pipeline price reaction and earnings status only. This panel does not check news, transcripts, or after-hours moves.
+      </div>
+
+      {incomingIds.length > 0 && (
+        <div className="peer-readthrough-section">
+          <h4>Incoming To {eventDetail.ticker}</h4>
+          {incomingIds.map(caseId => renderCase(caseId, 'Incoming'))}
+        </div>
+      )}
+
+      {outgoingIds.length > 0 && (
+        <div className="peer-readthrough-section">
+          <h4>Outgoing From {eventDetail.ticker}</h4>
+          {outgoingIds.map(caseId => renderCase(caseId, 'Outgoing'))}
+        </div>
+      )}
+    </div>
+  );
+};
+
 // Main Component
-const SelectedCatalystIntelligence = ({ eventDetail, onClose }) => {
+const SelectedCatalystIntelligence = ({ eventDetail, peerReadthroughCases = {}, onClose }) => {
   const [activeDetailTab, setActiveDetailTab] = useState('reaction');
 
   if (!eventDetail) return null;
@@ -540,21 +663,27 @@ const SelectedCatalystIntelligence = ({ eventDetail, onClose }) => {
   const lifecycle = eventDetail?.thesis_lifecycle;
   const displayStatus = lifecycle ? (STATUS_MAPPING[lifecycle.status] || 'Unknown') : null;
   const hasPostEarningsSignal = eventDetail.pead_signal?.status === 'available';
+  const hasPeerReadthrough = eventDetail.peer_readthrough?.status === 'available' && (
+    (eventDetail.peer_readthrough.incoming || []).length > 0 ||
+    (eventDetail.peer_readthrough.outgoing_candidates || []).length > 0
+  );
   const peadDisplay = hasPostEarningsSignal ? getPeadDisplay(eventDetail.pead_signal) : null;
   const reaction = eventDetail.pead_signal?.reaction || {};
-  const detailTabs = hasPostEarningsSignal
+  const baseDetailTabs = hasPostEarningsSignal
     ? [
         { id: 'reaction', label: 'Reaction' },
         { id: 'trend', label: 'Trend' },
-        { id: 'history', label: 'History' },
-        { id: 'trust', label: 'Trust' },
       ]
     : [
         { id: 'overview', label: 'Overview' },
         { id: 'trend', label: 'Trend' },
-        { id: 'history', label: 'History' },
-        { id: 'trust', label: 'Trust' },
       ];
+  const detailTabs = [
+    ...baseDetailTabs,
+    ...(hasPeerReadthrough ? [{ id: 'peer', label: 'Peer' }] : []),
+    { id: 'history', label: 'History' },
+    { id: 'trust', label: 'Trust' },
+  ];
   const currentDetailTab = detailTabs.some(tab => tab.id === activeDetailTab)
     ? activeDetailTab
     : detailTabs[0].id;
@@ -706,6 +835,10 @@ const SelectedCatalystIntelligence = ({ eventDetail, onClose }) => {
 
       {currentDetailTab === 'trend' && (
         <TrendSetupPanel eventDetail={eventDetail} />
+      )}
+
+      {currentDetailTab === 'peer' && (
+        <PeerReadthroughPanel eventDetail={eventDetail} peerReadthroughCases={peerReadthroughCases} />
       )}
 
       {currentDetailTab === 'overview' && (

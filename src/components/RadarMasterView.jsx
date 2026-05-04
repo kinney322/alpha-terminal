@@ -282,6 +282,21 @@ const RadarMasterView = ({ payload, selectedEventId, onSelectEvent }) => {
     return labels.slice(0, 2);
   };
 
+  const getPeerReadthroughSummary = (item) => {
+    const peer = item?.peer_readthrough;
+    if (!peer || peer.status !== 'available') return null;
+
+    const incoming = Array.isArray(peer.incoming) ? peer.incoming : [];
+    const outgoing = Array.isArray(peer.outgoing_candidates) ? peer.outgoing_candidates : [];
+    if (incoming.length + outgoing.length === 0) return null;
+
+    return {
+      label: incoming.length > 0
+        ? `Peer Read-Through In: ${incoming.length}`
+        : `Peer Read-Through Out: ${outgoing.length}`,
+    };
+  };
+
   return (
     <div className="radar-master-view">
       <div className="radar-header">
@@ -447,6 +462,7 @@ const RadarMasterView = ({ payload, selectedEventId, onSelectEvent }) => {
                 const reaction = item.pead_signal?.reaction || {};
                 const baseRateSummary = isPostEarnings ? getPostBaseRateSummary(item) : null;
                 const postQuality = isPostEarnings ? getPostQuality(item) : [];
+                const peerSummary = getPeerReadthroughSummary(item);
                 
                 return (
                   <tr 
@@ -545,6 +561,9 @@ const RadarMasterView = ({ payload, selectedEventId, onSelectEvent }) => {
                           {item.market_state?.risk_flags?.map((flag, idx) => (
                             <span key={idx} className="risk-flag-mini">{flag}</span>
                           ))}
+                          {peerSummary && (
+                            <span className="quality-pill peer-readthrough-pill">{peerSummary.label}</span>
+                          )}
                         </td>
                         <td style={{ fontWeight: 'bold' }}>
                           {item.attention_score?.total_score || item.attention_score || '-'}

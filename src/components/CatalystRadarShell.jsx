@@ -55,6 +55,7 @@ const CatalystRadarShell = () => {
           <aside className="radar-detail-pane fade-in" role="dialog" aria-modal="true">
             <SelectedCatalystIntelligence 
               eventDetail={payload.events_detail[selectedEventId]}
+              peerReadthroughCases={payload.peer_readthrough_cases || {}}
               onClose={() => setSelectedEventId(null)}
             />
           </aside>
