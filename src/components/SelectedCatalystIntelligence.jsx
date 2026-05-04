@@ -92,7 +92,7 @@ const OffCycleWatchPanel = ({ eventDetail }) => {
 
   return (
     <div className="off-cycle-panel card">
-      <h3>Off-Cycle Thesis Watch</h3>
+      <h3>Between Catalysts Thesis Monitor</h3>
       <div className="grid-2col">
         <div><strong>Status:</strong> {formatLabel(eventDetail.status)}</div>
         <div><strong>Source:</strong> {formatLabel(eventDetail.source)}</div>
@@ -457,12 +457,17 @@ const PostEarningsReactionPanel = ({ eventDetail }) => {
 
 const TrendSetupPanel = ({ eventDetail }) => {
   const setup = eventDetail?.trend_setup;
+  const isOffCycle = eventDetail.status === 'off_cycle_watch' || eventDetail.event_phase === 'off_cycle';
   
   if (!setup || setup.status !== 'available') {
     return (
       <div className="trend-setup-panel card">
         <h3>Trend Setup Layer</h3>
-        <div className="warning-text" style={{ color: 'var(--text-muted)' }}>No trend setup available.</div>
+        <div className="warning-text" style={{ color: 'var(--text-muted)' }}>
+          {isOffCycle 
+            ? 'Trend monitor is not available for this thesis yet.' 
+            : 'No trend setup available.'}
+        </div>
       </div>
     );
   }
@@ -645,6 +650,21 @@ const SelectedCatalystIntelligence = ({ eventDetail, onClose }) => {
             <div>
               <span className="panel-kicker">Current</span>
               <strong style={{ color: getDrawerReturnColor(reaction.current_post_return) }}>{formatDrawerPct(reaction.current_post_return)}</strong>
+            </div>
+          </>
+        ) : (eventDetail.status === 'off_cycle_watch' || eventDetail.event_phase === 'off_cycle') ? (
+          <>
+            <div>
+              <span className="panel-kicker">Status</span>
+              <strong style={{ textTransform: 'capitalize' }}>{(eventDetail.status || '').replace(/_/g, ' ')}</strong>
+            </div>
+            <div>
+              <span className="panel-kicker">Review</span>
+              <strong>{lifecycle?.review_state?.reviewed ? 'Reviewed' : 'Pending'}</strong>
+            </div>
+            <div>
+              <span className="panel-kicker">Last Seen</span>
+              <strong>{formatLifecycleTime(lifecycle?.last_seen_at).split(',')[0]}</strong>
             </div>
           </>
         ) : (
