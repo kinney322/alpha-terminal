@@ -175,6 +175,45 @@
   flex-wrap: wrap;
 }
 
+.radar-search-empty {
+  padding: 32px 20px;
+  text-align: center;
+  background: var(--surface-color, #fff);
+  border: 1px dashed var(--border-color);
+  border-radius: 8px;
+  margin: 20px auto;
+  max-width: 480px;
+}
+
+.radar-search-empty__title {
+  font-weight: 700;
+  color: var(--text-color);
+  margin-bottom: 8px;
+  font-size: 1.05em;
+}
+
+.radar-search-empty__body {
+  color: var(--text-muted);
+  font-size: 0.9em;
+  line-height: 1.4;
+  margin-bottom: 16px;
+}
+
+.radar-search-empty__action {
+  background: var(--surface-color);
+  border: 1px solid var(--border-light);
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.9em;
+  transition: background 0.2s;
+}
+
+.radar-search-empty__action:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+
 .risk-flag-mini {
   display: inline-block;
   background: #fef08a;

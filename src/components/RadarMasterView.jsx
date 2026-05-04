@@ -51,6 +51,102 @@ const CompletedEarningsRefreshStatus = ({ refresh }) => {
   );
 };
 
+const normalizeTicker = (value) => String(value || '').trim().toUpperCase();
+
+const findSearchContext = (query, payload, currentListIds, activeTab, listType) => {
+  const normQuery = normalizeTicker(query);
+  if (!normQuery) return null;
+
+  const isBroad = normQuery.length < 2;
+
+  const sample = payload?.meta?.completed_earnings_refresh?.sample || [];
+  const matchedSample = sample.find(s => {
+    const t = normalizeTicker(s.ticker);
+    return t === normQuery || (!isBroad && t.includes(normQuery));
+  });
+  if (matchedSample) {
+    return { type: 'pending_refresh', data: matchedSample };
+  }
+
+  const allEvents = Object.entries(payload?.events_detail || {});
+  const matchedEvent = allEvents.find(([eventId, detail]) => {
+    const t = normalizeTicker(detail.ticker);
+    return t === normQuery || (!isBroad && t.includes(normQuery));
+  });
+
+  if (matchedEvent) {
+    const [eventId, detail] = matchedEvent;
+    
+    const radarLists = payload?.radar_lists || {};
+    if (radarLists.post_earnings?.pead_watch?.includes(eventId)) return { type: 'other_view', ticker: detail.ticker, suggest: 'PEAD Watch', action: { tab: 'post_earnings', list: 'pead_watch' } };
+    if (radarLists.post_earnings?.top_opportunities?.includes(eventId)) return { type: 'other_view', ticker: detail.ticker, suggest: 'Continuation', action: { tab: 'post_earnings', list: 'top_opportunities' } };
+    if (radarLists.post_earnings?.top_risk_alerts?.includes(eventId)) return { type: 'other_view', ticker: detail.ticker, suggest: 'Reversal', action: { tab: 'post_earnings', list: 'top_risk_alerts' } };
+    if (radarLists.post_earnings?.trend_pullbacks?.includes(eventId)) return { type: 'other_view', ticker: detail.ticker, suggest: 'Pullbacks', action: { tab: 'post_earnings', list: 'trend_pullbacks' } };
+    if (radarLists.tracked?.reviewed_watch?.includes(eventId)) return { type: 'tracked', ticker: detail.ticker, action: { tab: 'tracked' } };
+    
+    if (detail.event_phase === 'pre_earnings' || detail.thesis_lifecycle?.phase === 'pre_earnings') return { type: 'other_view', ticker: detail.ticker, suggest: 'Pre-Earnings', action: { tab: 'pre_earnings' } };
+    if (detail.event_phase === 'event_day' || detail.thesis_lifecycle?.phase === 'event_day') return { type: 'other_view', ticker: detail.ticker, suggest: 'Event Day', action: { tab: 'event_day' } };
+
+    return { type: 'other_view', ticker: detail.ticker, suggest: 'another view' };
+  }
+
+  return { type: 'no_match', query: normQuery };
+};
+
+const SearchEmptyState = ({ context, onSwitch }) => {
+  if (!context) return null;
+
+  if (context.type === 'pending_refresh') {
+    const { ticker, pending_reason_primary, event_date } = context.data;
+    let reasonText = 'Pending data refresh.';
+    if (pending_reason_primary === 'market_not_closed_yet') reasonText = 'Waiting for T+1 close.';
+    else if (['missing_actual', 'missing_surprise', 'vendor_unavailable'].includes(pending_reason_primary)) reasonText = 'Waiting for EPS/surprise vendor data.';
+    else if (pending_reason_primary === 'missing_t1_close') reasonText = 'Waiting for price backfill.';
+
+    return (
+      <div className="radar-search-empty">
+        <div className="radar-search-empty__title">{ticker} is pending completed-earnings refresh.</div>
+        <div className="radar-search-empty__body">{reasonText} (Event Date: {event_date || 'Unknown'})</div>
+      </div>
+    );
+  }
+
+  if (context.type === 'other_view') {
+    return (
+      <div className="radar-search-empty">
+        <div className="radar-search-empty__title">Found {context.ticker} in Catalyst Radar, but not in this view.</div>
+        <div className="radar-search-empty__body">Try switching to {context.suggest}.</div>
+        {context.action && (
+          <button className="radar-search-empty__action" onClick={() => onSwitch(context.action)}>
+            Switch to {context.suggest}
+          </button>
+        )}
+      </div>
+    );
+  }
+
+  if (context.type === 'tracked') {
+    return (
+      <div className="radar-search-empty">
+        <div className="radar-search-empty__title">{context.ticker} is tracked, but not active in the current catalyst view.</div>
+        <div className="radar-search-empty__body">Open Tracked to review saved notes.</div>
+        {context.action && (
+          <button className="radar-search-empty__action" onClick={() => onSwitch(context.action)}>
+            Switch to Tracked
+          </button>
+        )}
+      </div>
+    );
+  }
+
+  return (
+    <div className="radar-search-empty">
+      <div className="radar-search-empty__title">No active catalyst event found for "{context.query}".</div>
+      <div className="radar-search-empty__body">It may be outside the current earnings window (pre-event through T+10), between catalyst cycles, or not in the current scanner universe.</div>
+    </div>
+  );
+};
+
 const RadarMasterView = ({ payload, selectedEventId, onSelectEvent }) => {
   const [activeTab, setActiveTab] = useState('pre_earnings'); // pre_earnings, event_day, post_earnings, tracked
   const [listType, setListType] = useState('top_opportunities'); // top_opportunities, top_risk_alerts
@@ -75,6 +171,11 @@ const RadarMasterView = ({ payload, selectedEventId, onSelectEvent }) => {
     : baseListIds;
   const isSearchMode = Boolean(normalizedSearch);
   const isPostEarnings = activeTab === 'post_earnings';
+
+  const handleSwitchView = (action) => {
+    if (action.tab) setActiveTab(action.tab);
+    if (action.list) setListType(action.list);
+  };
 
   const formatSignedPct = (value) => {
     if (value === undefined || value === null || Number.isNaN(Number(value))) return '--';
@@ -294,13 +395,16 @@ const RadarMasterView = ({ payload, selectedEventId, onSelectEvent }) => {
             {currentListIds.length === 0 ? (
               <tr>
                 <td colSpan={isPostEarnings ? 6 : 5} style={{ textAlign: 'center', padding: '20px' }}>
-                  {isSearchMode
-                    ? `No catalyst events match "${searchQuery.trim()}".`
-                    : activeTab === 'tracked'
-                      ? 'No tracked catalyst setups.'
-                      : isPostEarnings && listType === 'trend_pullbacks'
-                        ? 'No trend pullback setups.'
-                        : 'No data available for this view.'}
+                  {isSearchMode ? (
+                    <SearchEmptyState 
+                      context={findSearchContext(searchQuery, payload, currentListIds, activeTab, listType)}
+                      onSwitch={handleSwitchView}
+                    />
+                  ) : activeTab === 'tracked'
+                    ? 'No tracked catalyst setups.'
+                    : isPostEarnings && listType === 'trend_pullbacks'
+                      ? 'No trend pullback setups.'
+                      : 'No data available for this view.'}
                 </td>
               </tr>
             ) : (
