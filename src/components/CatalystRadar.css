@@ -193,6 +193,44 @@
   color: var(--text-color);
 }
 
+.momentum-group-filter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: -6px 0 16px;
+}
+
+.momentum-group-filter button {
+  align-items: center;
+  background: var(--surface-color);
+  border: 1px solid var(--border-light);
+  border-radius: 6px;
+  color: var(--text-muted);
+  cursor: pointer;
+  display: inline-flex;
+  font-weight: 700;
+  gap: 8px;
+  padding: 7px 10px;
+}
+
+.momentum-group-filter button.active {
+  background: var(--primary-color, #222);
+  border-color: var(--primary-color, #222);
+  color: #fff;
+}
+
+.momentum-group-filter button span {
+  background: rgba(15, 23, 42, 0.08);
+  border-radius: 999px;
+  color: inherit;
+  font-size: 0.78em;
+  padding: 1px 7px;
+}
+
+.momentum-group-filter button.active span {
+  background: rgba(255, 255, 255, 0.18);
+}
+
 .momentum-regime-pill {
   font-weight: 700;
 }

@@ -154,14 +154,20 @@ const RadarMasterView = ({ payload, selectedEventId, onSelectEvent }) => {
   const [activeTab, setActiveTab] = useState('pre_earnings'); // pre_earnings, event_day, post_earnings, momentum, tracked, between_catalysts
   const [listType, setListType] = useState('top_opportunities'); // top_opportunities, top_risk_alerts
   const [searchQuery, setSearchQuery] = useState('');
+  const [momentumGroupFilter, setMomentumGroupFilter] = useState('all');
+
+  const getMomentumGroupKey = (item) => (
+    item?.trend_setup?.supply_chain_stage ||
+    item?.momentum_evidence?.evidence?.supply_chain_stage ||
+    'unmapped'
+  );
 
   const momentumAllListIds = (() => {
     const events = Object.entries(payload?.events_detail || {});
     const byTicker = new Map();
 
-    const groupKey = (item) => item?.trend_setup?.supply_chain_stage || item?.momentum_evidence?.evidence?.supply_chain_stage || 'unmapped';
     const groupSortKey = (item) => {
-      const group = groupKey(item);
+      const group = getMomentumGroupKey(item);
       return group === 'unmapped' ? 'zzzz_unmapped' : group;
     };
     const phasePriority = (item) => (item?.event_phase === 'off_cycle' || item?.status === 'off_cycle_watch' ? 0 : 1);
@@ -201,10 +207,37 @@ const RadarMasterView = ({ payload, selectedEventId, onSelectEvent }) => {
       .map(row => row.eventId);
   })();
 
+  const momentumSourceListIds = listType === 'momentum_watch'
+    ? payload?.radar_lists?.momentum?.watch || []
+    : momentumAllListIds;
+
+  const momentumGroupOptions = (() => {
+    const counts = new Map();
+    momentumSourceListIds.forEach(eventId => {
+      const item = payload?.events_detail?.[eventId];
+      const group = getMomentumGroupKey(item);
+      counts.set(group, (counts.get(group) || 0) + 1);
+    });
+
+    const groups = Array.from(counts.entries())
+      .map(([key, count]) => ({ key, count }))
+      .sort((a, b) => {
+        if (a.key === 'unmapped') return 1;
+        if (b.key === 'unmapped') return -1;
+        return a.key.localeCompare(b.key);
+      });
+
+    return [{ key: 'all', count: momentumSourceListIds.length }, ...groups];
+  })();
+
+  const momentumFilteredListIds = momentumGroupFilter === 'all'
+    ? momentumSourceListIds
+    : momentumSourceListIds.filter(eventId => getMomentumGroupKey(payload?.events_detail?.[eventId]) === momentumGroupFilter);
+
   const baseListIds = activeTab === 'tracked'
     ? payload?.radar_lists?.tracked?.reviewed_watch || []
     : activeTab === 'momentum'
-      ? (listType === 'momentum_watch' ? payload?.radar_lists?.momentum?.watch || [] : momentumAllListIds)
+      ? momentumFilteredListIds
     : activeTab === 'between_catalysts'
       ? payload?.radar_lists?.off_cycle_watch?.thesis_watch || []
       : payload?.radar_lists?.[activeTab]?.[listType] || [];
@@ -358,9 +391,7 @@ const RadarMasterView = ({ payload, selectedEventId, onSelectEvent }) => {
   };
 
   const getMomentumGroup = (item) => (
-    item?.trend_setup?.supply_chain_stage ||
-    item?.momentum_evidence?.evidence?.supply_chain_stage ||
-    'unmapped'
+    getMomentumGroupKey(item)
   );
 
   return (
@@ -370,25 +401,25 @@ const RadarMasterView = ({ payload, selectedEventId, onSelectEvent }) => {
         <div className="radar-tabs">
           <button 
             className={activeTab === 'pre_earnings' ? 'active' : ''} 
-            onClick={() => { setActiveTab('pre_earnings'); setListType('top_opportunities'); }}
+            onClick={() => { setActiveTab('pre_earnings'); setListType('top_opportunities'); setMomentumGroupFilter('all'); }}
           >
             Pre-Earnings
           </button>
           <button 
             className={activeTab === 'event_day' ? 'active' : ''} 
-            onClick={() => { setActiveTab('event_day'); setListType('top_opportunities'); }}
+            onClick={() => { setActiveTab('event_day'); setListType('top_opportunities'); setMomentumGroupFilter('all'); }}
           >
             Event Day
           </button>
           <button 
             className={activeTab === 'post_earnings' ? 'active' : ''} 
-            onClick={() => { setActiveTab('post_earnings'); setListType('top_opportunities'); }}
+            onClick={() => { setActiveTab('post_earnings'); setListType('top_opportunities'); setMomentumGroupFilter('all'); }}
           >
             Post-Earnings
           </button>
           <button 
             className={activeTab === 'momentum' ? 'active' : ''} 
-            onClick={() => { setActiveTab('momentum'); setListType('all_scanner_ranking'); }}
+            onClick={() => { setActiveTab('momentum'); setListType('all_scanner_ranking'); setMomentumGroupFilter('all'); }}
           >
             Momentum
           </button>
@@ -416,7 +447,7 @@ const RadarMasterView = ({ payload, selectedEventId, onSelectEvent }) => {
           <strong>{isMomentumAllRanking ? 'All Scanner Ranking' : 'Momentum Watch'}</strong>
           <span>
             {isMomentumAllRanking
-              ? `Full Alpha Scanner list (${baseListIds.length} rows), grouped by industry/theme and ranked by momentum quality, 200D setup, Z-score, and relative strength. Includes off-cycle thesis rows.`
+              ? `Current radar ranking (${baseListIds.length}/${momentumSourceListIds.length} rows), grouped by industry/theme and ranked by momentum quality, 200D setup, Z-score, and relative strength. Includes off-cycle thesis rows.`
               : `Filtered momentum watch list (${baseListIds.length} rows). Market-data-only evidence, not a trade recommendation.`}
           </span>
         </div>
@@ -426,16 +457,31 @@ const RadarMasterView = ({ payload, selectedEventId, onSelectEvent }) => {
         <div className="radar-list-switch">
           <button
             className={listType !== 'momentum_watch' ? 'active' : ''}
-            onClick={() => setListType('all_scanner_ranking')}
+            onClick={() => { setListType('all_scanner_ranking'); setMomentumGroupFilter('all'); }}
           >
             All Scanner Ranking
           </button>
           <button
             className={listType === 'momentum_watch' ? 'active' : ''}
-            onClick={() => setListType('momentum_watch')}
+            onClick={() => { setListType('momentum_watch'); setMomentumGroupFilter('all'); }}
           >
             Momentum Watch
           </button>
+        </div>
+      )}
+
+      {isMomentum && (
+        <div className="momentum-group-filter">
+          {momentumGroupOptions.map(option => (
+            <button
+              key={option.key}
+              className={momentumGroupFilter === option.key ? 'active' : ''}
+              onClick={() => setMomentumGroupFilter(option.key)}
+            >
+              {option.key === 'all' ? 'All Themes' : formatResultLabel(option.key)}
+              <span>{option.count}</span>
+            </button>
+          ))}
         </div>
       )}
 
