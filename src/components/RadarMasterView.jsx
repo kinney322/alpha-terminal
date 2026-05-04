@@ -1,5 +1,56 @@
 import React, { useState } from 'react';
 
+const CompletedEarningsRefreshStatus = ({ refresh }) => {
+  if (!refresh) return null;
+
+  if (refresh.status === 'unavailable') {
+    return (
+      <div className="completed-refresh-status completed-refresh-status--unavailable">
+        Completed earnings refresh status unavailable
+      </div>
+    );
+  }
+
+  const pendingCount = refresh.pending_count || 0;
+  if (pendingCount === 0) {
+    return (
+      <div className="completed-refresh-status">
+        Completed earnings refresh: all caught up
+      </div>
+    );
+  }
+
+  const statusCounts = refresh.status_counts || {};
+  const t1Pending = statusCounts.waiting_for_market_close || 0;
+  const vendorPending = statusCounts.waiting_for_vendor_data || 0;
+  const pricePending = statusCounts.waiting_for_price_data || 0;
+
+  const sample = refresh.sample || [];
+  const displaySample = sample.slice(0, 6);
+  const extraCount = Math.max(0, sample.length - 6);
+
+  return (
+    <div className="completed-refresh-status">
+      <div className="completed-refresh-status__header">
+        <strong>Completed earnings refresh</strong> (Pending: {pendingCount})
+      </div>
+      <div className="completed-refresh-status__metrics">
+        {t1Pending > 0 && <span className="completed-refresh-status__metric">T+1 close pending: {t1Pending}</span>}
+        {vendorPending > 0 && <span className="completed-refresh-status__metric">Vendor EPS/surprise pending: {vendorPending}</span>}
+        {pricePending > 0 && <span className="completed-refresh-status__metric">Price backfill pending: {pricePending}</span>}
+      </div>
+      {displaySample.length > 0 && (
+        <div className="completed-refresh-status__chips">
+          {displaySample.map((s, idx) => (
+            <span key={idx} className="quality-pill">{s.ticker}</span>
+          ))}
+          {extraCount > 0 && <span className="quality-pill">+{extraCount} more</span>}
+        </div>
+      )}
+    </div>
+  );
+};
+
 const RadarMasterView = ({ payload, selectedEventId, onSelectEvent }) => {
   const [activeTab, setActiveTab] = useState('pre_earnings'); // pre_earnings, event_day, post_earnings, tracked
   const [listType, setListType] = useState('top_opportunities'); // top_opportunities, top_risk_alerts
@@ -152,6 +203,10 @@ const RadarMasterView = ({ payload, selectedEventId, onSelectEvent }) => {
           </button>
         </div>
       </div>
+
+      {isPostEarnings && (
+        <CompletedEarningsRefreshStatus refresh={payload?.meta?.completed_earnings_refresh} />
+      )}
 
       {activeTab !== 'tracked' && (
         <div className="radar-list-switch">
