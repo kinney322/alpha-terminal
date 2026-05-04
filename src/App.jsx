@@ -127,7 +127,7 @@ function App() {
             exit="out"
             variants={pageVariants}
             transition={{ type: 'tween', ease: 'easeOut', duration: 0.25 }}
-            style={{ height: 'calc(100% - 80px)', overflow: 'hidden' }} // Make sure we have space for inner scrolling
+            style={{ minHeight: 'calc(100% - 80px)', overflow: 'visible' }}
           >
             {panels[activeTab]}
           </motion.div>
