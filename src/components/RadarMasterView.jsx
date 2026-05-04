@@ -85,6 +85,7 @@ const findSearchContext = (query, payload, currentListIds, activeTab, listType) 
     if (radarLists.momentum?.watch?.includes(eventId)) return { type: 'other_view', ticker: detail.ticker, suggest: 'Momentum', action: { tab: 'momentum' } };
     if (radarLists.tracked?.reviewed_watch?.includes(eventId)) return { type: 'tracked', ticker: detail.ticker, action: { tab: 'tracked' } };
     if (radarLists.off_cycle_watch?.thesis_watch?.includes(eventId)) return { type: 'other_view', ticker: detail.ticker, suggest: 'Between Catalysts', action: { tab: 'between_catalysts' } };
+    if (detail.momentum_evidence?.status === 'available') return { type: 'other_view', ticker: detail.ticker, suggest: 'Momentum', action: { tab: 'momentum' } };
     
     if (detail.event_phase === 'pre_earnings' || detail.thesis_lifecycle?.phase === 'pre_earnings') return { type: 'other_view', ticker: detail.ticker, suggest: 'Pre-Earnings', action: { tab: 'pre_earnings' } };
     if (detail.event_phase === 'event_day' || detail.thesis_lifecycle?.phase === 'event_day') return { type: 'other_view', ticker: detail.ticker, suggest: 'Event Day', action: { tab: 'event_day' } };
@@ -154,10 +155,56 @@ const RadarMasterView = ({ payload, selectedEventId, onSelectEvent }) => {
   const [listType, setListType] = useState('top_opportunities'); // top_opportunities, top_risk_alerts
   const [searchQuery, setSearchQuery] = useState('');
 
+  const momentumAllListIds = (() => {
+    const events = Object.entries(payload?.events_detail || {});
+    const byTicker = new Map();
+
+    const groupKey = (item) => item?.trend_setup?.supply_chain_stage || item?.momentum_evidence?.evidence?.supply_chain_stage || 'unmapped';
+    const groupSortKey = (item) => {
+      const group = groupKey(item);
+      return group === 'unmapped' ? 'zzzz_unmapped' : group;
+    };
+    const phasePriority = (item) => (item?.event_phase === 'off_cycle' || item?.status === 'off_cycle_watch' ? 0 : 1);
+    const eventScore = (item) => Number(item?.momentum_evidence?.score ?? -1);
+
+    events.forEach(([eventId, detail]) => {
+      if (detail?.momentum_evidence?.status !== 'available') return;
+      const ticker = normalizeTicker(detail.ticker || eventId);
+      const existing = byTicker.get(ticker);
+      if (!existing) {
+        byTicker.set(ticker, { eventId, detail });
+        return;
+      }
+
+      const candidateScore = eventScore(detail);
+      const existingScore = eventScore(existing.detail);
+      const candidatePriority = phasePriority(detail);
+      const existingPriority = phasePriority(existing.detail);
+
+      if (
+        candidateScore > existingScore ||
+        (candidateScore === existingScore && candidatePriority > existingPriority) ||
+        (candidateScore === existingScore && candidatePriority === existingPriority && eventId < existing.eventId)
+      ) {
+        byTicker.set(ticker, { eventId, detail });
+      }
+    });
+
+    return Array.from(byTicker.values())
+      .sort((a, b) => {
+        const groupCompare = groupSortKey(a.detail).localeCompare(groupSortKey(b.detail));
+        if (groupCompare !== 0) return groupCompare;
+        const scoreCompare = eventScore(b.detail) - eventScore(a.detail);
+        if (scoreCompare !== 0) return scoreCompare;
+        return normalizeTicker(a.detail.ticker).localeCompare(normalizeTicker(b.detail.ticker));
+      })
+      .map(row => row.eventId);
+  })();
+
   const baseListIds = activeTab === 'tracked'
     ? payload?.radar_lists?.tracked?.reviewed_watch || []
     : activeTab === 'momentum'
-      ? payload?.radar_lists?.momentum?.watch || []
+      ? (listType === 'momentum_watch' ? payload?.radar_lists?.momentum?.watch || [] : momentumAllListIds)
     : activeTab === 'between_catalysts'
       ? payload?.radar_lists?.off_cycle_watch?.thesis_watch || []
       : payload?.radar_lists?.[activeTab]?.[listType] || [];
@@ -173,6 +220,7 @@ const RadarMasterView = ({ payload, selectedEventId, onSelectEvent }) => {
   const isPostEarnings = activeTab === 'post_earnings';
   const isBetweenCatalysts = activeTab === 'between_catalysts';
   const isMomentum = activeTab === 'momentum';
+  const isMomentumAllRanking = isMomentum && listType !== 'momentum_watch';
 
   const handleSwitchView = (action) => {
     if (action.tab) setActiveTab(action.tab);
@@ -322,25 +370,25 @@ const RadarMasterView = ({ payload, selectedEventId, onSelectEvent }) => {
         <div className="radar-tabs">
           <button 
             className={activeTab === 'pre_earnings' ? 'active' : ''} 
-            onClick={() => setActiveTab('pre_earnings')}
+            onClick={() => { setActiveTab('pre_earnings'); setListType('top_opportunities'); }}
           >
             Pre-Earnings
           </button>
           <button 
             className={activeTab === 'event_day' ? 'active' : ''} 
-            onClick={() => setActiveTab('event_day')}
+            onClick={() => { setActiveTab('event_day'); setListType('top_opportunities'); }}
           >
             Event Day
           </button>
           <button 
             className={activeTab === 'post_earnings' ? 'active' : ''} 
-            onClick={() => setActiveTab('post_earnings')}
+            onClick={() => { setActiveTab('post_earnings'); setListType('top_opportunities'); }}
           >
             Post-Earnings
           </button>
           <button 
             className={activeTab === 'momentum' ? 'active' : ''} 
-            onClick={() => setActiveTab('momentum')}
+            onClick={() => { setActiveTab('momentum'); setListType('all_scanner_ranking'); }}
           >
             Momentum
           </button>
@@ -365,8 +413,29 @@ const RadarMasterView = ({ payload, selectedEventId, onSelectEvent }) => {
 
       {isMomentum && (
         <div className="momentum-board-note">
-          <strong>Momentum Evidence Board</strong>
-          <span>Market-data-only ranking across active and off-cycle thesis rows. Not a trade recommendation.</span>
+          <strong>{isMomentumAllRanking ? 'All Scanner Ranking' : 'Momentum Watch'}</strong>
+          <span>
+            {isMomentumAllRanking
+              ? `Full Alpha Scanner list (${baseListIds.length} rows), grouped by industry/theme and ranked by momentum quality, 200D setup, Z-score, and relative strength. Includes off-cycle thesis rows.`
+              : `Filtered momentum watch list (${baseListIds.length} rows). Market-data-only evidence, not a trade recommendation.`}
+          </span>
+        </div>
+      )}
+
+      {isMomentum && (
+        <div className="radar-list-switch">
+          <button
+            className={listType !== 'momentum_watch' ? 'active' : ''}
+            onClick={() => setListType('all_scanner_ranking')}
+          >
+            All Scanner Ranking
+          </button>
+          <button
+            className={listType === 'momentum_watch' ? 'active' : ''}
+            onClick={() => setListType('momentum_watch')}
+          >
+            Momentum Watch
+          </button>
         </div>
       )}
 
