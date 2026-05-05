@@ -150,6 +150,11 @@ const SearchEmptyState = ({ context, onSwitch }) => {
   );
 };
 
+const formatResultLabel = (value) => {
+  if (!value) return 'Unknown';
+  return value.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+};
+
 const RadarMasterView = ({ payload, selectedEventId, onSelectEvent }) => {
   const [activeTab, setActiveTab] = useState('pre_earnings'); // pre_earnings, event_day, post_earnings, momentum, tracked, between_catalysts
   const [listType, setListType] = useState('top_opportunities'); // top_opportunities, top_risk_alerts
@@ -157,10 +162,21 @@ const RadarMasterView = ({ payload, selectedEventId, onSelectEvent }) => {
   const [momentumGroupFilter, setMomentumGroupFilter] = useState('all');
 
   const getMomentumGroupKey = (item) => (
+    item?.momentum_evidence?.industry_theme ||
+    item?.momentum_evidence?.evidence?.industry_theme ||
     item?.trend_setup?.supply_chain_stage ||
     item?.momentum_evidence?.evidence?.supply_chain_stage ||
     'unmapped'
   );
+
+  const getMomentumGroupLabel = (item) => {
+    const label = item?.momentum_evidence?.industry_theme_label ||
+                  item?.momentum_evidence?.evidence?.industry_theme_label;
+    if (label) return label;
+    const key = getMomentumGroupKey(item);
+    if (key === 'unmapped') return 'Unmapped';
+    return formatResultLabel(key);
+  };
 
   const momentumAllListIds = (() => {
     const events = Object.entries(payload?.events_detail || {});
@@ -212,22 +228,26 @@ const RadarMasterView = ({ payload, selectedEventId, onSelectEvent }) => {
     : momentumAllListIds;
 
   const momentumGroupOptions = (() => {
-    const counts = new Map();
+    const groupStats = new Map();
     momentumSourceListIds.forEach(eventId => {
       const item = payload?.events_detail?.[eventId];
-      const group = getMomentumGroupKey(item);
-      counts.set(group, (counts.get(group) || 0) + 1);
+      const key = getMomentumGroupKey(item);
+      const label = getMomentumGroupLabel(item);
+      if (!groupStats.has(key)) {
+        groupStats.set(key, { count: 0, label });
+      }
+      groupStats.get(key).count += 1;
     });
 
-    const groups = Array.from(counts.entries())
-      .map(([key, count]) => ({ key, count }))
+    const groups = Array.from(groupStats.entries())
+      .map(([key, { count, label }]) => ({ key, count, label }))
       .sort((a, b) => {
         if (a.key === 'unmapped') return 1;
         if (b.key === 'unmapped') return -1;
         return a.key.localeCompare(b.key);
       });
 
-    return [{ key: 'all', count: momentumSourceListIds.length }, ...groups];
+    return [{ key: 'all', count: momentumSourceListIds.length, label: 'All Themes' }, ...groups];
   })();
 
   const momentumFilteredListIds = momentumGroupFilter === 'all'
@@ -310,10 +330,6 @@ const RadarMasterView = ({ payload, selectedEventId, onSelectEvent }) => {
     return { label: 'Neutral', tone: 'neutral' };
   };
 
-  const formatResultLabel = (value) => {
-    if (!value) return 'Unknown';
-    return value.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
-  };
 
   const getPostBaseRateSummary = (item) => {
     const baseRate = item?.post_earnings_base_rate;
@@ -478,7 +494,7 @@ const RadarMasterView = ({ payload, selectedEventId, onSelectEvent }) => {
               className={momentumGroupFilter === option.key ? 'active' : ''}
               onClick={() => setMomentumGroupFilter(option.key)}
             >
-              {option.key === 'all' ? 'All Themes' : formatResultLabel(option.key)}
+              {option.label}
               <span>{option.count}</span>
             </button>
           ))}
@@ -693,7 +709,7 @@ const RadarMasterView = ({ payload, selectedEventId, onSelectEvent }) => {
                     ) : isMomentum ? (
                       <>
                         <td>
-                          <span className="quality-pill">{formatResultLabel(getMomentumGroup(item))}</span>
+                          <span className="quality-pill">{getMomentumGroupLabel(item)}</span>
                           <div className="post-result-subline">{formatResultLabel(item.event_phase || 'unknown')}</div>
                         </td>
                         <td>
