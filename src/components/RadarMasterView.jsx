@@ -161,6 +161,35 @@ const RadarMasterView = ({ payload, selectedEventId, onSelectEvent }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [momentumGroupFilter, setMomentumGroupFilter] = useState('all');
 
+  const getSyntheticDetail = (ticker) => {
+    const ranking = (payload?.momentum_universe?.rankings || []).find(r => r.ticker === ticker);
+    if (!ranking) return null;
+    return {
+      event_id: `${ticker}-MomentumUniverse`,
+      ticker,
+      event_phase: "off_cycle_universe",
+      event_category: "Momentum Universe",
+      status: "momentum_universe",
+      trend_setup: ranking.trend_setup || {},
+      momentum_evidence: {
+        ...ranking.momentum_evidence,
+        industry_theme: ranking.industry_theme,
+        industry_theme_label: ranking.industry_theme_label,
+        regime: ranking.regime,
+        score: ranking.score,
+        evidence: {
+          ...(ranking.momentum_evidence?.evidence || {}),
+          ...((ranking.trend_setup || {}).metrics || {})
+        }
+      },
+      trust_layer: {
+        data_source: "momentum_universe",
+        event_date_status: "not_applicable",
+        missing_fields: []
+      }
+    };
+  };
+
   const getMomentumGroupKey = (item) => (
     item?.momentum_evidence?.industry_theme ||
     item?.momentum_evidence?.evidence?.industry_theme ||
@@ -178,49 +207,11 @@ const RadarMasterView = ({ payload, selectedEventId, onSelectEvent }) => {
     return formatResultLabel(key);
   };
 
+  const isMomentumAllRanking = activeTab === 'momentum' && listType !== 'momentum_watch';
+
   const momentumAllListIds = (() => {
-    const events = Object.entries(payload?.events_detail || {});
-    const byTicker = new Map();
-
-    const groupSortKey = (item) => {
-      const group = getMomentumGroupKey(item);
-      return group === 'unmapped' ? 'zzzz_unmapped' : group;
-    };
-    const phasePriority = (item) => (item?.event_phase === 'off_cycle' || item?.status === 'off_cycle_watch' ? 0 : 1);
-    const eventScore = (item) => Number(item?.momentum_evidence?.score ?? -1);
-
-    events.forEach(([eventId, detail]) => {
-      if (detail?.momentum_evidence?.status !== 'available') return;
-      const ticker = normalizeTicker(detail.ticker || eventId);
-      const existing = byTicker.get(ticker);
-      if (!existing) {
-        byTicker.set(ticker, { eventId, detail });
-        return;
-      }
-
-      const candidateScore = eventScore(detail);
-      const existingScore = eventScore(existing.detail);
-      const candidatePriority = phasePriority(detail);
-      const existingPriority = phasePriority(existing.detail);
-
-      if (
-        candidateScore > existingScore ||
-        (candidateScore === existingScore && candidatePriority > existingPriority) ||
-        (candidateScore === existingScore && candidatePriority === existingPriority && eventId < existing.eventId)
-      ) {
-        byTicker.set(ticker, { eventId, detail });
-      }
-    });
-
-    return Array.from(byTicker.values())
-      .sort((a, b) => {
-        const groupCompare = groupSortKey(a.detail).localeCompare(groupSortKey(b.detail));
-        if (groupCompare !== 0) return groupCompare;
-        const scoreCompare = eventScore(b.detail) - eventScore(a.detail);
-        if (scoreCompare !== 0) return scoreCompare;
-        return normalizeTicker(a.detail.ticker).localeCompare(normalizeTicker(b.detail.ticker));
-      })
-      .map(row => row.eventId);
+    const rankings = payload?.momentum_universe?.rankings || [];
+    return rankings.map(r => r.ticker);
   })();
 
   const momentumSourceListIds = listType === 'momentum_watch'
@@ -228,31 +219,48 @@ const RadarMasterView = ({ payload, selectedEventId, onSelectEvent }) => {
     : momentumAllListIds;
 
   const momentumGroupOptions = (() => {
-    const groupStats = new Map();
-    momentumSourceListIds.forEach(eventId => {
-      const item = payload?.events_detail?.[eventId];
-      const key = getMomentumGroupKey(item);
-      const label = getMomentumGroupLabel(item);
-      if (!groupStats.has(key)) {
-        groupStats.set(key, { count: 0, label });
-      }
-      groupStats.get(key).count += 1;
-    });
-
-    const groups = Array.from(groupStats.entries())
-      .map(([key, { count, label }]) => ({ key, count, label }))
-      .sort((a, b) => {
+    if (isMomentumAllRanking) {
+      const counts = payload?.momentum_universe?.theme_counts || {};
+      const groups = Object.entries(counts).map(([key, count]) => {
+        const sample = (payload?.momentum_universe?.rankings || []).find(r => r.industry_theme === key);
+        const label = sample?.industry_theme_label || formatResultLabel(key);
+        return { key, count, label };
+      }).sort((a, b) => {
         if (a.key === 'unmapped') return 1;
         if (b.key === 'unmapped') return -1;
         return a.key.localeCompare(b.key);
       });
+      return [{ key: 'all', count: payload?.momentum_universe?.ranked_count || momentumSourceListIds.length, label: 'All Themes' }, ...groups];
+    } else {
+      const groupStats = new Map();
+      momentumSourceListIds.forEach(eventId => {
+        const item = payload?.events_detail?.[eventId];
+        const key = getMomentumGroupKey(item);
+        const label = getMomentumGroupLabel(item);
+        if (!groupStats.has(key)) {
+          groupStats.set(key, { count: 0, label });
+        }
+        groupStats.get(key).count += 1;
+      });
 
-    return [{ key: 'all', count: momentumSourceListIds.length, label: 'All Themes' }, ...groups];
+      const groups = Array.from(groupStats.entries())
+        .map(([key, { count, label }]) => ({ key, count, label }))
+        .sort((a, b) => {
+          if (a.key === 'unmapped') return 1;
+          if (b.key === 'unmapped') return -1;
+          return a.key.localeCompare(b.key);
+        });
+
+      return [{ key: 'all', count: momentumSourceListIds.length, label: 'All Themes' }, ...groups];
+    }
   })();
 
   const momentumFilteredListIds = momentumGroupFilter === 'all'
     ? momentumSourceListIds
-    : momentumSourceListIds.filter(eventId => getMomentumGroupKey(payload?.events_detail?.[eventId]) === momentumGroupFilter);
+    : momentumSourceListIds.filter(id => {
+        const item = isMomentumAllRanking ? getSyntheticDetail(id) : payload?.events_detail?.[id];
+        return getMomentumGroupKey(item) === momentumGroupFilter;
+      });
 
   const baseListIds = activeTab === 'tracked'
     ? payload?.radar_lists?.tracked?.reviewed_watch || []
@@ -263,17 +271,16 @@ const RadarMasterView = ({ payload, selectedEventId, onSelectEvent }) => {
       : payload?.radar_lists?.[activeTab]?.[listType] || [];
   const normalizedSearch = searchQuery.trim().toUpperCase();
   const filteredListIds = normalizedSearch
-    ? baseListIds.filter(eventId => {
-        const detail = payload?.events_detail?.[eventId];
-        const ticker = String(detail?.ticker || '').toUpperCase();
-        return ticker.includes(normalizedSearch) || eventId.toUpperCase().includes(normalizedSearch);
+    ? baseListIds.filter(id => {
+        const item = isMomentumAllRanking ? getSyntheticDetail(id) : payload?.events_detail?.[id];
+        const ticker = String(item?.ticker || id).toUpperCase();
+        return ticker.includes(normalizedSearch) || String(id).toUpperCase().includes(normalizedSearch);
       })
     : baseListIds;
   const isSearchMode = Boolean(normalizedSearch);
   const isPostEarnings = activeTab === 'post_earnings';
   const isBetweenCatalysts = activeTab === 'between_catalysts';
   const isMomentum = activeTab === 'momentum';
-  const isMomentumAllRanking = isMomentum && listType !== 'momentum_watch';
 
   const handleSwitchView = (action) => {
     if (action.tab) setActiveTab(action.tab);
@@ -487,7 +494,7 @@ const RadarMasterView = ({ payload, selectedEventId, onSelectEvent }) => {
       )}
 
       {isMomentum && (
-        <div className="momentum-group-filter">
+        <div className="momentum-group-filter-compact">
           {momentumGroupOptions.map(option => (
             <button
               key={option.key}
@@ -626,9 +633,10 @@ const RadarMasterView = ({ payload, selectedEventId, onSelectEvent }) => {
                 </td>
               </tr>
             ) : (
-              filteredListIds.map(eventId => {
-                const item = payload.events_detail[eventId];
+              filteredListIds.map(id => {
+                const item = isMomentumAllRanking ? getSyntheticDetail(id) : payload.events_detail[id];
                 if (!item) return null;
+                const eventId = isMomentumAllRanking ? item.event_id : id;
                 const isSelected = selectedEventId === eventId;
                 const isPullbacksView = isPostEarnings && listType === 'trend_pullbacks';
                 const peadDisplay = isPostEarnings ? getPeadDisplay(item.pead_signal) : null;
@@ -646,7 +654,7 @@ const RadarMasterView = ({ payload, selectedEventId, onSelectEvent }) => {
                   <tr 
                     key={eventId} 
                     className={`radar-row ${isSelected ? 'selected' : ''}`}
-                    onClick={() => onSelectEvent(eventId)}
+                    onClick={() => onSelectEvent(eventId, isMomentumAllRanking ? item : null)}
                   >
                     <td>
                       <div style={{ fontWeight: 'bold' }}>{item.ticker}</div>

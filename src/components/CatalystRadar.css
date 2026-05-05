@@ -200,7 +200,17 @@
   margin: -6px 0 16px;
 }
 
-.momentum-group-filter button {
+.momentum-group-filter-compact {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 8px;
+  margin: -6px 0 16px;
+  overflow-x: auto;
+  padding-bottom: 8px;
+}
+
+.momentum-group-filter button,
+.momentum-group-filter-compact button {
   align-items: center;
   background: var(--surface-color);
   border: 1px solid var(--border-light);
@@ -211,15 +221,18 @@
   font-weight: 700;
   gap: 8px;
   padding: 7px 10px;
+  white-space: nowrap;
 }
 
-.momentum-group-filter button.active {
+.momentum-group-filter button.active,
+.momentum-group-filter-compact button.active {
   background: var(--primary-color, #222);
   border-color: var(--primary-color, #222);
   color: #fff;
 }
 
-.momentum-group-filter button span {
+.momentum-group-filter button span,
+.momentum-group-filter-compact button span {
   background: rgba(15, 23, 42, 0.08);
   border-radius: 999px;
   color: inherit;
@@ -227,7 +240,8 @@
   padding: 1px 7px;
 }
 
-.momentum-group-filter button.active span {
+.momentum-group-filter button.active span,
+.momentum-group-filter-compact button.active span {
   background: rgba(255, 255, 255, 0.18);
 }
 

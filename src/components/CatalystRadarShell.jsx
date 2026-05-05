@@ -6,6 +6,7 @@ import './CatalystRadar.css';
 
 const CatalystRadarShell = () => {
   const [selectedEventId, setSelectedEventId] = useState(null);
+  const [selectedEventDetailOverride, setSelectedEventDetailOverride] = useState(null);
   const [payload, setPayload] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -23,8 +24,9 @@ const CatalystRadarShell = () => {
       });
   }, []);
 
-  const handleSelectEvent = (eventId) => {
+  const handleSelectEvent = (eventId, eventDetailOverride = null) => {
     setSelectedEventId(eventId);
+    setSelectedEventDetailOverride(eventDetailOverride);
   };
 
   if (loading) {
@@ -50,13 +52,13 @@ const CatalystRadarShell = () => {
           <button
             className="radar-detail-backdrop"
             aria-label="Close catalyst detail"
-            onClick={() => setSelectedEventId(null)}
+            onClick={() => { setSelectedEventId(null); setSelectedEventDetailOverride(null); }}
           />
           <aside className="radar-detail-pane fade-in" role="dialog" aria-modal="true">
             <SelectedCatalystIntelligence 
-              eventDetail={payload.events_detail[selectedEventId]}
+              eventDetail={selectedEventDetailOverride || payload.events_detail[selectedEventId]}
               peerReadthroughCases={payload.peer_readthrough_cases || {}}
-              onClose={() => setSelectedEventId(null)}
+              onClose={() => { setSelectedEventId(null); setSelectedEventDetailOverride(null); }}
             />
           </aside>
         </>

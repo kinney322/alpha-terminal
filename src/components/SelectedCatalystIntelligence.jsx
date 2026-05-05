@@ -789,6 +789,8 @@ const SelectedCatalystIntelligence = ({ eventDetail, peerReadthroughCases = {}, 
     return n > 0 ? 'var(--text-green, #4caf50)' : 'var(--text-red, #f44336)';
   };
 
+  const isMomentumUniverse = eventDetail.status === 'momentum_universe' || eventDetail.event_phase === 'off_cycle_universe';
+
   const renderTrustLayer = () => (
     <div className="trust-layer-status card">
       <h3>Trust Layer Status</h3>
@@ -801,6 +803,11 @@ const SelectedCatalystIntelligence = ({ eventDetail, peerReadthroughCases = {}, 
           <div className="warning-text"><strong>Missing:</strong> {eventDetail.trust_layer.missing_fields.join(', ')}</div>
         )}
       </div>
+      {isMomentumUniverse && (
+        <div className="panel-note" style={{ marginTop: '12px' }}>
+          <strong>Note:</strong> This is a market-data-only momentum tracking row. It does not represent an active catalyst event or a trade recommendation.
+        </div>
+      )}
     </div>
   );
 
@@ -885,6 +892,21 @@ const SelectedCatalystIntelligence = ({ eventDetail, peerReadthroughCases = {}, 
               <strong>{formatLifecycleTime(lifecycle?.last_seen_at).split(',')[0]}</strong>
             </div>
           </>
+        ) : isMomentumUniverse ? (
+          <>
+            <div>
+              <span className="panel-kicker">Status</span>
+              <strong>Universe Ranking</strong>
+            </div>
+            <div>
+              <span className="panel-kicker">Regime</span>
+              <strong style={{ textTransform: 'capitalize' }}>{(eventDetail.momentum_evidence?.regime || '').replace(/_/g, ' ')}</strong>
+            </div>
+            <div>
+              <span className="panel-kicker">Score</span>
+              <strong>{eventDetail.momentum_evidence?.score ?? '--'}</strong>
+            </div>
+          </>
         ) : (
           <>
             <div>
@@ -937,29 +959,47 @@ const SelectedCatalystIntelligence = ({ eventDetail, peerReadthroughCases = {}, 
       {currentDetailTab === 'overview' && (
         <>
           <OffCycleWatchPanel eventDetail={eventDetail} />
-          {eventDetail.status !== 'off_cycle_watch' && eventDetail.event_phase !== 'off_cycle' && (
+          {eventDetail.status !== 'off_cycle_watch' && eventDetail.event_phase !== 'off_cycle' && !isMomentumUniverse && (
             <>
               {renderMarketState()}
               {renderExpectedMove()}
             </>
+          )}
+          {isMomentumUniverse && (
+            <div className="card">
+              <h3>Momentum Universe Board</h3>
+              <div className="panel-note">
+                This row represents a purely quantitative ranking from the 200+ ticker Alpha Scanner universe. It is generated algorithmically from market data and is not a trade recommendation.
+              </div>
+            </div>
           )}
         </>
       )}
 
       {currentDetailTab === 'history' && (
         <>
-          <HistoricalSetupMatrixPanel eventDetail={eventDetail} />
-          <HistoricalEarningsTapePanel eventDetail={eventDetail} />
+          {!isMomentumUniverse && <HistoricalSetupMatrixPanel eventDetail={eventDetail} />}
+          {!isMomentumUniverse && <HistoricalEarningsTapePanel eventDetail={eventDetail} />}
+          {isMomentumUniverse && (
+            <div className="card">
+              <h3>History</h3>
+              <div className="warning-text">Historical earnings tape is not loaded for universe ranking rows.</div>
+            </div>
+          )}
         </>
       )}
 
       {currentDetailTab === 'trust' && (
         <>
           {renderTrustLayer()}
-          <ThesisLifecyclePanel eventDetail={eventDetail} />
-          {renderMarketState()}
-          {renderExpectedMove()}
-          <SpilloverWatchPanel eventDetail={eventDetail} />
+          {!isMomentumUniverse && (
+            <>
+              <ThesisLifecyclePanel eventDetail={eventDetail} />
+              {renderMarketState()}
+              {renderExpectedMove()}
+              <SpilloverWatchPanel eventDetail={eventDetail} />
+            </>
+          )}
           <RowLevelAuditTrail eventDetail={eventDetail} />
         </>
       )}
