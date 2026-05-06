@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-
+import React, { useState, useEffect } from 'react';
+import StockDossierView from './StockDossierView';
 const getPeadDisplay = (peadSignal) => {
   const direction = peadSignal?.direction;
   const reaction = peadSignal?.reaction || {};
@@ -65,7 +65,7 @@ const ThesisLifecyclePanel = ({ eventDetail }) => {
   if (!lifecycle) return null;
 
   const displayStatus = STATUS_MAPPING[lifecycle.status] || 'Unknown';
-  
+
   return (
     <div className="thesis-lifecycle-panel card">
       <h3>Thesis Lifecycle</h3>
@@ -92,7 +92,7 @@ const OffCycleWatchPanel = ({ eventDetail }) => {
   const lifecycle = eventDetail.thesis_lifecycle || {};
   const reason = eventDetail.off_cycle_reason || {};
   const review = lifecycle.review_state || {};
-  
+
   const formatLabel = (val) => val ? val.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase()) : '--';
 
   return (
@@ -217,7 +217,7 @@ const PostEarningsBaseRatePanel = ({ eventDetail }) => {
       </div>
     );
   }
-  
+
   return (
     <div className="pead-panel card">
       <h3>Post-Earnings Base Rate</h3>
@@ -271,7 +271,7 @@ const SpilloverWatchPanel = ({ eventDetail }) => {
 
 const HistoricalSetupMatrixPanel = ({ eventDetail }) => {
   const matrix = eventDetail?.historical_setup_matrix;
-  
+
   if (!matrix || matrix.status === 'unavailable') {
     return null;
   }
@@ -296,7 +296,7 @@ const HistoricalSetupMatrixPanel = ({ eventDetail }) => {
         </tr>
       );
     }
-    
+
     const count = bucket.count ?? 0;
     if (count === 0) {
       return (
@@ -332,7 +332,7 @@ const HistoricalSetupMatrixPanel = ({ eventDetail }) => {
       {matrix.status === 'insufficient_sample' && (
         <div className="warning-text" style={{marginBottom: '12px'}}>Warning: Insufficient total samples for reliable statistical baseline.</div>
       )}
-      
+
       <div className="grid-2col" style={{marginBottom: '16px', fontSize: '0.9em', color: 'var(--text-muted)'}}>
         <div><strong>Total Samples:</strong> {matrix.data_quality?.total_rows || 0}</div>
         <div><strong>Surprise Coverage:</strong> {matrix.data_quality?.surprise_coverage_pct || 0}%</div>
@@ -463,14 +463,14 @@ const PostEarningsReactionPanel = ({ eventDetail }) => {
 const TrendSetupPanel = ({ eventDetail }) => {
   const setup = eventDetail?.trend_setup;
   const isOffCycle = eventDetail.status === 'off_cycle_watch' || eventDetail.event_phase === 'off_cycle';
-  
+
   if (!setup || setup.status !== 'available') {
     return (
       <div className="trend-setup-panel card">
         <h3>Trend Setup Layer</h3>
         <div className="warning-text" style={{ color: 'var(--text-muted)' }}>
-          {isOffCycle 
-            ? 'Trend monitor is not available for this thesis yet.' 
+          {isOffCycle
+            ? 'Trend monitor is not available for this thesis yet.'
             : 'No trend setup available.'}
         </div>
       </div>
@@ -487,7 +487,7 @@ const TrendSetupPanel = ({ eventDetail }) => {
           {formatLabel(setup.stage)}
         </span>
       </div>
-      
+
       <div className="reaction-summary-grid" style={{ gridTemplateColumns: 'repeat(4, minmax(0, 1fr))' }}>
         <div>
           <span className="panel-kicker">Supply Chain</span>
@@ -742,8 +742,14 @@ const MomentumEvidencePanel = ({ eventDetail }) => {
 };
 
 // Main Component
-const SelectedCatalystIntelligence = ({ eventDetail, peerReadthroughCases = {}, onClose }) => {
-  const [activeDetailTab, setActiveDetailTab] = useState('reaction');
+const SelectedCatalystIntelligence = ({ eventDetail, payload, peerReadthroughCases = {}, onClose }) => {
+  const [activeDetailTab, setActiveDetailTab] = useState('dossier');
+
+  useEffect(() => {
+    if (eventDetail?.event_id || eventDetail?.ticker) {
+      setActiveDetailTab('dossier');
+    }
+  }, [eventDetail?.event_id, eventDetail?.ticker]);
 
   if (!eventDetail) return null;
 
@@ -755,18 +761,24 @@ const SelectedCatalystIntelligence = ({ eventDetail, peerReadthroughCases = {}, 
     (eventDetail.peer_readthrough.outgoing_candidates || []).length > 0
   );
   const hasMomentumEvidence = eventDetail.momentum_evidence?.status === 'available';
+  const isOffCycle = eventDetail.status === 'off_cycle_watch' || eventDetail.event_phase === 'off_cycle';
+  const isMomentumUniverse = eventDetail.status === 'momentum_universe' || eventDetail.event_phase === 'off_cycle_universe';
+
   const peadDisplay = hasPostEarningsSignal ? getPeadDisplay(eventDetail.pead_signal) : null;
   const reaction = eventDetail.pead_signal?.reaction || {};
-  const baseDetailTabs = hasPostEarningsSignal
-    ? [
-        { id: 'reaction', label: 'Reaction' },
-        { id: 'trend', label: 'Trend' },
-      ]
-    : [
-        { id: 'overview', label: 'Overview' },
-        { id: 'trend', label: 'Trend' },
-      ];
+
+  const baseDetailTabs = [];
+  if (!isMomentumUniverse && !isOffCycle) {
+    if (hasPostEarningsSignal) {
+      baseDetailTabs.push({ id: 'reaction', label: 'Reaction' });
+    } else {
+      baseDetailTabs.push({ id: 'overview', label: 'Overview' });
+    }
+  }
+  baseDetailTabs.push({ id: 'trend', label: 'Trend' });
+
   const detailTabs = [
+    { id: 'dossier', label: 'Radar Brief' },
     ...baseDetailTabs,
     ...(hasMomentumEvidence ? [{ id: 'momentum', label: 'Momentum' }] : []),
     ...(hasPeerReadthrough ? [{ id: 'peer', label: 'Peer' }] : []),
@@ -788,8 +800,6 @@ const SelectedCatalystIntelligence = ({ eventDetail, peerReadthroughCases = {}, 
     if (Number.isNaN(n) || n === 0) return 'inherit';
     return n > 0 ? 'var(--text-green, #4caf50)' : 'var(--text-red, #f44336)';
   };
-
-  const isMomentumUniverse = eventDetail.status === 'momentum_universe' || eventDetail.event_phase === 'off_cycle_universe';
 
   const renderTrustLayer = () => (
     <div className="trust-layer-status card">
@@ -861,69 +871,71 @@ const SelectedCatalystIntelligence = ({ eventDetail, peerReadthroughCases = {}, 
         <button className="close-btn" onClick={onClose}>×</button>
       </div>
 
-      <div className="drawer-summary-strip">
-        {hasPostEarningsSignal ? (
-          <>
-            <div>
-              <span className="panel-kicker">Signal</span>
-              <strong>{peadDisplay.label}</strong>
-            </div>
-            <div>
-              <span className="panel-kicker">T+1</span>
-              <strong style={{ color: getDrawerReturnColor(reaction.t1_return) }}>{formatDrawerPct(reaction.t1_return)}</strong>
-            </div>
-            <div>
-              <span className="panel-kicker">Current</span>
-              <strong style={{ color: getDrawerReturnColor(reaction.current_post_return) }}>{formatDrawerPct(reaction.current_post_return)}</strong>
-            </div>
-          </>
-        ) : (eventDetail.status === 'off_cycle_watch' || eventDetail.event_phase === 'off_cycle') ? (
-          <>
-            <div>
-              <span className="panel-kicker">Status</span>
-              <strong style={{ textTransform: 'capitalize' }}>{(eventDetail.status || '').replace(/_/g, ' ')}</strong>
-            </div>
-            <div>
-              <span className="panel-kicker">Review</span>
-              <strong>{lifecycle?.review_state?.reviewed ? 'Reviewed' : 'Pending'}</strong>
-            </div>
-            <div>
-              <span className="panel-kicker">Last Seen</span>
-              <strong>{formatLifecycleTime(lifecycle?.last_seen_at).split(',')[0]}</strong>
-            </div>
-          </>
-        ) : isMomentumUniverse ? (
-          <>
-            <div>
-              <span className="panel-kicker">Status</span>
-              <strong>Universe Ranking</strong>
-            </div>
-            <div>
-              <span className="panel-kicker">Regime</span>
-              <strong style={{ textTransform: 'capitalize' }}>{(eventDetail.momentum_evidence?.regime || '').replace(/_/g, ' ')}</strong>
-            </div>
-            <div>
-              <span className="panel-kicker">Score</span>
-              <strong>{eventDetail.momentum_evidence?.score ?? '--'}</strong>
-            </div>
-          </>
-        ) : (
-          <>
-            <div>
-              <span className="panel-kicker">Bias</span>
-              <strong>{eventDetail.market_state?.bias || '--'}</strong>
-            </div>
-            <div>
-              <span className="panel-kicker">Score</span>
-              <strong>{eventDetail.attention_score?.total_score || eventDetail.attention_score || '--'}</strong>
-            </div>
-            <div>
-              <span className="panel-kicker">Event Date</span>
-              <strong>{eventDetail.event_date || '--'}</strong>
-            </div>
-          </>
-        )}
-      </div>
+      {currentDetailTab !== 'dossier' && (
+        <div className="drawer-summary-strip">
+          {hasPostEarningsSignal ? (
+            <>
+              <div>
+                <span className="panel-kicker">Signal</span>
+                <strong>{peadDisplay.label}</strong>
+              </div>
+              <div>
+                <span className="panel-kicker">T+1</span>
+                <strong style={{ color: getDrawerReturnColor(reaction.t1_return) }}>{formatDrawerPct(reaction.t1_return)}</strong>
+              </div>
+              <div>
+                <span className="panel-kicker">Current</span>
+                <strong style={{ color: getDrawerReturnColor(reaction.current_post_return) }}>{formatDrawerPct(reaction.current_post_return)}</strong>
+              </div>
+            </>
+          ) : (eventDetail.status === 'off_cycle_watch' || eventDetail.event_phase === 'off_cycle') ? (
+            <>
+              <div>
+                <span className="panel-kicker">Status</span>
+                <strong style={{ textTransform: 'capitalize' }}>{(eventDetail.status || '').replace(/_/g, ' ')}</strong>
+              </div>
+              <div>
+                <span className="panel-kicker">Review</span>
+                <strong>{lifecycle?.review_state?.reviewed ? 'Reviewed' : 'Pending'}</strong>
+              </div>
+              <div>
+                <span className="panel-kicker">Last Seen</span>
+                <strong>{formatLifecycleTime(lifecycle?.last_seen_at).split(',')[0]}</strong>
+              </div>
+            </>
+          ) : isMomentumUniverse ? (
+            <>
+              <div>
+                <span className="panel-kicker">Status</span>
+                <strong>Universe Ranking</strong>
+              </div>
+              <div>
+                <span className="panel-kicker">Regime</span>
+                <strong style={{ textTransform: 'capitalize' }}>{(eventDetail.momentum_evidence?.regime || '').replace(/_/g, ' ')}</strong>
+              </div>
+              <div>
+                <span className="panel-kicker">Score</span>
+                <strong>{eventDetail.momentum_evidence?.score ?? '--'}</strong>
+              </div>
+            </>
+          ) : (
+            <>
+              <div>
+                <span className="panel-kicker">Bias</span>
+                <strong>{eventDetail.market_state?.bias || '--'}</strong>
+              </div>
+              <div>
+                <span className="panel-kicker">Score</span>
+                <strong>{eventDetail.attention_score?.total_score || eventDetail.attention_score || '--'}</strong>
+              </div>
+              <div>
+                <span className="panel-kicker">Event Date</span>
+                <strong>{eventDetail.event_date || '--'}</strong>
+              </div>
+            </>
+          )}
+        </div>
+      )}
 
       <div className="radar-detail-tabs">
         {detailTabs.map(tab => (
@@ -936,6 +948,10 @@ const SelectedCatalystIntelligence = ({ eventDetail, peerReadthroughCases = {}, 
           </button>
         ))}
       </div>
+
+      {currentDetailTab === 'dossier' && (
+        <StockDossierView eventDetail={eventDetail} payload={payload} />
+      )}
 
       {currentDetailTab === 'reaction' && (
         <>

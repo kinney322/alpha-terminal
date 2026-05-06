@@ -177,6 +177,9 @@ const RadarMasterView = ({ payload, selectedEventId, onSelectEvent }) => {
         industry_theme_label: ranking.industry_theme_label,
         regime: ranking.regime,
         score: ranking.score,
+        universe_rank: ranking.rank,
+        theme_rank: ranking.theme_rank,
+        universe_count: payload?.momentum_universe?.ranked_count,
         evidence: {
           ...(ranking.momentum_evidence?.evidence || {}),
           ...((ranking.trend_setup || {}).metrics || {})
