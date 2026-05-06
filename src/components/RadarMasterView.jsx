@@ -473,8 +473,8 @@ const RadarMasterView = ({ payload, selectedEventId, onSelectEvent }) => {
           <strong>{isMomentumAllRanking ? 'All Scanner Ranking' : 'Momentum Watch'}</strong>
           <span>
             {isMomentumAllRanking
-              ? `Current radar ranking (${baseListIds.length}/${momentumSourceListIds.length} rows), grouped by industry/theme and ranked by momentum quality, 200D setup, Z-score, and relative strength. Includes off-cycle thesis rows.`
-              : `Filtered momentum watch list (${baseListIds.length} rows). Market-data-only evidence, not a trade recommendation.`}
+              ? `Current radar ranking (${baseListIds.length}/${momentumSourceListIds.length} rows), grouped by industry/theme and ranked by momentum score, 200D setup, Z-score, and relative strength. Includes off-cycle thesis rows.`
+              : `Filtered momentum watch list (${baseListIds.length} rows). Momentum ranking highlights unusual price/relative-strength conditions for investigation.`}
           </span>
         </div>
       )}
@@ -594,7 +594,7 @@ const RadarMasterView = ({ payload, selectedEventId, onSelectEvent }) => {
                 <>
                   <th>Industry / Theme</th>
                   <th>Regime</th>
-                  <th>Quality Score</th>
+                  <th>Scanner Score</th>
                   <th>200D Setup</th>
                   <th>Relative Strength</th>
                   <th>Cautions</th>
@@ -732,7 +732,7 @@ const RadarMasterView = ({ payload, selectedEventId, onSelectEvent }) => {
                         <td>
                           <div className="metric-stack">
                             <strong>{momentum.score ?? '--'}</strong>
-                            <span>{momentum.trade_recommendation === false ? 'No trade signal' : 'Evidence score'}</span>
+                            <span>Scanner score</span>
                           </div>
                         </td>
                         <td>

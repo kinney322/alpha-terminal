@@ -66,7 +66,8 @@ export const buildDossierSummary = (eventDetail, payload) => {
 
   let verdict = '';
   if (isMomentumUniverse) {
-    verdict = `${eventDetail.ticker} shows strong momentum characteristics but requires further fundamental or catalyst validation.`;
+    const theme = eventDetail.momentum_evidence?.industry_theme_label || eventDetail.momentum_evidence?.industry_theme || 'sector';
+    verdict = `${eventDetail.ticker} is a top-ranked ${theme.toLowerCase()} momentum candidate; next validation comes from catalyst follow-through and peer confirmation.`;
   } else if (eventDetail.pead_signal?.status === 'available') {
     verdict = `Post-earnings price action indicates market repricing, supported by available trend evidence.`;
   } else {
