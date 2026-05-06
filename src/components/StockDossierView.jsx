@@ -192,7 +192,7 @@ const StockDossierView = ({ eventDetail, payload }) => {
             </div>
           )}
           <div style={{ fontStyle: 'italic', marginTop: '12px' }}>
-            Data provided for research purposes only. Metrics shown are algorithmically derived from the current scanner universe and historical pricing reactions. Not a trade recommendation.
+            Evidence and methodology layer. Metrics are algorithmically derived from the current scanner universe and historical pricing reactions.
           </div>
         </div>
       </details>
