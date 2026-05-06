@@ -690,7 +690,7 @@ const MomentumEvidencePanel = ({ eventDetail }) => {
       <div className="momentum-evidence-header">
         <div>
           <h3>Momentum Evidence</h3>
-          <div className="panel-note">Market-data-only evidence across active and off-cycle thesis rows. Not a trade recommendation.</div>
+          <div className="panel-note">Market-data-only evidence across active and off-cycle thesis rows. Research context.</div>
         </div>
         <span className={`quality-pill momentum-regime-pill momentum-${momentum.regime === 'crowded_momentum' ? 'crowded' : momentum.regime === 'pullback_watch' ? 'pullback' : momentum.regime === 'weak_momentum' ? 'weak' : momentum.regime === 'neutral' ? 'neutral' : 'positive'}`}>
           {formatDetailLabel(momentum.regime)}
@@ -707,8 +707,8 @@ const MomentumEvidencePanel = ({ eventDetail }) => {
           <strong>{formatDetailLabel(momentum.evidence_status)}</strong>
         </div>
         <div>
-          <span className="panel-kicker">Trade Signal</span>
-          <strong>{momentum.trade_recommendation === false ? 'No trade signal' : 'Evidence only'}</strong>
+          <span className="panel-kicker">Research Context</span>
+          <strong>{momentum.trade_recommendation === false ? 'Evidence only' : 'Research signal'}</strong>
         </div>
       </div>
 
@@ -735,7 +735,7 @@ const MomentumEvidencePanel = ({ eventDetail }) => {
           <span key={`flag-${idx}`} className="quality-pill">{formatDetailLabel(flag)}</span>
         ))}
         {momentum.news_checked === false && <span className="quality-pill">News not checked</span>}
-        <span className="quality-pill">Not a trade recommendation</span>
+        <span className="quality-pill">Research context</span>
       </div>
     </div>
   );
@@ -815,7 +815,7 @@ const SelectedCatalystIntelligence = ({ eventDetail, payload, peerReadthroughCas
       </div>
       {isMomentumUniverse && (
         <div className="panel-note" style={{ marginTop: '12px' }}>
-          <strong>Note:</strong> This is a market-data-only momentum tracking row. It does not represent an active catalyst event or a trade recommendation.
+          <strong>Note:</strong> This is a market-data-only momentum tracking row. It does not represent an active catalyst event. Research context.
         </div>
       )}
     </div>
@@ -985,7 +985,7 @@ const SelectedCatalystIntelligence = ({ eventDetail, payload, peerReadthroughCas
             <div className="card">
               <h3>Momentum Universe Board</h3>
               <div className="panel-note">
-                This row represents a purely quantitative ranking from the 200+ ticker Alpha Scanner universe. It is generated algorithmically from market data and is not a trade recommendation.
+                This row is generated from the Alpha Scanner universe ranking and highlights unusual momentum, trend, and relative-strength conditions for investigation.
               </div>
             </div>
           )}
