@@ -34,7 +34,7 @@ export const deriveThesisPulse = (eventDetail, payload) => {
   }
 
   if (isAboveMA200 === false) {
-    return { state: 'Market Evidence Weakening', reason: 'Price trend weakened; fundamental confirmation is not assessed by MA200.' };
+    return { state: 'Market Evidence Weakening', reason: 'Price trend weakened; fundamental coverage is not assessed by MA200.' };
   }
 
   if (isReviewed && (isAboveMA200 === false || isRSConstructive === false)) {
@@ -47,7 +47,7 @@ export const deriveThesisPulse = (eventDetail, payload) => {
   const isEventStudyConstructive = (eventStudy.continuation_rate > 0.5 || eventStudy.reversal_rate > 0.5);
 
   if (momentum.status === 'available' && isAboveMA200 === true && isRSConstructive === true && (hasConstructivePeer || isEventStudyConstructive)) {
-    return { state: 'Evidence Improving', reason: 'Market evidence is constructive, fundamental confirmation pending.' };
+    return { state: 'Evidence Improving', reason: 'Market evidence is constructive; fundamental coverage remains pending.' };
   }
 
   return { state: 'Stable', reason: 'Trend and momentum available with no material deterioration.' };
@@ -73,7 +73,7 @@ export const buildDossierSummary = (eventDetail, payload) => {
   } else if (eventDetail.pead_signal?.status === 'available') {
     verdict = `Post-earnings price action indicates market repricing, supported by available trend evidence.`;
   } else {
-    verdict = `Monitoring ${eventDetail.ticker} for setup confirmation around its catalyst window.`;
+    verdict = `Monitoring ${eventDetail.ticker} for setup validation around its catalyst window.`;
   }
 
   // Override with thesis notes if available
@@ -113,7 +113,7 @@ export const buildSignalStack = (eventDetail, payload) => {
 
 export const buildResearchKillSwitch = (eventDetail, payload) => {
   const watchpoints = [];
-  watchpoints.push("Fundamental confirmation remains pending until revisions, margins, or company-specific evidence improve.");
+  watchpoints.push("Fundamental coverage remains pending until revisions, margins, or company-specific evidence improve.");
 
   if (eventDetail.pead_signal?.status === 'available') {
     watchpoints.push("Post-earnings move fully retraces.");
@@ -177,7 +177,7 @@ export const buildEvidenceBoard = (eventDetail, payload) => {
     evidenceList.push({
       evidence: 'Peer Read-Through',
       signal: `${peer.incoming?.length || 0} incoming, ${peer.outgoing_candidates?.length || 0} outgoing`,
-      interpretation: 'Theme-level context only; company-specific confirmation remains pending.',
+      interpretation: 'Theme-level context only; company-specific evidence remains pending.',
       coverage: peer.incoming?.length > 0 ? 'Available' : 'Partial',
       priority: 4
     });
@@ -225,6 +225,20 @@ export const buildMomentumUniverseSyntheticDetail = (ticker, payload) => {
       data_source: "momentum_universe",
       event_date_status: "not_applicable",
       missing_fields: []
+    },
+    fundamental_evidence: ranking.fundamental_evidence || {
+      status: 'not_available',
+      knowledge_timestamp: null,
+      period_end_date: null,
+      vendor_source: null,
+      sector_compatible: null,
+      metrics: {
+        revenue_growth_yoy: null,
+        gross_margin: null,
+        operating_margin: null,
+        fcf_margin: null,
+        debt_to_equity: null
+      }
     }
   };
 };

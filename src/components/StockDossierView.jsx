@@ -39,6 +39,11 @@ const StockDossierView = ({ eventDetail, payload }) => {
 
   const isMomentumUniverse = eventDetail.status === 'momentum_universe' || eventDetail.event_phase === 'off_cycle_universe';
 
+  const fundamental = eventDetail.fundamental_evidence || {};
+  const isFundyMissing = !fundamental.status || fundamental.status === 'not_available';
+  const fundyStatus = isFundyMissing ? 'Not Included' : 'Coverage Pending';
+  const fundyPeriod = isFundyMissing ? 'Period Pending' : (fundamental.period_end_date || 'Period Pending');
+  const fundySource = isFundyMissing ? 'Source Pending' : (fundamental.vendor_source || 'Source Pending');
   // Ticker Header variables
   const ticker = eventDetail.ticker;
   const companyName = eventDetail.company_name || '';
@@ -86,12 +91,26 @@ const StockDossierView = ({ eventDetail, payload }) => {
       <div className="card dossier-risk-signals" style={{ marginBottom: '24px', borderLeft: '4px solid var(--text-muted)' }}>
         <h3 style={{ marginBottom: '16px' }}>Risk Counter-Signals</h3>
         <div className="grid-2col" style={{ fontSize: '0.95em' }}>
-          <div><strong>Fundamental Confirmation:</strong> <span style={{ color: 'var(--text-muted)' }}>Pending</span></div>
+          <div><strong>Fundamental Coverage:</strong> <span style={{ color: 'var(--text-muted)' }}>Pending</span></div>
           <div><strong>Revision Support:</strong> <span style={{ color: 'var(--text-muted)' }}>Not Included</span></div>
           <div><strong>Valuation Pressure:</strong> <span style={{ color: 'var(--text-muted)' }}>Not Included</span></div>
           <div><strong>Dilution / SBC:</strong> <span style={{ color: 'var(--text-muted)' }}>Not Included</span></div>
           <div style={{ gridColumn: '1 / -1', marginTop: '8px', fontStyle: 'italic', color: 'var(--text-muted)' }}>
             <strong>Data Coverage:</strong> Partial / Market Evidence Only
+          </div>
+        </div>
+      </div>
+
+      {/* 5b. Fundamental Evidence */}
+      <div className="card dossier-fundamental-evidence" style={{ marginBottom: '24px', borderLeft: '4px solid var(--border-light)' }}>
+        <h3 style={{ marginBottom: '16px' }}>Fundamental Evidence</h3>
+        <div className="grid-2col" style={{ fontSize: '0.95em' }}>
+          <div><strong>Status:</strong> <span className="quality-pill">{fundyStatus}</span></div>
+          <div><strong>Period:</strong> <span style={{ color: 'var(--text-muted)' }}>{fundyPeriod}</span></div>
+          <div><strong>Source:</strong> <span style={{ color: 'var(--text-muted)' }}>{fundySource}</span></div>
+          <div><strong>Metrics:</strong> <span style={{ color: 'var(--text-muted)' }}>Coverage Pending</span></div>
+          <div style={{ gridColumn: '1 / -1', marginTop: '12px', fontStyle: 'italic', color: 'var(--text-muted)' }}>
+            Fundamental metrics are not included in the current production payload. Market evidence remains separate from company fundamentals.
           </div>
         </div>
       </div>
