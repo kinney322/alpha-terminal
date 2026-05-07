@@ -262,18 +262,18 @@ const RadarMasterView = ({ payload, selectedEventId, onSelectEvent }) => {
   };
 
   const formatShortDate = (value) => {
-    if (!value) return '--';
+    if (!value) return 'Date Pending';
     try {
       const d = new Date(value);
-      if (isNaN(d.getTime())) return '--';
+      if (isNaN(d.getTime())) return 'Date Pending';
       return d.toISOString().split('T')[0];
     } catch (e) {
-      return '--';
+      return 'Date Pending';
     }
   };
 
   const formatSignedPct = (value) => {
-    if (value === undefined || value === null || Number.isNaN(Number(value))) return '--';
+    if (value === undefined || value === null || Number.isNaN(Number(value))) return 'Not Included';
     const n = Number(value);
     return `${n > 0 ? '+' : ''}${n.toFixed(1)}%`;
   };
@@ -316,7 +316,7 @@ const RadarMasterView = ({ payload, selectedEventId, onSelectEvent }) => {
     const baseRate = item?.post_earnings_base_rate;
     const peadDirection = item?.pead_signal?.direction;
     if (!baseRate || baseRate.status !== 'available') {
-      return { label: '--', sublabel: 'No base rate' };
+      return { label: 'Base Rate Pending', sublabel: 'No base rate' };
     }
 
     const rate = peadDirection === 'fade'
@@ -325,7 +325,7 @@ const RadarMasterView = ({ payload, selectedEventId, onSelectEvent }) => {
 
     const label = rate !== undefined && rate !== null && !Number.isNaN(Number(rate))
       ? `${(Number(rate) * 100).toFixed(0)}%`
-      : '--';
+      : 'Base Rate Pending';
     const sample = baseRate.similar_reaction_sample_size ?? baseRate.sample_size;
 
     return {
@@ -645,7 +645,7 @@ const RadarMasterView = ({ payload, selectedEventId, onSelectEvent }) => {
                                 {formatResultLabel(item.trend_setup.stage)}
                               </span>
                               <div className="post-result-subline">
-                                Score: {item.trend_setup.score || '--'} | {item.trend_setup.supply_chain_stage ? formatResultLabel(item.trend_setup.supply_chain_stage) : ''}
+                                Score: {item.trend_setup.score || 'Not Included'} | {item.trend_setup.supply_chain_stage ? formatResultLabel(item.trend_setup.supply_chain_stage) : 'Context Pending'}
                               </div>
                             </>
                           ) : (
@@ -702,14 +702,14 @@ const RadarMasterView = ({ payload, selectedEventId, onSelectEvent }) => {
                         </td>
                         <td>
                           <div className="metric-stack">
-                            <strong>{momentum.score ?? '--'}</strong>
+                            <strong>{momentum.score ?? 'Not Included'}</strong>
                             <span>Scanner score</span>
                           </div>
                         </td>
                         <td>
                           <div className="metric-stack">
                             <strong>MA200 {formatSignedPct(momentumEvidence.ma200_slope_pct)}</strong>
-                            <span>Z {momentumEvidence.zscore_200d != null ? Number(momentumEvidence.zscore_200d).toFixed(2) : '--'} · Band days {momentumEvidence.days_above_upper_band_60d ?? '--'}</span>
+                            <span>Z {momentumEvidence.zscore_200d != null ? Number(momentumEvidence.zscore_200d).toFixed(2) : 'Not Included'} · Band days {momentumEvidence.days_above_upper_band_60d ?? 'Not Included'}</span>
                           </div>
                         </td>
                         <td>
@@ -731,10 +731,10 @@ const RadarMasterView = ({ payload, selectedEventId, onSelectEvent }) => {
                           <span className="quality-pill">{formatResultLabel(item.thesis_lifecycle?.status || 'Unknown')}</span>
                         </td>
                         <td>
-                          {item.off_cycle_reason?.labels?.length > 0 ? item.off_cycle_reason.labels.map((l, i) => <span key={i} className="quality-pill">{formatResultLabel(l)}</span>) : '--'}
+                          {item.off_cycle_reason?.labels?.length > 0 ? item.off_cycle_reason.labels.map((l, i) => <span key={i} className="quality-pill">{formatResultLabel(l)}</span>) : 'Coverage Pending'}
                         </td>
                         <td>
-                          {item.thesis_lifecycle?.review_state?.reviewed ? 'Reviewed' : '--'}
+                          {item.thesis_lifecycle?.review_state?.reviewed ? 'Reviewed' : 'Review Pending'}
                         </td>
                         <td>
                           <div style={{ fontSize: '0.85em', color: 'var(--text-muted)' }}>
