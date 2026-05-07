@@ -177,7 +177,7 @@ export const buildEvidenceBoard = (eventDetail, payload) => {
     evidenceList.push({
       evidence: 'Peer Read-Through',
       signal: `${peer.incoming?.length || 0} incoming, ${peer.outgoing_candidates?.length || 0} outgoing`,
-      interpretation: 'Theme-level confirmation or contradiction.',
+      interpretation: 'Theme-level context only; company-specific confirmation remains pending.',
       coverage: peer.incoming?.length > 0 ? 'Available' : 'Partial',
       priority: 4
     });
