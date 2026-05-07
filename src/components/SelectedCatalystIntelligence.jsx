@@ -1,5 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import StockDossierView from './StockDossierView';
+
+const MISSING_VALUE = 'Not Included';
+const MISSING_DATE = 'Date Pending';
+
 const getPeadDisplay = (peadSignal) => {
   const direction = peadSignal?.direction;
   const reaction = peadSignal?.reaction || {};
@@ -28,10 +32,10 @@ const getPeadDisplay = (peadSignal) => {
 };
 
 const formatLifecycleTime = (value) => {
-  if (!value) return '--';
+  if (!value) return MISSING_DATE;
   try {
     const d = new Date(value);
-    if (isNaN(d.getTime())) return '--';
+    if (isNaN(d.getTime())) return MISSING_DATE;
     return new Intl.DateTimeFormat('en-US', {
       month: 'short',
       day: 'numeric',
@@ -42,7 +46,7 @@ const formatLifecycleTime = (value) => {
       timeZoneName: 'short',
     }).format(d);
   } catch (e) {
-    return '--';
+    return MISSING_DATE;
   }
 };
 
@@ -56,7 +60,7 @@ const STATUS_MAPPING = {
 };
 
 const formatDetailLabel = (value) => {
-  if (!value) return '--';
+  if (!value) return MISSING_VALUE;
   return String(value).replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
 };
 
@@ -71,7 +75,7 @@ const ThesisLifecyclePanel = ({ eventDetail }) => {
       <h3>Thesis Lifecycle</h3>
       <div className="grid-2col">
         <div><strong>Status:</strong> {displayStatus}</div>
-        <div><strong>Phase:</strong> {lifecycle.phase || '--'}</div>
+        <div><strong>Phase:</strong> {lifecycle.phase || MISSING_VALUE}</div>
         <div><strong>First Detected:</strong> {formatLifecycleTime(lifecycle.first_detected_at)}</div>
         <div><strong>Last Seen:</strong> {formatLifecycleTime(lifecycle.last_seen_at)}</div>
         <div><strong>Status Changed:</strong> {formatLifecycleTime(lifecycle.status_changed_at)}</div>
@@ -93,7 +97,7 @@ const OffCycleWatchPanel = ({ eventDetail }) => {
   const reason = eventDetail.off_cycle_reason || {};
   const review = lifecycle.review_state || {};
 
-  const formatLabel = (val) => val ? val.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase()) : '--';
+  const formatLabel = (val) => val ? val.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase()) : MISSING_VALUE;
 
   return (
     <div className="off-cycle-panel card">
@@ -101,7 +105,7 @@ const OffCycleWatchPanel = ({ eventDetail }) => {
       <div className="grid-2col">
         <div><strong>Status:</strong> {formatLabel(eventDetail.status)}</div>
         <div><strong>Source:</strong> {formatLabel(eventDetail.source)}</div>
-        <div><strong>Reason Labels:</strong> {reason.labels?.length ? reason.labels.map(l => formatLabel(l)).join(', ') : '--'}</div>
+        <div><strong>Reason Labels:</strong> {reason.labels?.length ? reason.labels.map(l => formatLabel(l)).join(', ') : MISSING_VALUE}</div>
         <div><strong>Review State:</strong> {review.reviewed ? 'Reviewed' : 'Not Reviewed'}</div>
         <div><strong>Last Seen:</strong> {formatLifecycleTime(lifecycle.last_seen_at)}</div>
         <div><strong>Status Changed:</strong> {formatLifecycleTime(lifecycle.status_changed_at)}</div>
@@ -147,7 +151,7 @@ const HistoricalEarningsTapePanel = ({ eventDetail }) => {
     return 'inherit';
   };
 
-  const formatPct = (val) => val != null ? `${val.toFixed(1)}%` : '--';
+  const formatPct = (val) => val != null ? `${val.toFixed(1)}%` : MISSING_VALUE;
 
   return (
     <div className="historical-earnings-tape-panel card">
@@ -179,7 +183,7 @@ const HistoricalEarningsTapePanel = ({ eventDetail }) => {
                 <td style={{ padding: '8px 4px' }}>{r.event_date}</td>
                 <td style={{ padding: '8px 4px', fontWeight: 'bold' }}>{formatSurpriseLabel(r.surprise_label)}</td>
                 <td style={{ padding: '8px 4px', color: 'var(--text-muted)' }}>
-                  {r.eps_estimate != null ? r.eps_estimate.toFixed(2) : '--'} / {r.actual_eps != null ? r.actual_eps.toFixed(2) : '--'}
+                  {r.eps_estimate != null ? r.eps_estimate.toFixed(2) : MISSING_VALUE} / {r.actual_eps != null ? r.actual_eps.toFixed(2) : MISSING_VALUE}
                 </td>
                 <td style={{ padding: '8px 4px', color: getReturnColor(r.surprise_percent) }}>{formatPct(r.surprise_percent)}</td>
                 <td style={{ padding: '8px 4px', color: getReturnColor(r.t1_return) }}>{formatPct(r.t1_return)}</td>
@@ -401,7 +405,7 @@ const PostEarningsReactionPanel = ({ eventDetail }) => {
   };
   const formatPct = (value) => {
     const n = normalizePct(value);
-    if (n === null) return '--';
+    if (n === null) return MISSING_VALUE;
     return `${n > 0 ? '+' : ''}${n.toFixed(1)}%`;
   };
   const getReturnColor = (value) => {
@@ -420,7 +424,7 @@ const PostEarningsReactionPanel = ({ eventDetail }) => {
         </div>
         <div>
           <span className="panel-kicker">Strength</span>
-          <strong style={{ textTransform: 'capitalize' }}>{eventDetail.pead_signal.strength || '--'}</strong>
+          <strong style={{ textTransform: 'capitalize' }}>{eventDetail.pead_signal.strength || MISSING_VALUE}</strong>
         </div>
         <div>
           <span className="panel-kicker">Current</span>
@@ -477,7 +481,7 @@ const TrendSetupPanel = ({ eventDetail }) => {
     );
   }
 
-  const formatLabel = (val) => val ? val.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase()) : '--';
+  const formatLabel = (val) => val ? val.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase()) : MISSING_VALUE;
 
   return (
     <div className="trend-setup-panel card">
@@ -495,11 +499,11 @@ const TrendSetupPanel = ({ eventDetail }) => {
         </div>
         <div>
           <span className="panel-kicker">Setup Score</span>
-          <strong>{setup.score ?? '--'}</strong>
+          <strong>{setup.score ?? MISSING_VALUE}</strong>
         </div>
         <div>
           <span className="panel-kicker">Range Duration</span>
-          <strong>{setup.metrics?.base_duration_days ?? '--'} Trading Days</strong>
+          <strong>{setup.metrics?.base_duration_days != null ? `${setup.metrics.base_duration_days} Trading Days` : MISSING_VALUE}</strong>
         </div>
         <div>
           <span className="panel-kicker">Base Quality</span>
@@ -523,14 +527,14 @@ const TrendSetupPanel = ({ eventDetail }) => {
       )}
 
       <div className="grid-2col" style={{ fontSize: '0.95em' }}>
-        <div><strong>MA200 Slope:</strong> {setup.metrics?.ma200_slope_pct != null ? setup.metrics.ma200_slope_pct.toFixed(1) + '%' : '--'}</div>
-        <div><strong>Z-Score 200D:</strong> {setup.metrics?.zscore_200d != null ? setup.metrics.zscore_200d.toFixed(2) : '--'}</div>
-        <div><strong>Days &gt; 200MA + 1.5σ Band:</strong> {setup.metrics?.days_above_upper_band_60d ?? '--'}</div>
-        <div><strong>52W Range Position (0=Low, 1=High):</strong> {setup.metrics?.range_position_52w != null ? setup.metrics.range_position_52w.toFixed(2) : '--'}</div>
-        <div><strong>RS vs SPY (63D):</strong> {setup.metrics?.relative_strength_vs_spy_63d != null ? setup.metrics.relative_strength_vs_spy_63d.toFixed(1) + '%' : '--'}</div>
-        <div><strong>RS vs QQQ (63D):</strong> {setup.metrics?.relative_strength_vs_qqq_63d != null ? setup.metrics.relative_strength_vs_qqq_63d.toFixed(1) + '%' : '--'}</div>
-        <div><strong>Latest Close:</strong> {setup.metrics?.latest_close != null ? setup.metrics.latest_close.toFixed(2) : '--'}</div>
-        <div><strong>MA200 / Upper Band:</strong> {setup.metrics?.ma200 != null ? setup.metrics.ma200.toFixed(2) : '--'} / {setup.metrics?.upper_band_200d_1_5sigma != null ? setup.metrics.upper_band_200d_1_5sigma.toFixed(2) : '--'}</div>
+        <div><strong>MA200 Slope:</strong> {setup.metrics?.ma200_slope_pct != null ? setup.metrics.ma200_slope_pct.toFixed(1) + '%' : MISSING_VALUE}</div>
+        <div><strong>Z-Score 200D:</strong> {setup.metrics?.zscore_200d != null ? setup.metrics.zscore_200d.toFixed(2) : MISSING_VALUE}</div>
+        <div><strong>Days &gt; 200MA + 1.5σ Band:</strong> {setup.metrics?.days_above_upper_band_60d ?? MISSING_VALUE}</div>
+        <div><strong>52W Range Position (0=Low, 1=High):</strong> {setup.metrics?.range_position_52w != null ? setup.metrics.range_position_52w.toFixed(2) : MISSING_VALUE}</div>
+        <div><strong>RS vs SPY (63D):</strong> {setup.metrics?.relative_strength_vs_spy_63d != null ? setup.metrics.relative_strength_vs_spy_63d.toFixed(1) + '%' : MISSING_VALUE}</div>
+        <div><strong>RS vs QQQ (63D):</strong> {setup.metrics?.relative_strength_vs_qqq_63d != null ? setup.metrics.relative_strength_vs_qqq_63d.toFixed(1) + '%' : MISSING_VALUE}</div>
+        <div><strong>Latest Close:</strong> {setup.metrics?.latest_close != null ? setup.metrics.latest_close.toFixed(2) : MISSING_VALUE}</div>
+        <div><strong>MA200 / Upper Band:</strong> {setup.metrics?.ma200 != null ? setup.metrics.ma200.toFixed(2) : MISSING_VALUE} / {setup.metrics?.upper_band_200d_1_5sigma != null ? setup.metrics.upper_band_200d_1_5sigma.toFixed(2) : MISSING_VALUE}</div>
       </div>
     </div>
   );
@@ -552,7 +556,7 @@ const PeerReadthroughPanel = ({ eventDetail, peerReadthroughCases = {} }) => {
     );
   }
 
-  const formatLabel = (val) => val ? String(val).replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase()) : '--';
+  const formatLabel = (val) => val ? String(val).replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase()) : MISSING_VALUE;
   const formatPct = (value) => {
     if (value === undefined || value === null || Number.isNaN(Number(value))) return 'Not available';
     const n = Number(value);
@@ -588,7 +592,7 @@ const PeerReadthroughPanel = ({ eventDetail, peerReadthroughCases = {} }) => {
           </div>
           <div className="peer-readthrough-case__badges">
             <span className="quality-pill">{formatLabel(c.status)}</span>
-            <span className="quality-pill">Score {c.score ?? '--'}</span>
+            <span className="quality-pill">Score {c.score ?? MISSING_VALUE}</span>
           </div>
         </div>
 
@@ -675,13 +679,13 @@ const MomentumEvidencePanel = ({ eventDetail }) => {
   }
 
   const formatPct = (value) => {
-    if (value === undefined || value === null || Number.isNaN(Number(value))) return '--';
+    if (value === undefined || value === null || Number.isNaN(Number(value))) return MISSING_VALUE;
     const n = Number(value);
     return `${n > 0 ? '+' : ''}${n.toFixed(1)}%`;
   };
 
   const formatNumber = (value, digits = 2) => {
-    if (value === undefined || value === null || Number.isNaN(Number(value))) return '--';
+    if (value === undefined || value === null || Number.isNaN(Number(value))) return MISSING_VALUE;
     return Number(value).toFixed(digits);
   };
 
@@ -700,7 +704,7 @@ const MomentumEvidencePanel = ({ eventDetail }) => {
       <div className="reaction-summary-grid">
         <div>
           <span className="panel-kicker">Evidence Score</span>
-          <strong>{momentum.score ?? '--'}</strong>
+          <strong>{momentum.score ?? MISSING_VALUE}</strong>
         </div>
         <div>
           <span className="panel-kicker">Evidence Status</span>
@@ -721,7 +725,7 @@ const MomentumEvidencePanel = ({ eventDetail }) => {
       <div className="grid-2col" style={{ fontSize: '0.95em', marginBottom: '16px' }}>
         <div><strong>MA200 Slope:</strong> {formatPct(evidence.ma200_slope_pct)}</div>
         <div><strong>Z-Score 200D:</strong> {formatNumber(evidence.zscore_200d)}</div>
-        <div><strong>Days &gt; 200MA + 1.5σ Band:</strong> {evidence.days_above_upper_band_60d ?? '--'}</div>
+        <div><strong>Days &gt; 200MA + 1.5σ Band:</strong> {evidence.days_above_upper_band_60d ?? MISSING_VALUE}</div>
         <div><strong>52W Range Position:</strong> {formatNumber(evidence.range_position_52w)}</div>
         <div><strong>RS vs SPY (63D):</strong> {formatPct(evidence.relative_strength_vs_spy_63d)}</div>
         <div><strong>RS vs QQQ (63D):</strong> {formatPct(evidence.relative_strength_vs_qqq_63d)}</div>
@@ -790,7 +794,7 @@ const SelectedCatalystIntelligence = ({ eventDetail, payload, peerReadthroughCas
     : detailTabs[0].id;
 
   const formatDrawerPct = (value) => {
-    if (value === undefined || value === null || Number.isNaN(Number(value))) return '--';
+    if (value === undefined || value === null || Number.isNaN(Number(value))) return MISSING_VALUE;
     const n = Number(value);
     return `${n > 0 ? '+' : ''}${n.toFixed(1)}%`;
   };
@@ -804,15 +808,16 @@ const SelectedCatalystIntelligence = ({ eventDetail, payload, peerReadthroughCas
   const renderTrustLayer = () => (
     <div className="trust-layer-status card">
       <h3>Trust Layer Status</h3>
-      <div className="grid-2col">
-        <div><strong>Event Date:</strong> {eventDetail.event_date} ({eventDetail.event_date_status})</div>
-        <div><strong>Timing:</strong> {eventDetail.trust_layer?.earnings_timing || '--'}</div>
-        <div><strong>Options Data:</strong> {eventDetail.trust_layer?.options_data_status || '--'}</div>
-        <div><strong>Sample Size:</strong> {eventDetail.trust_layer?.sample_size ?? '--'}</div>
-        {eventDetail.trust_layer?.missing_fields?.length > 0 && (
-          <div className="warning-text"><strong>Missing:</strong> {eventDetail.trust_layer.missing_fields.join(', ')}</div>
-        )}
+      <div className="grid-2col" style={{ fontSize: '0.9em' }}>
+        <div><strong>Event Date:</strong> {eventDetail.event_date || MISSING_DATE} ({eventDetail.event_date_status || MISSING_VALUE})</div>
+        <div><strong>Data Source:</strong> {eventDetail.trust_layer?.data_source || MISSING_VALUE}</div>
+        <div><strong>Timing:</strong> {eventDetail.trust_layer?.earnings_timing || MISSING_VALUE}</div>
+        <div><strong>Options Data:</strong> {eventDetail.trust_layer?.options_data_status || MISSING_VALUE}</div>
+        <div><strong>Sample Size:</strong> {eventDetail.trust_layer?.sample_size ?? MISSING_VALUE}</div>
       </div>
+      {eventDetail.trust_layer?.missing_fields?.length > 0 && (
+        <div className="warning-text"><strong>Missing:</strong> {eventDetail.trust_layer.missing_fields.join(', ')}</div>
+      )}
       {isMomentumUniverse && (
         <div className="panel-note" style={{ marginTop: '12px' }}>
           <strong>Note:</strong> This is a market-data-only momentum tracking row. It does not represent an active catalyst event. Research context.
@@ -824,18 +829,18 @@ const SelectedCatalystIntelligence = ({ eventDetail, payload, peerReadthroughCas
   const renderMarketState = () => (
     <div className="market-state-panel card">
       <h3>Market State</h3>
-      <div className="grid-2col">
-        <div><strong>Bias:</strong> <span className={`bias-${eventDetail.market_state?.bias?.toLowerCase()}`}>{eventDetail.market_state?.bias || '--'}</span></div>
-        <div><strong>Edge Gap:</strong> {eventDetail.market_state?.edge_gap ?? '--'}</div>
-        <div><strong>T-5 Runup Pct:</strong> {eventDetail.market_state?.runup_t5_percentile !== undefined ? eventDetail.market_state?.runup_t5_percentile + '%' : 'Unknown'}</div>
-        <div><strong>Vol Pricing:</strong> {eventDetail.market_state?.vol_pricing_status || '--'}</div>
-        <div><strong>Liquidity Risk:</strong> {eventDetail.market_state?.liquidity_risk || '--'}</div>
-        <div className="risk-flags-container">
-          <strong>Risk Flags:</strong>
-          {eventDetail.market_state?.risk_flags?.length > 0 ? eventDetail.market_state.risk_flags.map((flag, idx) => (
-            <span key={idx} className="risk-flag-mini">{flag}</span>
-          )) : <span className="warning-text" style={{display: 'inline-block', margin: 0}}>None</span>}
-        </div>
+      <div className="grid-2col" style={{ fontSize: '0.9em', marginTop: '12px' }}>
+        <div><strong>Bias:</strong> <span className={`bias-${eventDetail.market_state?.bias?.toLowerCase()}`}>{eventDetail.market_state?.bias || MISSING_VALUE}</span></div>
+        <div><strong>Edge Gap:</strong> {eventDetail.market_state?.edge_gap ?? MISSING_VALUE}</div>
+        <div><strong>T-5 Runup Pct:</strong> {eventDetail.market_state?.runup_t5_percentile !== undefined ? eventDetail.market_state.runup_t5_percentile + '%' : MISSING_VALUE}</div>
+        <div><strong>Vol Pricing:</strong> {eventDetail.market_state?.vol_pricing_status || MISSING_VALUE}</div>
+        <div><strong>Liquidity Risk:</strong> {eventDetail.market_state?.liquidity_risk || MISSING_VALUE}</div>
+      </div>
+      <div className="risk-flags-container">
+        <strong>Risk Flags:</strong>
+        {eventDetail.market_state?.risk_flags?.length > 0 ? eventDetail.market_state.risk_flags.map((flag, idx) => (
+          <span key={idx} className="risk-flag-mini">{flag}</span>
+        )) : <span className="warning-text" style={{display: 'inline-block', margin: 0}}>None</span>}
       </div>
     </div>
   );
@@ -906,7 +911,7 @@ const SelectedCatalystIntelligence = ({ eventDetail, payload, peerReadthroughCas
             <>
               <div>
                 <span className="panel-kicker">Status</span>
-                <strong style={{ textTransform: 'capitalize' }}>{(eventDetail.status || '').replace(/_/g, ' ')}</strong>
+                <strong style={{ textTransform: 'capitalize' }}>{formatDetailLabel(eventDetail.status)}</strong>
               </div>
               <div>
                 <span className="panel-kicker">Review</span>
@@ -925,26 +930,26 @@ const SelectedCatalystIntelligence = ({ eventDetail, payload, peerReadthroughCas
               </div>
               <div>
                 <span className="panel-kicker">Regime</span>
-                <strong style={{ textTransform: 'capitalize' }}>{(eventDetail.momentum_evidence?.regime || '').replace(/_/g, ' ')}</strong>
+                <strong style={{ textTransform: 'capitalize' }}>{formatDetailLabel(eventDetail.momentum_evidence?.regime)}</strong>
               </div>
               <div>
                 <span className="panel-kicker">Score</span>
-                <strong>{eventDetail.momentum_evidence?.score ?? '--'}</strong>
+                <strong>{eventDetail.momentum_evidence?.score ?? MISSING_VALUE}</strong>
               </div>
             </>
           ) : (
             <>
               <div>
                 <span className="panel-kicker">Bias</span>
-                <strong>{eventDetail.market_state?.bias || '--'}</strong>
+                <strong>{eventDetail.market_state?.bias || MISSING_VALUE}</strong>
               </div>
               <div>
                 <span className="panel-kicker">Score</span>
-                <strong>{eventDetail.attention_score?.total_score || eventDetail.attention_score || '--'}</strong>
+                <strong>{eventDetail.attention_score?.total_score || eventDetail.attention_score || MISSING_VALUE}</strong>
               </div>
               <div>
                 <span className="panel-kicker">Event Date</span>
-                <strong>{eventDetail.event_date || '--'}</strong>
+                <strong>{eventDetail.event_date || MISSING_DATE}</strong>
               </div>
             </>
           )}
