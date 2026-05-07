@@ -3,23 +3,24 @@ import {
   deriveThesisPulse,
   buildDossierSummary,
   buildSignalStack,
-  buildInvalidationWatch,
+  buildResearchKillSwitch,
+  buildPriceTrendRisk,
   buildEvidenceBoard
 } from './dossierHelpers';
 
 const formatPct = (value) => {
-  if (value === undefined || value === null || Number.isNaN(Number(value))) return '--';
+  if (value === undefined || value === null || Number.isNaN(Number(value))) return 'Not Included';
   const n = Number(value);
   return `${n > 0 ? '+' : ''}${n.toFixed(1)}%`;
 };
 
 const formatNumber = (value, digits = 2) => {
-  if (value === undefined || value === null || Number.isNaN(Number(value))) return '--';
+  if (value === undefined || value === null || Number.isNaN(Number(value))) return 'Not Included';
   return Number(value).toFixed(digits);
 };
 
 const formatLabel = (value) => {
-  if (!value) return '--';
+  if (!value) return 'Not Included';
   return String(value).replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
 };
 
@@ -29,7 +30,8 @@ const StockDossierView = ({ eventDetail, payload }) => {
   const { reason, verdict } = buildDossierSummary(eventDetail, payload);
   const signalStack = buildSignalStack(eventDetail, payload);
   const pulse = deriveThesisPulse(eventDetail, payload);
-  const invalidationWatch = buildInvalidationWatch(eventDetail, payload);
+  const killSwitch = buildResearchKillSwitch(eventDetail, payload);
+  const priceTrendRisk = buildPriceTrendRisk(eventDetail, payload);
   const evidenceBoard = buildEvidenceBoard(eventDetail, payload);
 
   const momentum = eventDetail.momentum_evidence || {};
@@ -41,10 +43,10 @@ const StockDossierView = ({ eventDetail, payload }) => {
   const ticker = eventDetail.ticker;
   const companyName = eventDetail.company_name || '';
   const industryTheme = momentum.industry_theme_label || momentum.industry_theme || eventDetail.trend_setup?.supply_chain_stage || '';
-  const researchState = isMomentumUniverse ? 'Momentum Leader'
+  const researchState = isMomentumUniverse ? 'Momentum Candidate'
                       : (eventDetail.status === 'off_cycle_watch' || eventDetail.event_phase === 'off_cycle') ? 'Between Catalysts'
                       : eventDetail.event_phase === 'post_earnings' ? 'Post-Earnings Watch'
-                      : eventDetail.peer_readthrough?.incoming?.length > 0 ? 'Peer Confirmation'
+                      : eventDetail.peer_readthrough?.incoming?.length > 0 ? 'Peer-Led Context'
                       : 'Catalyst Watch';
 
   return (
@@ -80,60 +82,45 @@ const StockDossierView = ({ eventDetail, payload }) => {
         ))}
       </div>
 
-      {/* 5. Anomaly Stack */}
-      <div className="card dossier-anomaly-stack" style={{ marginBottom: '24px' }}>
-        <h3 style={{ marginBottom: '16px' }}>Anomaly Stack</h3>
+      {/* 5. Risk Counter-Signals */}
+      <div className="card dossier-risk-signals" style={{ marginBottom: '24px', borderLeft: '4px solid var(--text-muted)' }}>
+        <h3 style={{ marginBottom: '16px' }}>Risk Counter-Signals</h3>
         <div className="grid-2col" style={{ fontSize: '0.95em' }}>
-          {momentum.universe_rank !== undefined && (
-            <div><strong>Universe Rank:</strong> #{momentum.universe_rank} / {momentum.universe_count || '--'}</div>
-          )}
-          {momentum.theme_rank !== undefined && (
-            <div><strong>Theme Rank:</strong> #{momentum.theme_rank}</div>
-          )}
-          {momentum.score !== undefined && (
-            <div><strong>Momentum Score:</strong> {momentum.score}</div>
-          )}
-          {metrics.zscore_200d !== undefined && (
-            <div><strong>Z-Score (200D):</strong> {formatNumber(metrics.zscore_200d)}</div>
-          )}
-          {metrics.ma200_slope_pct !== undefined && (
-            <div><strong>MA200 Slope:</strong> {formatPct(metrics.ma200_slope_pct)}</div>
-          )}
-          {metrics.relative_strength_vs_spy_63d !== undefined && (
-            <div><strong>RS vs SPY (63D):</strong> {formatPct(metrics.relative_strength_vs_spy_63d)}</div>
-          )}
-          {metrics.relative_strength_vs_qqq_63d !== undefined && (
-            <div><strong>RS vs QQQ (63D):</strong> {formatPct(metrics.relative_strength_vs_qqq_63d)}</div>
-          )}
-          {eventDetail.pead_signal?.status === 'available' && (
-            <div><strong>Current Post-Return:</strong> {formatPct(eventDetail.pead_signal.reaction?.current_post_return)}</div>
-          )}
-          {eventDetail.post_earnings_base_rate?.status === 'available' && (
-            <div><strong>Matched-Event T+10 Drift:</strong> {formatPct(eventDetail.post_earnings_base_rate.median_t10_return_pct)}</div>
-          )}
-          {eventDetail.peer_readthrough?.incoming?.length > 0 && (
-            <div><strong>Peer Repricing:</strong> {eventDetail.peer_readthrough.incoming.length} confirming peers</div>
-          )}
+          <div><strong>Fundamental Confirmation:</strong> <span style={{ color: 'var(--text-muted)' }}>Pending</span></div>
+          <div><strong>Revision Support:</strong> <span style={{ color: 'var(--text-muted)' }}>Not Included</span></div>
+          <div><strong>Valuation Pressure:</strong> <span style={{ color: 'var(--text-muted)' }}>Not Included</span></div>
+          <div><strong>Dilution / SBC:</strong> <span style={{ color: 'var(--text-muted)' }}>Not Included</span></div>
+          <div style={{ gridColumn: '1 / -1', marginTop: '8px', fontStyle: 'italic', color: 'var(--text-muted)' }}>
+            <strong>Data Coverage:</strong> Partial / Market Evidence Only
+          </div>
         </div>
       </div>
 
-      {/* 6. Thesis Pulse & 7. What Could Break It & 8. Next Watch Item */}
+      {/* 6. Thesis Pulse & 7. Kill Switch & 8. Next Watch Item */}
       <div className="card dossier-pulse-watch" style={{ marginBottom: '24px' }}>
         <div style={{ marginBottom: '16px' }}>
           <h3 style={{ display: 'inline-block', marginRight: '12px' }}>Thesis Pulse:</h3>
-          <span className={`quality-pill pulse-${pulse.state.toLowerCase()}`} style={{ fontWeight: 'bold' }}>{pulse.state}</span>
+          <span className={`quality-pill pulse-${pulse.state.replace(/\s+/g, '-').toLowerCase()}`} style={{ fontWeight: 'bold' }}>{pulse.state}</span>
           <div style={{ marginTop: '8px', color: 'var(--text-muted)', fontSize: '0.9em' }}>{pulse.reason}</div>
         </div>
 
-        <div style={{ marginBottom: '16px' }}>
-          <h3>What Could Break It</h3>
-          <ul style={{ paddingLeft: '20px', color: 'var(--text-muted)', fontSize: '0.9em', margin: '8px 0' }}>
-            {invalidationWatch.map((item, i) => <li key={i}>{item}</li>)}
-          </ul>
+        <div className="grid-2col" style={{ gap: '24px', marginBottom: '16px' }}>
+          <div>
+            <h3>Research Kill Switch</h3>
+            <ul style={{ paddingLeft: '20px', color: 'var(--text-muted)', fontSize: '0.9em', margin: '8px 0' }}>
+              {killSwitch.map((item, i) => <li key={i}>{item}</li>)}
+            </ul>
+          </div>
+          <div>
+            <h3>Price Trend Risk</h3>
+            <ul style={{ paddingLeft: '20px', color: 'var(--text-muted)', fontSize: '0.9em', margin: '8px 0' }}>
+              {priceTrendRisk.map((item, i) => <li key={i}>{item}</li>)}
+            </ul>
+          </div>
         </div>
 
         <div>
-          <h3>Next Watch Item</h3>
+          <h3>Next Validation</h3>
           <div style={{ color: 'var(--text-muted)', fontSize: '0.9em', marginTop: '4px' }}>
             {isMomentumUniverse ? 'Monitor for upcoming earnings catalyst or theme-level continuation.' :
              eventDetail.event_phase === 'post_earnings' ? 'Monitor T+10 drift and thesis pulse stability.' :
@@ -177,7 +164,44 @@ const StockDossierView = ({ eventDetail, payload }) => {
         )}
       </div>
 
-      {/* 10. Evidence & Methodology */}
+      {/* 10. Market Evidence Detail */}
+      <details className="card dossier-methodology" style={{ cursor: 'pointer', marginBottom: '24px' }}>
+        <summary style={{ fontWeight: 'bold', outline: 'none' }}>Market Evidence Detail</summary>
+        <div className="grid-2col" style={{ fontSize: '0.95em', marginTop: '16px', color: 'var(--text-muted)' }}>
+          {momentum.universe_rank !== undefined && (
+            <div><strong>Universe Rank:</strong> #{momentum.universe_rank} / {momentum.universe_count || 'Not Included'}</div>
+          )}
+          {momentum.theme_rank !== undefined && (
+            <div><strong>Theme Rank:</strong> #{momentum.theme_rank}</div>
+          )}
+          {momentum.score !== undefined && (
+            <div><strong>Momentum Score:</strong> {momentum.score}</div>
+          )}
+          {metrics.zscore_200d !== undefined && (
+            <div><strong>Z-Score (200D):</strong> {formatNumber(metrics.zscore_200d)}</div>
+          )}
+          {metrics.ma200_slope_pct !== undefined && (
+            <div><strong>MA200 Slope:</strong> {formatPct(metrics.ma200_slope_pct)}</div>
+          )}
+          {metrics.relative_strength_vs_spy_63d !== undefined && (
+            <div><strong>RS vs SPY (63D):</strong> {formatPct(metrics.relative_strength_vs_spy_63d)}</div>
+          )}
+          {metrics.relative_strength_vs_qqq_63d !== undefined && (
+            <div><strong>RS vs QQQ (63D):</strong> {formatPct(metrics.relative_strength_vs_qqq_63d)}</div>
+          )}
+          {eventDetail.pead_signal?.status === 'available' && (
+            <div><strong>Current Post-Return:</strong> {formatPct(eventDetail.pead_signal.reaction?.current_post_return)}</div>
+          )}
+          {eventDetail.post_earnings_base_rate?.status === 'available' && (
+            <div><strong>Matched-Event T+10 Drift:</strong> {formatPct(eventDetail.post_earnings_base_rate.median_t10_return_pct)}</div>
+          )}
+          {eventDetail.peer_readthrough?.incoming?.length > 0 && (
+            <div><strong>Peer Repricing:</strong> {eventDetail.peer_readthrough.incoming.length} related peer moves</div>
+          )}
+        </div>
+      </details>
+
+      {/* 11. Evidence & Methodology */}
       <details className="card dossier-methodology" style={{ cursor: 'pointer' }}>
         <summary style={{ fontWeight: 'bold', outline: 'none' }}>Evidence & Methodology</summary>
         <div style={{ marginTop: '16px', fontSize: '0.85em', color: 'var(--text-muted)' }}>

@@ -1,7 +1,7 @@
 export const normalizeTicker = (t) => String(t || '').trim().toUpperCase();
 
 const formatSignedPct = (value) => {
-  if (value === undefined || value === null || Number.isNaN(Number(value))) return '--';
+  if (value === undefined || value === null || Number.isNaN(Number(value))) return 'Not Included';
   const n = Number(value);
   return `${n > 0 ? '+' : ''}${n.toFixed(1)}%`;
 };
@@ -34,7 +34,7 @@ export const deriveThesisPulse = (eventDetail, payload) => {
   }
 
   if (isAboveMA200 === false) {
-    return { state: 'Challenged', reason: 'Price has lost key MA200 baseline.' };
+    return { state: 'Market Evidence Weakening', reason: 'Price trend weakened; fundamental confirmation is not assessed by MA200.' };
   }
 
   if (isReviewed && (isAboveMA200 === false || isRSConstructive === false)) {
@@ -47,7 +47,7 @@ export const deriveThesisPulse = (eventDetail, payload) => {
   const isEventStudyConstructive = (eventStudy.continuation_rate > 0.5 || eventStudy.reversal_rate > 0.5);
 
   if (momentum.status === 'available' && isAboveMA200 === true && isRSConstructive === true && (hasConstructivePeer || isEventStudyConstructive)) {
-    return { state: 'Confirming', reason: 'Momentum, trend, and peer/event evidence are constructive.' };
+    return { state: 'Evidence Improving', reason: 'Market evidence is constructive, fundamental confirmation pending.' };
   }
 
   return { state: 'Stable', reason: 'Trend and momentum available with no material deterioration.' };
@@ -106,15 +106,14 @@ export const buildSignalStack = (eventDetail, payload) => {
   }
 
   const pulse = deriveThesisPulse(eventDetail, payload);
-  chips.push({ id: 'pulse', label: 'Thesis Pulse', state: pulse.state === 'Confirming' ? 'strong' : pulse.state === 'Challenged' ? 'warning' : 'neutral', value: pulse.state });
+  chips.push({ id: 'pulse', label: 'Thesis Pulse', state: pulse.state === 'Evidence Improving' ? 'strong' : pulse.state === 'Challenged' ? 'warning' : 'neutral', value: pulse.state });
 
   return chips.slice(0, 5);
 };
 
-export const buildInvalidationWatch = (eventDetail, payload) => {
+export const buildResearchKillSwitch = (eventDetail, payload) => {
   const watchpoints = [];
-  watchpoints.push("Price loses MA200 baseline or relative strength turns negative.");
-  watchpoints.push("Momentum rank deteriorates materially compared to peers.");
+  watchpoints.push("Fundamental confirmation remains pending until revisions, margins, or company-specific evidence improve.");
 
   if (eventDetail.pead_signal?.status === 'available') {
     watchpoints.push("Post-earnings move fully retraces.");
@@ -128,6 +127,12 @@ export const buildInvalidationWatch = (eventDetail, payload) => {
   return watchpoints.slice(0, 4);
 };
 
+export const buildPriceTrendRisk = (eventDetail, payload) => {
+  const watchpoints = [];
+  watchpoints.push("Move quality deteriorates if MA200 or relative strength weakens.");
+  return watchpoints;
+};
+
 export const buildEvidenceBoard = (eventDetail, payload) => {
   const evidenceList = [];
 
@@ -138,7 +143,7 @@ export const buildEvidenceBoard = (eventDetail, payload) => {
     const metrics = eventDetail.momentum_evidence.evidence || {};
     evidenceList.push({
       evidence: 'Momentum',
-      signal: `Score ${eventDetail.momentum_evidence.score || '--'}; Z ${metrics.zscore_200d ? Number(metrics.zscore_200d).toFixed(2) : '--'}`,
+      signal: `Score ${eventDetail.momentum_evidence.score || 'Not Included'}; Z ${metrics.zscore_200d ? Number(metrics.zscore_200d).toFixed(2) : 'Not Included'}`,
       interpretation: 'Relative strength compared to scanner universe.',
       coverage: 'Available',
       priority: 1
@@ -304,7 +309,7 @@ export const buildDossierRecords = (payload) => {
     let researchState = 'Catalyst Watch';
     if (rec.sources.has('post_earnings')) researchState = 'Post-Earnings Watch';
     else if (rec.sources.has('off_cycle')) researchState = 'Between Catalysts';
-    else if (rec.sources.has('momentum_universe') && !rec.sources.has('tracked')) researchState = 'Momentum Leader';
+    else if (rec.sources.has('momentum_universe') && !rec.sources.has('tracked')) researchState = 'Momentum Candidate';
     else if (rec.sources.has('tracked')) researchState = 'Tracked Thesis';
 
     const pulse = deriveThesisPulse(primary, payload);
@@ -318,7 +323,7 @@ export const buildDossierRecords = (payload) => {
       coverage = `Data Partial (${meaningfulMissing.length})`;
     }
 
-    let moveType = '--';
+    let moveType = 'Move Type Pending';
     if (primary?.pead_signal?.status === 'available') {
        const t = primary.pead_signal.reaction?.current_post_return;
        if (t !== undefined && t !== null) moveType = `Post ${t > 0 ? '+' : ''}${t.toFixed(1)}%`;

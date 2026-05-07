@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { buildDossierRecords } from './dossierHelpers';
 
-const formatLabel = (val) => val ? val.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase()) : '--';
+const formatLabel = (val) => val ? val.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase()) : 'Not Included';
 
 export default function StockDossierIndex({ payload, onOpenTicker }) {
   const dossierRecords = useMemo(() => {
@@ -43,7 +43,7 @@ export default function StockDossierIndex({ payload, onOpenTicker }) {
                   <td>
                     <div style={{ fontWeight: 'bold' }}>{rec.ticker}</div>
                     <div style={{ fontSize: '0.8em', color: 'var(--text-muted)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: '120px' }}>
-                      {rec.companyName || '--'}
+                      {rec.companyName || 'Company Pending'}
                     </div>
                   </td>
                   <td>
