@@ -1,3 +1,5 @@
+export const normalizeTicker = (t) => String(t || '').trim().toUpperCase();
+
 const formatSignedPct = (value) => {
   if (value === undefined || value === null || Number.isNaN(Number(value))) return '--';
   const n = Number(value);
@@ -188,4 +190,158 @@ export const buildEvidenceBoard = (eventDetail, payload) => {
 
   // Sort by priority
   return evidenceList.sort((a, b) => a.priority - b.priority);
+};
+
+export const buildMomentumUniverseSyntheticDetail = (ticker, payload) => {
+  const ranking = (payload?.momentum_universe?.rankings || []).find(r => r.ticker === ticker);
+  if (!ranking) return null;
+  return {
+    event_id: `${ticker}-MomentumUniverse`,
+    ticker,
+    event_phase: "off_cycle_universe",
+    event_category: "Momentum Universe",
+    status: "momentum_universe",
+    trend_setup: ranking.trend_setup || {},
+    momentum_evidence: {
+      ...ranking.momentum_evidence,
+      industry_theme: ranking.industry_theme,
+      industry_theme_label: ranking.industry_theme_label,
+      regime: ranking.regime,
+      score: ranking.score,
+      universe_rank: ranking.rank,
+      theme_rank: ranking.theme_rank,
+      universe_count: payload?.momentum_universe?.ranked_count,
+      evidence: {
+        ...(ranking.momentum_evidence?.evidence || {}),
+        ...((ranking.trend_setup || {}).metrics || {})
+      }
+    },
+    trust_layer: {
+      data_source: "momentum_universe",
+      event_date_status: "not_applicable",
+      missing_fields: []
+    }
+  };
+};
+
+export const buildDossierRecords = (payload) => {
+  if (!payload) return [];
+
+  const tickerMap = new Map();
+
+  const getOrCreate = (ticker) => {
+    const norm = normalizeTicker(ticker);
+    if (!tickerMap.has(norm)) {
+      tickerMap.set(norm, {
+        ticker: norm,
+        companyName: null,
+        primaryEventDetail: null,
+        secondaryContexts: {
+          momentumUniverse: null,
+          offCycleThesis: null,
+          trackedReview: null,
+        },
+        sources: new Set(),
+        priorityScore: 0
+      });
+    }
+    return tickerMap.get(norm);
+  };
+
+  Object.entries(payload.events_detail || {}).forEach(([eventId, detail]) => {
+    const rec = getOrCreate(detail.ticker);
+    if (!rec.companyName && detail.company_name) rec.companyName = detail.company_name;
+
+    let score = 150; // default unknown real event
+
+    if (payload.radar_lists?.post_earnings?.pead_watch?.includes(eventId) ||
+        payload.radar_lists?.post_earnings?.top_opportunities?.includes(eventId) ||
+        payload.radar_lists?.post_earnings?.top_risk_alerts?.includes(eventId) ||
+        payload.radar_lists?.post_earnings?.trend_pullbacks?.includes(eventId)) {
+      rec.sources.add('post_earnings');
+      score = Math.max(score, 400);
+    }
+
+    if (payload.radar_lists?.off_cycle_watch?.thesis_watch?.includes(eventId)) {
+      rec.sources.add('off_cycle');
+      rec.secondaryContexts.offCycleThesis = detail;
+      score = Math.max(score, 200);
+    }
+    if (payload.radar_lists?.tracked?.reviewed_watch?.includes(eventId)) {
+      rec.sources.add('tracked');
+      rec.secondaryContexts.trackedReview = detail;
+      score = Math.max(score, 220);
+    }
+
+    if (detail.event_phase === 'event_day') score = Math.max(score, 300);
+    else if (detail.event_phase === 'pre_earnings') score = Math.max(score, 250);
+
+    if (score > rec.priorityScore) {
+       rec.priorityScore = score;
+       rec.primaryEventDetail = detail;
+    }
+  });
+
+  (payload.momentum_universe?.rankings || []).forEach(ranking => {
+    const rec = getOrCreate(ranking.ticker);
+    rec.sources.add('momentum_universe');
+    const synthetic = buildMomentumUniverseSyntheticDetail(ranking.ticker, payload);
+    rec.secondaryContexts.momentumUniverse = synthetic;
+
+    if (100 > rec.priorityScore) {
+      rec.priorityScore = 100;
+      rec.primaryEventDetail = synthetic;
+    }
+  });
+
+  const results = Array.from(tickerMap.values()).map(rec => {
+    const primary = rec.primaryEventDetail;
+    const momentum = primary?.momentum_evidence || rec.secondaryContexts.momentumUniverse?.momentum_evidence || {};
+    const trend = primary?.trend_setup || rec.secondaryContexts.momentumUniverse?.trend_setup || {};
+
+    const theme = momentum.industry_theme_label || momentum.industry_theme || trend.supply_chain_stage || null;
+
+    let researchState = 'Catalyst Watch';
+    if (rec.sources.has('post_earnings')) researchState = 'Post-Earnings Watch';
+    else if (rec.sources.has('off_cycle')) researchState = 'Between Catalysts';
+    else if (rec.sources.has('momentum_universe') && !rec.sources.has('tracked')) researchState = 'Momentum Leader';
+    else if (rec.sources.has('tracked')) researchState = 'Tracked Thesis';
+
+    const pulse = deriveThesisPulse(primary, payload);
+    const missing = primary?.trust_layer?.missing_fields || [];
+    const meaningfulMissing = missing.filter(field => field !== 'options_data' && field !== 'options_chain');
+
+    let coverage = 'Coverage Pending';
+    if (meaningfulMissing.length === 0) {
+      if (primary) coverage = 'Market Evidence Available';
+    } else {
+      coverage = `Data Partial (${meaningfulMissing.length})`;
+    }
+
+    let moveType = '--';
+    if (primary?.pead_signal?.status === 'available') {
+       const t = primary.pead_signal.reaction?.current_post_return;
+       if (t !== undefined && t !== null) moveType = `Post ${t > 0 ? '+' : ''}${t.toFixed(1)}%`;
+    } else if (momentum.evidence?.ma200_slope_pct !== undefined) {
+       const t = momentum.evidence.ma200_slope_pct;
+       moveType = `MA200 ${t > 0 ? '+' : ''}${t.toFixed(1)}%`;
+    }
+
+    rec.derivedState = {
+      theme,
+      researchState,
+      moveType,
+      pulseState: pulse.state,
+      coverage
+    };
+
+    return rec;
+  });
+
+  return results.sort((a, b) => {
+    const scoreA = a.primaryEventDetail?.momentum_evidence?.score || 0;
+    const scoreB = b.primaryEventDetail?.momentum_evidence?.score || 0;
+    if (scoreA !== scoreB) return scoreB - scoreA;
+    return a.ticker.localeCompare(b.ticker);
+  });
 };

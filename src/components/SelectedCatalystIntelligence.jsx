@@ -742,7 +742,7 @@ const MomentumEvidencePanel = ({ eventDetail }) => {
 };
 
 // Main Component
-const SelectedCatalystIntelligence = ({ eventDetail, payload, peerReadthroughCases = {}, onClose }) => {
+const SelectedCatalystIntelligence = ({ eventDetail, payload, peerReadthroughCases = {}, onClose, onOpenStockDossier }) => {
   const [activeDetailTab, setActiveDetailTab] = useState('dossier');
 
   useEffect(() => {
@@ -868,7 +868,21 @@ const SelectedCatalystIntelligence = ({ eventDetail, payload, peerReadthroughCas
             </span>
           )}
         </div>
-        <button className="close-btn" onClick={onClose}>×</button>
+        <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+          {onOpenStockDossier && (
+            <button
+              className="action-btn"
+              style={{ fontSize: '0.8em', padding: '4px 12px', background: 'var(--brand-blue, #2563eb)', color: '#fff', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
+              onClick={() => {
+                onOpenStockDossier(eventDetail.ticker, eventDetail);
+                onClose();
+              }}
+            >
+              Open Stock Dossier
+            </button>
+          )}
+          <button className="close-btn" onClick={onClose}>×</button>
+        </div>
       </div>
 
       {currentDetailTab !== 'dossier' && (

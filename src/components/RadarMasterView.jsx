@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { buildMomentumUniverseSyntheticDetail } from './dossierHelpers';
 
 const CompletedEarningsRefreshStatus = ({ refresh }) => {
   if (!refresh) return null;
@@ -161,37 +162,7 @@ const RadarMasterView = ({ payload, selectedEventId, onSelectEvent }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [momentumGroupFilter, setMomentumGroupFilter] = useState('all');
 
-  const getSyntheticDetail = (ticker) => {
-    const ranking = (payload?.momentum_universe?.rankings || []).find(r => r.ticker === ticker);
-    if (!ranking) return null;
-    return {
-      event_id: `${ticker}-MomentumUniverse`,
-      ticker,
-      event_phase: "off_cycle_universe",
-      event_category: "Momentum Universe",
-      status: "momentum_universe",
-      trend_setup: ranking.trend_setup || {},
-      momentum_evidence: {
-        ...ranking.momentum_evidence,
-        industry_theme: ranking.industry_theme,
-        industry_theme_label: ranking.industry_theme_label,
-        regime: ranking.regime,
-        score: ranking.score,
-        universe_rank: ranking.rank,
-        theme_rank: ranking.theme_rank,
-        universe_count: payload?.momentum_universe?.ranked_count,
-        evidence: {
-          ...(ranking.momentum_evidence?.evidence || {}),
-          ...((ranking.trend_setup || {}).metrics || {})
-        }
-      },
-      trust_layer: {
-        data_source: "momentum_universe",
-        event_date_status: "not_applicable",
-        missing_fields: []
-      }
-    };
-  };
+  const getSyntheticDetail = (ticker) => buildMomentumUniverseSyntheticDetail(ticker, payload);
 
   const getMomentumGroupKey = (item) => (
     item?.momentum_evidence?.industry_theme ||

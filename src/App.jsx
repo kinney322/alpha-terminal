@@ -1,15 +1,18 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import AlphaScannerPanel from './components/AlphaScannerPanel';
 import EventStudyPanel from './components/EventStudyPanel';
 import QuantBotChat from './components/QuantBotChat';
 import CatalystRadarShell from './components/CatalystRadarShell';
+import StockDossierSection from './components/StockDossierSection';
+import { fetchAndNormalizeRadarPayload } from './data/payloadAdapter';
 
 const PRODUCT_MODE = import.meta.env.VITE_PRODUCT_MODE || 'crowdrisk';
 
 const PUBLIC_TABS = [
   { key: 'earnings-radar', label: '📡 Earnings Radar' },
   { key: 'event-study', label: '🎯 Event Study' },
+  { key: 'stock-dossier', label: '📘 Stock Dossier' },
   { key: 'peer-reactions', label: '🔗 Peer Reactions' },
   { key: 'methodology', label: '📖 Methodology' },
 ];
@@ -26,6 +29,32 @@ function App() {
   const [activeTab, setActiveTab] = useState(PRODUCT_MODE === 'crowdrisk' ? 'earnings-radar' : 'scanner');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
+  // Shared Dossier State
+  const [dossierSeed, setDossierSeed] = useState(null);
+
+  // Shared Radar Payload State
+  const [payload, setPayload] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    fetchAndNormalizeRadarPayload()
+      .then(data => {
+        setPayload(data);
+        setLoading(false);
+      })
+      .catch(err => {
+        console.error("Failed to fetch radar payload:", err);
+        setError(err.message);
+        setLoading(false);
+      });
+  }, []);
+
+  const handleOpenStockDossier = (ticker, eventDetail) => {
+    setDossierSeed({ ticker, eventDetail });
+    setActiveTab('stock-dossier');
+  };
+
   const pageVariants = {
     initial: { opacity: 0, y: 15 },
     in: { opacity: 1, y: 0 },
@@ -34,8 +63,9 @@ function App() {
 
   const panels = {
     // CrowdRisk Panels
-    'earnings-radar': <CatalystRadarShell />,
+    'earnings-radar': <CatalystRadarShell payload={payload} loading={loading} error={error} onOpenStockDossier={handleOpenStockDossier} />,
     'event-study': <EventStudyPanel />,
+    'stock-dossier': <StockDossierSection payload={payload} loading={loading} error={error} dossierSeed={dossierSeed} onClearSeed={() => setDossierSeed(null)} />,
     'peer-reactions': <div className="fade-in"><h2 className="section-title">Coming Soon</h2></div>,
     'methodology': <div className="fade-in"><h2 className="section-title">Coming Soon</h2></div>,
     
@@ -76,6 +106,9 @@ function App() {
               key={tab.key}
               className={`nav-item ${activeTab === tab.key ? 'active' : ''}`}
               onClick={() => {
+                if (tab.key === 'stock-dossier') {
+                  setDossierSeed(null);
+                }
                 setActiveTab(tab.key);
                 setIsMobileMenuOpen(false);
               }}

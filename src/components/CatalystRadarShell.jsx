@@ -1,28 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import RadarMasterView from './RadarMasterView';
 import SelectedCatalystIntelligence from './SelectedCatalystIntelligence';
-import { fetchAndNormalizeRadarPayload } from '../data/payloadAdapter';
 import './CatalystRadar.css';
 
-const CatalystRadarShell = () => {
+const CatalystRadarShell = ({ payload, loading, error, onOpenStockDossier }) => {
   const [selectedEventId, setSelectedEventId] = useState(null);
   const [selectedEventDetailOverride, setSelectedEventDetailOverride] = useState(null);
-  const [payload, setPayload] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-
-  useEffect(() => {
-    fetchAndNormalizeRadarPayload()
-      .then(data => {
-        setPayload(data);
-        setLoading(false);
-      })
-      .catch(err => {
-        console.error("Failed to fetch radar payload:", err);
-        setError(err.message);
-        setLoading(false);
-      });
-  }, []);
 
   const handleSelectEvent = (eventId, eventDetailOverride = null) => {
     setSelectedEventId(eventId);
@@ -60,6 +43,7 @@ const CatalystRadarShell = () => {
               payload={payload}
               peerReadthroughCases={payload.peer_readthrough_cases || {}}
               onClose={() => { setSelectedEventId(null); setSelectedEventDetailOverride(null); }}
+              onOpenStockDossier={onOpenStockDossier}
             />
           </aside>
         </>
