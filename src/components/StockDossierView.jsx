@@ -24,6 +24,21 @@ const formatLabel = (value) => {
   return String(value).replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
 };
 
+const getFundyMetric = (fundamental, key) => {
+  const metrics = fundamental?.metrics || {};
+  return metrics[key] ?? fundamental?.[key] ?? null;
+};
+
+const formatFundyPercent = (value) => {
+  const numeric = Number(value);
+  return Number.isFinite(numeric) ? `${(numeric * 100).toFixed(2)}%` : "—";
+};
+
+const formatFundyMultiple = (value) => {
+  const numeric = Number(value);
+  return Number.isFinite(numeric) ? `${numeric.toFixed(2)}x` : "—";
+};
+
 const StockDossierView = ({ eventDetail, payload }) => {
   if (!eventDetail) return null;
 
@@ -40,10 +55,7 @@ const StockDossierView = ({ eventDetail, payload }) => {
   const isMomentumUniverse = eventDetail.status === 'momentum_universe' || eventDetail.event_phase === 'off_cycle_universe';
 
   const fundamental = eventDetail.fundamental_evidence || {};
-  const isFundyMissing = !fundamental.status || fundamental.status === 'not_available';
-  const fundyStatus = isFundyMissing ? 'Not Included' : 'Coverage Pending';
-  const fundyPeriod = isFundyMissing ? 'Period Pending' : (fundamental.period_end_date || 'Period Pending');
-  const fundySource = isFundyMissing ? 'Source Pending' : (fundamental.vendor_source || 'Source Pending');
+
   // Ticker Header variables
   const ticker = eventDetail.ticker;
   const companyName = eventDetail.company_name || '';
@@ -101,18 +113,23 @@ const StockDossierView = ({ eventDetail, payload }) => {
         </div>
       </div>
 
-      {/* 5b. Fundamental Evidence */}
+      {/* 5b. Fundamentals Summary */}
       <div className="card dossier-fundamental-evidence" style={{ marginBottom: '24px', borderLeft: '4px solid var(--border-light)' }}>
-        <h3 style={{ marginBottom: '16px' }}>Fundamental Evidence</h3>
-        <div className="grid-2col" style={{ fontSize: '0.95em' }}>
-          <div><strong>Status:</strong> <span className="quality-pill">{fundyStatus}</span></div>
-          <div><strong>Period:</strong> <span style={{ color: 'var(--text-muted)' }}>{fundyPeriod}</span></div>
-          <div><strong>Source:</strong> <span style={{ color: 'var(--text-muted)' }}>{fundySource}</span></div>
-          <div><strong>Metrics:</strong> <span style={{ color: 'var(--text-muted)' }}>Coverage Pending</span></div>
-          <div style={{ gridColumn: '1 / -1', marginTop: '12px', fontStyle: 'italic', color: 'var(--text-muted)' }}>
-            Fundamental metrics are not included in the current production payload. Market evidence remains separate from company fundamentals.
+        <h3 style={{ marginBottom: '16px' }}>Fundamentals Summary</h3>
+        {fundamental.status === 'available' ? (
+          <div className="grid-2col" style={{ fontSize: '0.95em' }}>
+            <div><strong>Revenue Growth YoY:</strong> {formatFundyPercent(getFundyMetric(fundamental, 'revenue_growth_yoy'))}</div>
+            <div><strong>Gross Margin:</strong> {formatFundyPercent(getFundyMetric(fundamental, 'gross_margin'))}</div>
+            <div><strong>Operating Margin:</strong> {formatFundyPercent(getFundyMetric(fundamental, 'operating_margin'))}</div>
+            <div><strong>FCF Margin:</strong> {formatFundyPercent(getFundyMetric(fundamental, 'fcf_margin'))}</div>
+            <div><strong>Debt / Equity:</strong> {formatFundyMultiple(getFundyMetric(fundamental, 'debt_to_equity'))}</div>
           </div>
-        </div>
+        ) : (
+          <div style={{ fontSize: '0.95em', color: 'var(--text-muted)', fontStyle: 'italic' }}>
+            <div style={{ fontWeight: 'bold', marginBottom: '4px', fontStyle: 'normal' }}>Fundamentals pending</div>
+            No source-verified snapshot is available for this ticker yet.
+          </div>
+        )}
       </div>
 
       {/* 6. Thesis Pulse & 7. Kill Switch & 8. Next Watch Item */}
