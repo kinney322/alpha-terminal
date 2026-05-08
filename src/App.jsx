@@ -5,11 +5,13 @@ import EventStudyPanel from './components/EventStudyPanel';
 import QuantBotChat from './components/QuantBotChat';
 import CatalystRadarShell from './components/CatalystRadarShell';
 import StockDossierSection from './components/StockDossierSection';
+import PublicLeaderboardPreview from './components/PublicLeaderboardPreview';
 import { fetchAndNormalizeRadarPayload } from './data/payloadAdapter';
 
 const PRODUCT_MODE = import.meta.env.VITE_PRODUCT_MODE || 'crowdrisk';
 
 const PUBLIC_TABS = [
+  { key: 'leaderboard', label: '🏆 Leaderboard' },
   { key: 'earnings-radar', label: '📡 Earnings Radar' },
   { key: 'event-study', label: '🎯 Event Study' },
   { key: 'stock-dossier', label: '📘 Stock Dossier' },
@@ -26,7 +28,7 @@ const INTERNAL_TABS = [
 ];
 
 function App() {
-  const [activeTab, setActiveTab] = useState(PRODUCT_MODE === 'crowdrisk' ? 'earnings-radar' : 'scanner');
+  const [activeTab, setActiveTab] = useState(PRODUCT_MODE === 'crowdrisk' ? 'leaderboard' : 'scanner');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   // Shared Dossier State
@@ -63,6 +65,7 @@ function App() {
 
   const panels = {
     // CrowdRisk Panels
+    'leaderboard': <PublicLeaderboardPreview payload={payload} onOpenStockDossier={handleOpenStockDossier} />,
     'earnings-radar': <CatalystRadarShell payload={payload} loading={loading} error={error} onOpenStockDossier={handleOpenStockDossier} />,
     'event-study': <EventStudyPanel />,
     'stock-dossier': <StockDossierSection payload={payload} loading={loading} error={error} dossierSeed={dossierSeed} onClearSeed={() => setDossierSeed(null)} />,
