@@ -97,12 +97,12 @@ export default function PublicLeaderboardPreview({ onOpenStockDossier, payload: 
                 </td>
               </tr>
             ) : (
-              currentTabTickers.map(ticker => {
+              currentTabTickers.map((ticker, idx) => {
                 const row = rowsByTicker[ticker];
                 if (!row) return null;
                 return (
                   <tr key={ticker} className="radar-row" onClick={() => handleRowClick(row)}>
-                    <td style={{ fontWeight: 'bold', color: 'var(--text-muted)' }}>#{row.rank}</td>
+                    <td style={{ fontWeight: 'bold', color: 'var(--text-muted)' }}>#{idx + 1}</td>
                     <td>
                       <div style={{ fontWeight: 'bold', fontSize: '1.1em' }}>{row.ticker}</div>
                       {row.compact_tags && row.compact_tags.length > 0 && (
