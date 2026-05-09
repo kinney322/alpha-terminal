@@ -66,8 +66,8 @@ export default function PublicLeaderboardPreview({ onOpenStockDossier, payload: 
             onClick={() => setActiveTab(t.key)}
             style={{
               padding: '8px 16px',
-              background: activeTab === t.key ? 'var(--text-main)' : 'var(--surface-color)',
-              color: activeTab === t.key ? 'var(--bg-main)' : 'var(--text-main)',
+              background: activeTab === t.key ? 'var(--bg-highlight)' : 'var(--surface-color)',
+              color: 'var(--text-main)',
               borderRadius: '20px',
               cursor: 'pointer',
               fontWeight: '600',
@@ -79,21 +79,20 @@ export default function PublicLeaderboardPreview({ onOpenStockDossier, payload: 
         ))}
       </div>
 
-      <div className="radar-table-container" style={{ marginTop: '24px' }}>
-        <table className="radar-table">
+      <div className="radar-table-container" style={{ marginTop: '24px', overflowX: 'auto', WebkitOverflowScrolling: 'touch' }}>
+        <table className="radar-table" style={{ width: '100%', minWidth: '500px' }}>
           <thead>
             <tr>
               <th style={{ width: '60px' }}>Rank</th>
               <th>Ticker</th>
               <th>Theme</th>
-              <th>Signals</th>
               <th style={{ width: '120px', textAlign: 'right' }}>Action</th>
             </tr>
           </thead>
           <tbody>
             {currentTabTickers.length === 0 ? (
               <tr>
-                <td colSpan="5" style={{ textAlign: 'center', padding: '20px', color: 'var(--text-muted)' }}>
+                <td colSpan="4" style={{ textAlign: 'center', padding: '20px', color: 'var(--text-muted)' }}>
                   No tickers currently in this list.
                 </td>
               </tr>
@@ -106,6 +105,15 @@ export default function PublicLeaderboardPreview({ onOpenStockDossier, payload: 
                     <td style={{ fontWeight: 'bold', color: 'var(--text-muted)' }}>#{row.rank}</td>
                     <td>
                       <div style={{ fontWeight: 'bold', fontSize: '1.1em' }}>{row.ticker}</div>
+                      {row.compact_tags && row.compact_tags.length > 0 && (
+                        <div style={{ display: 'flex', gap: '4px', flexWrap: 'wrap', marginTop: '4px' }}>
+                          {row.compact_tags.map((tag, idx) => (
+                            <span key={idx} style={{ fontSize: '0.75em', color: 'var(--text-muted)', border: '1px solid var(--border-color)', padding: '2px 6px', borderRadius: '4px' }}>
+                              {tag}
+                            </span>
+                          ))}
+                        </div>
+                      )}
                     </td>
                     <td>
                       {row.primary_theme ? (
@@ -114,19 +122,7 @@ export default function PublicLeaderboardPreview({ onOpenStockDossier, payload: 
                         <span style={{ color: 'var(--text-muted)' }}>-</span>
                       )}
                     </td>
-                    <td>
-                      <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
-                        {row.compact_tags && row.compact_tags.map((tag, idx) => (
-                          <span key={idx} className="quality-pill" style={{ background: 'var(--bg-highlight)', color: 'var(--text-main)', fontSize: '0.8em' }}>
-                            {tag}
-                          </span>
-                        ))}
-                        {(!row.compact_tags || row.compact_tags.length === 0) && (
-                          <span style={{ color: 'var(--text-muted)', fontSize: '0.85em' }}>-</span>
-                        )}
-                      </div>
-                    </td>
-                    <td style={{ textAlign: 'right' }}>
+                    <td style={{ textAlign: 'right', whiteSpace: 'nowrap' }}>
                       <button
                         className="action-btn"
                         style={{ fontSize: '0.85em', padding: '6px 12px', background: 'var(--surface-color)', border: '1px solid var(--border-color)', borderRadius: '4px', cursor: 'pointer' }}
