@@ -127,7 +127,12 @@ function App() {
         onOpenStockDossier={handleOpenStockDossier}
       />
     ),
-    'event-study': <EventStudyPanel />,
+    'event-study': (
+      <EventStudyPanel
+        payload={payload}
+        onOpenStockDossier={handleOpenStockDossier}
+      />
+    ),
     'momentum-universe': (
       <MomentumUniverseSection
         payload={payload}

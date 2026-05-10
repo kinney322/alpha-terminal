@@ -530,7 +530,7 @@ function MobileAuditCard({ row, index }) {
   );
 }
 
-export default function EventStudyPanel() {
+export default function EventStudyPanel({ payload, onOpenStockDossier }) {
   const [symbol, setSymbol] = useState('');
   const [category, setCategory] = useState('Earnings');
   const [loading, setLoading] = useState(false);
@@ -704,6 +704,28 @@ export default function EventStudyPanel() {
     fetchEventStudy(row.ticker, { keepPrevious: true, silent: true });
   }, [fetchEventStudy]);
 
+  const resolveDossierDetail = useCallback((ticker) => {
+    const normalizedTicker = String(ticker || '').trim().toUpperCase();
+    if (!normalizedTicker) return null;
+    const details = Object.values(payload?.events_detail || {});
+    return details.find((detail) => detail.ticker === normalizedTicker && detail.event_phase === 'post_earnings') ||
+           details.find((detail) => detail.ticker === normalizedTicker) ||
+           {
+             event_id: `${normalizedTicker}-EventStudy`,
+             ticker: normalizedTicker,
+             event_category: category,
+             event_phase: 'event_study_lookup',
+             status: 'event_study_lookup'
+           };
+  }, [category, payload]);
+
+  const handleOpenCurrentDossier = useCallback(() => {
+    if (!onOpenStockDossier) return;
+    const ticker = String(data?.ticker || data?.summary?.ticker || symbol || selectedRadarRow?.ticker || '').trim().toUpperCase();
+    if (!ticker) return;
+    onOpenStockDossier(ticker, resolveDossierDetail(ticker));
+  }, [data, onOpenStockDossier, resolveDossierDetail, selectedRadarRow?.ticker, symbol]);
+
   return (
     <div className="dashboard-grid fade-in flex flex-col gap-4 event-study-shell">
       <div className="glass-panel w-full event-study-workbench">
@@ -784,6 +806,18 @@ export default function EventStudyPanel() {
             exit={{ opacity: 0, y: -10 }}
             className="event-study-results"
           >
+            {onOpenStockDossier && (
+              <div className="event-study-dossier-link">
+                <div>
+                  <span>Linked research object</span>
+                  <strong>{String(data?.ticker || data?.summary?.ticker || symbol || selectedRadarRow?.ticker || '').toUpperCase()} Stock Dossier</strong>
+                </div>
+                <button type="button" onClick={handleOpenCurrentDossier}>
+                  Open Stock Dossier
+                </button>
+              </div>
+            )}
+
             <div className="event-study-decision-grid">
               <BestSetupHintCard hint={data?.best_setup_hint} />
 
