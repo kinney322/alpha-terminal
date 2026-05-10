@@ -6,6 +6,138 @@ const formatSignedPct = (value) => {
   return `${n > 0 ? '+' : ''}${n.toFixed(1)}%`;
 };
 
+const toFiniteNumber = (value) => {
+  const numeric = Number(value);
+  return Number.isFinite(numeric) ? numeric : null;
+};
+
+const firstFiniteMetric = (source, keys) => {
+  const metrics = source?.metrics || {};
+  for (const key of keys) {
+    const value = metrics[key] ?? source?.[key];
+    const numeric = toFiniteNumber(value);
+    if (numeric !== null) return numeric;
+  }
+  return null;
+};
+
+const scoreBusinessQuality = ({ revenueGrowth, grossMargin, operatingMargin, fcfMargin }) => {
+  let score = 0;
+  if (revenueGrowth !== null) score += revenueGrowth >= 0.15 ? 2 : revenueGrowth >= 0.05 ? 1 : revenueGrowth < 0 ? -1 : 0;
+  if (grossMargin !== null) score += grossMargin >= 0.6 ? 2 : grossMargin >= 0.4 ? 1 : grossMargin < 0.25 ? -1 : 0;
+  if (operatingMargin !== null) score += operatingMargin >= 0.2 ? 2 : operatingMargin >= 0.08 ? 1 : operatingMargin < 0 ? -1 : 0;
+  if (fcfMargin !== null) score += fcfMargin >= 0.2 ? 2 : fcfMargin >= 0.08 ? 1 : fcfMargin < 0 ? -1 : 0;
+
+  if (score >= 5) return 'High';
+  if (score >= 2) return 'Solid';
+  if (score >= 0) return 'Mixed';
+  return 'Weak';
+};
+
+const deriveValuationState = ({ evToRevenue, evToFcf, ruleOf40 }) => {
+  if (evToRevenue === null && evToFcf === null) return 'Valuation Inputs Missing';
+  if ((evToRevenue !== null && evToRevenue >= 15) || (evToFcf !== null && evToFcf >= 50)) {
+    return ruleOf40 !== null && ruleOf40 >= 50 ? 'Priced for Perfection' : 'Valuation Stretched';
+  }
+  if ((evToRevenue !== null && evToRevenue >= 8) || (evToFcf !== null && evToFcf >= 30)) {
+    return 'Valuation Stretched';
+  }
+  return 'Valuation Needs Review';
+};
+
+export const buildValuationCore = (eventDetail, profile = null) => {
+  if (profile?.valuationCore) {
+    return profile.valuationCore;
+  }
+
+  const fundamental = eventDetail?.fundamental_evidence || {};
+  const hasFundamentals = fundamental.status === 'available';
+
+  if (!hasFundamentals) {
+    return {
+      status: 'pending',
+      topVerdict: {
+        businessQuality: 'Insufficient Data',
+        valuationState: 'Insufficient Data',
+        baseCaseSupport: 'Insufficient Data',
+        marginOfSafety: 'Insufficient Data',
+        overallRead: 'Fundamentals Pending',
+        why: 'Company-level fundamentals are not available in the current payload, so the Dossier cannot judge quality or valuation support yet.'
+      },
+      coreMetrics: [],
+      researchJudgment: [
+        'Needs current revenue, margin, cash flow, balance sheet, and valuation data before the research case can be judged.',
+        'Do not infer valuation support from momentum, event-study evidence, or leaderboard position alone.'
+      ],
+      missingEvidence: [
+        'current price / market cap / enterprise value',
+        'valuation multiples',
+        'SBC / dilution',
+        'company-specific guidance or revisions'
+      ]
+    };
+  }
+
+  const revenueGrowth = firstFiniteMetric(fundamental, ['revenue_growth_yoy', 'revenue_growth']);
+  const grossMargin = firstFiniteMetric(fundamental, ['gross_margin']);
+  const operatingMargin = firstFiniteMetric(fundamental, ['operating_margin']);
+  const fcfMargin = firstFiniteMetric(fundamental, ['fcf_margin', 'free_cash_flow_margin']);
+  const debtToEquity = firstFiniteMetric(fundamental, ['debt_to_equity']);
+  const evToRevenue = firstFiniteMetric(fundamental, ['ev_to_revenue', 'ev_revenue', 'ev_sales']);
+  const evToFcf = firstFiniteMetric(fundamental, ['ev_to_fcf', 'ev_fcf']);
+  const sbcRevenue = firstFiniteMetric(fundamental, ['sbc_to_revenue', 'stock_based_compensation_to_revenue']);
+  const ruleOf40 = revenueGrowth !== null && fcfMargin !== null ? (revenueGrowth + fcfMargin) * 100 : null;
+
+  const businessQuality = scoreBusinessQuality({ revenueGrowth, grossMargin, operatingMargin, fcfMargin });
+  const valuationState = deriveValuationState({ evToRevenue, evToFcf, ruleOf40 });
+  const valuationInputsMissing = valuationState === 'Valuation Inputs Missing';
+  const baseCaseSupport = valuationInputsMissing ? 'Partial' : valuationState === 'Priced for Perfection' ? 'Needs Confirmation' : 'Needs Review';
+  const marginOfSafety = valuationInputsMissing ? 'Insufficient Data' : valuationState === 'Priced for Perfection' ? 'None' : 'Needs Review';
+
+  return {
+    status: 'available',
+    topVerdict: {
+      businessQuality,
+      valuationState,
+      baseCaseSupport,
+      marginOfSafety,
+      overallRead: valuationInputsMissing ? 'Quality Visible; Valuation Not Proven' : `${businessQuality} Quality; ${valuationState}`,
+      why: valuationInputsMissing
+        ? 'The current payload has operating-quality evidence, but not enough market valuation inputs to decide whether the price is supported.'
+        : 'The Dossier can compare company quality against available valuation pressure, but should still be treated as a research judgment layer.'
+    },
+    coreMetrics: [
+      { id: 'revenue_growth', label: 'Revenue Growth', value: revenueGrowth, format: 'percent' },
+      { id: 'gross_margin', label: 'Gross Margin', value: grossMargin, format: 'percent' },
+      { id: 'operating_margin', label: 'Operating Margin', value: operatingMargin, format: 'percent' },
+      { id: 'fcf_margin', label: 'FCF Margin', value: fcfMargin, format: 'percent' },
+      { id: 'rule_of_40', label: 'Rule of 40', value: ruleOf40, format: 'number' },
+      { id: 'ev_revenue', label: 'EV / Revenue', value: evToRevenue, format: 'multiple' },
+      { id: 'ev_fcf', label: 'EV / FCF', value: evToFcf, format: 'multiple' },
+      { id: 'sbc_revenue', label: 'SBC / Revenue', value: sbcRevenue, format: 'percent' },
+      { id: 'debt_equity', label: 'Debt / Equity', value: debtToEquity, format: 'multiple' }
+    ],
+    researchJudgment: [
+      valuationInputsMissing
+        ? 'Only reasonable if future valuation data confirms that the business quality is not already fully capitalized.'
+        : 'Only reasonable if growth, margin, cash conversion, and dilution trends support the current valuation state.',
+      fcfMargin !== null && fcfMargin >= 0.2
+        ? 'Cash conversion is a constructive input, but it still needs dilution and valuation context.'
+        : 'Needs stronger cash conversion evidence before quality can offset valuation risk.',
+      revenueGrowth !== null && revenueGrowth < 0.05
+        ? 'Research case weakens if low growth persists without margin expansion.'
+        : 'Research case weakens if growth decelerates without better margins or cleaner shareholder economics.'
+    ],
+    missingEvidence: [
+      evToRevenue === null ? 'EV / revenue' : null,
+      evToFcf === null ? 'EV / FCF' : null,
+      sbcRevenue === null ? 'SBC / dilution' : null,
+      'market-implied expectations',
+      'guidance / estimate revision context'
+    ].filter(Boolean)
+  };
+};
+
 export const deriveThesisPulse = (eventDetail, payload) => {
   if (!eventDetail) return { state: 'Unavailable', reason: 'Insufficient context.' };
 
@@ -47,7 +179,7 @@ export const deriveThesisPulse = (eventDetail, payload) => {
   const isEventStudyConstructive = (eventStudy.continuation_rate > 0.5 || eventStudy.reversal_rate > 0.5);
 
   if (momentum.status === 'available' && isAboveMA200 === true && isRSConstructive === true && (hasConstructivePeer || isEventStudyConstructive)) {
-    return { state: 'Evidence Improving', reason: 'Market evidence is constructive; fundamental coverage remains pending.' };
+    return { state: 'Evidence Improving', reason: 'Market evidence is constructive; validate it against valuation and company fundamentals.' };
   }
 
   return { state: 'Stable', reason: 'Trend and momentum available with no material deterioration.' };
@@ -84,20 +216,39 @@ export const buildDossierSummary = (eventDetail, payload) => {
   return { reason, verdict };
 };
 
+export const buildStockOverview = (eventDetail, payload, profile = null) => {
+  const momentum = eventDetail?.momentum_evidence || {};
+  const trend = eventDetail?.trend_setup || {};
+  const fundamental = eventDetail?.fundamental_evidence || {};
+  const theme = momentum.industry_theme_label || momentum.industry_theme || trend.supply_chain_stage || null;
+  const companyName = eventDetail?.company_name || profile?.companyName || null;
+  const businessDescription = eventDetail?.business_summary || eventDetail?.description || profile?.overview || null;
+  const eventPhase = eventDetail?.event_phase ? eventDetail.event_phase.replace(/_/g, ' ') : 'research watch';
+
+  return {
+    title: companyName || `${eventDetail?.ticker || 'Ticker'} Stock Overview`,
+    profileLine: businessDescription || `Company profile is not yet available in the live payload; use the research context below before opening a deeper Dossier review.`,
+    theme: profile?.category || (theme ? formatOverviewLabel(theme) : 'Theme Pending'),
+    eventContext: eventPhase,
+    dataCoverage: profile ? 'Curated Dossier Available' : fundamental.status === 'available' ? 'Fundamentals Available' : 'Company Profile Pending',
+    quickFacts: profile?.quickFacts || [
+      { label: 'Research State', value: eventPhase },
+      { label: 'Theme / Industry', value: theme ? formatOverviewLabel(theme) : 'Pending' },
+      { label: 'Fundamentals', value: fundamental.status === 'available' ? 'Available' : 'Pending' },
+      { label: 'Event Date', value: eventDetail?.event_date || 'Not Included' }
+    ]
+  };
+};
+
+const formatOverviewLabel = (value) => {
+  return String(value || '').replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+};
+
 export const buildSignalStack = (eventDetail, payload) => {
   const chips = [];
 
   if (eventDetail.event_phase && eventDetail.event_phase !== 'off_cycle_universe') {
     chips.push({ id: 'catalyst', label: 'Catalyst', state: 'constructive', value: eventDetail.event_phase.replace(/_/g, ' ') });
-  }
-
-  const rank = eventDetail.momentum_evidence?.score;
-  if (rank !== undefined) {
-    chips.push({ id: 'momentum', label: 'Momentum Score', state: 'strong', value: String(rank) });
-  }
-
-  if (eventDetail.post_earnings_base_rate?.status === 'available') {
-    chips.push({ id: 'event_study', label: 'Event Study', state: 'neutral', value: 'Matched' });
   }
 
   const peer = eventDetail.peer_readthrough || {};
@@ -113,7 +264,11 @@ export const buildSignalStack = (eventDetail, payload) => {
 
 export const buildResearchKillSwitch = (eventDetail, payload) => {
   const watchpoints = [];
-  watchpoints.push("Fundamental coverage remains pending until revisions, margins, or company-specific evidence improve.");
+  if (eventDetail.fundamental_evidence?.status === 'available') {
+    watchpoints.push("Company fundamentals are available; research case still needs revision, valuation, and dilution confirmation.");
+  } else {
+    watchpoints.push("Fundamental coverage remains pending until revisions, margins, or company-specific evidence improve.");
+  }
 
   if (eventDetail.pead_signal?.status === 'available') {
     watchpoints.push("Post-earnings move fully retraces.");

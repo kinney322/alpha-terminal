@@ -172,7 +172,7 @@ body {
 
 .alpha-card {
   background-color: var(--surface-color);
-  border-radius: 12px;
+  border-radius: 8px;
   padding: 24px;
   box-shadow: 0 2px 10px rgba(0,0,0,0.02), 0 4px 20px rgba(0,0,0,0.02);
   border: 1px solid var(--border-light);
@@ -595,7 +595,7 @@ body {
 .glass-panel {
   background: var(--surface-color);
   border: 1px solid var(--border-light);
-  border-radius: 14px;
+  border-radius: 8px;
   padding: 1.25rem;
   box-shadow: 0 2px 10px rgba(0,0,0,0.02);
   transition: all 0.3s ease;
@@ -783,7 +783,7 @@ body {
   inset: auto -60px -60px auto;
   width: 180px;
   height: 180px;
-  border-radius: 999px;
+  border-radius: 8px;
   background: radial-gradient(circle, rgba(217, 119, 6, 0.12), transparent 65%);
   pointer-events: none;
 }
@@ -1373,7 +1373,7 @@ body {
   align-items: center;
   gap: 0.45rem;
   padding: 0.62rem 0.9rem;
-  border-radius: 10px;
+  border-radius: 8px;
   border: 1px solid rgba(44, 62, 80, 0.1);
   background: rgba(255, 253, 247, 0.9);
   color: var(--eink-ink);
@@ -1697,7 +1697,7 @@ body {
   color: var(--eink-ink);
   width: 38px;
   height: 38px;
-  border-radius: 10px;
+  border-radius: 8px;
   display: grid;
   place-items: center;
   cursor: pointer;
@@ -2301,8 +2301,10 @@ html, body, #root, .app-container, .main-content {
 }
 
 .crowdrisk-section-nav button.active {
-  background: var(--text-main);
-  color: var(--surface-color);
+  border: 1px solid rgba(168, 86, 29, 0.28);
+  background: linear-gradient(135deg, rgba(255, 250, 242, 0.98), rgba(239, 220, 198, 0.72));
+  color: #7c3f16;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.72);
 }
 
 .crowdrisk-global-status {
@@ -2319,7 +2321,7 @@ html, body, #root, .app-container, .main-content {
   margin: 0 auto;
   padding: 1.5rem;
   box-sizing: border-box;
-  overflow-x: hidden;
+  overflow-x: visible;
   overflow-anchor: none;
 }
 
@@ -2574,6 +2576,632 @@ html, body, #root, .app-container, .main-content {
   font-size: 0.95rem;
 }
 
+.stock-dossier-section {
+  width: min(100%, 1320px);
+  margin: 0 auto;
+  padding: 1.5rem;
+}
+
+.stock-dossier-back-row {
+  margin-bottom: 1.35rem;
+}
+
+.stock-dossier-back-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0;
+  border: 0;
+  background: none;
+  color: var(--brand-blue, #2563eb);
+  cursor: pointer;
+  font-weight: 800;
+}
+
+.stock-dossier-detail-layout {
+  display: grid;
+  grid-template-columns: 240px minmax(0, 1fr);
+  gap: 1.4rem;
+  align-items: start;
+}
+
+.stock-dossier-side-nav {
+  position: sticky;
+  top: 7.75rem;
+  z-index: 12;
+  max-height: calc(100vh - 9rem);
+  min-height: 24rem;
+  overflow-y: auto;
+  padding: 1.35rem 1.2rem;
+  border: 1px solid rgba(168, 86, 29, 0.18);
+  border-left: 4px solid rgba(168, 86, 29, 0.35);
+  border-radius: 10px;
+  background: rgba(255, 250, 242, 0.78);
+  box-shadow: 0 16px 42px rgba(18, 24, 28, 0.06);
+}
+
+.stock-dossier-side-nav a {
+  display: block;
+  margin-top: 0.78rem;
+  color: var(--text-muted);
+  font-size: 1.02rem;
+  font-weight: 850;
+  line-height: 1.25;
+  text-decoration: none;
+}
+
+.stock-dossier-side-nav a:hover {
+  color: #a8561d;
+}
+
+.stock-dossier-content-card {
+  min-width: 0;
+  padding: 2rem;
+  border-radius: 10px;
+  background: var(--surface-color);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.dossier-hero-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1.18fr) minmax(340px, 0.82fr);
+  gap: 1.25rem;
+  margin-bottom: 1.5rem;
+  padding: 1.35rem;
+  border: 1px solid rgba(168, 86, 29, 0.24);
+  border-radius: 12px;
+  background:
+    linear-gradient(135deg, rgba(255, 250, 242, 0.98), rgba(255, 255, 255, 0.92) 58%, rgba(234, 230, 219, 0.72));
+  box-shadow: 0 22px 70px rgba(18, 24, 28, 0.08);
+}
+
+.dossier-hero-main {
+  min-width: 0;
+}
+
+.dossier-hero-identity {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+  min-width: 0;
+}
+
+.dossier-company-logo {
+  display: grid;
+  width: 4.5rem;
+  height: 4.5rem;
+  flex: 0 0 auto;
+  place-items: center;
+  border: 1px solid rgba(168, 86, 29, 0.28);
+  border-radius: 8px;
+  background: #f0642f;
+  color: #fffaf2;
+  font-size: 1.1rem;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  overflow: hidden;
+  box-shadow: inset 0 -16px 34px rgba(75, 31, 13, 0.16);
+}
+
+.dossier-company-logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.dossier-hero-identity h2 {
+  margin: 0;
+  font-size: clamp(2.1rem, 4vw, 3.8rem);
+  line-height: 0.95;
+  letter-spacing: 0;
+}
+
+.dossier-ticker-line {
+  margin: 0.35rem 0 0;
+  color: var(--text-muted);
+  font-size: clamp(1rem, 1.6vw, 1.25rem);
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.dossier-hero-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin-top: 0.85rem;
+}
+
+.dossier-hero-pills span {
+  padding: 0.42rem 0.62rem;
+  border: 1px solid var(--border-light);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.72);
+  color: var(--text-main);
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+
+.dossier-profile-line {
+  max-width: 780px;
+  margin: 1rem 0 0;
+  color: var(--text-muted);
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.dossier-market-strip {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.55rem;
+  margin-top: 1rem;
+}
+
+.dossier-market-strip > div {
+  min-width: 0;
+  padding: 0.7rem 0.75rem;
+  border: 1px solid rgba(168, 86, 29, 0.16);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.66);
+}
+
+.dossier-market-strip span {
+  display: block;
+  margin-bottom: 0.28rem;
+  color: var(--text-muted);
+  font-size: 0.68rem;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.dossier-market-strip strong {
+  display: block;
+  color: var(--text-main);
+  font-size: 0.95rem;
+  line-height: 1.15;
+  overflow-wrap: anywhere;
+}
+
+.dossier-why-now {
+  margin-top: 1.1rem;
+  padding: 1rem;
+  border: 1px solid rgba(39, 39, 42, 0.1);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.62);
+}
+
+.dossier-why-now span {
+  display: block;
+  margin-bottom: 0.45rem;
+  color: #a8561d;
+  font-size: 0.75rem;
+  font-weight: 900;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+
+.dossier-why-now strong {
+  display: block;
+  color: var(--text-main);
+  line-height: 1.35;
+}
+
+.dossier-why-now p {
+  margin: 0.55rem 0 0;
+  color: var(--text-muted);
+  line-height: 1.55;
+}
+
+.dossier-snapshot-board {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.dossier-snapshot-header {
+  min-width: 0;
+  padding: 0.9rem 1rem;
+  border: 1px solid rgba(168, 86, 29, 0.28);
+  border-radius: 8px;
+  border-color: rgba(168, 86, 29, 0.28);
+  background: linear-gradient(135deg, rgba(255, 250, 242, 0.98), rgba(239, 220, 198, 0.68));
+  color: var(--text-main);
+}
+
+.dossier-snapshot-header span,
+.dossier-snapshot-row span {
+  display: block;
+  margin-bottom: 0.35rem;
+  color: var(--text-muted);
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.dossier-snapshot-header span {
+  color: #a8561d;
+}
+
+.dossier-snapshot-header strong,
+.dossier-snapshot-row strong {
+  display: block;
+  color: var(--text-main);
+  line-height: 1.18;
+  overflow-wrap: anywhere;
+}
+
+.dossier-snapshot-header strong {
+  font-size: 1.25rem;
+}
+
+.dossier-snapshot-list {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid rgba(39, 39, 42, 0.1);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.68);
+  overflow: hidden;
+}
+
+.dossier-snapshot-row {
+  display: grid;
+  grid-template-columns: minmax(130px, 0.9fr) minmax(0, 1.1fr);
+  gap: 0.75rem;
+  align-items: center;
+  min-width: 0;
+  padding: 0.72rem 0.9rem;
+  border-bottom: 1px solid rgba(39, 39, 42, 0.08);
+}
+
+.dossier-snapshot-row strong {
+  font-size: 1rem;
+}
+
+.dossier-snapshot-row.tone-positive {
+  background: rgba(236, 253, 245, 0.68);
+}
+
+.dossier-snapshot-row.tone-warning {
+  background: rgba(255, 250, 242, 0.86);
+}
+
+.dossier-market-visuals {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0.75rem;
+}
+
+.dossier-mini-chart {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(130px, 1.1fr);
+  gap: 0.75rem;
+  align-items: center;
+  padding: 0.8rem 0.9rem;
+  border: 1px solid rgba(168, 86, 29, 0.18);
+  border-radius: 8px;
+  background: rgba(255, 250, 242, 0.68);
+}
+
+.dossier-mini-chart span,
+.dossier-radar-heading span {
+  display: block;
+  margin-bottom: 0.28rem;
+  color: var(--text-muted);
+  font-size: 0.68rem;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.dossier-mini-chart strong,
+.dossier-radar-heading strong {
+  color: var(--text-main);
+  font-size: 0.92rem;
+  line-height: 1.2;
+}
+
+.dossier-mini-chart svg {
+  width: 100%;
+  height: 52px;
+}
+
+.dossier-mini-chart path {
+  fill: none;
+  stroke: #3f8f67;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 4;
+}
+
+.dossier-mini-chart__empty {
+  display: flex;
+  align-items: end;
+  gap: 0.32rem;
+  height: 52px;
+  opacity: 0.7;
+}
+
+.dossier-mini-chart__empty span {
+  flex: 1;
+  margin: 0;
+  border-radius: 6px 6px 0 0;
+  background: rgba(168, 86, 29, 0.24);
+}
+
+.dossier-mini-chart__empty span:nth-child(1) {
+  height: 34%;
+}
+
+.dossier-mini-chart__empty span:nth-child(2) {
+  height: 56%;
+}
+
+.dossier-mini-chart__empty span:nth-child(3) {
+  height: 42%;
+}
+
+.dossier-radar-panel {
+  padding: 0.6rem 0.75rem;
+  border: 1px solid rgba(168, 86, 29, 0.18);
+  border-radius: 8px;
+  background: rgba(255, 250, 242, 0.62);
+}
+
+.dossier-radar-heading {
+  margin-bottom: 0.2rem;
+}
+
+.dossier-radar-chart {
+  display: block;
+  width: min(100%, 152px);
+  height: auto;
+  margin: 0 auto;
+}
+
+.dossier-radar-ring {
+  fill: none;
+  stroke: rgba(39, 39, 42, 0.1);
+  stroke-width: 1;
+}
+
+.dossier-radar-spoke {
+  stroke: rgba(39, 39, 42, 0.1);
+  stroke-width: 1;
+}
+
+.dossier-radar-label {
+  fill: #a8561d;
+  font-size: 0.58rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.dossier-radar-area {
+  fill: rgba(63, 143, 103, 0.42);
+  stroke: #3f8f67;
+  stroke-linejoin: round;
+  stroke-width: 3;
+}
+
+.dossier-company-overview-card {
+  margin-bottom: 1.5rem;
+  padding: 1.25rem;
+  border-left: 4px solid rgba(168, 86, 29, 0.32);
+}
+
+.dossier-company-overview h3 {
+  margin: 0;
+  font-size: 1.35rem;
+}
+
+.dossier-company-overview p {
+  margin: 0.65rem 0 1rem;
+  color: var(--text-muted);
+  line-height: 1.55;
+}
+
+.dossier-quick-facts {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.65rem;
+}
+
+.dossier-quick-facts > div {
+  padding: 0.75rem;
+  border: 1px solid var(--border-light);
+  border-radius: 8px;
+  background: rgba(255, 250, 242, 0.66);
+}
+
+.dossier-quick-facts span,
+.dossier-scenario-grid span {
+  display: block;
+  margin-bottom: 0.35rem;
+  color: #a8561d;
+  font-size: 0.7rem;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.dossier-quick-facts strong {
+  display: block;
+  color: var(--text-main);
+  font-size: 0.95rem;
+  line-height: 1.25;
+}
+
+.dossier-profile-sections {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.75rem;
+  margin-top: 0.9rem;
+}
+
+.dossier-profile-sections article {
+  min-width: 0;
+  padding: 0.9rem;
+  border: 1px solid rgba(168, 86, 29, 0.16);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.62);
+}
+
+.dossier-profile-sections span {
+  display: block;
+  margin-bottom: 0.35rem;
+  color: #a8561d;
+  font-size: 0.7rem;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.dossier-profile-sections h4 {
+  margin: 0 0 0.45rem;
+  color: var(--text-main);
+  font-size: 0.98rem;
+  line-height: 1.25;
+}
+
+.dossier-profile-sections ul {
+  margin: 0;
+  padding-left: 1rem;
+  color: var(--text-muted);
+  font-size: 0.88rem;
+  line-height: 1.45;
+}
+
+
+.dossier-valuation-core {
+  border-left: 4px solid rgba(168, 86, 29, 0.35);
+}
+
+.dossier-valuation-core__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.dossier-valuation-core__header h3 {
+  margin: 0;
+  font-size: 1.25rem;
+  line-height: 1.2;
+}
+
+.dossier-valuation-verdict,
+.dossier-valuation-metrics {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.dossier-valuation-verdict {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin-bottom: 1rem;
+}
+
+.dossier-valuation-verdict > div,
+.dossier-valuation-metrics > div {
+  min-width: 0;
+  padding: 0.85rem;
+  border: 1px solid var(--border-light);
+  border-radius: 8px;
+  background: rgba(255, 250, 242, 0.66);
+}
+
+.dossier-valuation-verdict span,
+.dossier-valuation-metrics span {
+  display: block;
+  margin-bottom: 0.35rem;
+  color: var(--text-muted);
+  font-size: 0.74rem;
+  font-weight: 900;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+}
+
+.dossier-valuation-verdict strong,
+.dossier-valuation-metrics strong {
+  display: block;
+  color: var(--text-main);
+  font-size: 1rem;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+
+.dossier-valuation-read {
+  margin-bottom: 1rem;
+  padding: 0.95rem 1rem;
+  border: 1px solid rgba(168, 86, 29, 0.22);
+  border-radius: 8px;
+  background: #fffaf2;
+}
+
+.dossier-valuation-read strong {
+  display: block;
+  margin-bottom: 0.35rem;
+  font-size: 1.05rem;
+}
+
+.dossier-valuation-read p {
+  margin: 0;
+  color: var(--text-muted);
+  line-height: 1.55;
+}
+
+.dossier-valuation-metrics {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin-bottom: 1rem;
+}
+
+.dossier-valuation-judgment {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(260px, 0.9fr);
+  gap: 1rem;
+}
+
+.dossier-valuation-judgment h4 {
+  margin: 0 0 0.5rem;
+  color: #a8561d;
+  font-size: 0.78rem;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.dossier-valuation-judgment ul {
+  margin: 0;
+  padding-left: 1.1rem;
+  color: var(--text-muted);
+  line-height: 1.55;
+}
+
+.dossier-scenario-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.dossier-scenario-grid > div {
+  min-width: 0;
+  padding: 0.9rem;
+  border: 1px solid rgba(168, 86, 29, 0.18);
+  border-radius: 8px;
+  background: rgba(255, 250, 242, 0.62);
+}
+
+.dossier-scenario-grid p {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 0.92rem;
+  line-height: 1.5;
+}
+
 html,
 body,
 #root,
@@ -2601,8 +3229,53 @@ body,
 
   .crowdrisk-home-hero,
   .crowdrisk-home-section.split,
-  .crowdrisk-card-grid.three {
+  .crowdrisk-card-grid.three,
+  .dossier-hero-card,
+  .dossier-market-strip,
+  .dossier-quick-facts,
+  .dossier-profile-sections,
+  .dossier-valuation-verdict,
+  .dossier-valuation-metrics,
+  .dossier-valuation-judgment,
+  .dossier-scenario-grid {
     grid-template-columns: 1fr;
+  }
+
+  .stock-dossier-section {
+    padding: 1rem;
+  }
+
+  .stock-dossier-detail-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .stock-dossier-side-nav {
+    position: relative;
+    top: auto;
+    z-index: auto;
+    max-height: none;
+    min-height: 0;
+    overflow: visible;
+  }
+
+  .dossier-hero-identity {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .dossier-company-logo {
+    width: 4rem;
+    height: 4rem;
+  }
+
+  .dossier-hero-identity h2 {
+    font-size: 2.35rem;
+    line-height: 1;
+  }
+
+  .dossier-snapshot-row {
+    grid-template-columns: 1fr;
+    gap: 0.3rem;
   }
 
   .crowdrisk-home-stats,
