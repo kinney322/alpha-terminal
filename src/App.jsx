@@ -1,175 +1,275 @@
-import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import AlphaScannerPanel from './components/AlphaScannerPanel';
-import EventStudyPanel from './components/EventStudyPanel';
-import QuantBotChat from './components/QuantBotChat';
-import CatalystRadarShell from './components/CatalystRadarShell';
-import StockDossierSection from './components/StockDossierSection';
-import PublicLeaderboardPreview from './components/PublicLeaderboardPreview';
-import { fetchAndNormalizeRadarPayload } from './data/payloadAdapter';
+import { useEffect, useMemo, useState } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
+import AlphaScannerPanel from './components/AlphaScannerPanel.jsx';
+import EventStudyPanel from './components/EventStudyPanel.jsx';
+import QuantBotChat from './components/QuantBotChat.jsx';
+import CatalystRadarShell from './components/CatalystRadarShell.jsx';
+import StockDossierSection from './components/StockDossierSection.jsx';
+import PublicLeaderboardPreview from './components/PublicLeaderboardPreview.jsx';
+import CrowdRiskHome from './components/CrowdRiskHome.jsx';
+import MomentumUniverseSection from './components/MomentumUniverseSection.jsx';
+import { fetchAndNormalizeRadarPayload } from './data/payloadAdapter.js';
 
 const PRODUCT_MODE = import.meta.env.VITE_PRODUCT_MODE || 'crowdrisk';
 
-const PUBLIC_TABS = [
-  { key: 'leaderboard', label: '🏆 Leaderboard' },
-  { key: 'earnings-radar', label: '📡 Earnings Radar' },
-  { key: 'event-study', label: '🎯 Event Study' },
-  { key: 'stock-dossier', label: '📘 Stock Dossier' },
-  { key: 'peer-reactions', label: '🔗 Peer Reactions' },
-  { key: 'methodology', label: '📖 Methodology' },
+const CROWDRISK_SECTIONS = [
+  { id: 'earnings-radar', label: 'Earnings Radar', subtitle: 'Pre / Event / Post' },
+  { id: 'event-study', label: 'Event Study', subtitle: 'Historical evidence' },
+  { id: 'momentum-universe', label: 'Momentum Universe', subtitle: 'Trend follow-through' },
+  { id: 'stock-dossier', label: 'Stock Dossier', subtitle: 'Judgment layer' }
 ];
 
 const INTERNAL_TABS = [
-  { key: 'scanner', label: '📡 Alpha Scanner' },
-  { key: 'quant-chat', label: '🤖 Quant Chatbot' },
-  { key: 'edge', label: '🧠 Alpha Edge (Deep)' },
-  { key: 'macro', label: '🌡️ Macro Sentiment' },
-  { key: 'sports', label: '⚾ Sports Quant' },
+  { id: 'scanner', label: 'Alpha Scanner', icon: '◉' },
+  { id: 'quant-chat', label: 'Quant Chatbot', icon: '◇' },
+  { id: 'edge', label: 'Alpha Edge (Deep)', icon: '△' },
+  { id: 'macro', label: 'Macro Sentiment', icon: '□' },
+  { id: 'sports', label: 'Sports Quant', icon: '▣' }
 ];
 
+const scrollViewportToTop = () => {
+  document.querySelector('.crowdrisk-app')?.scrollIntoView({ block: 'start' });
+  window.scrollTo({ top: 0, left: 0 });
+  if (document.scrollingElement) {
+    document.scrollingElement.scrollTop = 0;
+    document.scrollingElement.scrollLeft = 0;
+  }
+  document.documentElement.scrollTop = 0;
+  document.body.scrollTop = 0;
+};
+
 function App() {
-  const [activeTab, setActiveTab] = useState(PRODUCT_MODE === 'crowdrisk' ? 'leaderboard' : 'scanner');
+  const isCrowdRisk = PRODUCT_MODE === 'crowdrisk';
+  const [activeTab, setActiveTab] = useState(isCrowdRisk ? 'home' : 'scanner');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-
-  // Shared Dossier State
-  const [dossierSeed, setDossierSeed] = useState(null);
-
-  // Shared Radar Payload State
   const [payload, setPayload] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [dossierSeed, setDossierSeed] = useState(null);
 
   useEffect(() => {
+    let alive = true;
     fetchAndNormalizeRadarPayload()
-      .then(data => {
+      .then((data) => {
+        if (!alive) return;
         setPayload(data);
-        setLoading(false);
+        setError(null);
       })
-      .catch(err => {
-        console.error("Failed to fetch radar payload:", err);
-        setError(err.message);
-        setLoading(false);
+      .catch((err) => {
+        if (!alive) return;
+        console.error('Failed to load CrowdRisk radar payload', err);
+        setError(err);
+      })
+      .finally(() => {
+        if (alive) setLoading(false);
       });
+    return () => {
+      alive = false;
+    };
   }, []);
+
+  useEffect(() => {
+    scrollViewportToTop();
+    const scrollTimer = window.setTimeout(scrollViewportToTop, 0);
+    const scrollAnchorTimer = window.setTimeout(scrollViewportToTop, 80);
+    return () => {
+      window.clearTimeout(scrollTimer);
+      window.clearTimeout(scrollAnchorTimer);
+    };
+  }, [activeTab]);
 
   const handleOpenStockDossier = (ticker, eventDetail) => {
     setDossierSeed({ ticker, eventDetail });
-    setActiveTab('stock-dossier');
+    setActiveTab(isCrowdRisk ? 'stock-dossier' : 'dossier');
+    setIsMobileMenuOpen(false);
   };
 
-  const pageVariants = {
-    initial: { opacity: 0, y: 15 },
-    in: { opacity: 1, y: 0 },
-    out: { opacity: 0, y: -15 },
+  const handleNavigate = (tabId) => {
+    if (tabId !== 'stock-dossier' && tabId !== 'dossier') {
+      setDossierSeed(null);
+    }
+    setActiveTab(tabId);
+    setIsMobileMenuOpen(false);
+    scrollViewportToTop();
+    window.setTimeout(scrollViewportToTop, 80);
   };
 
-  const panels = {
-    // CrowdRisk Panels
-    'leaderboard': <PublicLeaderboardPreview payload={payload} onOpenStockDossier={handleOpenStockDossier} />,
-    'earnings-radar': <CatalystRadarShell payload={payload} loading={loading} error={error} onOpenStockDossier={handleOpenStockDossier} />,
+  const lastUpdated = useMemo(() => {
+    const generatedAt = payload?.meta?.generated_at || payload?.generated_at;
+    if (!generatedAt) return loading ? 'Loading' : 'Not available';
+    try {
+      return new Intl.DateTimeFormat('en-US', {
+        month: 'short',
+        day: 'numeric',
+        hour: 'numeric',
+        minute: '2-digit'
+      }).format(new Date(generatedAt));
+    } catch {
+      return generatedAt;
+    }
+  }, [loading, payload]);
+
+  const crowdRiskPanels = {
+    home: (
+      <CrowdRiskHome
+        payload={payload}
+        loading={loading}
+        error={error}
+        onNavigate={handleNavigate}
+        onOpenStockDossier={handleOpenStockDossier}
+      />
+    ),
+    'earnings-radar': (
+      <CatalystRadarShell
+        payload={payload}
+        loading={loading}
+        error={error}
+        onOpenStockDossier={handleOpenStockDossier}
+      />
+    ),
     'event-study': <EventStudyPanel />,
-    'stock-dossier': <StockDossierSection payload={payload} loading={loading} error={error} dossierSeed={dossierSeed} onClearSeed={() => setDossierSeed(null)} />,
-    'peer-reactions': <div className="fade-in"><h2 className="section-title">Coming Soon</h2></div>,
-    'methodology': <div className="fade-in"><h2 className="section-title">Coming Soon</h2></div>,
-    
-    // Internal Panels
+    'momentum-universe': (
+      <MomentumUniverseSection
+        payload={payload}
+        loading={loading}
+        error={error}
+        onOpenStockDossier={handleOpenStockDossier}
+      />
+    ),
+    'stock-dossier': (
+      <StockDossierSection
+        payload={payload}
+        loading={loading}
+        error={error}
+        dossierSeed={dossierSeed}
+        onClearSeed={() => setDossierSeed(null)}
+      />
+    )
+  };
+
+  const internalPanels = {
     scanner: <AlphaScannerPanel />,
     'quant-chat': <QuantBotChat />,
     edge: <div className="fade-in"><h2 className="section-title">Coming Soon</h2></div>,
     macro: <div className="fade-in"><h2 className="section-title">Coming Soon</h2></div>,
-    sports: <div className="fade-in"><h2 className="section-title">Coming Soon</h2></div>,
+    sports: <div className="fade-in"><h2 className="section-title">Coming Soon</h2></div>
   };
 
-  const brandName = PRODUCT_MODE === 'crowdrisk' ? 'CrowdRisk' : 'AlphaTerminal';
-  const pageTitle = PRODUCT_MODE === 'crowdrisk' ? 'Intelligence Terminal' : 'Omni-Scanner v4';
+  if (isCrowdRisk) {
+    return (
+      <div className="crowdrisk-app">
+        <header className="crowdrisk-topbar">
+          <button
+            className="crowdrisk-brand"
+            type="button"
+            onClick={() => handleNavigate('home')}
+            aria-label="Go to CrowdRisk home"
+          >
+            <span>CrowdRisk</span>
+            <small>Follow the trend. Find the opportunity.</small>
+          </button>
+
+          <div className="crowdrisk-topbar-right">
+            {activeTab !== 'home' && (
+              <nav className="crowdrisk-section-nav" aria-label="CrowdRisk sections">
+                {CROWDRISK_SECTIONS.map((section) => (
+                  <button
+                    key={section.id}
+                    type="button"
+                    className={activeTab === section.id ? 'active' : ''}
+                    onClick={() => handleNavigate(section.id)}
+                    title={section.subtitle}
+                  >
+                    {section.label}
+                  </button>
+                ))}
+              </nav>
+            )}
+            <div className="crowdrisk-global-status" aria-label="CrowdRisk display status">
+              <span>Light / Dark</span>
+              <span>Last updated {lastUpdated}</span>
+            </div>
+          </div>
+        </header>
+
+        <main className="crowdrisk-main">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={activeTab}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.2 }}
+            >
+              {crowdRiskPanels[activeTab] || crowdRiskPanels.home}
+            </motion.div>
+          </AnimatePresence>
+        </main>
+      </div>
+    );
+  }
 
   return (
     <div className="app-container">
-      
-      {/* 左側邊欄 */}
+      <button
+        type="button"
+        className="mobile-menu-toggle"
+        onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+      >
+        {isMobileMenuOpen ? 'Close' : 'Menu'}
+      </button>
+
       <aside className={`sidebar ${isMobileMenuOpen ? 'open' : ''}`}>
-        <div className="sidebar-header">
-          <div className="brand">{PRODUCT_MODE === 'crowdrisk' ? 'CrowdRisk' : <>Alpha<span>Terminal</span></>}</div>
-          <button className="mobile-menu-btn" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              {isMobileMenuOpen ? (
-                <><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></>
-              ) : (
-                <><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></>
-              )}
-            </svg>
-          </button>
+        <div className="brand">
+          <div className="brand-mark">AT</div>
+          <div>
+            <h1>AlphaTerminal</h1>
+            <p>Omni-Scanner v4</p>
+          </div>
         </div>
-        
-        <div className="nav-container">
-          <div className="nav-split">CrowdRisk Core</div>
-          
-          {PUBLIC_TABS.map(tab => (
-            <div 
-              key={tab.key}
-              className={`nav-item ${activeTab === tab.key ? 'active' : ''}`}
-              onClick={() => {
-                if (tab.key === 'stock-dossier') {
-                  setDossierSeed(null);
-                }
-                setActiveTab(tab.key);
-                setIsMobileMenuOpen(false);
-              }}
+
+        <nav className="nav-sections">
+          <p className="nav-label">Intelligence</p>
+          {INTERNAL_TABS.map((tab) => (
+            <button
+              key={tab.id}
+              type="button"
+              className={activeTab === tab.id ? 'active' : ''}
+              onClick={() => handleNavigate(tab.id)}
             >
-              {tab.label}
-            </div>
+              <span className="nav-icon">{tab.icon}</span>
+              <span>{tab.label}</span>
+            </button>
           ))}
-          
-          {PRODUCT_MODE !== 'crowdrisk' && (
-            <>
-              <div className="nav-split">Internal / Lab nav</div>
-              {INTERNAL_TABS.map(tab => (
-                <div 
-                  key={tab.key}
-                  className={`nav-item ${activeTab === tab.key ? 'active' : ''}`}
-                  onClick={() => {
-                    setActiveTab(tab.key);
-                    setIsMobileMenuOpen(false);
-                  }}
-                  style={tab.key === 'sports' ? { color: '#A1A1AA', opacity: 0.7 } : {}}
-                >
-                  {tab.label}
-                </div>
-              ))}
-            </>
-          )}
+        </nav>
+
+        <div className="sidebar-footer">
+          <p>Live Polling</p>
+          <strong>EST Timezone</strong>
         </div>
       </aside>
 
-      {/* 主區塊 */}
       <main className="main-content">
-        <header className="page-header">
-          <div className="page-title">
-            <h1>{pageTitle}</h1>
-            <p>Live Polling • EST Timezone • E-Ink Light Mode Active</p>
+        <header className="topbar">
+          <div>
+            <p className="eyebrow">Operational Quant Console</p>
+            <h2>Omni-Scanner v4</h2>
           </div>
-          {PRODUCT_MODE !== 'crowdrisk' && (
-            <div style={{ fontSize: '12px', color: 'var(--text-muted)', fontWeight: '600', background: 'var(--surface-color)', padding: '8px 16px', borderRadius: '20px', border: '1px solid var(--border-light)' }}>
-              🔴 Kill Switch: 0 Active
-            </div>
-          )}
+          <div className="status-pill">E-Ink Light Mode Active</div>
         </header>
 
         <AnimatePresence mode="wait">
           <motion.div
             key={activeTab}
-            initial="initial"
-            animate="in"
-            exit="out"
-            variants={pageVariants}
-            transition={{ type: 'tween', ease: 'easeOut', duration: 0.25 }}
-            style={{ minHeight: 'calc(100% - 80px)', overflow: 'visible' }}
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -12 }}
+            transition={{ duration: 0.2 }}
           >
-            {panels[activeTab]}
+            {internalPanels[activeTab]}
           </motion.div>
         </AnimatePresence>
       </main>
-
     </div>
   );
 }
