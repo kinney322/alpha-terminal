@@ -6,6 +6,8 @@
   "scripts": {
     "dev": "vite --port 5002",
     "build": "vite build",
+    "build:alpha": "VITE_BASE=/alpha/ vite build",
+    "build:crowdrisk": "VITE_BASE=/ vite build",
     "preview": "vite preview"
   },
   "dependencies": {
