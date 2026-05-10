@@ -3,7 +3,6 @@ import {
   buildDossierSummary,
   buildResearchKillSwitch,
   buildPriceTrendRisk,
-  buildEvidenceBoard,
   buildValuationCore,
   buildStockOverview
 } from './dossierHelpers';
@@ -30,6 +29,46 @@ const formatValuationMetric = (metric) => {
   if (metric.format === 'multiple') return `${numeric.toFixed(2)}x`;
   if (metric.format === 'billion') return `$${numeric.toFixed(1)}B`;
   return numeric.toFixed(1);
+};
+
+const verdictStateLabels = {
+  post_earnings_watch: 'Post-earnings watch',
+  priced_for_perfection: 'Priced for perfection',
+  constructive: 'Constructive',
+  high: 'High'
+};
+
+const thesisStateLabels = {
+  ai_risk: 'AI risk',
+  ai_benefit: 'AI benefit',
+  neutral: 'neutral',
+  mixed: 'mixed'
+};
+
+const renderStructuredVerdict = (structuredVerdict, fallback) => {
+  if (!structuredVerdict) {
+    return {
+      reason: fallback.reason,
+      verdict: fallback.verdict,
+      support: [],
+      risks: []
+    };
+  }
+
+  const researchState = verdictStateLabels[structuredVerdict.researchState] || formatLabel(structuredVerdict.researchState);
+  const marketEvidence = verdictStateLabels[structuredVerdict.marketEvidence] || formatLabel(structuredVerdict.marketEvidence);
+  const shift = structuredVerdict.thesisShift;
+  const shiftLine = shift?.from && shift?.to
+    ? `The working thesis has shifted from ${thesisStateLabels[shift.from] || formatLabel(shift.from)} to ${thesisStateLabels[shift.to] || formatLabel(shift.to)}: ${shift.reason}`
+    : '';
+
+  return {
+    reason: `${researchState}: ${marketEvidence.toLowerCase()} evidence keeps this stock on the research queue.`,
+    verdict: structuredVerdict.finalRead || fallback.verdict,
+    thesisShift: shiftLine,
+    support: structuredVerdict.keySupport || [],
+    risks: structuredVerdict.keyRisk || []
+  };
 };
 
 const toNumeric = (value) => {
@@ -134,13 +173,21 @@ const StockDossierView = ({ eventDetail, payload }) => {
   } : eventDetail;
 
   const dossierSummary = buildDossierSummary(enrichedEventDetail, payload);
-  const reason = dossierProfile?.whyNow?.reason || dossierSummary.reason;
-  const verdict = dossierProfile?.whyNow?.verdict || dossierSummary.verdict;
+  const renderedVerdict = renderStructuredVerdict(dossierProfile?.dossierVerdict, {
+    reason: dossierProfile?.whyNow?.reason || dossierSummary.reason,
+    verdict: dossierProfile?.whyNow?.verdict || dossierSummary.verdict
+  });
   const killSwitch = buildResearchKillSwitch(enrichedEventDetail, payload);
   const priceTrendRisk = buildPriceTrendRisk(enrichedEventDetail, payload);
-  const evidenceBoard = buildEvidenceBoard(enrichedEventDetail, payload);
   const valuationCore = buildValuationCore(enrichedEventDetail, dossierProfile);
   const stockOverview = buildStockOverview(enrichedEventDetail, payload, dossierProfile);
+  const marketEvidence = dossierProfile?.marketEvidence || {
+    title: 'Market evidence requires more context before it can support a research conclusion.',
+    points: [
+      'Use event reaction, trend quality, and valuation context together before treating the setup as actionable.',
+      'Do not infer company quality or margin of safety from momentum alone.'
+    ]
+  };
 
   const momentum = enrichedEventDetail.momentum_evidence || {};
   const metrics = momentum.evidence || enrichedEventDetail.trend_setup?.metrics || {};
@@ -215,8 +262,33 @@ const StockDossierView = ({ eventDetail, payload }) => {
 
           <div className="dossier-why-now">
             <span>Why now</span>
-            <strong>{reason}</strong>
-            <p>{verdict}</p>
+            <strong>{renderedVerdict.reason}</strong>
+            {renderedVerdict.thesisShift && <p>{renderedVerdict.thesisShift}</p>}
+            <p>{renderedVerdict.verdict}</p>
+            {(renderedVerdict.support.length > 0 || renderedVerdict.risks.length > 0) && (
+              <div className="dossier-verdict-grid" aria-label={`${ticker} verdict summary`}>
+                {renderedVerdict.support.length > 0 && (
+                  <div>
+                    <em>What supports the case</em>
+                    <ul>
+                      {renderedVerdict.support.map((item) => (
+                        <li key={item}>{item}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+                {renderedVerdict.risks.length > 0 && (
+                  <div>
+                    <em>What can break the case</em>
+                    <ul>
+                      {renderedVerdict.risks.map((item) => (
+                        <li key={item}>{item}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+              </div>
+            )}
           </div>
         </div>
 
@@ -397,33 +469,14 @@ const StockDossierView = ({ eventDetail, payload }) => {
         </div>
       </div>
 
-      {/* 9. Evidence Board */}
-      <div id="market-evidence" className="card dossier-evidence-board" style={{ marginBottom: '24px' }}>
-        <h3 style={{ marginBottom: '16px' }}>Evidence Board</h3>
-        {evidenceBoard.length === 0 ? (
-          <div className="warning-text">No significant evidence available.</div>
-        ) : (
-          <div style={{ overflowX: 'auto' }}>
-            <table style={{ width: '100%', textAlign: 'left', borderCollapse: 'collapse', fontSize: '0.9em' }}>
-              <thead>
-                <tr style={{ borderBottom: '2px solid var(--border-color)', color: 'var(--text-muted)' }}>
-                  <th style={{ padding: '8px 4px' }}>Evidence</th>
-                  <th style={{ padding: '8px 4px' }}>Signal</th>
-                  <th style={{ padding: '8px 4px' }}>Interpretation</th>
-                </tr>
-              </thead>
-              <tbody>
-                {evidenceBoard.map((row, idx) => (
-                  <tr key={idx} style={{ borderBottom: '1px solid var(--border-light)' }}>
-                    <td style={{ padding: '8px 4px', fontWeight: 'bold' }}>{row.evidence}</td>
-                    <td style={{ padding: '8px 4px' }}>{row.signal}</td>
-                    <td style={{ padding: '8px 4px', color: 'var(--text-muted)' }}>{row.interpretation}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        )}
+      <div id="market-evidence" className="card dossier-market-evidence-card" style={{ marginBottom: '24px' }}>
+        <p className="crowdrisk-kicker">Market Evidence</p>
+        <h3>{marketEvidence.title}</h3>
+        <ul>
+          {marketEvidence.points.map((point) => (
+            <li key={point}>{point}</li>
+          ))}
+        </ul>
       </div>
 
     </div>

@@ -19,12 +19,47 @@ const stockDossierProfiles = {
       reason: 'DDOG is worth deeper research now because post-earnings evidence, platform execution, and momentum are lining up while valuation risk remains unusually demanding.',
       verdict: 'The business quality is high, but the current price already assumes durable 25%+ growth, near-30% FCF margins, and better SBC discipline.'
     },
+    dossierVerdict: {
+      sourceType: 'curated',
+      asOf: '2026-05-09',
+      researchState: 'post_earnings_watch',
+      businessQuality: 'high',
+      valuationState: 'priced_for_perfection',
+      marketEvidence: 'constructive',
+      finalRead: 'High-quality compounder, but priced for perfection.',
+      thesisShift: {
+        from: 'ai_risk',
+        to: 'ai_benefit',
+        confidence: 'medium_high',
+        reason:
+          'AI workload growth appears to increase the need for observability, security monitoring, and cloud infrastructure visibility rather than weaken Datadog\'s platform value.'
+      },
+      keySupport: [
+        'Q1 revenue grew 32% year over year and crossed the $1B quarterly run-rate threshold.',
+        'Free-cash-flow margin reached 29%, keeping Rule of 40 evidence strong.',
+        'Large-customer expansion and low-120%s net retention support the platform expansion thesis.',
+        'Post-earnings market evidence remains constructive enough to justify continued research.'
+      ],
+      keyRisk: [
+        'The current valuation already assumes durable 25%+ growth and near-30% FCF margins.',
+        'Stock-based compensation remains material and needs visible dilution discipline.',
+        'There is no margin of safety if growth normalizes toward the low-20%s or below.'
+      ]
+    },
     quickFacts: [
       { label: 'Business Model', value: 'Subscription SaaS' },
       { label: 'Customer Base', value: '33,200 customers' },
       { label: '$100k+ ARR Customers', value: '4,550 / 90% of ARR' },
       { label: 'Net Retention', value: 'Low-120%s' }
     ],
+    marketEvidence: {
+      title: 'Market is still rewarding the post-earnings setup, but valuation discipline matters.',
+      points: [
+        'The stock remains in a post-earnings research window rather than a cold fundamental screen.',
+        'Momentum and relative strength keep DDOG worth monitoring, but they do not solve valuation risk.',
+        'The market is treating AI workloads as demand support for observability and security tooling.'
+      ]
+    },
     valuationCore: {
       status: 'available',
       topVerdict: {
