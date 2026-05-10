@@ -25,12 +25,6 @@ const stockDossierProfiles = {
       { label: '$100k+ ARR Customers', value: '4,550 / 90% of ARR' },
       { label: 'Net Retention', value: 'Low-120%s' }
     ],
-    crossSectionStatus: [
-      { label: 'Leaderboard', value: 'Post-Earnings + Momentum tabs' },
-      { label: 'Earnings Radar', value: 'Post-earnings watch' },
-      { label: 'Event Study', value: 'Historical earnings matrix available' },
-      { label: 'Momentum Universe', value: 'Constructive momentum / theme rank visible' }
-    ],
     valuationCore: {
       status: 'available',
       topVerdict: {

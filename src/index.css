@@ -2764,27 +2764,12 @@ html, body, #root, .app-container, .main-content {
   margin-top: 1rem;
 }
 
-.dossier-cross-section-strip {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 0.55rem;
-  margin-top: 0.65rem;
-}
-
 .dossier-market-strip > div {
   min-width: 0;
   padding: 0.7rem 0.75rem;
   border: 1px solid rgba(168, 86, 29, 0.16);
   border-radius: 8px;
   background: rgba(255, 255, 255, 0.66);
-}
-
-.dossier-cross-section-strip > div {
-  min-width: 0;
-  padding: 0.72rem 0.75rem;
-  border: 1px solid rgba(63, 143, 103, 0.18);
-  border-radius: 8px;
-  background: rgba(236, 253, 245, 0.52);
 }
 
 .dossier-market-strip span {
@@ -2797,29 +2782,11 @@ html, body, #root, .app-container, .main-content {
   text-transform: uppercase;
 }
 
-.dossier-cross-section-strip span {
-  display: block;
-  margin-bottom: 0.28rem;
-  color: #3f8f67;
-  font-size: 0.68rem;
-  font-weight: 900;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-}
-
 .dossier-market-strip strong {
   display: block;
   color: var(--text-main);
   font-size: 0.95rem;
   line-height: 1.15;
-  overflow-wrap: anywhere;
-}
-
-.dossier-cross-section-strip strong {
-  display: block;
-  color: var(--text-main);
-  font-size: 0.9rem;
-  line-height: 1.18;
   overflow-wrap: anywhere;
 }
 

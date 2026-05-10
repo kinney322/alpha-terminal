@@ -176,12 +176,6 @@ const StockDossierView = ({ eventDetail, payload }) => {
                               enrichedEventDetail.historical_earnings_tape?.status === 'available';
   const eventStudyValue = eventStudyAvailable ? 'Historical Matrix Available' : 'Pending';
   const momentumValue = momentum.score !== undefined ? `Score ${momentum.score}` : 'Pending';
-  const crossSectionStatus = dossierProfile?.crossSectionStatus || [
-    { label: 'Research State', value: researchState },
-    { label: 'Market Evidence', value: eventStudyAvailable ? 'Event Study Available' : 'Market evidence pending' },
-    { label: 'Momentum', value: momentumValue },
-    { label: 'Dossier', value: stockOverview.dataCoverage }
-  ];
   const snapshotRows = [
     { label: 'Business Quality', value: valuationCore.topVerdict.businessQuality, tone: valuationCore.topVerdict.businessQuality === 'High' ? 'positive' : 'neutral' },
     { label: 'Valuation', value: valuationCore.topVerdict.valuationState, tone: valuationCore.topVerdict.valuationState.includes('Missing') ? 'warning' : 'neutral' },
@@ -229,17 +223,6 @@ const StockDossierView = ({ eventDetail, payload }) => {
                 <div key={key}>
                   <span>{formatLabel(key)}</span>
                   <strong>{value}</strong>
-                </div>
-              ))}
-            </div>
-          )}
-
-          {crossSectionStatus.length > 0 && (
-            <div className="dossier-cross-section-strip" aria-label={`${ticker} CrowdRisk coverage`}>
-              {crossSectionStatus.map((item) => (
-                <div key={item.label}>
-                  <span>{item.label}</span>
-                  <strong>{item.value}</strong>
                 </div>
               ))}
             </div>
