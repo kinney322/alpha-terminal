@@ -2683,10 +2683,35 @@ html, body, #root, .app-container, .main-content {
   box-shadow: inset 0 -16px 34px rgba(75, 31, 13, 0.16);
 }
 
+.dossier-company-logo > * {
+  grid-area: 1 / 1;
+}
+
+.dossier-company-logo.has-logo {
+  padding: 0.35rem;
+  background: #ffffff;
+  box-shadow: 0 10px 26px rgba(18, 24, 28, 0.08);
+}
+
 .dossier-company-logo img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  border-radius: 6px;
+  object-fit: contain;
+}
+
+.dossier-company-logo.has-logo span {
+  display: none;
+}
+
+.dossier-company-logo.logo-fallback-visible {
+  padding: 0;
+  background: #f0642f;
+  box-shadow: inset 0 -16px 34px rgba(75, 31, 13, 0.16);
+}
+
+.dossier-company-logo.logo-fallback-visible span {
+  display: block;
 }
 
 .dossier-hero-identity h2 {

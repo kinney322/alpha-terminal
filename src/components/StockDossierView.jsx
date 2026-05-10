@@ -196,11 +196,11 @@ const StockDossierView = ({ eventDetail, payload }) => {
       <section className="dossier-hero-card">
         <div className="dossier-hero-main">
           <div className="dossier-hero-identity">
-            <div className="dossier-company-logo" aria-hidden="true">
+            <div className={`dossier-company-logo ${companyLogoUrl ? 'has-logo' : ''}`} aria-label={`${companyDisplayName} logo`}>
               {companyLogoUrl && (
                 <img
                   src={companyLogoUrl}
-                  alt=""
+                  alt={`${companyDisplayName} logo`}
                   onError={(event) => {
                     event.currentTarget.style.display = 'none';
                     event.currentTarget.parentElement?.classList.add('logo-fallback-visible');

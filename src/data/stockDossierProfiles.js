@@ -3,7 +3,7 @@ const stockDossierProfiles = {
     ticker: 'DDOG',
     companyName: 'Datadog, Inc.',
     exchange: 'NASDAQ',
-    logoUrl: 'https://logo.clearbit.com/datadoghq.com',
+    logoUrl: 'https://images.financialmodelingprep.com/symbol/DDOG.png',
     overview:
       'Datadog is a cloud-based observability and security platform used by engineering and operations teams to monitor infrastructure, applications, logs, user experience, and cloud-security workflows.',
     category: 'Cloud & AI Platform',
