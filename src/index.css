@@ -2688,9 +2688,11 @@ html, body, #root, .app-container, .main-content {
 }
 
 .dossier-company-logo.has-logo {
-  padding: 0.35rem;
-  background: #ffffff;
-  box-shadow: 0 10px 26px rgba(18, 24, 28, 0.08);
+  padding: 0.55rem;
+  border-color: rgba(98, 57, 147, 0.26);
+  background:
+    linear-gradient(135deg, #6d42a5 0%, #4d2a7b 100%);
+  box-shadow: 0 12px 30px rgba(65, 39, 103, 0.18);
 }
 
 .dossier-company-logo img {
@@ -2706,6 +2708,7 @@ html, body, #root, .app-container, .main-content {
 
 .dossier-company-logo.logo-fallback-visible {
   padding: 0;
+  border-color: rgba(168, 86, 29, 0.28);
   background: #f0642f;
   box-shadow: inset 0 -16px 34px rgba(75, 31, 13, 0.16);
 }
