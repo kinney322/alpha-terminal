@@ -1,8 +1,6 @@
 import React from 'react';
 import {
-  deriveThesisPulse,
   buildDossierSummary,
-  buildSignalStack,
   buildResearchKillSwitch,
   buildPriceTrendRisk,
   buildEvidenceBoard,
@@ -15,11 +13,6 @@ const formatPct = (value) => {
   if (value === undefined || value === null || Number.isNaN(Number(value))) return 'Not Included';
   const n = Number(value);
   return `${n > 0 ? '+' : ''}${n.toFixed(1)}%`;
-};
-
-const formatNumber = (value, digits = 2) => {
-  if (value === undefined || value === null || Number.isNaN(Number(value))) return 'Not Included';
-  return Number(value).toFixed(digits);
 };
 
 const formatLabel = (value) => {
@@ -120,11 +113,11 @@ const buildRadarAxes = ({ momentum, metrics, valuationCore, eventDetail }) => {
     : 18;
 
   return [
-    { label: 'Momentum', value: momentumScore === null ? 'Pending' : `${momentumScore}/100`, score: momentumScore ?? 18, tone: momentumTone },
-    { label: 'RS', value: rsSpy === null ? 'Pending' : formatPct(rsSpy), score: rsSpy === null ? 18 : clamp(50 + rsSpy * 2.2), tone: rsTone },
-    { label: 'MA200', value: smaConstructive === null ? 'Pending' : smaConstructive ? 'Above' : 'Below', score: smaConstructive === null ? 18 : smaConstructive ? 76 : 24, tone: smaConstructive === null ? 'neutral' : smaConstructive ? 'hot' : 'cool' },
-    { label: 'Drift', value: currentPostReturn === null ? 'Pending' : formatPct(currentPostReturn), score: currentPostReturn === null ? 18 : clamp(50 + currentPostReturn * 3), tone: eventTone },
-    { label: 'Value', value: valuationCore.status === 'available' ? valuationCore.topVerdict.valuationState : 'Pending', score: valueScore, tone: valueTone }
+    { label: 'Trend', value: momentumScore === null ? 'Pending' : `${momentumScore}/100`, score: momentumScore ?? 18, tone: momentumTone },
+    { label: 'Strength', value: rsSpy === null ? 'Pending' : formatPct(rsSpy), score: rsSpy === null ? 18 : clamp(50 + rsSpy * 2.2), tone: rsTone },
+    { label: 'Long Term', value: smaConstructive === null ? 'Pending' : smaConstructive ? 'Above' : 'Below', score: smaConstructive === null ? 18 : smaConstructive ? 76 : 24, tone: smaConstructive === null ? 'neutral' : smaConstructive ? 'hot' : 'cool' },
+    { label: 'Reaction', value: currentPostReturn === null ? 'Pending' : formatPct(currentPostReturn), score: currentPostReturn === null ? 18 : clamp(50 + currentPostReturn * 3), tone: eventTone },
+    { label: 'Valuation', value: valuationCore.status === 'available' ? valuationCore.topVerdict.valuationState : 'Pending', score: valueScore, tone: valueTone }
   ];
 };
 
@@ -143,8 +136,6 @@ const StockDossierView = ({ eventDetail, payload }) => {
   const dossierSummary = buildDossierSummary(enrichedEventDetail, payload);
   const reason = dossierProfile?.whyNow?.reason || dossierSummary.reason;
   const verdict = dossierProfile?.whyNow?.verdict || dossierSummary.verdict;
-  const signalStack = buildSignalStack(enrichedEventDetail, payload);
-  const pulse = deriveThesisPulse(enrichedEventDetail, payload);
   const killSwitch = buildResearchKillSwitch(enrichedEventDetail, payload);
   const priceTrendRisk = buildPriceTrendRisk(enrichedEventDetail, payload);
   const evidenceBoard = buildEvidenceBoard(enrichedEventDetail, payload);
@@ -171,16 +162,11 @@ const StockDossierView = ({ eventDetail, payload }) => {
                       : enrichedEventDetail.event_phase === 'post_earnings' ? 'Post-Earnings Watch'
                       : enrichedEventDetail.peer_readthrough?.incoming?.length > 0 ? 'Peer-Led Context'
                       : 'Catalyst Watch';
-  const eventStudyAvailable = enrichedEventDetail.post_earnings_base_rate?.status === 'available' ||
-                              enrichedEventDetail.historical_setup_matrix?.status === 'available' ||
-                              enrichedEventDetail.historical_earnings_tape?.status === 'available';
-  const eventStudyValue = eventStudyAvailable ? 'Historical Matrix Available' : 'Pending';
-  const momentumValue = momentum.score !== undefined ? `Score ${momentum.score}` : 'Pending';
   const snapshotRows = [
     { label: 'Business Quality', value: valuationCore.topVerdict.businessQuality, tone: valuationCore.topVerdict.businessQuality === 'High' ? 'positive' : 'neutral' },
     { label: 'Valuation', value: valuationCore.topVerdict.valuationState, tone: valuationCore.topVerdict.valuationState.includes('Missing') ? 'warning' : 'neutral' },
-    { label: 'Event Study', value: eventStudyValue, tone: eventStudyAvailable ? 'positive' : 'warning' },
-    { label: 'Momentum', value: momentumValue, tone: momentum.score !== undefined ? 'positive' : 'warning' }
+    { label: 'Base Case', value: valuationCore.topVerdict.baseCaseSupport, tone: valuationCore.topVerdict.baseCaseSupport === 'Partial' ? 'warning' : 'neutral' },
+    { label: 'Margin of Safety', value: valuationCore.topVerdict.marginOfSafety, tone: valuationCore.topVerdict.marginOfSafety === 'None' ? 'warning' : 'neutral' }
   ];
   const radarAxes = buildRadarAxes({ momentum, metrics, valuationCore, eventDetail: enrichedEventDetail });
 
@@ -210,7 +196,6 @@ const StockDossierView = ({ eventDetail, payload }) => {
               <div className="dossier-hero-pills">
                 <span>{researchState}</span>
                 {industryTheme && <span>{formatLabel(industryTheme)}</span>}
-                <span>{stockOverview.dataCoverage}</span>
               </div>
             </div>
           </div>
@@ -249,27 +234,21 @@ const StockDossierView = ({ eventDetail, payload }) => {
             ))}
           </div>
           <div className="dossier-market-visuals">
-            <div className="dossier-mini-chart">
-              <div>
-                <span>Price Tape</span>
-                <strong>{sparklinePath ? 'Recent trend' : 'Price chart pending'}</strong>
-              </div>
-              {sparklinePath ? (
+            {sparklinePath && (
+              <div className="dossier-mini-chart">
+                <div>
+                  <span>Price Trend</span>
+                  <strong>Recent trend</strong>
+                </div>
                 <svg viewBox="0 0 220 74" role="img" aria-label={`${ticker} price trend`}>
                   <path d={sparklinePath} />
                 </svg>
-              ) : (
-                <div className="dossier-mini-chart__empty" aria-hidden="true">
-                  <span />
-                  <span />
-                  <span />
-                </div>
-              )}
-            </div>
+              </div>
+            )}
             <div className="dossier-radar-panel" aria-label={`${ticker} quick situation map`}>
               <div className="dossier-radar-heading">
-                <span>Situation Map</span>
-                <strong>Momentum / RS / MA200 / Drift / Value</strong>
+                <span>Research Map</span>
+                <strong>Quality, valuation, trend, and evidence</strong>
               </div>
               <svg className="dossier-radar-chart" viewBox="0 0 224 224" role="img" aria-label={`${ticker} research heat map`}>
                 {[20, 40, 60, 80].map(level => (
@@ -325,32 +304,6 @@ const StockDossierView = ({ eventDetail, payload }) => {
         </section>
       )}
 
-      {/* 4. Signal Stack */}
-      <div className="dossier-signal-stack" style={{ display: 'flex', gap: '12px', marginBottom: '24px', flexWrap: 'wrap' }}>
-        {signalStack.map(chip => (
-          <div key={chip.id} className={`signal-chip state-${chip.state}`} style={{ padding: '8px 12px', borderRadius: '6px', border: '1px solid var(--border-color)', background: 'var(--surface-color)', flex: '1 1 120px', minWidth: '120px' }}>
-            <div style={{ fontSize: '0.75em', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>{chip.label}</div>
-            <div style={{ fontWeight: 'bold', marginTop: '4px', color: chip.state === 'strong' ? 'var(--text-green, #4caf50)' : chip.state === 'warning' ? 'var(--text-red, #f44336)' : 'inherit' }}>
-              {chip.value}
-            </div>
-          </div>
-        ))}
-      </div>
-
-      {/* 5. Risk Counter-Signals */}
-      <div className="card dossier-risk-signals" style={{ marginBottom: '24px', borderLeft: '4px solid var(--text-muted)' }}>
-        <h3 style={{ marginBottom: '16px' }}>Risk Counter-Signals</h3>
-        <div className="grid-2col" style={{ fontSize: '0.95em' }}>
-          <div><strong>Fundamental Coverage:</strong> <span style={{ color: 'var(--text-muted)' }}>{valuationCore.status === 'available' ? 'Available' : 'Pending'}</span></div>
-          <div><strong>Revision Support:</strong> <span style={{ color: 'var(--text-muted)' }}>Not Included</span></div>
-          <div><strong>Valuation Pressure:</strong> <span style={{ color: 'var(--text-muted)' }}>{valuationCore.topVerdict.valuationState}</span></div>
-          <div><strong>Dilution / SBC:</strong> <span style={{ color: 'var(--text-muted)' }}>{valuationCore.missingEvidence.includes('SBC / dilution') ? 'Missing' : 'Included'}</span></div>
-          <div style={{ gridColumn: '1 / -1', marginTop: '8px', fontStyle: 'italic', color: 'var(--text-muted)' }}>
-            <strong>Data Coverage:</strong> {valuationCore.status === 'available' ? 'Market + Fundamentals' : 'Market Evidence Only'}
-          </div>
-        </div>
-      </div>
-
       {/* 5b. Fundamentals Summary / Valuation Core */}
       <div id="valuation-core" className="card dossier-valuation-core" style={{ marginBottom: '24px' }}>
         <div className="dossier-valuation-core__header">
@@ -358,7 +311,6 @@ const StockDossierView = ({ eventDetail, payload }) => {
             <p className="crowdrisk-kicker">Fundamentals Summary / Valuation Core</p>
             <h3>Does company quality support continued research?</h3>
           </div>
-          <span className="quality-pill">{valuationCore.status === 'available' ? 'Fundamentals Available' : 'Fundamentals Pending'}</span>
         </div>
 
         <div className="dossier-valuation-verdict">
@@ -427,17 +379,11 @@ const StockDossierView = ({ eventDetail, payload }) => {
         )}
       </div>
 
-      {/* 6. Thesis Pulse & 7. Kill Switch & 8. Next Watch Item */}
+      {/* 6. Kill Data */}
       <div className="card dossier-pulse-watch" style={{ marginBottom: '24px' }}>
-        <div style={{ marginBottom: '16px' }}>
-          <h3 style={{ display: 'inline-block', marginRight: '12px' }}>Thesis Pulse:</h3>
-          <span className={`quality-pill pulse-${pulse.state.replace(/\s+/g, '-').toLowerCase()}`} style={{ fontWeight: 'bold' }}>{pulse.state}</span>
-          <div style={{ marginTop: '8px', color: 'var(--text-muted)', fontSize: '0.9em' }}>{pulse.reason}</div>
-        </div>
-
-        <div className="grid-2col" style={{ gap: '24px', marginBottom: '16px' }}>
+        <div className="grid-2col" style={{ gap: '24px' }}>
           <div id="kill-data">
-            <h3>Research Kill Switch</h3>
+            <h3>Kill Data</h3>
             <ul style={{ paddingLeft: '20px', color: 'var(--text-muted)', fontSize: '0.9em', margin: '8px 0' }}>
               {(valuationCore.killData || killSwitch).map((item, i) => <li key={i}>{item}</li>)}
             </ul>
@@ -447,15 +393,6 @@ const StockDossierView = ({ eventDetail, payload }) => {
             <ul style={{ paddingLeft: '20px', color: 'var(--text-muted)', fontSize: '0.9em', margin: '8px 0' }}>
               {priceTrendRisk.map((item, i) => <li key={i}>{item}</li>)}
             </ul>
-          </div>
-        </div>
-
-        <div>
-          <h3>Next Validation</h3>
-          <div style={{ color: 'var(--text-muted)', fontSize: '0.9em', marginTop: '4px' }}>
-            {isMomentumUniverse ? 'Monitor for upcoming earnings catalyst or theme-level continuation.' :
-             enrichedEventDetail.event_phase === 'post_earnings' ? 'Monitor T+10 drift and thesis pulse stability.' :
-             'Review thesis notes against upcoming market data updates.'}
           </div>
         </div>
       </div>
@@ -473,7 +410,6 @@ const StockDossierView = ({ eventDetail, payload }) => {
                   <th style={{ padding: '8px 4px' }}>Evidence</th>
                   <th style={{ padding: '8px 4px' }}>Signal</th>
                   <th style={{ padding: '8px 4px' }}>Interpretation</th>
-                  <th style={{ padding: '8px 4px' }}>Coverage</th>
                 </tr>
               </thead>
               <tbody>
@@ -482,11 +418,6 @@ const StockDossierView = ({ eventDetail, payload }) => {
                     <td style={{ padding: '8px 4px', fontWeight: 'bold' }}>{row.evidence}</td>
                     <td style={{ padding: '8px 4px' }}>{row.signal}</td>
                     <td style={{ padding: '8px 4px', color: 'var(--text-muted)' }}>{row.interpretation}</td>
-                    <td style={{ padding: '8px 4px' }}>
-                      <span className="quality-pill" style={{ opacity: row.coverage === 'Available' ? 1 : 0.6 }}>
-                        {row.coverage}
-                      </span>
-                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -494,43 +425,6 @@ const StockDossierView = ({ eventDetail, payload }) => {
           </div>
         )}
       </div>
-
-      {/* 10. Market Evidence Detail */}
-      <details className="card dossier-methodology" style={{ cursor: 'pointer', marginBottom: '24px' }}>
-        <summary style={{ fontWeight: 'bold', outline: 'none' }}>Market Evidence Detail</summary>
-        <div className="grid-2col" style={{ fontSize: '0.95em', marginTop: '16px', color: 'var(--text-muted)' }}>
-          {momentum.universe_rank !== undefined && (
-            <div><strong>Universe Rank:</strong> #{momentum.universe_rank} / {momentum.universe_count || 'Not Included'}</div>
-          )}
-          {momentum.theme_rank !== undefined && (
-            <div><strong>Theme Rank:</strong> #{momentum.theme_rank}</div>
-          )}
-          {momentum.score !== undefined && (
-            <div><strong>Momentum Score:</strong> {momentum.score}</div>
-          )}
-          {metrics.zscore_200d !== undefined && (
-            <div><strong>Z-Score (200D):</strong> {formatNumber(metrics.zscore_200d)}</div>
-          )}
-          {metrics.ma200_slope_pct !== undefined && (
-            <div><strong>MA200 Slope:</strong> {formatPct(metrics.ma200_slope_pct)}</div>
-          )}
-          {metrics.relative_strength_vs_spy_63d !== undefined && (
-            <div><strong>RS vs SPY (63D):</strong> {formatPct(metrics.relative_strength_vs_spy_63d)}</div>
-          )}
-          {metrics.relative_strength_vs_qqq_63d !== undefined && (
-            <div><strong>RS vs QQQ (63D):</strong> {formatPct(metrics.relative_strength_vs_qqq_63d)}</div>
-          )}
-          {enrichedEventDetail.pead_signal?.status === 'available' && (
-            <div><strong>Current Post-Return:</strong> {formatPct(enrichedEventDetail.pead_signal.reaction?.current_post_return)}</div>
-          )}
-          {enrichedEventDetail.post_earnings_base_rate?.status === 'available' && (
-            <div><strong>Matched-Event T+10 Drift:</strong> {formatPct(enrichedEventDetail.post_earnings_base_rate.median_t10_return_pct)}</div>
-          )}
-          {enrichedEventDetail.peer_readthrough?.incoming?.length > 0 && (
-            <div><strong>Peer Repricing:</strong> {enrichedEventDetail.peer_readthrough.incoming.length} related peer moves</div>
-          )}
-        </div>
-      </details>
 
     </div>
   );
