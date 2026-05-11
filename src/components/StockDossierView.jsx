@@ -8,10 +8,22 @@ import {
 } from './dossierHelpers';
 import { getStockDossierProfile } from '../data/stockDossierProfiles';
 
+const API_BASE = 'https://kw-terminal-api.myfootballplaces.workers.dev';
+
 const formatPct = (value) => {
   if (value === undefined || value === null || Number.isNaN(Number(value))) return 'Not Included';
   const n = Number(value);
   return `${n > 0 ? '+' : ''}${n.toFixed(1)}%`;
+};
+
+const formatRate = (value) => {
+  if (value === undefined || value === null || Number.isNaN(Number(value))) return 'Not Included';
+  return `${(Number(value) * 100).toFixed(0)}%`;
+};
+
+const formatAbsPct = (value) => {
+  if (value === undefined || value === null || Number.isNaN(Number(value))) return 'Not Included';
+  return `${Math.abs(Number(value)).toFixed(1)}%`;
 };
 
 const formatLabel = (value) => {
@@ -72,8 +84,110 @@ const renderStructuredVerdict = (structuredVerdict, fallback) => {
 };
 
 const toNumeric = (value) => {
+  if (value === null || value === undefined || value === '') return null;
   const numeric = Number(value);
   return Number.isFinite(numeric) ? numeric : null;
+};
+
+const formatEventDate = (value) => {
+  if (!value) return 'Pending';
+  try {
+    const date = new Date(`${value}T00:00:00Z`);
+    if (Number.isNaN(date.getTime())) return value;
+    return new Intl.DateTimeFormat('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric',
+      timeZone: 'UTC'
+    }).format(date);
+  } catch {
+    return value;
+  }
+};
+
+const formatSignedReturn = (value, digits = 2) => {
+  const numeric = toNumeric(value);
+  if (numeric === null) return null;
+  const prefix = numeric > 0 ? '+' : '';
+  return `${prefix}${numeric.toFixed(digits)}%`;
+};
+
+const returnToneClass = (value) => {
+  const numeric = toNumeric(value);
+  if (numeric === null) return 'pending';
+  if (numeric > 0) return 'positive';
+  if (numeric < 0) return 'negative';
+  return 'neutral';
+};
+
+const ReturnValue = ({ value, digits = 2 }) => {
+  const formatted = formatSignedReturn(value, digits);
+  if (formatted === null) {
+    return <em className="dossier-pending-value">Pending</em>;
+  }
+  return <span className={`dossier-return-value tone-${returnToneClass(value)}`}>{formatted}</span>;
+};
+
+const SummaryMetric = ({ label, summary, value }) => (
+  <div className="dossier-event-summary-metric">
+    <span>{label}</span>
+    <strong>
+      {summary ? (
+        <>
+          <ReturnValue value={value ?? summary.avg_return} />
+          <small>{summary.count ?? 0} measured</small>
+        </>
+      ) : (
+        <em className="dossier-pending-value">Pending</em>
+      )}
+    </strong>
+  </div>
+);
+
+const EventStudyQuarterTable = ({ rows = [] }) => {
+  if (!rows.length) {
+    return (
+      <div className="dossier-quarter-table-empty">
+        <em className="dossier-pending-value">Pending</em>
+        <span>No earnings-event quarter log is available for this ticker.</span>
+      </div>
+    );
+  }
+
+  return (
+    <div className="dossier-quarter-table-wrap" aria-label="Earnings event quarter log">
+      <table className="dossier-quarter-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Date</th>
+            <th>Surprise (%)</th>
+            <th>Next Day</th>
+            <th>3 Days</th>
+            <th>5 Days</th>
+            <th>10 Days</th>
+            <th>30 Days</th>
+            <th>Next Earnings</th>
+          </tr>
+        </thead>
+        <tbody>
+          {rows.map((row, index) => (
+            <tr key={`${row.event_date}-${index}`}>
+              <td>{index + 1}</td>
+              <td>{formatEventDate(row.event_date)}</td>
+              <td><ReturnValue value={row.surprise_percent} /></td>
+              <td><ReturnValue value={row.r_plus_1} /></td>
+              <td><ReturnValue value={row.r_plus_3} /></td>
+              <td><ReturnValue value={row.r_plus_5} /></td>
+              <td><ReturnValue value={row.r_plus_10} /></td>
+              <td><ReturnValue value={row.r_plus_30} /></td>
+              <td><ReturnValue value={row.until_next_earnings_return} /></td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
 };
 
 const clamp = (value, min = 8, max = 96) => Math.max(min, Math.min(max, value));
@@ -114,22 +228,6 @@ const extractPriceSeries = (eventDetail) => {
   return [];
 };
 
-const radarPoint = (score, index, total, radius = 76, center = 112) => {
-  const angle = (-90 + (360 / total) * index) * (Math.PI / 180);
-  const scaledRadius = (clamp(score, 0, 100) / 100) * radius;
-  return {
-    x: center + Math.cos(angle) * scaledRadius,
-    y: center + Math.sin(angle) * scaledRadius
-  };
-};
-
-const buildRadarPolygon = (axes, score = null) => {
-  return axes.map((axis, index) => {
-    const point = radarPoint(score ?? axis.score, index, axes.length);
-    return `${point.x.toFixed(1)},${point.y.toFixed(1)}`;
-  }).join(' ');
-};
-
 const buildRadarAxes = ({ momentum, metrics, valuationCore, eventDetail }) => {
   const rsSpy = toNumeric(metrics.relative_strength_vs_spy_63d);
   const latestClose = toNumeric(metrics.latest_close);
@@ -160,7 +258,98 @@ const buildRadarAxes = ({ momentum, metrics, valuationCore, eventDetail }) => {
   ];
 };
 
-const StockDossierView = ({ eventDetail, payload }) => {
+const buildEventStudyDetail = (eventDetail, dossierProfile = null) => {
+  const baseRate = eventDetail.post_earnings_base_rate || {};
+  const pead = eventDetail.pead_signal || {};
+  const reaction = pead.reaction || {};
+  const direction = pead.direction || 'continuation';
+  const selectedRate = direction === 'fade'
+    ? baseRate.reversal_rate ?? baseRate.fade_rate
+    : baseRate.continuation_rate ?? baseRate.drift_rate;
+  const sampleSize = baseRate.similar_reaction_sample_size ?? baseRate.sample_size ?? null;
+  const currentPostReturn = toNumeric(reaction.current_post_return);
+  const t1Return = toNumeric(reaction.t1_return);
+  const medianT1 = toNumeric(baseRate.median_t1_return_pct);
+  const medianT10 = toNumeric(baseRate.median_t10_return_pct);
+  const medianT1ToT10 = toNumeric(baseRate.median_t1_to_t10_return_pct);
+  const medianMaxRisk = toNumeric(baseRate.median_max_risk_5d);
+  const filterMode = baseRate.filter_mode
+    ? formatLabel(baseRate.filter_mode).replace(/\s+Fallback$/i, '')
+    : 'Current setup';
+  const hasBaseRate = baseRate.status === 'available';
+  const returnTone = (value) => {
+    const numeric = toNumeric(value);
+    if (numeric === null) return 'neutral';
+    return numeric >= 0 ? 'positive' : 'negative';
+  };
+
+  return {
+    hasBaseRate,
+    title: dossierProfile?.eventStudyRead?.title || 'Historical post-event evidence is not yet complete.',
+    interpretation: dossierProfile?.eventStudyRead?.interpretation || 'Use the event-study matrix as market evidence only; it does not replace valuation or company-level research.',
+    setupLabel: filterMode,
+    sampleSize,
+    currentPostReturn,
+    t1Return,
+    metrics: [
+      { label: 'Base Rate', value: hasBaseRate ? formatRate(selectedRate) : 'Pending', tone: selectedRate >= 0.55 ? 'positive' : selectedRate <= 0.45 ? 'negative' : 'neutral' },
+      { label: 'Median T+1', value: formatPct(medianT1 ?? t1Return), tone: returnTone(medianT1 ?? t1Return) },
+      { label: 'Median T+10', value: formatPct(medianT10), tone: returnTone(medianT10) },
+      { label: 'T+1 to T+10', value: formatPct(medianT1ToT10), tone: returnTone(medianT1ToT10) },
+      { label: 'Current Post Move', value: formatPct(currentPostReturn), tone: returnTone(currentPostReturn) },
+      { label: '5D Risk Budget', value: formatAbsPct(medianMaxRisk), tone: 'neutral' }
+    ],
+    notes: [
+      sampleSize ? `Comparable sample: N=${sampleSize}.` : 'Comparable sample size is not available in the current payload.',
+      pead.reason || 'Current event reaction is used only as market evidence.',
+      baseRate.sample_warning ? `Sample warning: ${formatLabel(baseRate.sample_warning)}.` : null
+    ].filter(Boolean)
+  };
+};
+
+const StockDossierView = ({ eventDetail, payload, onOpenEventStudy }) => {
+  const tickerForSummary = String(eventDetail?.ticker || '').trim().toUpperCase();
+  const [eventStudySummary, setEventStudySummary] = React.useState(null);
+  const [eventStudyLoading, setEventStudyLoading] = React.useState(false);
+  const [eventStudyError, setEventStudyError] = React.useState(null);
+
+  React.useEffect(() => {
+    if (!tickerForSummary) {
+      setEventStudySummary(null);
+      setEventStudyError(null);
+      setEventStudyLoading(false);
+      return undefined;
+    }
+
+    const controller = new AbortController();
+    setEventStudyLoading(true);
+    setEventStudyError(null);
+
+    fetch(`${API_BASE}/event-study/earnings-summary?ticker=${encodeURIComponent(tickerForSummary)}`, {
+      signal: controller.signal,
+      headers: { Accept: 'application/json' }
+    })
+      .then(async (response) => {
+        const json = await response.json();
+        if (!response.ok) {
+          throw new Error(json?.error || `Event study summary failed (${response.status})`);
+        }
+        setEventStudySummary(json);
+      })
+      .catch((error) => {
+        if (error.name === 'AbortError') return;
+        setEventStudySummary(null);
+        setEventStudyError(error.message);
+      })
+      .finally(() => {
+        if (!controller.signal.aborted) {
+          setEventStudyLoading(false);
+        }
+      });
+
+    return () => controller.abort();
+  }, [tickerForSummary]);
+
   if (!eventDetail) return null;
 
   const dossierProfile = getStockDossierProfile(eventDetail.ticker);
@@ -188,6 +377,7 @@ const StockDossierView = ({ eventDetail, payload }) => {
       'Do not infer company quality or margin of safety from momentum alone.'
     ]
   };
+  const eventStudyDetail = buildEventStudyDetail(enrichedEventDetail, dossierProfile);
 
   const momentum = enrichedEventDetail.momentum_evidence || {};
   const metrics = momentum.evidence || enrichedEventDetail.trend_setup?.metrics || {};
@@ -197,9 +387,8 @@ const StockDossierView = ({ eventDetail, payload }) => {
   const isMomentumUniverse = enrichedEventDetail.status === 'momentum_universe' || enrichedEventDetail.event_phase === 'off_cycle_universe';
 
   // Ticker Header variables
-  const ticker = enrichedEventDetail.ticker;
+  const ticker = tickerForSummary || enrichedEventDetail.ticker;
   const companyName = enrichedEventDetail.company_name || '';
-  const companyLogoUrl = enrichedEventDetail.company_logo_url || enrichedEventDetail.logo_url || enrichedEventDetail.logo || enrichedEventDetail.brand_logo_url || '';
   const exchange = enrichedEventDetail.exchange || enrichedEventDetail.market || '';
   const companyDisplayName = companyName || ticker;
   const tickerLine = exchange ? `${exchange}:${ticker} Stock Dossier` : `${ticker} Stock Dossier`;
@@ -216,6 +405,15 @@ const StockDossierView = ({ eventDetail, payload }) => {
     { label: 'Margin of Safety', value: valuationCore.topVerdict.marginOfSafety, tone: valuationCore.topVerdict.marginOfSafety === 'None' ? 'warning' : 'neutral' }
   ];
   const radarAxes = buildRadarAxes({ momentum, metrics, valuationCore, eventDetail: enrichedEventDetail });
+  const valuationGate = valuationCore.topVerdict.marginOfSafety === 'None'
+    ? 'No margin of safety'
+    : valuationCore.topVerdict.valuationState;
+  const breakPoint = renderedVerdict.risks[0] || valuationCore.killData?.[0] || 'Needs updated evidence before conclusion changes.';
+  const eventStudyCoverage = eventStudySummary?.coverage || null;
+  const eventStudyDigest = eventStudySummary?.dossier_digest || null;
+  const forwardAll = eventStudySummary?.forward_returns?.all_events || null;
+  const quarterLogRows = Array.isArray(eventStudySummary?.quarter_log) ? eventStudySummary.quarter_log : [];
+  const measuredT10Count = forwardAll?.ten_days?.count ?? null;
 
   return (
     <div className="stock-dossier-view">
@@ -223,31 +421,22 @@ const StockDossierView = ({ eventDetail, payload }) => {
       <section className="dossier-hero-card">
         <div className="dossier-hero-main">
           <div className="dossier-hero-identity">
-            <div className={`dossier-company-logo ${companyLogoUrl ? 'has-logo' : ''}`} aria-label={`${companyDisplayName} logo`}>
-              {companyLogoUrl && (
-                <img
-                  src={companyLogoUrl}
-                  alt={`${companyDisplayName} logo`}
-                  onError={(event) => {
-                    event.currentTarget.style.display = 'none';
-                    event.currentTarget.parentElement?.classList.add('logo-fallback-visible');
-                  }}
-                />
-              )}
-              <span>{ticker.slice(0, 4)}</span>
-            </div>
-            <div>
-              <p className="crowdrisk-kicker">Stock Overview</p>
-              <h2>{companyDisplayName}</h2>
-              <p className="dossier-ticker-line">{tickerLine}</p>
-              <div className="dossier-hero-pills">
-                <span>{researchState}</span>
-                {industryTheme && <span>{formatLabel(industryTheme)}</span>}
-              </div>
+            <p className="crowdrisk-kicker">Stock Overview</p>
+            <h2>{companyDisplayName}</h2>
+            <p className="dossier-ticker-line">{tickerLine}</p>
+            <div className="dossier-hero-pills">
+              <span>{researchState}</span>
+              {industryTheme && <span>{formatLabel(industryTheme)}</span>}
             </div>
           </div>
 
           <p className="dossier-profile-line">{stockOverview.profileLine}</p>
+
+          <div className="dossier-hero-read" aria-label={`${ticker} executive summary`}>
+            <span>Final Read</span>
+            <strong>{renderedVerdict.verdict}</strong>
+            <p>{valuationGate}. {breakPoint}</p>
+          </div>
 
           {dossierProfile?.marketSnapshot && (
             <div className="dossier-market-strip" aria-label={`${ticker} market snapshot`}>
@@ -264,39 +453,11 @@ const StockDossierView = ({ eventDetail, payload }) => {
             <span>Why now</span>
             <strong>{renderedVerdict.reason}</strong>
             {renderedVerdict.thesisShift && <p>{renderedVerdict.thesisShift}</p>}
-            <p>{renderedVerdict.verdict}</p>
-            {(renderedVerdict.support.length > 0 || renderedVerdict.risks.length > 0) && (
-              <div className="dossier-verdict-grid" aria-label={`${ticker} verdict summary`}>
-                {renderedVerdict.support.length > 0 && (
-                  <div>
-                    <em>What supports the case</em>
-                    <ul>
-                      {renderedVerdict.support.map((item) => (
-                        <li key={item}>{item}</li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
-                {renderedVerdict.risks.length > 0 && (
-                  <div>
-                    <em>What can break the case</em>
-                    <ul>
-                      {renderedVerdict.risks.map((item) => (
-                        <li key={item}>{item}</li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
-              </div>
-            )}
           </div>
         </div>
 
         <div className="dossier-snapshot-board" aria-label={`${ticker} dossier snapshot`}>
-          <div className="dossier-snapshot-header">
-            <span>Research State</span>
-            <strong>{researchState}</strong>
-          </div>
+          <p className="crowdrisk-kicker">At a glance</p>
           <div className="dossier-snapshot-list">
             {snapshotRows.map((row) => (
               <div key={row.label} className={`dossier-snapshot-row tone-${row.tone}`}>
@@ -322,33 +483,58 @@ const StockDossierView = ({ eventDetail, payload }) => {
                 <span>Research Map</span>
                 <strong>Quality, valuation, trend, and evidence</strong>
               </div>
-              <svg className="dossier-radar-chart" viewBox="0 0 224 224" role="img" aria-label={`${ticker} research heat map`}>
-                {[20, 40, 60, 80].map(level => (
-                  <polygon key={level} className="dossier-radar-ring" points={buildRadarPolygon(radarAxes, level)} />
+              <div className="dossier-research-bars">
+                {radarAxes.map((axis) => (
+                  <div key={axis.label} className={`dossier-research-bar tone-${axis.tone}`}>
+                    <div>
+                      <span>{axis.label}</span>
+                      <strong>{axis.value}</strong>
+                    </div>
+                    <i style={{ '--score': `${clamp(axis.score, 0, 100)}%` }} />
+                  </div>
                 ))}
-                {radarAxes.map((axis, index) => {
-                  const end = radarPoint(100, index, radarAxes.length);
-                  const label = radarPoint(116, index, radarAxes.length);
-                  return (
-                    <React.Fragment key={axis.label}>
-                      <line className="dossier-radar-spoke" x1="112" y1="112" x2={end.x.toFixed(1)} y2={end.y.toFixed(1)} />
-                      <text className="dossier-radar-label" x={label.x.toFixed(1)} y={label.y.toFixed(1)} textAnchor="middle">{axis.label}</text>
-                    </React.Fragment>
-                  );
-                })}
-                <polygon className="dossier-radar-area" points={buildRadarPolygon(radarAxes)} />
-              </svg>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
+      {(renderedVerdict.support.length > 0 || renderedVerdict.risks.length > 0) && (
+        <section className="card dossier-case-summary" aria-label={`${ticker} verdict summary`}>
+          <div>
+            <p className="crowdrisk-kicker">Case Summary</p>
+            <h3>What has to keep working?</h3>
+          </div>
+          <div className="dossier-verdict-grid">
+            {renderedVerdict.support.length > 0 && (
+              <div>
+                <em>What supports the case</em>
+                <ul>
+                  {renderedVerdict.support.map((item) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+            {renderedVerdict.risks.length > 0 && (
+              <div>
+                <em>What can break the case</em>
+                <ul>
+                  {renderedVerdict.risks.map((item) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </div>
+        </section>
+      )}
+
       {dossierProfile && (
         <section id="company-overview" className="dossier-company-overview-card card">
           <div className="dossier-company-overview">
             <p className="crowdrisk-kicker">Company Overview</p>
-            <h3>{companyDisplayName} Stock Overview</h3>
-            <p>{stockOverview.profileLine}</p>
+            <h3>Business Engine</h3>
             <div className="dossier-quick-facts">
               {stockOverview.quickFacts.map((fact) => (
                 <div key={fact.label}>
@@ -439,8 +625,99 @@ const StockDossierView = ({ eventDetail, payload }) => {
           </div>
         </div>
 
-        {valuationCore.scenarios && (
-          <div id="scenario-range" className="dossier-scenario-grid">
+      </div>
+
+      <div id="market-evidence" className="card dossier-market-evidence-card" style={{ marginBottom: '24px' }}>
+        <p className="crowdrisk-kicker">Market Evidence</p>
+        <h3>{marketEvidence.title}</h3>
+        <div className="dossier-event-study-summary-strip" aria-label={`${ticker} earnings event summary`}>
+          <div>
+            <span>Measured quarters</span>
+            <strong>
+              {eventStudyDigest?.quarters_analyzed ?? eventStudyCoverage?.feature_rows ?? <em className="dossier-pending-value">Pending</em>}
+              {measuredT10Count !== null && <small>{measuredT10Count} T+10 measured</small>}
+            </strong>
+          </div>
+          <div>
+            <span>T+10 base rate</span>
+            <strong>
+              {eventStudyDigest?.base_rate !== undefined && eventStudyDigest?.base_rate !== null ? `${eventStudyDigest.base_rate}%` : <em className="dossier-pending-value">Pending</em>}
+            </strong>
+          </div>
+          <SummaryMetric label="3D avg return" summary={forwardAll?.three_days} value={eventStudyDigest?.average_t3_return} />
+          <SummaryMetric label="30D avg return" summary={forwardAll?.thirty_days} value={eventStudyDigest?.average_t30_return} />
+        </div>
+        {eventStudyDigest?.summary_line && (
+          <p className="dossier-event-study-summary-line">{eventStudyDigest.summary_line}</p>
+        )}
+        {eventStudyLoading && <p className="dossier-event-study-status">Loading earnings-event summary...</p>}
+        {eventStudyError && <p className="dossier-event-study-status dossier-event-study-status--error">{eventStudyError}</p>}
+        <div className="dossier-event-study-detail">
+          <div className="dossier-event-study-copy">
+            <span>Event Study Detail</span>
+            <strong>{eventStudyDetail.title}</strong>
+            <p>{eventStudyDetail.interpretation}</p>
+            {onOpenEventStudy && (
+              <button
+                type="button"
+                className="dossier-section-link-button"
+                onClick={() => onOpenEventStudy(ticker)}
+              >
+                Open {ticker} Event Study
+              </button>
+            )}
+            <ul>
+              {marketEvidence.points.map((point) => (
+                <li key={point}>{point}</li>
+              ))}
+            </ul>
+          </div>
+          <div className="dossier-event-study-board" aria-label={`${ticker} event study evidence`}>
+            <div className="dossier-event-study-meta">
+              <span>{eventStudyDigest ? 'Earnings summary' : eventStudyDetail.setupLabel}</span>
+              <strong>
+                {measuredT10Count !== null
+                  ? `N=${measuredT10Count}`
+                  : eventStudyDetail.sampleSize ? `N=${eventStudyDetail.sampleSize}` : 'Sample not included'}
+              </strong>
+            </div>
+            <div className="dossier-event-study-metrics">
+              {(eventStudyDigest ? [
+                { label: 'T+10 Base Rate', value: `${eventStudyDigest.base_rate}%`, tone: eventStudyDigest.base_rate >= 55 ? 'positive' : eventStudyDigest.base_rate <= 45 ? 'negative' : 'neutral' },
+                { label: 'Avg 3D', value: formatSignedReturn(eventStudyDigest.average_t3_return) || 'Pending', tone: returnToneClass(eventStudyDigest.average_t3_return) },
+                { label: 'Avg 10D', value: formatSignedReturn(eventStudyDigest.average_t10_return) || 'Pending', tone: returnToneClass(eventStudyDigest.average_t10_return) },
+                { label: 'Avg 30D', value: formatSignedReturn(eventStudyDigest.average_t30_return) || 'Pending', tone: returnToneClass(eventStudyDigest.average_t30_return) }
+              ] : eventStudyDetail.metrics).map((metric) => (
+                <div key={metric.label} className={`tone-${metric.tone}`}>
+                  <span>{metric.label}</span>
+                  <strong>{metric.value}</strong>
+                </div>
+              ))}
+            </div>
+            <ul className="dossier-event-study-notes">
+              {eventStudyDetail.notes.map((note) => (
+                <li key={note}>{note}</li>
+              ))}
+            </ul>
+          </div>
+        </div>
+        <div className="dossier-quarter-log-section">
+          <div className="dossier-quarter-log-header">
+            <div>
+              <p className="crowdrisk-kicker">Quarter Log</p>
+              <h4>{quarterLogRows.length ? `${quarterLogRows.length} earnings quarters` : 'Earnings quarter log'}</h4>
+            </div>
+            <span>{eventStudyCoverage?.generated_at ? `Updated ${formatEventDate(eventStudyCoverage.generated_at.slice(0, 10))}` : 'Live API'}</span>
+          </div>
+          <EventStudyQuarterTable rows={quarterLogRows} />
+        </div>
+      </div>
+
+      {valuationCore.scenarios && (
+        <div id="scenario-range" className="card dossier-scenario-card">
+          <p className="crowdrisk-kicker">Scenario Range</p>
+          <h3>What changes the expected outcome?</h3>
+          <div className="dossier-scenario-grid">
             {valuationCore.scenarios.map((scenario) => (
               <div key={scenario.label}>
                 <span>{scenario.label}</span>
@@ -448,13 +725,13 @@ const StockDossierView = ({ eventDetail, payload }) => {
               </div>
             ))}
           </div>
-        )}
-      </div>
+        </div>
+      )}
 
       {/* 6. Kill Data */}
-      <div className="card dossier-pulse-watch" style={{ marginBottom: '24px' }}>
+      <div id="kill-data" className="card dossier-pulse-watch dossier-kill-card" style={{ marginBottom: '24px' }}>
         <div className="grid-2col" style={{ gap: '24px' }}>
-          <div id="kill-data">
+          <div>
             <h3>Kill Data</h3>
             <ul style={{ paddingLeft: '20px', color: 'var(--text-muted)', fontSize: '0.9em', margin: '8px 0' }}>
               {(valuationCore.killData || killSwitch).map((item, i) => <li key={i}>{item}</li>)}
@@ -467,16 +744,6 @@ const StockDossierView = ({ eventDetail, payload }) => {
             </ul>
           </div>
         </div>
-      </div>
-
-      <div id="market-evidence" className="card dossier-market-evidence-card" style={{ marginBottom: '24px' }}>
-        <p className="crowdrisk-kicker">Market Evidence</p>
-        <h3>{marketEvidence.title}</h3>
-        <ul>
-          {marketEvidence.points.map((point) => (
-            <li key={point}>{point}</li>
-          ))}
-        </ul>
       </div>
 
     </div>
