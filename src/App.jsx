@@ -46,6 +46,7 @@ function App() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [dossierSeed, setDossierSeed] = useState(null);
+  const [eventStudySeed, setEventStudySeed] = useState(null);
 
   useEffect(() => {
     let alive = true;
@@ -84,9 +85,20 @@ function App() {
     setIsMobileMenuOpen(false);
   };
 
+  const handleOpenEventStudy = (ticker) => {
+    const normalizedTicker = String(ticker || '').trim().toUpperCase();
+    if (!normalizedTicker) return;
+    setEventStudySeed({ ticker: normalizedTicker, category: 'Earnings', source: 'stock-dossier', openedAt: Date.now() });
+    setActiveTab('event-study');
+    setIsMobileMenuOpen(false);
+  };
+
   const handleNavigate = (tabId) => {
     if (tabId !== 'stock-dossier' && tabId !== 'dossier') {
       setDossierSeed(null);
+    }
+    if (tabId !== 'event-study') {
+      setEventStudySeed(null);
     }
     setActiveTab(tabId);
     setIsMobileMenuOpen(false);
@@ -130,6 +142,7 @@ function App() {
     'event-study': (
       <EventStudyPanel
         payload={payload}
+        eventStudySeed={eventStudySeed}
         onOpenStockDossier={handleOpenStockDossier}
       />
     ),
@@ -148,6 +161,7 @@ function App() {
         error={error}
         dossierSeed={dossierSeed}
         onClearSeed={() => setDossierSeed(null)}
+        onOpenEventStudy={handleOpenEventStudy}
       />
     )
   };

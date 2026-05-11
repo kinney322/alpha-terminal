@@ -53,12 +53,23 @@ const stockDossierProfiles = {
       { label: 'Net Retention', value: 'Low-120%s' }
     ],
     marketEvidence: {
-      title: 'Market is still rewarding the post-earnings setup, but valuation discipline matters.',
+      title: 'Post-earnings evidence is constructive, but it is not a valuation answer.',
       points: [
         'The stock remains in a post-earnings research window rather than a cold fundamental screen.',
         'Momentum and relative strength keep DDOG worth monitoring, but they do not solve valuation risk.',
         'The market is treating AI workloads as demand support for observability and security tooling.'
       ]
+    },
+    eventStudyRead: {
+      title: 'The historical setup supports continued monitoring, not automatic entry.',
+      interpretation:
+        'Use the event-study matrix to judge whether the latest post-earnings move has historically followed through, faded, or required patience. The Dossier should treat this as market evidence beside valuation and fundamentals.',
+      checkLabels: {
+        baseRate: 'Comparable base rate',
+        t1: 'T+1 reaction',
+        t10: 'T+10 drift',
+        risk: '5D risk budget'
+      }
     },
     valuationCore: {
       status: 'available',

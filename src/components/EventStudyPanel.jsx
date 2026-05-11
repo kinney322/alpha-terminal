@@ -530,7 +530,7 @@ function MobileAuditCard({ row, index }) {
   );
 }
 
-export default function EventStudyPanel({ payload, onOpenStockDossier }) {
+export default function EventStudyPanel({ payload, eventStudySeed, onOpenStockDossier }) {
   const [symbol, setSymbol] = useState('');
   const [category, setCategory] = useState('Earnings');
   const [loading, setLoading] = useState(false);
@@ -552,6 +552,7 @@ export default function EventStudyPanel({ payload, onOpenStockDossier }) {
 
   const fetchEventStudy = useCallback(async (symbolOverride, options = {}) => {
     const nextSymbol = (symbolOverride ?? symbol).trim();
+    const nextCategory = options.categoryOverride || category;
     if (!nextSymbol) return;
     if (!options.silent) {
       setSymbol(nextSymbol.toUpperCase());
@@ -563,7 +564,7 @@ export default function EventStudyPanel({ payload, onOpenStockDossier }) {
     }
 
     try {
-      const res = await fetch(`${API_BASE}/event-study?symbol=${nextSymbol.toUpperCase()}&category=${category}`);
+      const res = await fetch(`${API_BASE}/event-study?symbol=${nextSymbol.toUpperCase()}&category=${nextCategory}`);
       const json = await res.json();
 
       if (!res.ok) {
@@ -572,7 +573,7 @@ export default function EventStudyPanel({ payload, onOpenStockDossier }) {
 
       setData(json);
 
-      if (category === 'Earnings') {
+      if (nextCategory === 'Earnings') {
         try {
           const historyRes = await fetch(`${API_BASE}/event-study/history?ticker=${nextSymbol.toUpperCase()}`);
           const historyJson = await historyRes.json();
@@ -631,6 +632,15 @@ export default function EventStudyPanel({ payload, onOpenStockDossier }) {
 
     return () => controller.abort();
   }, []);
+
+  useEffect(() => {
+    const seededTicker = String(eventStudySeed?.ticker || '').trim().toUpperCase();
+    if (!seededTicker) return;
+    const seededCategory = eventStudySeed?.category || 'Earnings';
+    setCategory(seededCategory);
+    setSymbol(seededTicker);
+    fetchEventStudy(seededTicker, { keepPrevious: false, categoryOverride: seededCategory });
+  }, [eventStudySeed?.openedAt]);
 
   useEffect(() => {
     const controller = new AbortController();
