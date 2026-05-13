@@ -744,7 +744,7 @@ const StockDossierView = ({ eventDetail, payload, onOpenEventStudy }) => {
             {(() => {
               const ts = enrichedEventDetail.trend_setup?.technical_setup || {};
               const hasSetup = ts.status && ts.status !== 'unavailable';
-              const sentence = ts.setup_sentence_zh || ts.setup_sentence_en || 'No technical setup context provided.';
+              const sentence = ts.setup_sentence_en || ts.setup_sentence_zh || 'No technical setup context provided.';
               return <p className={hasSetup ? '' : 'crowdrisk-muted'}>{sentence}</p>;
             })()}
           </div>
