@@ -3981,3 +3981,14 @@ body,
     flex-direction: column;
   }
 }
+
+.momentum-setup-badge {
+  display: inline-block;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  background-color: rgba(24, 143, 122, 0.1);
+  color: #188f7a;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}

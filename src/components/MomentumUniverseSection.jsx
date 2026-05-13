@@ -7,6 +7,14 @@ const formatNumber = (value, suffix = '') => {
   return `${Math.round(num * 100) / 100}${suffix}`;
 };
 
+const SetupBadge = ({ setup }) => {
+  if (!setup || setup.status === 'unavailable') {
+    return <span className="crowdrisk-muted">—</span>;
+  }
+  const label = setup.status_label_en || setup.status_label_zh || setup.daily_action || '—';
+  return <span className="momentum-setup-badge">{label}</span>;
+};
+
 function MomentumUniverseSection({ payload, loading, error, onOpenStockDossier }) {
   const rankings = payload?.momentum_universe?.rankings || [];
 
@@ -46,6 +54,7 @@ function MomentumUniverseSection({ payload, loading, error, onOpenStockDossier }
               <th>Price</th>
               <th>50SMA</th>
               <th>200SMA</th>
+              <th>Setup</th>
               <th>Action</th>
             </tr>
           </thead>
@@ -62,6 +71,9 @@ function MomentumUniverseSection({ payload, loading, error, onOpenStockDossier }
                 <td>{formatNumber(row.price ? `$${row.price}` : null)}</td>
                 <td>{formatNumber(row.price_vs_sma50_pct, '%')}</td>
                 <td>{formatNumber(row.price_vs_sma200_pct, '%')}</td>
+                <td>
+                  <SetupBadge setup={row.trend_setup?.technical_setup} />
+                </td>
                 <td>
                   <button type="button" onClick={() => openDossier(row)}>
                     Open Dossier →

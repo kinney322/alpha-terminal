@@ -43,6 +43,21 @@ const formatValuationMetric = (metric) => {
   return numeric.toFixed(1);
 };
 
+const formatTechnicalZone = (value) => {
+  if (!value || String(value).toLowerCase() === 'null' || value === '$0-$0' || value === 'undefined') {
+    return null;
+  }
+  if (Array.isArray(value)) {
+    const nums = value.map(Number).filter(Number.isFinite);
+    if (!nums.length || nums.every((num) => num === 0)) return null;
+    if (nums.length >= 2) {
+      return `$${nums[0].toFixed(2)}-$${nums[1].toFixed(2)}`;
+    }
+    return `$${nums[0].toFixed(2)}`;
+  }
+  return String(value);
+};
+
 const verdictStateLabels = {
   post_earnings_watch: 'Post-earnings watch',
   priced_for_perfection: 'Priced for perfection',
@@ -710,6 +725,50 @@ const StockDossierView = ({ eventDetail, payload, onOpenEventStudy }) => {
             <span>{eventStudyCoverage?.generated_at ? `Updated ${formatEventDate(eventStudyCoverage.generated_at.slice(0, 10))}` : 'Live API'}</span>
           </div>
           <EventStudyQuarterTable rows={quarterLogRows} />
+        </div>
+      </div>
+
+      <div id="technical-setup" className="card dossier-scenario-card" style={{ marginBottom: '24px' }}>
+        <p className="crowdrisk-kicker">Technical Setup</p>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '12px' }}>
+          <h3 style={{ margin: 0 }}>Structure & Execution</h3>
+          {(() => {
+            const ts = enrichedEventDetail.trend_setup?.technical_setup || {};
+            const hasSetup = ts.status && ts.status !== 'unavailable';
+            const label = ts.status_label_en || ts.status_label_zh || ts.daily_action || 'Unavailable';
+            return <span className={hasSetup ? 'momentum-setup-badge' : 'crowdrisk-muted'}>{label}</span>;
+          })()}
+        </div>
+        <div className="dossier-scenario-grid" style={{ gridTemplateColumns: '1fr' }}>
+          <div>
+            {(() => {
+              const ts = enrichedEventDetail.trend_setup?.technical_setup || {};
+              const hasSetup = ts.status && ts.status !== 'unavailable';
+              const sentence = ts.setup_sentence_zh || ts.setup_sentence_en || 'No technical setup context provided.';
+              return <p className={hasSetup ? '' : 'crowdrisk-muted'}>{sentence}</p>;
+            })()}
+          </div>
+          {(() => {
+             const ts = enrichedEventDetail.trend_setup?.technical_setup || {};
+             const hasSetup = ts.status && ts.status !== 'unavailable';
+             if (!hasSetup) return null;
+
+             const breakout = formatTechnicalZone(ts.breakout_area);
+             const support = formatTechnicalZone(ts.support_area);
+             const target = formatTechnicalZone(ts.target_zone);
+             const hold = formatTechnicalZone(ts.hold_zone);
+
+             if (!breakout && !support && !target && !hold) return null;
+
+             return (
+               <div className="dossier-market-strip" style={{ marginTop: '16px' }}>
+                 {breakout && <div><span>Breakout Area</span><strong>{breakout}</strong></div>}
+                 {support && <div><span>Support Area</span><strong>{support}</strong></div>}
+                 {target && <div><span>Target Zone</span><strong>{target}</strong></div>}
+                 {hold && <div><span>Hold Zone</span><strong>{hold}</strong></div>}
+               </div>
+             );
+          })()}
         </div>
       </div>
 
