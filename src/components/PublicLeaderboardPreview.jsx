@@ -1,6 +1,15 @@
 import React, { useState, useEffect } from 'react';
+import { buildMomentumUniverseSyntheticDetail } from './dossierHelpers.js';
 
 const formatLabel = (val) => val ? val.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase()) : '';
+
+const SetupBadge = ({ setup }) => {
+  if (!setup || setup.status === 'unavailable') {
+    return <span className="crowdrisk-muted">—</span>;
+  }
+  const label = setup.status_label_en || setup.status_label_zh || setup.daily_action || '—';
+  return <span className="momentum-setup-badge">{label}</span>;
+};
 
 export default function PublicLeaderboardPreview({ onOpenStockDossier, payload: fullRadarPayload }) {
   const [data, setData] = useState(null);
@@ -38,8 +47,20 @@ export default function PublicLeaderboardPreview({ onOpenStockDossier, payload: 
 
   const currentTabTickers = data.tabs[activeTab] || [];
   const rowsByTicker = data.rows_by_ticker || {};
+  const isMomentumBreakoutsTab = activeTab === 'momentum_breakouts';
+  const momentumRowsByTicker = new Map(
+    (fullRadarPayload?.momentum_universe?.rankings || []).map(row => [row.ticker, row])
+  );
 
   const handleRowClick = (row) => {
+    if (isMomentumBreakoutsTab) {
+      const momentumDetail = buildMomentumUniverseSyntheticDetail(row.ticker, fullRadarPayload);
+      if (momentumDetail) {
+        onOpenStockDossier(row.ticker, momentumDetail);
+        return;
+      }
+    }
+
     let resolvedEventDetail = null;
     const eventKey = row.dossier_target?.event_key;
     if (eventKey && fullRadarPayload?.events_detail?.[eventKey]) {
@@ -80,19 +101,20 @@ export default function PublicLeaderboardPreview({ onOpenStockDossier, payload: 
       </div>
 
       <div className="radar-table-container" style={{ marginTop: '24px', overflowX: 'auto', WebkitOverflowScrolling: 'touch' }}>
-        <table className="radar-table" style={{ width: '100%', minWidth: '500px' }}>
+        <table className="radar-table" style={{ width: '100%', minWidth: isMomentumBreakoutsTab ? '640px' : '500px' }}>
           <thead>
             <tr>
               <th style={{ width: '60px' }}>Rank</th>
               <th>Ticker</th>
               <th>Theme</th>
+              {isMomentumBreakoutsTab && <th style={{ width: '160px' }}>Setup</th>}
               <th style={{ width: '120px', textAlign: 'right' }}>Action</th>
             </tr>
           </thead>
           <tbody>
             {currentTabTickers.length === 0 ? (
               <tr>
-                <td colSpan="4" style={{ textAlign: 'center', padding: '20px', color: 'var(--text-muted)' }}>
+                <td colSpan={isMomentumBreakoutsTab ? 5 : 4} style={{ textAlign: 'center', padding: '20px', color: 'var(--text-muted)' }}>
                   No tickers currently in this list.
                 </td>
               </tr>
@@ -100,6 +122,7 @@ export default function PublicLeaderboardPreview({ onOpenStockDossier, payload: 
               currentTabTickers.map((ticker, idx) => {
                 const row = rowsByTicker[ticker];
                 if (!row) return null;
+                const setup = momentumRowsByTicker.get(ticker)?.trend_setup?.technical_setup;
                 return (
                   <tr key={ticker} className="radar-row" onClick={() => handleRowClick(row)}>
                     <td style={{ fontWeight: 'bold', color: 'var(--text-muted)' }}>#{idx + 1}</td>
@@ -122,6 +145,11 @@ export default function PublicLeaderboardPreview({ onOpenStockDossier, payload: 
                         <span style={{ color: 'var(--text-muted)' }}>-</span>
                       )}
                     </td>
+                    {isMomentumBreakoutsTab && (
+                      <td>
+                        <SetupBadge setup={setup} />
+                      </td>
+                    )}
                     <td style={{ textAlign: 'right', whiteSpace: 'nowrap' }}>
                       <button
                         className="action-btn"
