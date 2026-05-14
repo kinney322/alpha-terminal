@@ -786,26 +786,49 @@ const StockDossierView = ({ eventDetail, payload, onOpenEventStudy }) => {
              if (!hasSetup) return null;
 
              const breakout = formatTechnicalZone(ts.breakout_area);
-             const support = shouldShowTechnicalSupport(ts) ? formatTechnicalZone(ts.support_area) : null;
              const target = formatTechnicalZone(ts.target_zone);
              const hold = formatTechnicalZone(ts.hold_zone);
-             const invalidBelow = !shouldShowTechnicalSupport(ts) ? formatTechnicalPrice(ts.invalid_below) : null;
              const latestPrice = priceSeries.length ? priceSeries[priceSeries.length - 1] : null;
              const breakoutZone = normalizeTechnicalZone(ts.breakout_area);
              const targetZone = normalizeTechnicalZone(ts.target_zone);
              const upsideBase = latestPrice || breakoutZone?.[1];
              const potentialUpside = formatUpsideRange(upsideBase, targetZone);
 
-             if (!breakout && !support && !target && !hold && !invalidBelow && !potentialUpside) return null;
+             const typedSupportLevels = Array.isArray(ts.support_levels) ? ts.support_levels : [];
+             const typedResistanceLevels = Array.isArray(ts.resistance_levels) ? ts.resistance_levels : [];
+             const typedLevels = [...typedSupportLevels, ...typedResistanceLevels];
+             const hasTypedLevels = typedLevels.length > 0;
+             const fallbackSupport = shouldShowTechnicalSupport(ts) ? formatTechnicalZone(ts.support_area) : null;
+             const fallbackInvalid = !shouldShowTechnicalSupport(ts) ? formatTechnicalPrice(ts.invalid_below) : null;
+
+             if (!breakout && !target && !hold && !potentialUpside && !hasTypedLevels && !fallbackSupport && !fallbackInvalid) return null;
 
              return (
                <div className="dossier-market-strip" style={{ marginTop: '16px', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))' }}>
                  {breakout && <div><span>Breakout Area</span><strong>{breakout}</strong></div>}
-                 {support && <div><span>Support Area</span><strong>{support}</strong></div>}
                  {target && <div><span>Target Zone</span><strong>{target}</strong></div>}
                  {potentialUpside && <div><span>Potential Upside</span><strong>{potentialUpside}</strong></div>}
                  {hold && <div><span>Hold Zone</span><strong>{hold}</strong></div>}
-                 {invalidBelow && <div><span>Invalid Below</span><strong>{invalidBelow}</strong></div>}
+                 {hasTypedLevels ? (
+                   typedLevels.map((lvl, index) => {
+                     // Hide deep context support if we already have a primary execution level
+                     if (lvl.display_role === 'deep_context_only' && typedLevels.some(l => l.display_role === 'primary_execution')) {
+                       return null;
+                     }
+                     const formattedPrice = lvl.price ? formatTechnicalPrice(lvl.price) : formatTechnicalZone(lvl.area);
+                     return formattedPrice ? (
+                       <div key={`${lvl.type}-${lvl.source || 'level'}-${index}`}>
+                         <span>{lvl.label_en || formatLabel(lvl.type)}</span>
+                         <strong>{formattedPrice}</strong>
+                       </div>
+                     ) : null;
+                   })
+                 ) : (
+                   <>
+                     {fallbackSupport && <div><span>Support Area</span><strong>{fallbackSupport}</strong></div>}
+                     {fallbackInvalid && <div><span>Invalid Below</span><strong>{fallbackInvalid}</strong></div>}
+                   </>
+                 )}
                </div>
              );
           })()}
