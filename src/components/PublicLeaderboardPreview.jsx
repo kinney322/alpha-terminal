@@ -8,11 +8,17 @@ const SetupBadge = ({ setup }) => {
     return <span className="crowdrisk-muted">—</span>;
   }
   const label = setup.status_label_en || setup.status_label_zh || setup.daily_action || '—';
-  if (label.toLowerCase() === 'neutral' || setup.daily_action === 'neutral' || setup.action_family === 'neutral') {
+  if (String(label).toLowerCase() === 'neutral' || setup.daily_action === 'neutral' || setup.action_family === 'neutral') {
     return <span className="crowdrisk-muted">—</span>;
   }
   return <span className="momentum-setup-badge">{label}</span>;
 };
+
+const isMomentumBreakoutSetup = (setup) => (
+  setup
+  && setup.status !== 'unavailable'
+  && (setup.action_family === 'breakout' || setup.action_family === 'price_discovery')
+);
 
 export default function PublicLeaderboardPreview({ onOpenStockDossier, payload: fullRadarPayload }) {
   const [data, setData] = useState(null);
@@ -50,19 +56,14 @@ export default function PublicLeaderboardPreview({ onOpenStockDossier, payload: 
 
   const rowsByTicker = data.rows_by_ticker || {};
   const isMomentumBreakoutsTab = activeTab === 'momentum_breakouts';
-  const momentumRowsByTicker = new Map(
-    (fullRadarPayload?.momentum_universe?.rankings || []).map(row => [row.ticker, row])
-  );
-  const getMomentumSetup = (ticker) => momentumRowsByTicker.get(ticker)?.trend_setup?.technical_setup;
-  const isVisibleMomentumBreakout = (ticker) => {
-    const setup = getMomentumSetup(ticker);
-    if (!setup || setup.status === 'unavailable') return false;
-    return setup.daily_action !== 'neutral' && setup.action_family !== 'neutral';
-  };
+  const momentumRankings = fullRadarPayload?.momentum_universe?.rankings || [];
+  const momentumBreakoutRows = momentumRankings.filter(row => (
+    isMomentumBreakoutSetup(row.trend_setup?.technical_setup)
+  ));
   const rawTabTickers = data.tabs[activeTab] || [];
-  const currentTabTickers = isMomentumBreakoutsTab
-    ? rawTabTickers.filter(isVisibleMomentumBreakout)
-    : rawTabTickers;
+  const currentRows = isMomentumBreakoutsTab
+    ? momentumBreakoutRows
+    : rawTabTickers.map(ticker => rowsByTicker[ticker]).filter(Boolean);
 
   const handleRowClick = (row) => {
     if (isMomentumBreakoutsTab) {
@@ -107,7 +108,7 @@ export default function PublicLeaderboardPreview({ onOpenStockDossier, payload: 
               border: activeTab === t.key ? '1px solid var(--text-main)' : '1px solid var(--border-color)'
             }}
           >
-            {t.label} ({t.key === 'momentum_breakouts' ? (data.tabs[t.key] || []).filter(isVisibleMomentumBreakout).length : data.tabs[t.key]?.length || 0})
+            {t.label} ({t.key === 'momentum_breakouts' ? momentumBreakoutRows.length : data.tabs[t.key]?.length || 0})
           </button>
         ))}
       </div>
@@ -124,19 +125,20 @@ export default function PublicLeaderboardPreview({ onOpenStockDossier, payload: 
             </tr>
           </thead>
           <tbody>
-            {currentTabTickers.length === 0 ? (
+            {currentRows.length === 0 ? (
               <tr>
                 <td colSpan={isMomentumBreakoutsTab ? 5 : 4} style={{ textAlign: 'center', padding: '20px', color: 'var(--text-muted)' }}>
                   No tickers currently in this list.
                 </td>
               </tr>
             ) : (
-              currentTabTickers.map((ticker, idx) => {
-                const row = rowsByTicker[ticker];
-                if (!row) return null;
-                const setup = getMomentumSetup(ticker);
+              currentRows.map((row, idx) => {
+                const setup = row.trend_setup?.technical_setup;
+                const theme = isMomentumBreakoutsTab
+                  ? row.industry_theme_label || row.primary_theme || row.industry_theme || row.theme
+                  : row.primary_theme;
                 return (
-                  <tr key={ticker} className="radar-row" onClick={() => handleRowClick(row)}>
+                  <tr key={row.ticker} className="radar-row" onClick={() => handleRowClick(row)}>
                     <td style={{ fontWeight: 'bold', color: 'var(--text-muted)' }}>#{idx + 1}</td>
                     <td>
                       <div style={{ fontWeight: 'bold', fontSize: '1.1em' }}>{row.ticker}</div>
@@ -151,8 +153,8 @@ export default function PublicLeaderboardPreview({ onOpenStockDossier, payload: 
                       )}
                     </td>
                     <td>
-                      {row.primary_theme ? (
-                        <span className="quality-pill">{formatLabel(row.primary_theme)}</span>
+                      {theme ? (
+                        <span className="quality-pill">{formatLabel(theme)}</span>
                       ) : (
                         <span style={{ color: 'var(--text-muted)' }}>-</span>
                       )}
