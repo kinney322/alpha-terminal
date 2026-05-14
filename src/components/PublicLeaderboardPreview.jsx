@@ -8,6 +8,9 @@ const SetupBadge = ({ setup }) => {
     return <span className="crowdrisk-muted">—</span>;
   }
   const label = setup.status_label_en || setup.status_label_zh || setup.daily_action || '—';
+  if (label.toLowerCase() === 'neutral' || setup.daily_action === 'neutral' || setup.action_family === 'neutral') {
+    return <span className="crowdrisk-muted">—</span>;
+  }
   return <span className="momentum-setup-badge">{label}</span>;
 };
 
@@ -45,12 +48,21 @@ export default function PublicLeaderboardPreview({ onOpenStockDossier, payload: 
     { key: 'quality_compounders', label: 'Quality Compounders' }
   ];
 
-  const currentTabTickers = data.tabs[activeTab] || [];
   const rowsByTicker = data.rows_by_ticker || {};
   const isMomentumBreakoutsTab = activeTab === 'momentum_breakouts';
   const momentumRowsByTicker = new Map(
     (fullRadarPayload?.momentum_universe?.rankings || []).map(row => [row.ticker, row])
   );
+  const getMomentumSetup = (ticker) => momentumRowsByTicker.get(ticker)?.trend_setup?.technical_setup;
+  const isVisibleMomentumBreakout = (ticker) => {
+    const setup = getMomentumSetup(ticker);
+    if (!setup || setup.status === 'unavailable') return false;
+    return setup.daily_action !== 'neutral' && setup.action_family !== 'neutral';
+  };
+  const rawTabTickers = data.tabs[activeTab] || [];
+  const currentTabTickers = isMomentumBreakoutsTab
+    ? rawTabTickers.filter(isVisibleMomentumBreakout)
+    : rawTabTickers;
 
   const handleRowClick = (row) => {
     if (isMomentumBreakoutsTab) {
@@ -95,7 +107,7 @@ export default function PublicLeaderboardPreview({ onOpenStockDossier, payload: 
               border: activeTab === t.key ? '1px solid var(--text-main)' : '1px solid var(--border-color)'
             }}
           >
-            {t.label} ({data.tabs[t.key]?.length || 0})
+            {t.label} ({t.key === 'momentum_breakouts' ? (data.tabs[t.key] || []).filter(isVisibleMomentumBreakout).length : data.tabs[t.key]?.length || 0})
           </button>
         ))}
       </div>
@@ -122,7 +134,7 @@ export default function PublicLeaderboardPreview({ onOpenStockDossier, payload: 
               currentTabTickers.map((ticker, idx) => {
                 const row = rowsByTicker[ticker];
                 if (!row) return null;
-                const setup = momentumRowsByTicker.get(ticker)?.trend_setup?.technical_setup;
+                const setup = getMomentumSetup(ticker);
                 return (
                   <tr key={ticker} className="radar-row" onClick={() => handleRowClick(row)}>
                     <td style={{ fontWeight: 'bold', color: 'var(--text-muted)' }}>#{idx + 1}</td>
