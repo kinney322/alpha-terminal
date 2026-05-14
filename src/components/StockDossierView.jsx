@@ -78,6 +78,18 @@ const formatUpsideRange = (basePrice, targetZone) => {
   return lowText === highText ? lowText : `${lowText} to ${highText}`;
 };
 
+const formatTechnicalPrice = (value) => {
+  const num = Number(value);
+  if (!Number.isFinite(num) || num <= 0) return null;
+  return `$${num.toFixed(2)}`;
+};
+
+const shouldShowTechnicalSupport = (setup) => (
+  setup.action_family === 'support'
+  || setup.action_family === 'downtrend'
+  || setup.action_family === 'neutral'
+);
+
 const verdictStateLabels = {
   post_earnings_watch: 'Post-earnings watch',
   priced_for_perfection: 'Priced for perfection',
@@ -774,16 +786,17 @@ const StockDossierView = ({ eventDetail, payload, onOpenEventStudy }) => {
              if (!hasSetup) return null;
 
              const breakout = formatTechnicalZone(ts.breakout_area);
-             const support = formatTechnicalZone(ts.support_area);
+             const support = shouldShowTechnicalSupport(ts) ? formatTechnicalZone(ts.support_area) : null;
              const target = formatTechnicalZone(ts.target_zone);
              const hold = formatTechnicalZone(ts.hold_zone);
+             const invalidBelow = !shouldShowTechnicalSupport(ts) ? formatTechnicalPrice(ts.invalid_below) : null;
              const latestPrice = priceSeries.length ? priceSeries[priceSeries.length - 1] : null;
              const breakoutZone = normalizeTechnicalZone(ts.breakout_area);
              const targetZone = normalizeTechnicalZone(ts.target_zone);
              const upsideBase = latestPrice || breakoutZone?.[1];
              const potentialUpside = formatUpsideRange(upsideBase, targetZone);
 
-             if (!breakout && !support && !target && !hold && !potentialUpside) return null;
+             if (!breakout && !support && !target && !hold && !invalidBelow && !potentialUpside) return null;
 
              return (
                <div className="dossier-market-strip" style={{ marginTop: '16px', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))' }}>
@@ -792,6 +805,7 @@ const StockDossierView = ({ eventDetail, payload, onOpenEventStudy }) => {
                  {target && <div><span>Target Zone</span><strong>{target}</strong></div>}
                  {potentialUpside && <div><span>Potential Upside</span><strong>{potentialUpside}</strong></div>}
                  {hold && <div><span>Hold Zone</span><strong>{hold}</strong></div>}
+                 {invalidBelow && <div><span>Invalid Below</span><strong>{invalidBelow}</strong></div>}
                </div>
              );
           })()}
