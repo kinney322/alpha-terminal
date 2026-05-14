@@ -58,6 +58,26 @@ const formatTechnicalZone = (value) => {
   return String(value);
 };
 
+const normalizeTechnicalZone = (value) => {
+  if (!Array.isArray(value)) return null;
+  const nums = value.map(Number).filter(Number.isFinite);
+  if (!nums.length || nums.every((num) => num === 0)) return null;
+  if (nums.length === 1) return [nums[0], nums[0]];
+  return [Math.min(nums[0], nums[1]), Math.max(nums[0], nums[1])];
+};
+
+const formatUpsideRange = (basePrice, targetZone) => {
+  const base = Number(basePrice);
+  if (!Number.isFinite(base) || base <= 0 || !targetZone) return null;
+  const [targetLow, targetHigh] = targetZone;
+  const lowPct = ((targetLow - base) / base) * 100;
+  const highPct = ((targetHigh - base) / base) * 100;
+  if (!Number.isFinite(lowPct) || !Number.isFinite(highPct)) return null;
+  const lowText = `${lowPct > 0 ? '+' : ''}${lowPct.toFixed(1)}%`;
+  const highText = `${highPct > 0 ? '+' : ''}${highPct.toFixed(1)}%`;
+  return lowText === highText ? lowText : `${lowText} to ${highText}`;
+};
+
 const verdictStateLabels = {
   post_earnings_watch: 'Post-earnings watch',
   priced_for_perfection: 'Priced for perfection',
@@ -757,14 +777,20 @@ const StockDossierView = ({ eventDetail, payload, onOpenEventStudy }) => {
              const support = formatTechnicalZone(ts.support_area);
              const target = formatTechnicalZone(ts.target_zone);
              const hold = formatTechnicalZone(ts.hold_zone);
+             const latestPrice = priceSeries.length ? priceSeries[priceSeries.length - 1] : null;
+             const breakoutZone = normalizeTechnicalZone(ts.breakout_area);
+             const targetZone = normalizeTechnicalZone(ts.target_zone);
+             const upsideBase = latestPrice || breakoutZone?.[1];
+             const potentialUpside = formatUpsideRange(upsideBase, targetZone);
 
-             if (!breakout && !support && !target && !hold) return null;
+             if (!breakout && !support && !target && !hold && !potentialUpside) return null;
 
              return (
-               <div className="dossier-market-strip" style={{ marginTop: '16px' }}>
+               <div className="dossier-market-strip" style={{ marginTop: '16px', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))' }}>
                  {breakout && <div><span>Breakout Area</span><strong>{breakout}</strong></div>}
                  {support && <div><span>Support Area</span><strong>{support}</strong></div>}
                  {target && <div><span>Target Zone</span><strong>{target}</strong></div>}
+                 {potentialUpside && <div><span>Potential Upside</span><strong>{potentialUpside}</strong></div>}
                  {hold && <div><span>Hold Zone</span><strong>{hold}</strong></div>}
                </div>
              );
