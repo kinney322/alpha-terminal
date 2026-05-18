@@ -16,6 +16,15 @@ function formatPercent(value, digits = 2) {
   return `${value > 0 ? '+' : ''}${Number(value).toFixed(digits)}%`;
 }
 
+function firstFiniteNumber(...values) {
+  for (const value of values) {
+    if (value === null || value === undefined || value === '') continue;
+    const numeric = Number(value);
+    if (Number.isFinite(numeric)) return numeric;
+  }
+  return null;
+}
+
 function InsightRow({ label, value, tone = 'neutral' }) {
   return (
     <div className="xray-insight-row">
@@ -26,15 +35,27 @@ function InsightRow({ label, value, tone = 'neutral' }) {
 }
 
 function ScatterMini({ points }) {
-  if (!points || points.length === 0) {
+  const plottedPoints = (points || [])
+    .map((point) => {
+      const y = firstFiniteNumber(point?.y);
+      if (y === null) return null;
+      return {
+        ...point,
+        x: firstFiniteNumber(point?.x) ?? 0,
+        y,
+      };
+    })
+    .filter(Boolean);
+
+  if (plottedPoints.length === 0) {
     return <div className="xray-scatter-empty">歷史散點資料載入後會顯示於此。</div>;
   }
 
   const width = 280;
   const height = 160;
   const padding = 18;
-  const xs = points.map((p) => Number(p.x ?? 0));
-  const ys = points.map((p) => Number(p.y ?? 0));
+  const xs = plottedPoints.map((p) => p.x);
+  const ys = plottedPoints.map((p) => p.y);
   const minX = Math.min(...xs, -1);
   const maxX = Math.max(...xs, 1);
   const minY = Math.min(...ys, -1);
@@ -51,13 +72,13 @@ function ScatterMini({ points }) {
     <svg viewBox={`0 0 ${width} ${height}`} className="xray-scatter">
       <line x1={padding} x2={width - padding} y1={zeroY} y2={zeroY} className="xray-scatter__axis" />
       <line x1={zeroX} x2={zeroX} y1={padding} y2={height - padding} className="xray-scatter__axis" />
-      {points.map((point, index) => (
+      {plottedPoints.map((point, index) => (
         <circle
           key={`${point.label ?? 'pt'}-${index}`}
-          cx={projectX(Number(point.x ?? 0))}
-          cy={projectY(Number(point.y ?? 0))}
+          cx={projectX(point.x)}
+          cy={projectY(point.y)}
           r="4.2"
-          className={`xray-scatter__dot ${Number(point.y ?? 0) >= 0 ? 'is-positive' : 'is-negative'}`}
+          className={`xray-scatter__dot ${point.y >= 0 ? 'is-positive' : 'is-negative'}`}
         />
       ))}
     </svg>
@@ -74,20 +95,30 @@ export default function OpportunityXRayCard({ row, onClose, eventStudy, eventStu
   }
 
   const preferredTone = row.preferredDirection.toLowerCase();
-  const reflexTone = metricTone(-(row.reflexivityRho ?? 0));
-  const imrvTone = metricTone((row.imrv ?? 1) - 1);
+  const reflexivityValue = firstFiniteNumber(row.reflexivityRho);
+  const imrvValue = firstFiniteNumber(row.imrv);
+  const reflexTone = metricTone(reflexivityValue === null ? null : -reflexivityValue);
+  const imrvTone = metricTone((imrvValue ?? 1) - 1);
   const eventSummary = eventStudy?.summary;
+  const eventWinRate = firstFiniteNumber(eventSummary?.win_rate);
   const isTruthLayerStudy = eventStudy?.truth_layer_status === 'truth_layer_v1';
   const scatterPoints = Array.isArray(eventStudy?.details)
-    ? eventStudy.details.slice(0, 18).map((detail, index) => ({
-        x: Number(detail.drift_m5 ?? detail.drift_m10 ?? 0),
-        y: Number(
-          isTruthLayerStudy
-            ? detail.r_plus_10_pct ?? detail.r_plus_5_pct ?? detail.gap_return_pct ?? 0
-            : detail.t10_return ?? detail.t1_return ?? 0
-        ),
-        label: detail.event_date ?? String(index),
-      }))
+    ? eventStudy.details.slice(0, 18)
+        .map((detail, index) => {
+          const x = firstFiniteNumber(detail.drift_m5, detail.drift_m10);
+          const y = isTruthLayerStudy
+            ? firstFiniteNumber(detail.r_plus_10_pct, detail.r_plus_5_pct, detail.gap_return_pct)
+            : firstFiniteNumber(detail.t10_return, detail.t1_return);
+
+          if (y === null) return null;
+
+          return {
+            x: x ?? 0,
+            y,
+            label: detail.event_date ?? String(index),
+          };
+        })
+        .filter(Boolean)
     : [];
 
   return (
@@ -214,7 +245,7 @@ export default function OpportunityXRayCard({ row, onClose, eventStudy, eventStu
                 <InsightRow
                   label={isTruthLayerStudy ? 'Gap-up Rate' : 'Legacy +10D Win Rate'}
                   value={formatPercent(eventSummary.win_rate, 0)}
-                  tone={(eventSummary.win_rate ?? 0) >= 50 ? 'positive' : 'negative'}
+                  tone={eventWinRate === null ? 'neutral' : eventWinRate >= 50 ? 'positive' : 'negative'}
                 />
                 <InsightRow
                   label="Avg Run-up T-5"
