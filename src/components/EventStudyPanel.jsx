@@ -181,6 +181,7 @@ function RadarSkeleton() {
 }
 
 function formatPercent(value, digits = 2, withSign = false) {
+  if (value === undefined || value === null || value === '') return '—';
   const numeric = Number(value);
   if (Number.isNaN(numeric)) return '—';
   const prefix = withSign && numeric > 0 ? '+' : '';
@@ -188,12 +189,14 @@ function formatPercent(value, digits = 2, withSign = false) {
 }
 
 function formatCount(value) {
+  if (value === undefined || value === null || value === '') return '—';
   const numeric = Number(value);
   if (Number.isNaN(numeric)) return '—';
   return `${numeric}次`;
 }
 
 function formatDecimal(value, digits = 2) {
+  if (value === undefined || value === null || value === '') return '—';
   const numeric = Number(value);
   if (Number.isNaN(numeric)) return '—';
   return numeric.toFixed(digits);
@@ -236,6 +239,64 @@ function extractSurprise(row) {
   );
 }
 
+function ratioToPercent(value) {
+  if (value === undefined || value === null || value === '') return null;
+  const numeric = Number(value);
+  return Number.isFinite(numeric) ? numeric * 100 : null;
+}
+
+function averagePercent(rows, field) {
+  const values = rows
+    .map((row) => ratioToPercent(row?.[field]))
+    .filter((value) => value !== null);
+  if (!values.length) return null;
+  return values.reduce((sum, value) => sum + value, 0) / values.length;
+}
+
+function normalizeEarningsGapSummaryPayload(payload) {
+  const rows = Array.isArray(payload?.quarter_log) ? payload.quarter_log : [];
+  const measuredCount = payload?.coverage?.measured_gap_count ?? payload?.dossier_digest?.measured_gap_count ?? 0;
+  const gapUpRate = ratioToPercent(payload?.earnings_summary?.gap_up_rate);
+  const averageGapUp = ratioToPercent(payload?.earnings_summary?.average_gap_up);
+  const averageGapDown = ratioToPercent(payload?.earnings_summary?.average_gap_down);
+  const sameDayOc = averagePercent(rows.filter((row) => !row.exclusion_reasons?.length), 'same_day_oc');
+
+  return {
+    truth_layer_status: 'truth_layer_v1',
+    ticker: payload?.ticker,
+    coverage: payload?.coverage,
+    earnings_summary: payload?.earnings_summary,
+    forward_returns: payload?.forward_returns,
+    dossier_digest: payload?.dossier_digest,
+    summary: {
+      truth_layer_kind: 'earnings_gap_summary',
+      ticker: payload?.ticker,
+      total_events: measuredCount,
+      win_rate: gapUpRate,
+      avg_gap_up_pct: averageGapUp,
+      avg_gap_down_pct: averageGapDown,
+      avg_same_day_oc_pct: sameDayOc,
+      avg_drift_m5: null,
+      avg_t1_abs_volatility: sameDayOc,
+      avg_max_dd_5: null,
+    },
+    details: rows.map((row) => ({
+      ...row,
+      truth_layer_kind: 'earnings_gap_summary',
+      event_date: row.release_date,
+      sentiment: row.gap_return > 0 ? 'Gap Up' : row.gap_return < 0 ? 'Gap Down' : 'Pending',
+      gap_return_pct: ratioToPercent(row.gap_return),
+      same_day_oc_pct: ratioToPercent(row.same_day_oc),
+      r_plus_3_pct: ratioToPercent(row.r_plus_3),
+      r_plus_5_pct: ratioToPercent(row.r_plus_5),
+      r_plus_10_pct: ratioToPercent(row.r_plus_10),
+      r_plus_30_pct: ratioToPercent(row.r_plus_30),
+      until_next_earnings_return_pct: ratioToPercent(row.until_next_earnings_return),
+      win: Number(row.gap_return) > 0,
+    })),
+  };
+}
+
 function mergeHistoryIntoDetails(details = [], historyRows = []) {
   const historyMap = new Map(
     historyRows.map((row) => [String(row.event_date), row])
@@ -271,6 +332,32 @@ function getLatestEarningsSnapshot(rows = []) {
 
 function getDecisionModel(summary) {
   if (!summary) return null;
+
+  if (summary.truth_layer_kind === 'earnings_gap_summary') {
+    const sample = Number(summary.total_events ?? 0);
+    const gapUpRate = Number(summary.win_rate ?? 0);
+    const sameDayOc = Number(summary.avg_same_day_oc_pct ?? 0);
+    const avgGapUp = Number(summary.avg_gap_up_pct ?? 0);
+
+    return {
+      posture: 'truth_layer',
+      title: '以 reaction_day 對齊財報反應',
+      summaryText: '這一頁只讀 earnings_event_truth_v1 與 earnings_reaction_features，不再用 legacy event_date 偏移推估反應日。',
+      confidence: sample >= 8 ? '中信度' : sample > 0 ? '低信度' : '待補資料',
+      risk: Math.abs(avgGapUp) >= 10 ? '高波動' : Math.abs(avgGapUp) >= 3 ? '中波動' : '低樣本',
+      flags: sample === 0 ? ['尚無可統計的 verified reaction rows'] : [],
+      longPayoff:
+        gapUpRate >= 55
+          ? '已驗證季度偏向 gap-up reaction，但樣本數仍需隨 backfill 擴充後再提高信任度。'
+          : '目前 verified gap-up rate 不足以單獨支持順勢結論，應搭配基本面與估值檢查。',
+      shortPayoff:
+        gapUpRate <= 45
+          ? 'gap-down 或無效反應比例偏高，需檢查是否存在預期過高或 sell-the-news 風險。'
+          : '目前沒有足夠 verified gap-down evidence 支持單獨做空判斷。',
+      sizingText:
+        `Reaction gap 平均上行 ${Number.isFinite(avgGapUp) ? formatPercent(avgGapUp, 2, true) : '—'}；same-day open-to-close ${Number.isFinite(sameDayOc) ? formatPercent(sameDayOc, 2, true) : '—'}，倉位應以 gap risk 而不是舊日期偏移判斷。`,
+    };
+  }
 
   const sample = Number(summary.total_events ?? 0);
   const winRate = Number(summary.win_rate ?? 0);
@@ -362,13 +449,13 @@ function BucketCard({ title, bucket, compact = false }) {
           <strong>{win_rate != null ? `${win_rate}%` : '—'}</strong>
         </div>
         <div className="bucket-metric">
-          <span>T+10</span>
+          <span>Legacy +10D</span>
           <strong className={avg_t10 > 0 ? 'text-success' : avg_t10 < 0 ? 'text-danger' : ''}>{avg_t10 != null ? `${avg_t10}%` : '—'}</strong>
         </div>
         {compact ? (
           <>
             <div className="bucket-metric">
-              <span>T+1</span>
+              <span>Legacy +1D</span>
               <strong className={avg_t1 > 0 ? 'text-success' : avg_t1 < 0 ? 'text-danger' : ''}>{avg_t1 != null ? `${avg_t1}%` : '—'}</strong>
             </div>
             <div className="bucket-metric">
@@ -378,7 +465,7 @@ function BucketCard({ title, bucket, compact = false }) {
           </>
         ) : (
           <div className="bucket-metric">
-            <span>T+1 波動</span>
+            <span>Legacy +1D 波動</span>
             <strong>{avg_t1_abs_volatility != null ? `${avg_t1_abs_volatility}%` : '—'}</strong>
           </div>
         )}
@@ -473,6 +560,58 @@ function TradeSetupMatrix({ conditionalSummary }) {
 }
 
 function MobileAuditCard({ row, index }) {
+  if (row.truth_layer_kind === 'earnings_gap_summary') {
+    return (
+      <article className="event-audit-card" key={`${row.release_date}-${index}`}>
+        <div className="event-audit-card__header">
+          <div>
+            <span className="event-audit-card__eyebrow">Release / Reaction</span>
+            <strong className="mono text-accent">{row.release_date} → {row.reaction_day || 'Pending'}</strong>
+          </div>
+          <span className={`badge ${row.exclusion_reasons?.length ? 'pending' : 'active'}`}>
+            {row.exclusion_reasons?.length ? 'Excluded' : row.sentiment}
+          </span>
+        </div>
+
+        <div className="event-audit-card__grid">
+          <div className="event-audit-card__metric">
+            <span>Gap</span>
+            <strong className={row.gap_return_pct > 0 ? 'text-success' : row.gap_return_pct < 0 ? 'text-danger' : ''}>
+              {formatPercent(row.gap_return_pct, 2, true)}
+            </strong>
+          </div>
+          <div className="event-audit-card__metric">
+            <span>Same-day O/C</span>
+            <strong className={row.same_day_oc_pct > 0 ? 'text-success' : row.same_day_oc_pct < 0 ? 'text-danger' : ''}>
+              {formatPercent(row.same_day_oc_pct, 2, true)}
+            </strong>
+          </div>
+          <div className="event-audit-card__metric">
+            <span>R+3</span>
+            <strong>{formatPercent(row.r_plus_3_pct, 2, true)}</strong>
+          </div>
+          <div className="event-audit-card__metric">
+            <span>R+5</span>
+            <strong>{formatPercent(row.r_plus_5_pct, 2, true)}</strong>
+          </div>
+          <div className="event-audit-card__metric">
+            <span>R+10</span>
+            <strong>{formatPercent(row.r_plus_10_pct, 2, true)}</strong>
+          </div>
+          <div className="event-audit-card__metric">
+            <span>R+30</span>
+            <strong>{formatPercent(row.r_plus_30_pct, 2, true)}</strong>
+          </div>
+        </div>
+
+        <div className="event-audit-card__footer">
+          <span>Exclusions</span>
+          <strong>{row.exclusion_reasons?.length ? row.exclusion_reasons.join(', ') : 'None'}</strong>
+        </div>
+      </article>
+    );
+  }
+
   return (
     <article className="event-audit-card" key={`${row.event_date}-${index}`}>
       <div className="event-audit-card__header">
@@ -509,7 +648,7 @@ function MobileAuditCard({ row, index }) {
           </strong>
         </div>
         <div className="event-audit-card__metric">
-          <span>T+1</span>
+          <span>Legacy +1D</span>
           <strong className={row.t1_return > 0 ? 'text-success' : 'text-danger'}>{row.t1_return}</strong>
         </div>
         <div className="event-audit-card__metric">
@@ -517,7 +656,7 @@ function MobileAuditCard({ row, index }) {
           <strong className="text-danger">{row.max_dd_5}</strong>
         </div>
         <div className="event-audit-card__metric">
-          <span>T+10</span>
+          <span>Legacy +10D</span>
           <strong className={row.t10_return > 0 ? 'text-success' : 'text-danger'}>{row.t10_return}</strong>
         </div>
       </div>
@@ -532,7 +671,6 @@ function MobileAuditCard({ row, index }) {
 
 export default function EventStudyPanel({ payload, eventStudySeed, onOpenStockDossier }) {
   const [symbol, setSymbol] = useState('');
-  const [category, setCategory] = useState('Earnings');
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState(null);
   const [error, setError] = useState(null);
@@ -552,7 +690,6 @@ export default function EventStudyPanel({ payload, eventStudySeed, onOpenStockDo
 
   const fetchEventStudy = useCallback(async (symbolOverride, options = {}) => {
     const nextSymbol = (symbolOverride ?? symbol).trim();
-    const nextCategory = options.categoryOverride || category;
     if (!nextSymbol) return;
     if (!options.silent) {
       setSymbol(nextSymbol.toUpperCase());
@@ -564,36 +701,22 @@ export default function EventStudyPanel({ payload, eventStudySeed, onOpenStockDo
     }
 
     try {
-      const res = await fetch(`${API_BASE}/event-study?symbol=${nextSymbol.toUpperCase()}&category=${nextCategory}`);
+      const endpoint = `${API_BASE}/event-study/earnings-gap-summary?symbol=${nextSymbol.toUpperCase()}`;
+      const res = await fetch(endpoint);
       const json = await res.json();
 
       if (!res.ok) {
         throw new Error(json.error || `Error ${res.status}`);
       }
 
-      setData(json);
-
-      if (nextCategory === 'Earnings') {
-        try {
-          const historyRes = await fetch(`${API_BASE}/event-study/history?ticker=${nextSymbol.toUpperCase()}`);
-          const historyJson = await historyRes.json();
-          if (historyRes.ok && Array.isArray(historyJson?.rows)) {
-            setHistoryRows(historyJson.rows);
-          } else {
-            setHistoryRows([]);
-          }
-        } catch {
-          setHistoryRows([]);
-        }
-      } else {
-        setHistoryRows([]);
-      }
+      setData(normalizeEarningsGapSummaryPayload(json));
+      setHistoryRows([]);
     } catch (err) {
       setError(err.message);
     } finally {
       setLoading(false);
     }
-  }, [symbol, category]);
+  }, [symbol]);
 
   const handleSubmit = useCallback((e) => {
     e?.preventDefault();
@@ -636,10 +759,8 @@ export default function EventStudyPanel({ payload, eventStudySeed, onOpenStockDo
   useEffect(() => {
     const seededTicker = String(eventStudySeed?.ticker || '').trim().toUpperCase();
     if (!seededTicker) return;
-    const seededCategory = eventStudySeed?.category || 'Earnings';
-    setCategory(seededCategory);
     setSymbol(seededTicker);
-    fetchEventStudy(seededTicker, { keepPrevious: false, categoryOverride: seededCategory });
+    fetchEventStudy(seededTicker, { keepPrevious: false });
   }, [eventStudySeed?.openedAt]);
 
   useEffect(() => {
@@ -706,6 +827,8 @@ export default function EventStudyPanel({ payload, eventStudySeed, onOpenStockDo
   const decisionModel = useMemo(() => getDecisionModel(data?.summary), [data]);
   const mergedDetails = useMemo(() => mergeHistoryIntoDetails(data?.details ?? [], historyRows), [data?.details, historyRows]);
   const latestEarningsSnapshot = useMemo(() => getLatestEarningsSnapshot(historyRows), [historyRows]);
+  const isTruthLayerData = data?.truth_layer_status === 'truth_layer_v1';
+  const measuredReactionCount = data?.coverage?.measured_gap_count ?? data?.summary?.total_events ?? 0;
 
   const handleSelectRadarRow = useCallback((row) => {
     setSelectedRadarRow(row);
@@ -723,11 +846,11 @@ export default function EventStudyPanel({ payload, eventStudySeed, onOpenStockDo
            {
              event_id: `${normalizedTicker}-EventStudy`,
              ticker: normalizedTicker,
-             event_category: category,
+             event_category: 'Earnings',
              event_phase: 'event_study_lookup',
              status: 'event_study_lookup'
            };
-  }, [category, payload]);
+  }, [payload]);
 
   const handleOpenCurrentDossier = useCallback(() => {
     if (!onOpenStockDossier) return;
@@ -741,8 +864,8 @@ export default function EventStudyPanel({ payload, eventStudySeed, onOpenStockDo
       <div className="glass-panel w-full event-study-workbench">
         <div className="panel-header">
           <Crosshair size={18} className="text-accent" />
-          <span>事件研究回測矩陣 (Event Study Matrix)</span>
-          <span className="badge panel-badge radar-panel-badge">D1 Data Lake</span>
+          <span>財報反應研究矩陣 (Reaction Study Matrix)</span>
+          <span className="badge panel-badge radar-panel-badge">Timing Truth Layer</span>
         </div>
 
         <div>
@@ -759,18 +882,13 @@ export default function EventStudyPanel({ payload, eventStudySeed, onOpenStockDo
             </div>
             <div style={{ flex: 1 }}>
               <label style={{ display: 'block', fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: '0.5rem' }}>事件分類 (Category)</label>
-              <select
+              <div
                 className="event-study-input"
-                value={category}
-                onChange={(e) => setCategory(e.target.value)}
+                aria-label="Event study category"
+                style={{ display: 'flex', alignItems: 'center' }}
               >
-                <option value="Earnings">財報 (Earnings)</option>
-                <option value="FOMC">議息會議 (FOMC)</option>
-                <option value="CPI">通膨數據 (CPI)</option>
-                <option value="PPI">生產者物價指數 (PPI)</option>
-                <option value="GDP">國內生產毛額 (GDP)</option>
-                <option value="NFP">非農就業 (NFP)</option>
-              </select>
+                財報 (Earnings)
+              </div>
             </div>
             <button
               type="submit"
@@ -785,8 +903,8 @@ export default function EventStudyPanel({ payload, eventStudySeed, onOpenStockDo
           <div className="decision-pillar-grid">
             <div className="decision-pillar-card">
               <span className="decision-pillar-card__eyebrow">1. Edge</span>
-              <strong>先看歷史勝率與樣本數</strong>
-              <p>T+10 勝率若高，但樣本太少，不能直接當成可下注優勢。</p>
+              <strong>先看 verified reaction 樣本</strong>
+              <p>只使用 truth-layer reaction_day 對齊後的 gap 與 forward return。</p>
             </div>
             <div className="decision-pillar-card">
               <span className="decision-pillar-card__eyebrow">2. Crowding</span>
@@ -796,7 +914,7 @@ export default function EventStudyPanel({ payload, eventStudySeed, onOpenStockDo
             <div className="decision-pillar-card">
               <span className="decision-pillar-card__eyebrow">3. Risk</span>
               <strong>最後才看可承受的波動與回撤</strong>
-              <p>T+1 波動與 5D 最大回撤決定倉位大小，不只是方向判斷。</p>
+              <p>Gap return 與 same-day open-to-close 決定倉位大小，不只是方向判斷。</p>
             </div>
           </div>
 
@@ -837,35 +955,39 @@ export default function EventStudyPanel({ payload, eventStudySeed, onOpenStockDo
                   <strong>{formatPercent(data.summary.win_rate, 0)} base rate</strong>
                   <p>{decisionModel?.longPayoff}</p>
                   <DecisionMetricCard
-                    label="T+10 勝率"
+                    label={isTruthLayerData ? 'Gap-up rate' : 'Legacy +10D win rate'}
                     value={formatPercent(data.summary.win_rate, 0)}
                     tone={data.summary.win_rate >= 50 ? 'positive' : 'negative'}
-                    footnote="先看 long baseline 是否成立"
+                    footnote={isTruthLayerData ? '基於 verified reaction_day' : 'legacy endpoint, not truth layer'}
                   />
                 </div>
 
                 <div className="decision-trading-card decision-trading-card--short">
                   <span className="decision-trading-card__eyebrow">Short Payoff</span>
-                  <strong>{formatPercent(data.summary.avg_drift_m5, 2, true)} pre-event run-up</strong>
+                  <strong>{formatPercent(isTruthLayerData ? data.summary.avg_gap_down_pct : data.summary.avg_drift_m5, 2, true)} {isTruthLayerData ? 'avg gap down' : 'pre-event run-up'}</strong>
                   <p>{decisionModel?.shortPayoff}</p>
                   <DecisionMetricCard
-                    label="T-5 偷步"
-                    value={formatPercent(data.summary.avg_drift_m5, 2, true)}
-                    tone={data.summary.avg_drift_m5 > 0 ? 'warning' : 'positive'}
-                    footnote="越高越要檢查是否 price in"
+                    label={isTruthLayerData ? 'Avg Gap Down' : 'Pre -5D run-up'}
+                    value={formatPercent(isTruthLayerData ? data.summary.avg_gap_down_pct : data.summary.avg_drift_m5, 2, true)}
+                    tone={isTruthLayerData ? 'negative' : data.summary.avg_drift_m5 > 0 ? 'warning' : 'positive'}
+                    footnote={isTruthLayerData ? 'null means no measured gap-down rows' : '越高越要檢查是否 price in'}
                   />
                 </div>
 
                 <div className="decision-trading-card decision-trading-card--risk">
                   <span className="decision-trading-card__eyebrow">Position Sizing</span>
-                  <strong>{formatPercent(data.summary.avg_t1_abs_volatility)} / {formatPercent(data.summary.avg_max_dd_5, 2, true)}</strong>
+                  <strong>
+                    {isTruthLayerData
+                      ? `${formatPercent(data.summary.avg_gap_up_pct, 2, true)} / ${formatPercent(data.summary.avg_same_day_oc_pct, 2, true)}`
+                      : `${formatPercent(data.summary.avg_t1_abs_volatility)} / ${formatPercent(data.summary.avg_max_dd_5, 2, true)}`}
+                  </strong>
                   <p>{decisionModel?.sizingText}</p>
                   <div className="decision-mini-metrics">
                     <DecisionMetricCard
-                      label="T+1 波動"
+                      label={isTruthLayerData ? 'Same-day O/C' : 'Legacy +1D volatility'}
                       value={formatPercent(data.summary.avg_t1_abs_volatility)}
                       tone="warning"
-                      footnote="決定事件後第一天倉位大小"
+                      footnote={isTruthLayerData ? 'reaction open to close' : 'legacy endpoint, not truth layer'}
                     />
                     <DecisionMetricCard
                       label="5D 最大回撤"
@@ -895,36 +1017,58 @@ export default function EventStudyPanel({ payload, eventStudySeed, onOpenStockDo
                 <div className="event-study-evidence-card">
                   <span className="event-study-evidence-card__eyebrow">Base Rate</span>
                   <strong>{formatPercent(data.summary.win_rate, 0)}</strong>
-                  <p>先回答「這事件 historically 有沒有 edge」。沒有 edge，就不要急著討論方向。</p>
+                  <p>{isTruthLayerData ? '先回答 verified reaction 是否穩定 gap up。沒有樣本，就不要急著討論方向。' : '先回答「這事件 historically 有沒有 edge」。沒有 edge，就不要急著討論方向。'}</p>
                 </div>
                 <div className="event-study-evidence-card">
-                  <span className="event-study-evidence-card__eyebrow">Crowding</span>
-                  <strong>{formatPercent(data.summary.avg_drift_m5, 2, true)}</strong>
-                  <p>偷步越大，越要分辨是健康提前佈局，還是過熱後等著 sell-the-news。</p>
+                  <span className="event-study-evidence-card__eyebrow">{isTruthLayerData ? 'Average Gap Up' : 'Crowding'}</span>
+                  <strong>{formatPercent(isTruthLayerData ? data.summary.avg_gap_up_pct : data.summary.avg_drift_m5, 2, true)}</strong>
+                  <p>{isTruthLayerData ? 'Gap return 只用 reaction_open / previous_close - 1，不使用 release_date 猜測。' : '偷步越大，越要分辨是健康提前佈局，還是過熱後等著 sell-the-news。'}</p>
                 </div>
                 <div className="event-study-evidence-card">
                   <span className="event-study-evidence-card__eyebrow">Risk Budget</span>
                   <strong>{formatPercent(data.summary.avg_t1_abs_volatility)}</strong>
-                  <p>高波動代表不能拿大倉位硬賭方向，應先決定你能承受的 gap risk。</p>
+                  <p>{isTruthLayerData ? 'Same-day open-to-close 顯示 reaction day 內部波動，應與 gap risk 分開看。' : '高波動代表不能拿大倉位硬賭方向，應先決定你能承受的 gap risk。'}</p>
                 </div>
                 <div className="event-study-evidence-card event-study-evidence-card--earnings">
-                  <span className="event-study-evidence-card__eyebrow">Latest Earnings Snapshot</span>
-                  <strong>{latestEarningsSnapshot?.eventDate ?? 'n/a'}</strong>
-                  <div className="earnings-snapshot-grid">
-                    <div className="earnings-snapshot-metric">
-                      <span>EST</span>
-                      <strong>{formatDecimal(latestEarningsSnapshot?.estimate)}</strong>
-                    </div>
-                    <div className="earnings-snapshot-metric">
-                      <span>ACT</span>
-                      <strong>{formatDecimal(latestEarningsSnapshot?.actual)}</strong>
-                    </div>
-                    <div className="earnings-snapshot-metric">
-                      <span>Surprise</span>
-                      <strong>{formatPercent(latestEarningsSnapshot?.surprise, 2, true)}</strong>
-                    </div>
-                  </div>
-                  <p>目前前端已支援顯示 EST / ACT / Surprise；若 backend payload 尚未提供，這裡會先顯示 `n/a`。</p>
+                  <span className="event-study-evidence-card__eyebrow">{isTruthLayerData ? 'Truth Coverage' : 'Latest Earnings Snapshot'}</span>
+                  <strong>{isTruthLayerData ? `${measuredReactionCount} measured` : latestEarningsSnapshot?.eventDate ?? 'n/a'}</strong>
+                  {isTruthLayerData ? (
+                    <>
+                      <div className="earnings-snapshot-grid">
+                        <div className="earnings-snapshot-metric">
+                          <span>Excluded</span>
+                          <strong>{data.coverage?.excluded_count ?? 0}</strong>
+                        </div>
+                        <div className="earnings-snapshot-metric">
+                          <span>As of</span>
+                          <strong>{data.coverage?.as_of_date ?? 'n/a'}</strong>
+                        </div>
+                        <div className="earnings-snapshot-metric">
+                          <span>Source</span>
+                          <strong>v1</strong>
+                        </div>
+                      </div>
+                      <p>Event Study full page now reads the same Timing Truth Layer as Stock Dossier.</p>
+                    </>
+                  ) : (
+                    <>
+                      <div className="earnings-snapshot-grid">
+                        <div className="earnings-snapshot-metric">
+                          <span>EST</span>
+                          <strong>{formatDecimal(latestEarningsSnapshot?.estimate)}</strong>
+                        </div>
+                        <div className="earnings-snapshot-metric">
+                          <span>ACT</span>
+                          <strong>{formatDecimal(latestEarningsSnapshot?.actual)}</strong>
+                        </div>
+                        <div className="earnings-snapshot-metric">
+                          <span>Surprise</span>
+                          <strong>{formatPercent(latestEarningsSnapshot?.surprise, 2, true)}</strong>
+                        </div>
+                      </div>
+                      <p>目前前端已支援顯示 EST / ACT / Surprise；若 backend payload 尚未提供，這裡會先顯示 `n/a`。</p>
+                    </>
+                  )}
                 </div>
               </div>
             </div>
@@ -935,8 +1079,8 @@ export default function EventStudyPanel({ payload, eventStudySeed, onOpenStockDo
             <div className="glass-panel w-full event-study-workbench">
               <div className="panel-header">
                 <BarChart3 size={18} className="text-accent" />
-                <span>T±10 歷史對撞矩陣清單</span>
-                <span className="badge panel-badge radar-panel-badge">Row-Level Audit Trail</span>
+                <span>{isTruthLayerData ? 'Earnings Reaction Truth Audit' : 'Legacy Historical Matrix'}</span>
+                <span className="badge panel-badge radar-panel-badge">{isTruthLayerData ? 'Truth Layer v1' : 'Legacy Audit Trail'}</span>
               </div>
               {isMobile ? (
                 <div className="event-audit-card-list">
@@ -944,46 +1088,79 @@ export default function EventStudyPanel({ payload, eventStudySeed, onOpenStockDo
                 </div>
               ) : (
                 <div style={{ overflowX: 'auto' }}>
-                  <table className="data-table">
-                    <thead>
-                      <tr>
-                        <th>Event Date</th>
-                        <th>Sentiment</th>
-                        <th style={{ textAlign: 'right' }}>T-10 (%)</th>
-                        <th style={{ textAlign: 'right' }}>T-5 (%)</th>
-                        <th style={{ textAlign: 'right' }}>EST</th>
-                        <th style={{ textAlign: 'right' }}>ACT</th>
-                        <th style={{ textAlign: 'right' }}>Surprise (%)</th>
-                        <th style={{ textAlign: 'right' }}>T+1 (%)</th>
-                        <th style={{ textAlign: 'right' }}>Max DD 5D (%)</th>
-                        <th style={{ textAlign: 'right' }}>T+10 (%)</th>
-                        <th style={{ textAlign: 'center' }}>Result</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {mergedDetails.map((row, i) => (
-                        <tr key={i}>
-                          <td className="mono text-accent">{row.event_date}</td>
-                          <td>
-                            <span className={`badge ${row.sentiment.toLowerCase() === 'beat' ? 'active' : row.sentiment.toLowerCase() === 'miss' ? 'inactive' : 'pending'}`}>
-                              {row.sentiment}
-                            </span>
-                          </td>
-                          <td style={{ textAlign: 'right' }} className={row.drift_m10 > 0 ? 'text-success' : 'text-danger'}>{row.drift_m10}</td>
-                          <td style={{ textAlign: 'right' }} className={row.drift_m5 > 0 ? 'text-success' : 'text-danger'}>{row.drift_m5}</td>
-                          <td style={{ textAlign: 'right' }}>{formatDecimal(row.eps_estimate)}</td>
-                          <td style={{ textAlign: 'right' }}>{formatDecimal(row.actual_eps)}</td>
-                          <td style={{ textAlign: 'right' }} className={Number(row.surprise_percent) >= 0 ? 'text-success' : 'text-danger'}>{formatPercent(row.surprise_percent, 2, true)}</td>
-                          <td style={{ textAlign: 'right', fontWeight: 'bold' }} className={row.t1_return > 0 ? 'text-success' : 'text-danger'}>{row.t1_return}</td>
-                          <td style={{ textAlign: 'right' }} className="text-danger">{row.max_dd_5}</td>
-                          <td style={{ textAlign: 'right', fontWeight: 'bold' }} className={row.t10_return > 0 ? 'text-success' : 'text-danger'}>{row.t10_return}</td>
-                          <td style={{ textAlign: 'center' }}>
-                            {row.win ? <span className="text-success font-bold">W</span> : <span className="text-danger font-bold">L</span>}
-                          </td>
+                  {isTruthLayerData ? (
+                    <table className="data-table">
+                      <thead>
+                        <tr>
+                          <th>Release Date</th>
+                          <th>Reaction Day</th>
+                          <th style={{ textAlign: 'right' }}>Gap (%)</th>
+                          <th style={{ textAlign: 'right' }}>Same-day O/C (%)</th>
+                          <th style={{ textAlign: 'right' }}>R+3 (%)</th>
+                          <th style={{ textAlign: 'right' }}>R+5 (%)</th>
+                          <th style={{ textAlign: 'right' }}>R+10 (%)</th>
+                          <th style={{ textAlign: 'right' }}>R+30 (%)</th>
+                          <th>Exclusions</th>
                         </tr>
-                      ))}
-                    </tbody>
-                  </table>
+                      </thead>
+                      <tbody>
+                        {mergedDetails.map((row, i) => (
+                          <tr key={i}>
+                            <td className="mono text-accent">{row.release_date}</td>
+                            <td className="mono">{row.reaction_day || 'Pending'}</td>
+                            <td style={{ textAlign: 'right', fontWeight: 'bold' }} className={row.gap_return_pct > 0 ? 'text-success' : row.gap_return_pct < 0 ? 'text-danger' : ''}>{formatPercent(row.gap_return_pct, 2, true)}</td>
+                            <td style={{ textAlign: 'right' }} className={row.same_day_oc_pct > 0 ? 'text-success' : row.same_day_oc_pct < 0 ? 'text-danger' : ''}>{formatPercent(row.same_day_oc_pct, 2, true)}</td>
+                            <td style={{ textAlign: 'right' }}>{formatPercent(row.r_plus_3_pct, 2, true)}</td>
+                            <td style={{ textAlign: 'right' }}>{formatPercent(row.r_plus_5_pct, 2, true)}</td>
+                            <td style={{ textAlign: 'right' }}>{formatPercent(row.r_plus_10_pct, 2, true)}</td>
+                            <td style={{ textAlign: 'right' }}>{formatPercent(row.r_plus_30_pct, 2, true)}</td>
+                            <td>{row.exclusion_reasons?.length ? row.exclusion_reasons.join(', ') : 'None'}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  ) : (
+                    <table className="data-table">
+                      <thead>
+                        <tr>
+                          <th>Event Date</th>
+                          <th>Sentiment</th>
+                          <th style={{ textAlign: 'right' }}>Pre -10D (%)</th>
+                          <th style={{ textAlign: 'right' }}>Pre -5D (%)</th>
+                          <th style={{ textAlign: 'right' }}>EST</th>
+                          <th style={{ textAlign: 'right' }}>ACT</th>
+                          <th style={{ textAlign: 'right' }}>Surprise (%)</th>
+                          <th style={{ textAlign: 'right' }}>Legacy +1D (%)</th>
+                          <th style={{ textAlign: 'right' }}>Max DD 5D (%)</th>
+                          <th style={{ textAlign: 'right' }}>Legacy +10D (%)</th>
+                          <th style={{ textAlign: 'center' }}>Result</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {mergedDetails.map((row, i) => (
+                          <tr key={i}>
+                            <td className="mono text-accent">{row.event_date}</td>
+                            <td>
+                              <span className={`badge ${row.sentiment.toLowerCase() === 'beat' ? 'active' : row.sentiment.toLowerCase() === 'miss' ? 'inactive' : 'pending'}`}>
+                                {row.sentiment}
+                              </span>
+                            </td>
+                            <td style={{ textAlign: 'right' }} className={row.drift_m10 > 0 ? 'text-success' : 'text-danger'}>{row.drift_m10}</td>
+                            <td style={{ textAlign: 'right' }} className={row.drift_m5 > 0 ? 'text-success' : 'text-danger'}>{row.drift_m5}</td>
+                            <td style={{ textAlign: 'right' }}>{formatDecimal(row.eps_estimate)}</td>
+                            <td style={{ textAlign: 'right' }}>{formatDecimal(row.actual_eps)}</td>
+                            <td style={{ textAlign: 'right' }} className={Number(row.surprise_percent) >= 0 ? 'text-success' : 'text-danger'}>{formatPercent(row.surprise_percent, 2, true)}</td>
+                            <td style={{ textAlign: 'right', fontWeight: 'bold' }} className={row.t1_return > 0 ? 'text-success' : 'text-danger'}>{row.t1_return}</td>
+                            <td style={{ textAlign: 'right' }} className="text-danger">{row.max_dd_5}</td>
+                            <td style={{ textAlign: 'right', fontWeight: 'bold' }} className={row.t10_return > 0 ? 'text-success' : 'text-danger'}>{row.t10_return}</td>
+                            <td style={{ textAlign: 'center' }}>
+                              {row.win ? <span className="text-success font-bold">W</span> : <span className="text-danger font-bold">L</span>}
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  )}
                 </div>
               )}
             </div>

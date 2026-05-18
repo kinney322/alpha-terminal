@@ -66,8 +66,8 @@ const stockDossierProfiles = {
         'Use the event-study matrix to judge whether the latest post-earnings move has historically followed through, faded, or required patience. The Dossier should treat this as market evidence beside valuation and fundamentals.',
       checkLabels: {
         baseRate: 'Comparable base rate',
-        t1: 'T+1 reaction',
-        t10: 'T+10 drift',
+        t1: 'Reaction evidence',
+        t10: 'Forward drift evidence',
         risk: '5D risk budget'
       }
     },

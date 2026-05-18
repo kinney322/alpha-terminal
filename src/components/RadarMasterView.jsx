@@ -36,7 +36,7 @@ const CompletedEarningsRefreshStatus = ({ refresh }) => {
         <strong>Completed earnings refresh</strong> (Pending: {pendingCount})
       </div>
       <div className="completed-refresh-status__metrics">
-        {t1Pending > 0 && <span className="completed-refresh-status__metric">T+1 close pending: {t1Pending}</span>}
+        {t1Pending > 0 && <span className="completed-refresh-status__metric">Reaction close pending: {t1Pending}</span>}
         {vendorPending > 0 && <span className="completed-refresh-status__metric">Vendor EPS/surprise pending: {vendorPending}</span>}
         {pricePending > 0 && <span className="completed-refresh-status__metric">Price backfill pending: {pricePending}</span>}
       </div>
@@ -103,7 +103,7 @@ const SearchEmptyState = ({ context, onSwitch }) => {
   if (context.type === 'pending_refresh') {
     const { ticker, pending_reason_primary, event_date } = context.data;
     let reasonText = 'Pending data refresh.';
-    if (pending_reason_primary === 'market_not_closed_yet') reasonText = 'Waiting for T+1 close.';
+    if (pending_reason_primary === 'market_not_closed_yet') reasonText = 'Waiting for reaction close.';
     else if (['missing_actual', 'missing_surprise', 'vendor_unavailable'].includes(pending_reason_primary)) reasonText = 'Waiting for EPS/surprise vendor data.';
     else if (pending_reason_primary === 'missing_t1_close') reasonText = 'Waiting for price backfill.';
 
@@ -146,7 +146,7 @@ const SearchEmptyState = ({ context, onSwitch }) => {
   return (
     <div className="radar-search-empty">
       <div className="radar-search-empty__title">No active catalyst event found for "{context.query}".</div>
-      <div className="radar-search-empty__body">It may be outside the current earnings window (pre-event through T+10), between catalyst cycles, or not in the current scanner universe.</div>
+      <div className="radar-search-empty__body">It may be outside the current earnings reaction window, between catalyst cycles, or not in the current scanner universe.</div>
     </div>
   );
 };
@@ -549,7 +549,7 @@ const RadarMasterView = ({ payload, selectedEventId, onSelectEvent }) => {
               {isPostEarnings ? (
                 <>
                   <th>Result</th>
-                  <th>T+1</th>
+                  <th>Reaction</th>
                   <th>Current</th>
                   <th>Base Rate</th>
                   <th>Quality</th>
@@ -666,7 +666,7 @@ const RadarMasterView = ({ payload, selectedEventId, onSelectEvent }) => {
                             </strong>
                             <span>
                               {item.trading_days_to_event !== undefined && item.trading_days_to_event !== null
-                                ? `T${item.trading_days_to_event > 0 ? `+${item.trading_days_to_event}` : item.trading_days_to_event}`
+                                ? `Day ${item.trading_days_to_event > 0 ? `+${item.trading_days_to_event}` : item.trading_days_to_event}`
                                 : 'Post'}
                             </span>
                           </div>

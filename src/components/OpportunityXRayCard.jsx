@@ -77,10 +77,15 @@ export default function OpportunityXRayCard({ row, onClose, eventStudy, eventStu
   const reflexTone = metricTone(-(row.reflexivityRho ?? 0));
   const imrvTone = metricTone((row.imrv ?? 1) - 1);
   const eventSummary = eventStudy?.summary;
+  const isTruthLayerStudy = eventStudy?.truth_layer_status === 'truth_layer_v1';
   const scatterPoints = Array.isArray(eventStudy?.details)
     ? eventStudy.details.slice(0, 18).map((detail, index) => ({
         x: Number(detail.drift_m5 ?? detail.drift_m10 ?? 0),
-        y: Number(detail.t10_return ?? detail.t1_return ?? 0),
+        y: Number(
+          isTruthLayerStudy
+            ? detail.r_plus_10_pct ?? detail.r_plus_5_pct ?? detail.gap_return_pct ?? 0
+            : detail.t10_return ?? detail.t1_return ?? 0
+        ),
         label: detail.event_date ?? String(index),
       }))
     : [];
@@ -207,7 +212,7 @@ export default function OpportunityXRayCard({ row, onClose, eventStudy, eventStu
             <div className="xray-linked-grid">
               <div className="xray-linked-kpis">
                 <InsightRow
-                  label="T+10 Win Rate"
+                  label={isTruthLayerStudy ? 'Gap-up Rate' : 'Legacy +10D Win Rate'}
                   value={formatPercent(eventSummary.win_rate, 0)}
                   tone={(eventSummary.win_rate ?? 0) >= 50 ? 'positive' : 'negative'}
                 />
@@ -217,7 +222,7 @@ export default function OpportunityXRayCard({ row, onClose, eventStudy, eventStu
                   tone={metricTone(eventSummary.avg_drift_m5)}
                 />
                 <InsightRow
-                  label="Avg T+1 Abs Vol"
+                  label={isTruthLayerStudy ? 'Same-day O/C' : 'Legacy +1D Abs Vol'}
                   value={formatPercent(eventSummary.avg_t1_abs_volatility)}
                   tone="neutral"
                 />
@@ -229,7 +234,7 @@ export default function OpportunityXRayCard({ row, onClose, eventStudy, eventStu
               </div>
               <div className="xray-linked-plot">
                 <ScatterMini points={scatterPoints} />
-                <p className="xray-linked-caption">X 軸為盤前 T-5 run-up，Y 軸為事件後 T+10 結果。</p>
+                <p className="xray-linked-caption">{isTruthLayerStudy ? 'X 軸為盤前 run-up placeholder，Y 軸為 truth-layer reaction return。' : 'X 軸為盤前 run-up，Y 軸為 legacy +10D 結果。'}</p>
               </div>
             </div>
           ) : (

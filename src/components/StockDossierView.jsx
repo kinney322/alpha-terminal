@@ -16,16 +16,6 @@ const formatPct = (value) => {
   return `${n > 0 ? '+' : ''}${n.toFixed(1)}%`;
 };
 
-const formatRate = (value) => {
-  if (value === undefined || value === null || Number.isNaN(Number(value))) return 'Not Included';
-  return `${(Number(value) * 100).toFixed(0)}%`;
-};
-
-const formatAbsPct = (value) => {
-  if (value === undefined || value === null || Number.isNaN(Number(value))) return 'Not Included';
-  return `${Math.abs(Number(value)).toFixed(1)}%`;
-};
-
 const formatLabel = (value) => {
   if (!value) return 'Not Included';
   return String(value)
@@ -136,27 +126,12 @@ const toNumeric = (value) => {
   return Number.isFinite(numeric) ? numeric : null;
 };
 
-const formatEventDate = (value) => {
-  if (!value) return 'Pending';
-  try {
-    const date = new Date(`${value}T00:00:00Z`);
-    if (Number.isNaN(date.getTime())) return value;
-    return new Intl.DateTimeFormat('en-US', {
-      month: 'short',
-      day: 'numeric',
-      year: 'numeric',
-      timeZone: 'UTC'
-    }).format(date);
-  } catch {
-    return value;
-  }
-};
-
-const formatSignedReturn = (value, digits = 2) => {
+const formatRatioReturn = (value, digits = 1) => {
   const numeric = toNumeric(value);
   if (numeric === null) return null;
-  const prefix = numeric > 0 ? '+' : '';
-  return `${prefix}${numeric.toFixed(digits)}%`;
+  const percent = numeric * 100;
+  const prefix = percent > 0 ? '+' : '';
+  return `${prefix}${percent.toFixed(digits)}%`;
 };
 
 const returnToneClass = (value) => {
@@ -167,8 +142,16 @@ const returnToneClass = (value) => {
   return 'neutral';
 };
 
-const ReturnValue = ({ value, digits = 2 }) => {
-  const formatted = formatSignedReturn(value, digits);
+const rateToneClass = (value) => {
+  const numeric = toNumeric(value);
+  if (numeric === null) return 'pending';
+  if (numeric >= 0.55) return 'positive';
+  if (numeric <= 0.45) return 'negative';
+  return 'neutral';
+};
+
+const RatioReturnValue = ({ value, digits = 1 }) => {
+  const formatted = formatRatioReturn(value, digits);
   if (formatted === null) {
     return <em className="dossier-pending-value">Pending</em>;
   }
@@ -181,7 +164,7 @@ const SummaryMetric = ({ label, summary, value }) => (
     <strong>
       {summary ? (
         <>
-          <ReturnValue value={value ?? summary.avg_return} />
+          <RatioReturnValue value={value ?? summary.avg_return} />
           <small>{summary.count ?? 0} measured</small>
         </>
       ) : (
@@ -190,52 +173,6 @@ const SummaryMetric = ({ label, summary, value }) => (
     </strong>
   </div>
 );
-
-const EventStudyQuarterTable = ({ rows = [] }) => {
-  if (!rows.length) {
-    return (
-      <div className="dossier-quarter-table-empty">
-        <em className="dossier-pending-value">Pending</em>
-        <span>No earnings-event quarter log is available for this ticker.</span>
-      </div>
-    );
-  }
-
-  return (
-    <div className="dossier-quarter-table-wrap" aria-label="Earnings event quarter log">
-      <table className="dossier-quarter-table">
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Date</th>
-            <th>Surprise (%)</th>
-            <th>Next Day</th>
-            <th>3 Days</th>
-            <th>5 Days</th>
-            <th>10 Days</th>
-            <th>30 Days</th>
-            <th>Next Earnings</th>
-          </tr>
-        </thead>
-        <tbody>
-          {rows.map((row, index) => (
-            <tr key={`${row.event_date}-${index}`}>
-              <td>{index + 1}</td>
-              <td>{formatEventDate(row.event_date)}</td>
-              <td><ReturnValue value={row.surprise_percent} /></td>
-              <td><ReturnValue value={row.r_plus_1} /></td>
-              <td><ReturnValue value={row.r_plus_3} /></td>
-              <td><ReturnValue value={row.r_plus_5} /></td>
-              <td><ReturnValue value={row.r_plus_10} /></td>
-              <td><ReturnValue value={row.r_plus_30} /></td>
-              <td><ReturnValue value={row.until_next_earnings_return} /></td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-  );
-};
 
 const clamp = (value, min = 8, max = 96) => Math.max(min, Math.min(max, value));
 
@@ -306,51 +243,15 @@ const buildRadarAxes = ({ momentum, metrics, valuationCore, eventDetail }) => {
 };
 
 const buildEventStudyDetail = (eventDetail, dossierProfile = null) => {
-  const baseRate = eventDetail.post_earnings_base_rate || {};
-  const pead = eventDetail.pead_signal || {};
-  const reaction = pead.reaction || {};
-  const direction = pead.direction || 'continuation';
-  const selectedRate = direction === 'fade'
-    ? baseRate.reversal_rate ?? baseRate.fade_rate
-    : baseRate.continuation_rate ?? baseRate.drift_rate;
-  const sampleSize = baseRate.similar_reaction_sample_size ?? baseRate.sample_size ?? null;
-  const currentPostReturn = toNumeric(reaction.current_post_return);
-  const t1Return = toNumeric(reaction.t1_return);
-  const medianT1 = toNumeric(baseRate.median_t1_return_pct);
-  const medianT10 = toNumeric(baseRate.median_t10_return_pct);
-  const medianT1ToT10 = toNumeric(baseRate.median_t1_to_t10_return_pct);
-  const medianMaxRisk = toNumeric(baseRate.median_max_risk_5d);
-  const filterMode = baseRate.filter_mode
-    ? formatLabel(baseRate.filter_mode).replace(/\s+Fallback$/i, '')
-    : 'Current setup';
-  const hasBaseRate = baseRate.status === 'available';
-  const returnTone = (value) => {
-    const numeric = toNumeric(value);
-    if (numeric === null) return 'neutral';
-    return numeric >= 0 ? 'positive' : 'negative';
-  };
-
   return {
-    hasBaseRate,
+    hasBaseRate: false,
     title: dossierProfile?.eventStudyRead?.title || 'Historical post-event evidence is not yet complete.',
     interpretation: dossierProfile?.eventStudyRead?.interpretation || 'Use the event-study matrix as market evidence only; it does not replace valuation or company-level research.',
-    setupLabel: filterMode,
-    sampleSize,
-    currentPostReturn,
-    t1Return,
-    metrics: [
-      { label: 'Base Rate', value: hasBaseRate ? formatRate(selectedRate) : 'Pending', tone: selectedRate >= 0.55 ? 'positive' : selectedRate <= 0.45 ? 'negative' : 'neutral' },
-      { label: 'Median T+1', value: formatPct(medianT1 ?? t1Return), tone: returnTone(medianT1 ?? t1Return) },
-      { label: 'Median T+10', value: formatPct(medianT10), tone: returnTone(medianT10) },
-      { label: 'T+1 to T+10', value: formatPct(medianT1ToT10), tone: returnTone(medianT1ToT10) },
-      { label: 'Current Post Move', value: formatPct(currentPostReturn), tone: returnTone(currentPostReturn) },
-      { label: '5D Risk Budget', value: formatAbsPct(medianMaxRisk), tone: 'neutral' }
-    ],
-    notes: [
-      sampleSize ? `Comparable sample: N=${sampleSize}.` : 'Comparable sample size is not available in the current payload.',
-      pead.reason || 'Current event reaction is used only as market evidence.',
-      baseRate.sample_warning ? `Sample warning: ${formatLabel(baseRate.sample_warning)}.` : null
-    ].filter(Boolean)
+    setupLabel: 'Earnings summary',
+    sampleSize: null,
+    currentPostReturn: null,
+    metrics: [],
+    notes: []
   };
 };
 
@@ -372,7 +273,7 @@ const StockDossierView = ({ eventDetail, payload, onOpenEventStudy }) => {
     setEventStudyLoading(true);
     setEventStudyError(null);
 
-    fetch(`${API_BASE}/event-study/earnings-summary?ticker=${encodeURIComponent(tickerForSummary)}`, {
+    fetch(`${API_BASE}/event-study/earnings-gap-summary?symbol=${encodeURIComponent(tickerForSummary)}`, {
       signal: controller.signal,
       headers: { Accept: 'application/json' }
     })
@@ -458,9 +359,19 @@ const StockDossierView = ({ eventDetail, payload, onOpenEventStudy }) => {
   const breakPoint = renderedVerdict.risks[0] || valuationCore.killData?.[0] || 'Needs updated evidence before conclusion changes.';
   const eventStudyCoverage = eventStudySummary?.coverage || null;
   const eventStudyDigest = eventStudySummary?.dossier_digest || null;
-  const forwardAll = eventStudySummary?.forward_returns?.all_events || null;
-  const quarterLogRows = Array.isArray(eventStudySummary?.quarter_log) ? eventStudySummary.quarter_log : [];
-  const measuredT10Count = forwardAll?.ten_days?.count ?? null;
+  const forwardGapUps = eventStudySummary?.forward_returns?.after_all_gap_ups || null;
+  const measuredGapCount = eventStudyDigest?.measured_gap_count ?? eventStudyCoverage?.measured_gap_count ?? null;
+  const truthLayerMetrics = eventStudyDigest ? [
+    { label: 'Gap-up Rate', value: formatRatioReturn(eventStudyDigest.gap_up_rate) || 'Pending', tone: rateToneClass(eventStudyDigest.gap_up_rate) },
+    { label: 'Avg Gap Up', value: formatRatioReturn(eventStudyDigest.average_gap_up) || 'Pending', tone: returnToneClass(eventStudyDigest.average_gap_up) },
+    { label: 'Avg Gap Down', value: formatRatioReturn(eventStudyDigest.average_gap_down) || 'Pending', tone: returnToneClass(eventStudyDigest.average_gap_down) },
+    { label: 'Measured Gaps', value: measuredGapCount !== null ? `N=${measuredGapCount}` : 'Pending', tone: 'neutral' }
+  ] : [
+    { label: 'Gap-up Rate', value: 'Pending', tone: 'neutral' },
+    { label: 'Avg Gap Up', value: 'Pending', tone: 'neutral' },
+    { label: 'Avg Gap Down', value: 'Pending', tone: 'neutral' },
+    { label: 'Measured Gaps', value: 'Pending', tone: 'neutral' }
+  ];
 
   return (
     <div className="stock-dossier-view">
@@ -681,18 +592,18 @@ const StockDossierView = ({ eventDetail, payload, onOpenEventStudy }) => {
           <div>
             <span>Measured quarters</span>
             <strong>
-              {eventStudyDigest?.quarters_analyzed ?? eventStudyCoverage?.feature_rows ?? <em className="dossier-pending-value">Pending</em>}
-              {measuredT10Count !== null && <small>{measuredT10Count} T+10 measured</small>}
+              {measuredGapCount ?? <em className="dossier-pending-value">Pending</em>}
+              {eventStudyCoverage?.excluded_count !== undefined && <small>{eventStudyCoverage.excluded_count} excluded</small>}
             </strong>
           </div>
           <div>
-            <span>T+10 base rate</span>
+            <span>Gap-up rate</span>
             <strong>
-              {eventStudyDigest?.base_rate !== undefined && eventStudyDigest?.base_rate !== null ? `${eventStudyDigest.base_rate}%` : <em className="dossier-pending-value">Pending</em>}
+              {formatRatioReturn(eventStudyDigest?.gap_up_rate) || <em className="dossier-pending-value">Pending</em>}
             </strong>
           </div>
-          <SummaryMetric label="3D avg return" summary={forwardAll?.three_days} value={eventStudyDigest?.average_t3_return} />
-          <SummaryMetric label="30D avg return" summary={forwardAll?.thirty_days} value={eventStudyDigest?.average_t30_return} />
+          <SummaryMetric label="Post-gap 3D avg" summary={forwardGapUps?.r_plus_3} />
+          <SummaryMetric label="Post-gap 30D avg" summary={forwardGapUps?.r_plus_30} />
         </div>
         {eventStudyDigest?.summary_line && (
           <p className="dossier-event-study-summary-line">{eventStudyDigest.summary_line}</p>
@@ -721,20 +632,15 @@ const StockDossierView = ({ eventDetail, payload, onOpenEventStudy }) => {
           </div>
           <div className="dossier-event-study-board" aria-label={`${ticker} event study evidence`}>
             <div className="dossier-event-study-meta">
-              <span>{eventStudyDigest ? 'Earnings summary' : eventStudyDetail.setupLabel}</span>
+              <span>Earnings summary</span>
               <strong>
-                {measuredT10Count !== null
-                  ? `N=${measuredT10Count}`
-                  : eventStudyDetail.sampleSize ? `N=${eventStudyDetail.sampleSize}` : 'Sample not included'}
+                {measuredGapCount !== null
+                  ? `N=${measuredGapCount}`
+                  : 'Sample not included'}
               </strong>
             </div>
             <div className="dossier-event-study-metrics">
-              {(eventStudyDigest ? [
-                { label: 'T+10 Base Rate', value: `${eventStudyDigest.base_rate}%`, tone: eventStudyDigest.base_rate >= 55 ? 'positive' : eventStudyDigest.base_rate <= 45 ? 'negative' : 'neutral' },
-                { label: 'Avg 3D', value: formatSignedReturn(eventStudyDigest.average_t3_return) || 'Pending', tone: returnToneClass(eventStudyDigest.average_t3_return) },
-                { label: 'Avg 10D', value: formatSignedReturn(eventStudyDigest.average_t10_return) || 'Pending', tone: returnToneClass(eventStudyDigest.average_t10_return) },
-                { label: 'Avg 30D', value: formatSignedReturn(eventStudyDigest.average_t30_return) || 'Pending', tone: returnToneClass(eventStudyDigest.average_t30_return) }
-              ] : eventStudyDetail.metrics).map((metric) => (
+              {truthLayerMetrics.map((metric) => (
                 <div key={metric.label} className={`tone-${metric.tone}`}>
                   <span>{metric.label}</span>
                   <strong>{metric.value}</strong>
@@ -742,21 +648,13 @@ const StockDossierView = ({ eventDetail, payload, onOpenEventStudy }) => {
               ))}
             </div>
             <ul className="dossier-event-study-notes">
-              {eventStudyDetail.notes.map((note) => (
+              {[
+                eventStudyDigest?.summary_line || 'Verified earnings gap evidence is pending.'
+              ].map((note) => (
                 <li key={note}>{note}</li>
               ))}
             </ul>
           </div>
-        </div>
-        <div className="dossier-quarter-log-section">
-          <div className="dossier-quarter-log-header">
-            <div>
-              <p className="crowdrisk-kicker">Quarter Log</p>
-              <h4>{quarterLogRows.length ? `${quarterLogRows.length} earnings quarters` : 'Earnings quarter log'}</h4>
-            </div>
-            <span>{eventStudyCoverage?.generated_at ? `Updated ${formatEventDate(eventStudyCoverage.generated_at.slice(0, 10))}` : 'Live API'}</span>
-          </div>
-          <EventStudyQuarterTable rows={quarterLogRows} />
         </div>
       </div>
 

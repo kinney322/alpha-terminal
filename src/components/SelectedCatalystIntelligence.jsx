@@ -171,8 +171,8 @@ const HistoricalEarningsTapePanel = ({ eventDetail }) => {
               <th style={{ padding: '8px 4px' }}>Result</th>
               <th style={{ padding: '8px 4px' }}>Est / Actual</th>
               <th style={{ padding: '8px 4px' }}>Surprise</th>
-              <th style={{ padding: '8px 4px' }}>T+1</th>
-              <th style={{ padding: '8px 4px' }}>T+10</th>
+              <th style={{ padding: '8px 4px' }}>Reaction</th>
+              <th style={{ padding: '8px 4px' }}>Legacy +10D</th>
               <th style={{ padding: '8px 4px' }}>Max Risk</th>
               <th style={{ padding: '8px 4px' }}>Max Reward</th>
             </tr>
@@ -230,9 +230,9 @@ const PostEarningsBaseRatePanel = ({ eventDetail }) => {
         <div><strong>Filter:</strong> {formatFilter(baseRate.filter_mode)}</div>
         <div><strong>Continuation Rate:</strong> {formatRate(baseRate.continuation_rate ?? baseRate.drift_rate)}</div>
         <div><strong>Reversal Rate:</strong> {formatRate(baseRate.reversal_rate ?? baseRate.fade_rate)}</div>
-        <div><strong>Median T+1:</strong> {formatPct(baseRate.median_t1_return_pct)}</div>
-        <div><strong>Median T+10:</strong> {formatPct(baseRate.median_t10_return_pct)}</div>
-        <div><strong>Median T+1 → T+10:</strong> {formatPct(baseRate.median_t1_to_t10_return_pct)}</div>
+        <div><strong>Median Reaction:</strong> {formatPct(baseRate.median_t1_return_pct)}</div>
+        <div><strong>Median Legacy +10D:</strong> {formatPct(baseRate.median_t10_return_pct)}</div>
+        <div><strong>Median Reaction → Legacy +10D:</strong> {formatPct(baseRate.median_t1_to_t10_return_pct)}</div>
         <div><strong>Median Max Risk (5D):</strong> {formatPct(baseRate.median_max_risk_5d)}</div>
         <div><strong>Median Max Reward (5D):</strong> {formatPct(baseRate.median_max_reward_5d)}</div>
         {baseRate.sample_warning && (
@@ -240,7 +240,7 @@ const PostEarningsBaseRatePanel = ({ eventDetail }) => {
         )}
       </div>
       <div style={{ marginTop: '12px', fontSize: '0.85em', color: 'var(--text-muted)' }}>
-        5D = five trading days after the earnings event. Continuation/Reversal is measured from T+1 close to T+10, excluding the current event row.
+        5D = five trading days after the earnings event. Continuation/Reversal is a legacy post-event drift measure and is not the Timing Truth Layer reaction gap.
       </div>
     </div>
   );
@@ -264,7 +264,7 @@ const SpilloverWatchPanel = ({ eventDetail }) => {
           <li key={idx}>
             <strong>{peer.ticker}</strong> - {peer.reason}
             <div style={{ fontSize: '0.85em', color: 'var(--text-muted)' }}>
-              Avg T+1 Reaction: {peer.avg_peer_t1_move !== undefined ? (peer.avg_peer_t1_move * 100).toFixed(1) + '%' : 'Unknown'} (N={peer.historical_peer_reaction_sample_size || 'Unknown'})
+              Avg Peer Reaction: {peer.avg_peer_t1_move !== undefined ? (peer.avg_peer_t1_move * 100).toFixed(1) + '%' : 'Unknown'} (N={peer.historical_peer_reaction_sample_size || 'Unknown'})
             </div>
           </li>
         ))}
@@ -442,7 +442,7 @@ const PostEarningsReactionPanel = ({ eventDetail }) => {
             <tr>
               <th>Result</th>
               <th>Surprise</th>
-              <th>T+1</th>
+              <th>Reaction</th>
               <th>Current</th>
               <th>Max Risk (5D)</th>
               <th>Max Reward (5D)</th>
@@ -899,7 +899,7 @@ const SelectedCatalystIntelligence = ({ eventDetail, payload, peerReadthroughCas
                 <strong>{peadDisplay.label}</strong>
               </div>
               <div>
-                <span className="panel-kicker">T+1</span>
+                <span className="panel-kicker">Reaction</span>
                 <strong style={{ color: getDrawerReturnColor(reaction.t1_return) }}>{formatDrawerPct(reaction.t1_return)}</strong>
               </div>
               <div>
