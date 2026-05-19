@@ -5131,6 +5131,27 @@ html, body, #root, .app-container, .main-content {
   .catalyst-radar__table td:nth-child(5)::before { content: "Conviction"; }
   .catalyst-radar__table td:nth-child(6)::before { content: "Tags"; }
 
+  .catalyst-radar__table td:nth-child(6) {
+    grid-template-columns: 1fr;
+    gap: 0.4rem;
+  }
+
+  .catalyst-radar__table td:nth-child(6) .radar-badge-group {
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .catalyst-radar__table td:nth-child(6) .radar-badge {
+    max-width: 100%;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    line-height: 1.2;
+  }
+
+  .catalyst-radar__table td.catalyst-radar__arrow {
+    display: none;
+  }
+
   .event-study-results .decision-trading-grid {
     grid-template-columns: 1fr;
     border-bottom: 0;
