@@ -248,7 +248,7 @@ export default function OpportunityXRayCard({ row, onClose, eventStudy, eventStu
                   tone={eventWinRate === null ? 'neutral' : eventWinRate >= 50 ? 'positive' : 'negative'}
                 />
                 <InsightRow
-                  label="Avg Run-up T-5"
+                  label="Avg Run-up Pre-5"
                   value={formatPercent(eventSummary.avg_drift_m5)}
                   tone={metricTone(eventSummary.avg_drift_m5)}
                 />

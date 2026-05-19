@@ -832,7 +832,7 @@ const SelectedCatalystIntelligence = ({ eventDetail, payload, peerReadthroughCas
       <div className="grid-2col" style={{ fontSize: '0.9em', marginTop: '12px' }}>
         <div><strong>Bias:</strong> <span className={`bias-${eventDetail.market_state?.bias?.toLowerCase()}`}>{eventDetail.market_state?.bias || MISSING_VALUE}</span></div>
         <div><strong>Edge Gap:</strong> {eventDetail.market_state?.edge_gap ?? MISSING_VALUE}</div>
-        <div><strong>T-5 Runup Pct:</strong> {eventDetail.market_state?.runup_t5_percentile !== undefined ? eventDetail.market_state.runup_t5_percentile + '%' : MISSING_VALUE}</div>
+        <div><strong>Pre-5 Runup Pct:</strong> {eventDetail.market_state?.runup_t5_percentile !== undefined ? eventDetail.market_state.runup_t5_percentile + '%' : MISSING_VALUE}</div>
         <div><strong>Vol Pricing:</strong> {eventDetail.market_state?.vol_pricing_status || MISSING_VALUE}</div>
         <div><strong>Liquidity Risk:</strong> {eventDetail.market_state?.liquidity_risk || MISSING_VALUE}</div>
       </div>

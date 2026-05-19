@@ -1,10 +1,10 @@
-import { useEffect, useMemo, useState, useCallback } from 'react';
+import React, { useEffect, useMemo, useState, useCallback } from 'react';
 import { Search, Crosshair, BarChart3, Clock, Radar, Database, RefreshCcw, AlertCircle, Scale, ShieldAlert, Layers3, Lightbulb } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import CatalystRadarTable from './CatalystRadarTable';
 import OpportunityXRayCard from './OpportunityXRayCard';
 
-const API_BASE = 'https://kw-terminal-api.myfootballplaces.workers.dev';
+const API_BASE = (import.meta.env.VITE_KW_TERMINAL_API_BASE || 'https://kw-terminal-api.myfootballplaces.workers.dev').replace(/\/$/, '');
 const LEADERBOARD_FALLBACK_URLS = [
   `${API_BASE}/event-opportunity/leaderboard-latest`,
   'https://pub-03e0405010774afe9ca6d569e0cb43b1.r2.dev/event-study/leaderboard-latest.json.gz',
@@ -287,6 +287,10 @@ function normalizeEarningsGapSummaryPayload(payload) {
       sentiment: row.gap_return > 0 ? 'Gap Up' : row.gap_return < 0 ? 'Gap Down' : 'Pending',
       gap_return_pct: ratioToPercent(row.gap_return),
       same_day_oc_pct: ratioToPercent(row.same_day_oc),
+      pre_1_return_pct: ratioToPercent(row.pre_1_return),
+      pre_5_return_pct: ratioToPercent(row.pre_5_return),
+      pre_10_return_pct: ratioToPercent(row.pre_10_return),
+      r_plus_1_pct: ratioToPercent(row.r_plus_1),
       r_plus_3_pct: ratioToPercent(row.r_plus_3),
       r_plus_5_pct: ratioToPercent(row.r_plus_5),
       r_plus_10_pct: ratioToPercent(row.r_plus_10),
@@ -575,6 +579,18 @@ function MobileAuditCard({ row, index }) {
 
         <div className="event-audit-card__grid">
           <div className="event-audit-card__metric">
+            <span>Pre-5</span>
+            <strong className={row.pre_5_return_pct > 0 ? 'text-success' : row.pre_5_return_pct < 0 ? 'text-danger' : ''}>
+              {formatPercent(row.pre_5_return_pct, 2, true)}
+            </strong>
+          </div>
+          <div className="event-audit-card__metric">
+            <span>Pre-1</span>
+            <strong className={row.pre_1_return_pct > 0 ? 'text-success' : row.pre_1_return_pct < 0 ? 'text-danger' : ''}>
+              {formatPercent(row.pre_1_return_pct, 2, true)}
+            </strong>
+          </div>
+          <div className="event-audit-card__metric">
             <span>Gap</span>
             <strong className={row.gap_return_pct > 0 ? 'text-success' : row.gap_return_pct < 0 ? 'text-danger' : ''}>
               {formatPercent(row.gap_return_pct, 2, true)}
@@ -587,8 +603,8 @@ function MobileAuditCard({ row, index }) {
             </strong>
           </div>
           <div className="event-audit-card__metric">
-            <span>R+3</span>
-            <strong>{formatPercent(row.r_plus_3_pct, 2, true)}</strong>
+            <span>R+1</span>
+            <strong>{formatPercent(row.r_plus_1_pct, 2, true)}</strong>
           </div>
           <div className="event-audit-card__metric">
             <span>R+5</span>
@@ -597,10 +613,6 @@ function MobileAuditCard({ row, index }) {
           <div className="event-audit-card__metric">
             <span>R+10</span>
             <strong>{formatPercent(row.r_plus_10_pct, 2, true)}</strong>
-          </div>
-          <div className="event-audit-card__metric">
-            <span>R+30</span>
-            <strong>{formatPercent(row.r_plus_30_pct, 2, true)}</strong>
           </div>
         </div>
 
@@ -626,11 +638,11 @@ function MobileAuditCard({ row, index }) {
 
       <div className="event-audit-card__grid">
         <div className="event-audit-card__metric">
-          <span>T-10</span>
+          <span>Pre-10</span>
           <strong className={row.drift_m10 > 0 ? 'text-success' : 'text-danger'}>{row.drift_m10}</strong>
         </div>
         <div className="event-audit-card__metric">
-          <span>T-5</span>
+          <span>Pre-5</span>
           <strong className={row.drift_m5 > 0 ? 'text-success' : 'text-danger'}>{row.drift_m5}</strong>
         </div>
         <div className="event-audit-card__metric">
@@ -683,6 +695,17 @@ export default function EventStudyPanel({ payload, eventStudySeed, onOpenStockDo
 
   const [selectedRadarRow, setSelectedRadarRow] = useState(DEMO_RADAR_ROWS[0]);
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [expandedRows, setExpandedRows] = useState(new Set());
+
+  const toggleRow = (index) => {
+    setExpandedRows(prev => {
+      const next = new Set(prev);
+      if (next.has(index)) next.delete(index);
+      else next.add(index);
+      return next;
+    });
+  };
+
   const [isMobile, setIsMobile] = useState(() => {
     if (typeof window === 'undefined') return false;
     return window.matchMedia('(max-width: 767px)').matches;
@@ -711,6 +734,7 @@ export default function EventStudyPanel({ payload, eventStudySeed, onOpenStockDo
 
       setData(normalizeEarningsGapSummaryPayload(json));
       setHistoryRows([]);
+      setExpandedRows(new Set());
     } catch (err) {
       setError(err.message);
     } finally {
@@ -909,7 +933,7 @@ export default function EventStudyPanel({ payload, eventStudySeed, onOpenStockDo
             <div className="decision-pillar-card">
               <span className="decision-pillar-card__eyebrow">2. Crowding</span>
               <strong>再看事件前偷步有沒有過熱</strong>
-              <p>T-5 run-up 越高，越要懷疑好消息是否早已被 price in。</p>
+              <p>Pre-5 run-up 越高，越要懷疑好消息是否早已被 price in。</p>
             </div>
             <div className="decision-pillar-card">
               <span className="decision-pillar-card__eyebrow">3. Risk</span>
@@ -1094,29 +1118,71 @@ export default function EventStudyPanel({ payload, eventStudySeed, onOpenStockDo
                         <tr>
                           <th>Release Date</th>
                           <th>Reaction Day</th>
+                          <th style={{ textAlign: 'right' }}>Pre-5 (%)</th>
+                          <th style={{ textAlign: 'right' }}>Pre-1 (%)</th>
                           <th style={{ textAlign: 'right' }}>Gap (%)</th>
                           <th style={{ textAlign: 'right' }}>Same-day O/C (%)</th>
-                          <th style={{ textAlign: 'right' }}>R+3 (%)</th>
+                          <th style={{ textAlign: 'right' }}>R+1 (%)</th>
                           <th style={{ textAlign: 'right' }}>R+5 (%)</th>
                           <th style={{ textAlign: 'right' }}>R+10 (%)</th>
-                          <th style={{ textAlign: 'right' }}>R+30 (%)</th>
                           <th>Exclusions</th>
+                          <th></th>
                         </tr>
                       </thead>
                       <tbody>
-                        {mergedDetails.map((row, i) => (
-                          <tr key={i}>
-                            <td className="mono text-accent">{row.release_date}</td>
-                            <td className="mono">{row.reaction_day || 'Pending'}</td>
-                            <td style={{ textAlign: 'right', fontWeight: 'bold' }} className={row.gap_return_pct > 0 ? 'text-success' : row.gap_return_pct < 0 ? 'text-danger' : ''}>{formatPercent(row.gap_return_pct, 2, true)}</td>
-                            <td style={{ textAlign: 'right' }} className={row.same_day_oc_pct > 0 ? 'text-success' : row.same_day_oc_pct < 0 ? 'text-danger' : ''}>{formatPercent(row.same_day_oc_pct, 2, true)}</td>
-                            <td style={{ textAlign: 'right' }}>{formatPercent(row.r_plus_3_pct, 2, true)}</td>
-                            <td style={{ textAlign: 'right' }}>{formatPercent(row.r_plus_5_pct, 2, true)}</td>
-                            <td style={{ textAlign: 'right' }}>{formatPercent(row.r_plus_10_pct, 2, true)}</td>
-                            <td style={{ textAlign: 'right' }}>{formatPercent(row.r_plus_30_pct, 2, true)}</td>
-                            <td>{row.exclusion_reasons?.length ? row.exclusion_reasons.join(', ') : 'None'}</td>
-                          </tr>
-                        ))}
+                        {mergedDetails.map((row, i) => {
+                          const isExpanded = expandedRows.has(i);
+                          return (
+                            <React.Fragment key={i}>
+                              <tr onClick={() => toggleRow(i)} style={{ cursor: 'pointer' }}>
+                                <td className="mono text-accent">{row.release_date}</td>
+                                <td className="mono">{row.reaction_day || '—'}</td>
+                                <td style={{ textAlign: 'right' }} className={row.pre_5_return_pct > 0 ? 'text-success' : row.pre_5_return_pct < 0 ? 'text-danger' : ''}>{formatPercent(row.pre_5_return_pct, 2, true)}</td>
+                                <td style={{ textAlign: 'right' }} className={row.pre_1_return_pct > 0 ? 'text-success' : row.pre_1_return_pct < 0 ? 'text-danger' : ''}>{formatPercent(row.pre_1_return_pct, 2, true)}</td>
+                                <td style={{ textAlign: 'right', fontWeight: 'bold' }} className={row.gap_return_pct > 0 ? 'text-success' : row.gap_return_pct < 0 ? 'text-danger' : ''}>{formatPercent(row.gap_return_pct, 2, true)}</td>
+                                <td style={{ textAlign: 'right' }} className={row.same_day_oc_pct > 0 ? 'text-success' : row.same_day_oc_pct < 0 ? 'text-danger' : ''}>{formatPercent(row.same_day_oc_pct, 2, true)}</td>
+                                <td style={{ textAlign: 'right' }}>{formatPercent(row.r_plus_1_pct, 2, true)}</td>
+                                <td style={{ textAlign: 'right' }}>{formatPercent(row.r_plus_5_pct, 2, true)}</td>
+                                <td style={{ textAlign: 'right' }}>{formatPercent(row.r_plus_10_pct, 2, true)}</td>
+                                <td>{row.exclusion_reasons?.length ? row.exclusion_reasons.join(', ') : 'None'}</td>
+                                <td style={{ textAlign: 'center', color: 'var(--text-muted)' }}>{isExpanded ? '▼' : '▶'}</td>
+                              </tr>
+                              {isExpanded && (
+                                <tr className="detail-row">
+                                  <td colSpan="11" style={{ padding: '16px', background: 'var(--bg-layer-2)', borderBottom: '1px solid var(--border-color)' }}>
+                                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '16px' }}>
+                                      <div>
+                                        <h4 style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: '8px', textTransform: 'uppercase' }}>Pre-Earnings Run-up</h4>
+                                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', rowGap: '8px' }}>
+                                          <span>Pre-10:</span><strong style={{ textAlign: 'right' }}>{formatPercent(row.pre_10_return_pct, 2, true)}</strong>
+                                          <span>Pre-5:</span><strong style={{ textAlign: 'right' }}>{formatPercent(row.pre_5_return_pct, 2, true)}</strong>
+                                          <span>Pre-1:</span><strong style={{ textAlign: 'right' }}>{formatPercent(row.pre_1_return_pct, 2, true)}</strong>
+                                        </div>
+                                      </div>
+                                      <div>
+                                        <h4 style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: '8px', textTransform: 'uppercase' }}>Reaction Day</h4>
+                                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', rowGap: '8px' }}>
+                                          <span>Gap:</span><strong style={{ textAlign: 'right' }}>{formatPercent(row.gap_return_pct, 2, true)}</strong>
+                                          <span>Same-day O/C:</span><strong style={{ textAlign: 'right' }}>{formatPercent(row.same_day_oc_pct, 2, true)}</strong>
+                                        </div>
+                                      </div>
+                                      <div>
+                                        <h4 style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: '8px', textTransform: 'uppercase' }}>Post-Reaction Drift</h4>
+                                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', rowGap: '8px' }}>
+                                          <span>R+1:</span><strong style={{ textAlign: 'right' }}>{formatPercent(row.r_plus_1_pct, 2, true)}</strong>
+                                          <span>R+3:</span><strong style={{ textAlign: 'right' }}>{formatPercent(row.r_plus_3_pct, 2, true)}</strong>
+                                          <span>R+5:</span><strong style={{ textAlign: 'right' }}>{formatPercent(row.r_plus_5_pct, 2, true)}</strong>
+                                          <span>R+10:</span><strong style={{ textAlign: 'right' }}>{formatPercent(row.r_plus_10_pct, 2, true)}</strong>
+                                          <span>R+30:</span><strong style={{ textAlign: 'right' }}>{formatPercent(row.r_plus_30_pct, 2, true)}</strong>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </td>
+                                </tr>
+                              )}
+                            </React.Fragment>
+                          );
+                        })}
                       </tbody>
                     </table>
                   ) : (
