@@ -20,7 +20,7 @@ export default function StockDossierIndex({ payload, onOpenTicker }) {
       </div>
 
       <div className="radar-table-container" style={{ marginTop: '24px' }}>
-        <table className="radar-table">
+        <table className="radar-table stock-dossier-index-table">
           <thead>
             <tr>
               <th>Ticker</th>

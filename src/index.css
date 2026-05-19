@@ -14,6 +14,11 @@
   --accent-gold: #D97706;       
   --accent-gold-hover: #B45309; 
   --accent-gold-bg: rgba(217, 119, 6, 0.08);
+  --crowdrisk-rust: #A8561D;
+  --crowdrisk-rust-dark: #7C3F16;
+  --crowdrisk-rust-soft: #FFF7EC;
+  --crowdrisk-green: #3F8F67;
+  --crowdrisk-green-soft: #ECFDF5;
 
   --signal-buy: #059669;        /* 柔和的森林綠 */
   --signal-sell: #DC2626;       /* 啞光的深紅 */
@@ -634,18 +639,18 @@ body {
   gap: 1.5rem;
 }
 .event-study-shell {
-  --eink-bg: #F8F6F2;
-  --eink-panel: #FFFFFF;
-  --eink-panel-strong: #FFFFFF;
-  --eink-border: rgba(0, 0, 0, 0.06);
-  --eink-ink: #27272A;
-  --eink-muted: #71717A;
-  --eink-gold: #D97706;
-  --eink-gold-deep: #B45309;
+  --eink-bg: var(--bg-color);
+  --eink-panel: var(--surface-color);
+  --eink-panel-strong: var(--surface-color);
+  --eink-border: var(--border-light);
+  --eink-ink: var(--text-main);
+  --eink-muted: var(--text-muted);
+  --eink-gold: var(--crowdrisk-rust);
+  --eink-gold-deep: var(--crowdrisk-rust-dark);
   --eink-red: #B42318;
   --eink-blue: #52606D;
-  --eink-green: #167C5A;
-  --eink-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+  --eink-green: var(--crowdrisk-green);
+  --eink-shadow: none;
 }
 
 .event-study-workbench {
@@ -658,7 +663,7 @@ body {
 
 .event-study-workbench:hover {
   border-color: rgba(217, 119, 6, 0.3);
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06);
+  box-shadow: none;
 }
 
 .event-study-workbench .panel-header {
@@ -675,8 +680,8 @@ body {
 .event-study-input {
   box-sizing: border-box;
   width: 100%;
-  background: var(--bg-color);
-  border: 1px solid rgba(0, 0, 0, 0.08);
+  background: rgba(255, 255, 255, 0.62);
+  border: 1px solid var(--eink-border);
   padding: 0.75rem 0.85rem;
   border-radius: 8px;
   color: var(--eink-ink);
@@ -686,8 +691,8 @@ body {
 }
 
 .event-study-input:focus {
-  border-color: var(--eink-gold);
-  box-shadow: 0 0 0 4px rgba(217, 119, 6, 0.12);
+  border-color: var(--crowdrisk-green);
+  box-shadow: 0 0 0 3px rgba(63, 143, 103, 0.12);
 }
 
 .event-study-toolbar {
@@ -713,7 +718,7 @@ body {
 .event-study-submit:hover:not(:disabled) {
   transform: translateY(-1px);
   background: var(--eink-gold-deep);
-  box-shadow: 0 4px 12px rgba(217, 119, 6, 0.2);
+  box-shadow: none;
 }
 
 .event-study-submit:disabled {
@@ -1393,9 +1398,9 @@ body {
   margin-bottom: 1rem;
   padding: 0.8rem 0.95rem;
   border-radius: 12px;
-  background: rgba(139, 0, 0, 0.06);
-  border: 1px solid rgba(139, 0, 0, 0.12);
-  color: var(--eink-red);
+  background: rgba(251, 191, 36, 0.1);
+  border: 1px solid rgba(217, 119, 6, 0.2);
+  color: #b45309;
   font-size: 0.82rem;
 }
 
@@ -2231,6 +2236,35 @@ html, body, #root, .app-container, .main-content {
   overflow-anchor: none;
 }
 
+.crowdrisk-app--dark {
+  --bg-color: #181713;
+  --surface-color: #211f1a;
+  --background-color: #181713;
+  --primary-color: #d0833f;
+  --sidebar-bg: #1d1b17;
+  --sidebar-hover: #28241d;
+  --text-main: #f4efe6;
+  --text-primary: #f4efe6;
+  --text-color: #f4efe6;
+  --text-muted: #b8ad9c;
+  --border-color: rgba(232, 218, 197, 0.14);
+  --bg-highlight: rgba(208, 131, 63, 0.14);
+  --accent-gold: #d0833f;
+  --accent-gold-hover: #f0b15d;
+  --accent-gold-bg: rgba(208, 131, 63, 0.13);
+  --crowdrisk-rust: #d0833f;
+  --crowdrisk-rust-dark: #f0b15d;
+  --crowdrisk-rust-soft: rgba(208, 131, 63, 0.14);
+  --crowdrisk-green: #79d49f;
+  --crowdrisk-green-soft: rgba(121, 212, 159, 0.12);
+  --signal-buy: #79d49f;
+  --signal-sell: #f06f67;
+  --signal-watch: #d0833f;
+  --text-green: #79d49f;
+  --text-red: #f06f67;
+  --border-light: rgba(232, 218, 197, 0.14);
+}
+
 .crowdrisk-topbar {
   position: sticky;
   top: 0;
@@ -2241,33 +2275,94 @@ html, body, #root, .app-container, .main-content {
   gap: 1.5rem;
   padding: 1rem 1.5rem;
   box-sizing: border-box;
-  border-bottom: 1px solid var(--text-main);
+  border-bottom: 1px solid rgba(168, 86, 29, 0.22);
   background: rgba(248, 246, 242, 0.96);
   backdrop-filter: blur(16px);
 }
 
 .crowdrisk-brand {
-  display: flex;
-  flex-direction: column;
+  position: relative;
+  display: grid;
+  flex: 0 1 320px;
   align-items: flex-start;
-  gap: 0.25rem;
+  gap: 0.34rem;
+  min-width: 250px;
+  max-width: 320px;
   padding: 0;
   border: 0;
+  border-radius: 0;
   background: transparent;
   color: var(--text-main);
   cursor: pointer;
   text-align: left;
+  box-shadow: none;
+  overflow: visible;
 }
 
-.crowdrisk-brand span {
-  font-size: 1.35rem;
-  font-weight: 800;
-  letter-spacing: 0;
+.crowdrisk-brand::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -0.32rem;
+  width: 172px;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(168, 86, 29, 0), rgba(168, 86, 29, 0.72), rgba(63, 143, 103, 0.75));
 }
 
-.crowdrisk-brand small {
-  font-size: 0.95rem;
+.crowdrisk-brand-mark {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.42rem;
   color: var(--text-main);
+  font-family: 'IBM Plex Sans Condensed', 'Inter', sans-serif;
+  font-size: 1.55rem;
+  font-weight: 700;
+  line-height: 0.92;
+  letter-spacing: 0.02em;
+}
+
+.crowdrisk-brand-mark::after {
+  content: "";
+  width: 0.45rem;
+  height: 0.45rem;
+  border-radius: 999px;
+  background: var(--crowdrisk-green);
+  box-shadow: 0 0 0 4px rgba(63, 143, 103, 0.1), 0 0 16px rgba(63, 143, 103, 0.35);
+}
+
+.crowdrisk-brand-slogan {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.18rem 0.46rem;
+  max-width: none;
+  color: var(--text-muted);
+  font-family: 'JetBrains Mono', 'IBM Plex Sans Condensed', monospace;
+  font-size: 0.69rem;
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: 0.01em;
+  white-space: normal;
+}
+
+.crowdrisk-slogan-line {
+  display: inline-flex;
+  align-items: center;
+  min-height: 1.05rem;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: linear-gradient(currentColor, currentColor) 0 100% / 100% 1px no-repeat;
+}
+
+.crowdrisk-slogan-line--trend {
+  color: var(--crowdrisk-rust-dark);
+}
+
+.crowdrisk-slogan-line--opportunity {
+  border-color: transparent;
+  background: linear-gradient(currentColor, currentColor) 0 100% / 100% 1px no-repeat;
+  color: #2f6f4f;
 }
 
 .crowdrisk-topbar-right {
@@ -2282,6 +2377,8 @@ html, body, #root, .app-container, .main-content {
   display: flex;
   align-items: center;
   gap: 0.35rem;
+  box-sizing: border-box;
+  max-width: 100%;
   padding: 0.25rem;
   border: 1px solid var(--border-light);
   border-radius: 999px;
@@ -2316,6 +2413,58 @@ html, body, #root, .app-container, .main-content {
   white-space: nowrap;
 }
 
+.crowdrisk-control-stack {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.38rem;
+}
+
+.crowdrisk-control-row {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.55rem;
+}
+
+.crowdrisk-last-updated {
+  color: var(--text-main);
+  font-size: 0.92rem;
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+.crowdrisk-locale-toggle,
+.crowdrisk-theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.2rem;
+  padding: 0.18rem;
+  border: 1px solid var(--border-light);
+  border-radius: 999px;
+  background: var(--surface-color);
+}
+
+.crowdrisk-locale-toggle button,
+.crowdrisk-theme-toggle button {
+  min-width: 2.25rem;
+  min-height: 1.85rem;
+  padding: 0 0.58rem;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-weight: 850;
+}
+
+.crowdrisk-locale-toggle button.active,
+.crowdrisk-theme-toggle button.active {
+  background: var(--crowdrisk-rust-soft);
+  color: var(--crowdrisk-rust-dark);
+  box-shadow: inset 0 0 0 1px rgba(168, 86, 29, 0.34);
+}
+
 .crowdrisk-main {
   width: min(1480px, 100%);
   margin: 0 auto;
@@ -2331,12 +2480,203 @@ html, body, #root, .app-container, .main-content {
   gap: 1.5rem;
 }
 
+.crowdrisk-workbench {
+  display: grid;
+  gap: 0.8rem;
+  padding: 0.8rem 0 0.35rem;
+}
+
+.crowdrisk-workbench-header {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(360px, 520px);
+  gap: 1.1rem;
+  align-items: end;
+  padding-bottom: 0.72rem;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.crowdrisk-workbench-title h1 {
+  margin: 0;
+  max-width: 760px;
+  color: var(--text-main);
+  font-size: clamp(1.55rem, 2.2vw, 2.35rem);
+  line-height: 1.04;
+  letter-spacing: 0;
+}
+
+.crowdrisk-workbench-title p:not(.crowdrisk-kicker) {
+  max-width: 860px;
+  margin: 0.48rem 0 0;
+  color: var(--text-muted);
+  line-height: 1.48;
+}
+
+.crowdrisk-workbench-tools {
+  display: grid;
+  gap: 0.48rem;
+  min-width: 0;
+}
+
+.crowdrisk-workbench .crowdrisk-home-stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.38rem;
+}
+
+.crowdrisk-workbench .crowdrisk-home-stats span {
+  min-width: 0;
+  padding: 0.22rem 0.58rem;
+  border: 0;
+  border-left: 1px solid rgba(168, 86, 29, 0.18);
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  font-size: 0.68rem;
+  line-height: 1.15;
+}
+
+.crowdrisk-workbench .crowdrisk-home-stats strong {
+  font-size: 1.25rem;
+}
+
+.crowdrisk-workbench .crowdrisk-command-bar--summary {
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: 0.42rem;
+  padding: 0.38rem;
+  border: 1px solid rgba(168, 86, 29, 0.24);
+  border-radius: 6px;
+  background: rgba(255, 250, 242, 0.38);
+  box-shadow: none;
+}
+
+.crowdrisk-workbench .crowdrisk-command-bar--summary label {
+  padding: 0 0.22rem;
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  white-space: nowrap;
+}
+
+.crowdrisk-workbench .crowdrisk-command-bar--summary input {
+  min-height: 2.05rem;
+  padding: 0 0.7rem;
+  border: 1px solid rgba(39, 39, 42, 0.16);
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.62);
+  font-size: 0.88rem;
+}
+
+.crowdrisk-workbench .crowdrisk-command-bar--summary button {
+  width: auto;
+  min-height: 2.05rem;
+  padding: 0 0.72rem;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+
+.crowdrisk-inline-summary {
+  display: grid;
+  grid-template-columns: auto repeat(3, minmax(0, 1fr)) auto;
+  gap: 0.45rem;
+  align-items: center;
+  padding: 0.46rem;
+  border: 1px solid rgba(168, 86, 29, 0.14);
+  border-radius: 8px;
+  background: rgba(255, 250, 242, 0.64);
+}
+
+.crowdrisk-inline-summary > strong {
+  color: var(--text-main);
+  font-size: 1.15rem;
+}
+
+.crowdrisk-inline-summary span {
+  min-width: 0;
+  color: var(--text-muted);
+  font-size: 0.78rem;
+  font-weight: 800;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.crowdrisk-inline-summary button {
+  min-height: 2rem;
+  padding: 0 0.72rem;
+  border: 1px solid rgba(63, 143, 103, 0.28);
+  border-radius: 8px;
+  background: var(--crowdrisk-green-soft);
+  color: #2f6f4f;
+  cursor: pointer;
+  font-weight: 900;
+  white-space: nowrap;
+}
+
+.crowdrisk-home-terminal {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 340px);
+  gap: 1rem;
+  align-items: start;
+  padding: 0.8rem 0 0.5rem;
+}
+
+.crowdrisk-terminal-main {
+  min-width: 0;
+}
+
+.crowdrisk-terminal-header {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.9rem;
+  align-items: end;
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.crowdrisk-terminal-header h1 {
+  margin: 0;
+  max-width: 660px;
+  color: var(--text-main);
+  font-size: clamp(1.55rem, 2.1vw, 2.35rem);
+  line-height: 1.05;
+  letter-spacing: 0;
+}
+
+.crowdrisk-terminal-header p:not(.crowdrisk-kicker) {
+  max-width: 720px;
+  margin: 0.55rem 0 0;
+  color: var(--text-muted);
+  line-height: 1.45;
+}
+
+.crowdrisk-terminal-side {
+  display: grid;
+  gap: 0.75rem;
+  min-width: 0;
+}
+
+.crowdrisk-home-terminal .crowdrisk-home-stats {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.45rem;
+}
+
+.crowdrisk-home-terminal .crowdrisk-home-stats span {
+  min-width: 0;
+  padding: 0.68rem 0.58rem;
+  font-size: 0.72rem;
+  line-height: 1.2;
+}
+
+.crowdrisk-home-terminal .crowdrisk-home-stats strong {
+  font-size: 1.45rem;
+}
+
 .crowdrisk-home-hero {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(320px, 480px);
   gap: 1.5rem;
   align-items: end;
-  padding: 2rem 0 1rem;
+  padding: 1.25rem 0 0.75rem;
   border-bottom: 1px solid var(--border-light);
 }
 
@@ -2357,9 +2697,9 @@ html, body, #root, .app-container, .main-content {
 }
 
 .crowdrisk-home-hero h1 {
-  font-size: clamp(2rem, 4vw, 4.6rem);
-  line-height: 0.98;
-  max-width: 900px;
+  font-size: clamp(1.75rem, 2.7vw, 2.85rem);
+  line-height: 1.04;
+  max-width: 740px;
 }
 
 .crowdrisk-home-hero p:not(.crowdrisk-kicker),
@@ -2404,6 +2744,1109 @@ html, body, #root, .app-container, .main-content {
 
 .crowdrisk-home-leaderboard {
   padding: 0.5rem 0;
+}
+
+.crowdrisk-command-surface {
+  position: relative;
+  display: grid;
+  gap: 0.65rem;
+  padding: 0.75rem;
+  border: 1px solid rgba(39, 39, 42, 0.1);
+  border-radius: 8px;
+  background:
+    linear-gradient(90deg, rgba(39, 39, 42, 0.045) 1px, transparent 1px),
+    linear-gradient(180deg, rgba(39, 39, 42, 0.035) 1px, transparent 1px),
+    #fffaf2;
+  background-size: 28px 28px;
+  overflow: hidden;
+}
+
+.crowdrisk-command-surface::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-left: 4px solid rgba(168, 86, 29, 0.38);
+  pointer-events: none;
+}
+
+.crowdrisk-command-bar {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: 0.65rem;
+  align-items: center;
+}
+
+.crowdrisk-command-bar--summary {
+  grid-template-columns: 1fr;
+  gap: 0.38rem;
+  padding: 0.48rem;
+  border: 1px solid rgba(168, 86, 29, 0.16);
+  border-radius: 8px;
+  background:
+    linear-gradient(90deg, rgba(168, 86, 29, 0.045) 1px, transparent 1px),
+    linear-gradient(180deg, rgba(168, 86, 29, 0.035) 1px, transparent 1px),
+    rgba(255, 250, 242, 0.7);
+  background-size: 24px 24px;
+}
+
+.crowdrisk-command-bar--summary button {
+  width: 100%;
+  min-height: 2.25rem;
+}
+
+.crowdrisk-command-bar label {
+  color: #a8561d;
+  font-size: 0.78rem;
+  font-weight: 950;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.crowdrisk-command-bar input {
+  width: 100%;
+  min-height: 2.75rem;
+  padding: 0 0.9rem;
+  border: 1px solid rgba(39, 39, 42, 0.14);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.86);
+  color: var(--text-main);
+  box-sizing: border-box;
+  font: inherit;
+}
+
+.crowdrisk-command-bar input:focus {
+  outline: none;
+  border-color: rgba(168, 86, 29, 0.45);
+  box-shadow: 0 0 0 3px rgba(168, 86, 29, 0.09);
+}
+
+.crowdrisk-command-bar--summary input {
+  min-height: 2.25rem;
+  font-size: 0.9rem;
+}
+
+.crowdrisk-command-bar button,
+.crowdrisk-answer-grid button,
+.crowdrisk-row-action button {
+  min-height: 2.75rem;
+  padding: 0 1rem;
+  border: 1px solid rgba(168, 86, 29, 0.46);
+  border-radius: 8px;
+  background: linear-gradient(135deg, #b85f1f, #a8561d);
+  color: #fffaf2;
+  cursor: pointer;
+  font-weight: 900;
+  white-space: nowrap;
+  box-shadow: 0 10px 22px rgba(168, 86, 29, 0.13);
+}
+
+.crowdrisk-answer-grid button {
+  background: var(--crowdrisk-rust-soft);
+  color: var(--crowdrisk-rust-dark);
+  box-shadow: none;
+}
+
+.crowdrisk-row-action button {
+  min-height: 2.45rem;
+  border-color: rgba(63, 143, 103, 0.28);
+  background: var(--crowdrisk-green-soft);
+  color: #2f6f4f;
+  box-shadow: none;
+}
+
+.crowdrisk-summary-card {
+  display: grid;
+  gap: 0.62rem;
+  min-width: 0;
+  padding: 0.78rem;
+  border: 1px solid rgba(39, 39, 42, 0.1);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.78);
+  box-shadow: 0 18px 48px rgba(18, 24, 28, 0.05);
+}
+
+.crowdrisk-summary-card__header {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.65rem;
+  align-items: start;
+}
+
+.crowdrisk-summary-card h2 {
+  margin: 0;
+  color: var(--text-main);
+  font-size: 1.55rem;
+  line-height: 0.95;
+}
+
+.crowdrisk-summary-card p:not(.crowdrisk-kicker) {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  line-height: 1.38;
+}
+
+.crowdrisk-summary-card__header button {
+  min-height: 2.15rem;
+  padding: 0 0.62rem;
+  border: 1px solid rgba(63, 143, 103, 0.28);
+  border-radius: 8px;
+  background: var(--crowdrisk-green-soft);
+  color: #2f6f4f;
+  cursor: pointer;
+  font-weight: 900;
+  white-space: nowrap;
+}
+
+.crowdrisk-summary-grid {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.crowdrisk-summary-grid > div {
+  min-width: 0;
+  padding: 0.55rem;
+  border: 1px solid rgba(39, 39, 42, 0.08);
+  border-radius: 8px;
+  background: #fffaf2;
+}
+
+.crowdrisk-summary-grid span {
+  display: block;
+  margin-bottom: 0.32rem;
+  color: var(--text-muted);
+  font-size: 0.66rem;
+  font-weight: 950;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.crowdrisk-summary-grid strong {
+  display: block;
+  color: var(--text-main);
+  font-size: 0.95rem;
+  line-height: 1.16;
+  overflow-wrap: anywhere;
+}
+
+.crowdrisk-summary-grid small {
+  display: block;
+  margin-top: 0.25rem;
+  color: var(--text-muted);
+  font-size: 0.72rem;
+  font-weight: 800;
+  line-height: 1.28;
+}
+
+.crowdrisk-answer-card {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: minmax(220px, 0.34fr) minmax(0, 0.66fr);
+  gap: 0.75rem;
+  padding: 0.75rem;
+  border: 1px solid rgba(39, 39, 42, 0.12);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.84);
+  box-shadow: 0 16px 40px rgba(18, 24, 28, 0.04);
+}
+
+.crowdrisk-answer-card__main h2 {
+  margin: 0;
+  color: var(--text-main);
+  font-size: clamp(1.8rem, 3vw, 2.55rem);
+  line-height: 0.95;
+}
+
+.crowdrisk-answer-card__main p:not(.crowdrisk-kicker) {
+  margin: 0.65rem 0 0;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+.crowdrisk-answer-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.65rem;
+}
+
+.crowdrisk-answer-grid > div,
+.crowdrisk-answer-grid button {
+  min-width: 0;
+}
+
+.crowdrisk-answer-grid > div {
+  padding: 0.85rem;
+  border: 1px solid rgba(39, 39, 42, 0.09);
+  border-radius: 8px;
+  background: #fffaf2;
+}
+
+.crowdrisk-answer-grid span,
+.crowdrisk-row-rank span,
+.crowdrisk-row-why span,
+.crowdrisk-row-ranges span,
+.crowdrisk-row-action span {
+  display: block;
+  margin-bottom: 0.35rem;
+  color: var(--text-muted);
+  font-size: 0.68rem;
+  font-weight: 950;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+}
+
+.crowdrisk-answer-grid strong {
+  display: block;
+  color: var(--text-main);
+  font-size: 1rem;
+  line-height: 1.18;
+  overflow-wrap: anywhere;
+}
+
+.crowdrisk-answer-grid small {
+  display: block;
+  margin-top: 0.28rem;
+  color: var(--text-muted);
+  font-size: 0.74rem;
+  font-weight: 800;
+  line-height: 1.3;
+}
+
+.crowdrisk-leaderboard-panel {
+  padding: 1rem;
+  border: 1px solid var(--border-light);
+  border-radius: 8px;
+  background: var(--surface-color);
+  box-shadow: 0 18px 48px rgba(18, 24, 28, 0.05);
+}
+
+.crowdrisk-leaderboard-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.crowdrisk-leaderboard-header h2 {
+  margin: 0;
+  color: var(--text-main);
+  font-size: clamp(1.55rem, 2.4vw, 2.35rem);
+  line-height: 1.04;
+}
+
+.crowdrisk-leaderboard-header p:not(.crowdrisk-kicker) {
+  max-width: 760px;
+  margin: 0.5rem 0 0;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+.crowdrisk-leaderboard-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.crowdrisk-leaderboard-tabs button {
+  min-height: 2.3rem;
+  padding: 0 0.85rem;
+  border: 1px solid var(--border-light);
+  border-radius: 999px;
+  background: #fffaf2;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-weight: 850;
+}
+
+.crowdrisk-leaderboard-tabs button.active {
+  border-color: rgba(168, 86, 29, 0.42);
+  background: var(--crowdrisk-rust-soft);
+  color: var(--crowdrisk-rust-dark);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.75);
+}
+
+.crowdrisk-research-queue {
+  display: grid;
+  gap: 0.65rem;
+}
+
+.crowdrisk-research-row {
+  display: grid;
+  grid-template-columns: 74px minmax(120px, 0.72fr) minmax(180px, 1fr) minmax(260px, 1.22fr) minmax(210px, 0.88fr);
+  gap: 0.75rem;
+  align-items: stretch;
+  padding: 0.8rem;
+  border: 1px solid rgba(39, 39, 42, 0.08);
+  border-radius: 8px;
+  background: rgba(255, 250, 242, 0.62);
+  cursor: pointer;
+}
+
+.crowdrisk-home-terminal .crowdrisk-research-row {
+  grid-template-columns: 58px minmax(88px, 0.55fr) minmax(140px, 0.95fr) minmax(190px, 1.05fr) minmax(150px, 0.72fr);
+  gap: 0.55rem;
+  padding: 0.65rem;
+}
+
+.crowdrisk-home-terminal .crowdrisk-leaderboard-panel {
+  padding: 0.85rem;
+}
+
+.crowdrisk-home-terminal .crowdrisk-leaderboard-header {
+  margin-bottom: 0.75rem;
+}
+
+.crowdrisk-home-terminal .crowdrisk-leaderboard-header h2 {
+  font-size: clamp(1.35rem, 2vw, 1.9rem);
+}
+
+.crowdrisk-research-row:hover {
+  border-color: rgba(168, 86, 29, 0.24);
+  background: #fffaf2;
+}
+
+.crowdrisk-row-rank,
+.crowdrisk-row-identity,
+.crowdrisk-row-why,
+.crowdrisk-row-ranges,
+.crowdrisk-row-action {
+  min-width: 0;
+}
+
+.crowdrisk-row-rank {
+  padding: 0.65rem 0.25rem;
+}
+
+.crowdrisk-row-rank strong {
+  color: var(--text-main);
+  font-size: 1.3rem;
+  line-height: 1;
+}
+
+.crowdrisk-row-identity {
+  display: flex;
+  flex-direction: column;
+  gap: 0.38rem;
+  padding: 0.65rem;
+  border: 1px solid rgba(39, 39, 42, 0.07);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.68);
+}
+
+.crowdrisk-row-identity strong {
+  color: var(--text-main);
+  font-size: 1.42rem;
+  line-height: 1;
+}
+
+.crowdrisk-row-identity > span {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  font-weight: 750;
+  line-height: 1.25;
+}
+
+.crowdrisk-row-why {
+  padding: 0.65rem 0;
+}
+
+.crowdrisk-row-why strong,
+.crowdrisk-row-action strong {
+  display: block;
+  color: var(--text-main);
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+
+.crowdrisk-evidence-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.32rem;
+  margin-top: 0.55rem;
+}
+
+.crowdrisk-evidence-chips em {
+  padding: 0.22rem 0.48rem;
+  border: 1px solid rgba(168, 86, 29, 0.16);
+  border-radius: 999px;
+  background: #fff;
+  color: #7c3f16;
+  font-size: 0.72rem;
+  font-style: normal;
+  font-weight: 850;
+}
+
+.crowdrisk-row-ranges {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.5rem;
+}
+
+.crowdrisk-row-ranges > div {
+  min-width: 0;
+  padding: 0.65rem;
+  border: 1px solid rgba(39, 39, 42, 0.08);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.68);
+}
+
+.crowdrisk-row-ranges strong {
+  display: block;
+  color: var(--text-main);
+  line-height: 1.16;
+  overflow-wrap: anywhere;
+}
+
+.crowdrisk-row-ranges small {
+  display: block;
+  margin-top: 0.28rem;
+  color: var(--text-muted);
+  font-size: 0.72rem;
+  font-weight: 800;
+}
+
+.crowdrisk-row-action {
+  display: grid;
+  align-content: start;
+  gap: 0.52rem;
+}
+
+.crowdrisk-workbench .crowdrisk-home-leaderboard {
+  padding: 0;
+}
+
+.crowdrisk-workbench .crowdrisk-leaderboard-panel {
+  padding: 0;
+  overflow: hidden;
+  border-right: 0;
+  border-left: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.crowdrisk-workbench .crowdrisk-leaderboard-header {
+  margin: 0;
+  padding: 0.82rem 0.88rem 0.7rem;
+  border-bottom: 1px solid rgba(39, 39, 42, 0.08);
+}
+
+.crowdrisk-workbench .crowdrisk-leaderboard-header h2 {
+  font-size: clamp(1.3rem, 1.75vw, 1.7rem);
+}
+
+.crowdrisk-workbench .crowdrisk-leaderboard-header p:not(.crowdrisk-kicker) {
+  margin-top: 0.32rem;
+  font-size: 0.92rem;
+  line-height: 1.35;
+}
+
+.crowdrisk-workbench .crowdrisk-leaderboard-tabs {
+  gap: 0.38rem;
+  margin: 0;
+  padding: 0.62rem 0.88rem;
+  border-bottom: 1px solid rgba(39, 39, 42, 0.08);
+  background: rgba(255, 250, 242, 0.36);
+}
+
+.crowdrisk-workbench .crowdrisk-leaderboard-tabs button {
+  min-height: 1.95rem;
+  padding: 0 0.68rem;
+  font-size: 0.78rem;
+}
+
+.crowdrisk-workbench .crowdrisk-research-queue {
+  gap: 0;
+}
+
+.crowdrisk-workbench .crowdrisk-research-row {
+  grid-template-columns: 58px minmax(112px, 0.55fr) minmax(220px, 1.1fr) minmax(250px, 1.18fr) minmax(180px, 0.8fr);
+  gap: 0.55rem;
+  padding: 0.55rem 0.75rem;
+  border: 0;
+  border-bottom: 1px solid rgba(39, 39, 42, 0.08);
+  border-radius: 0;
+  background: rgba(255, 250, 242, 0.3);
+}
+
+.crowdrisk-workbench .crowdrisk-research-row:nth-child(even) {
+  background: rgba(255, 255, 255, 0.46);
+}
+
+.crowdrisk-workbench .crowdrisk-research-row:hover {
+  background: rgba(255, 250, 242, 0.9);
+}
+
+.crowdrisk-workbench .crowdrisk-row-rank {
+  padding: 0.2rem 0;
+}
+
+.crowdrisk-workbench .crowdrisk-row-rank strong {
+  font-size: 1.05rem;
+}
+
+.crowdrisk-workbench .crowdrisk-row-identity {
+  gap: 0.18rem;
+  padding: 0.35rem 0;
+  border: 0;
+  background: transparent;
+}
+
+.crowdrisk-workbench .crowdrisk-row-identity strong {
+  font-size: 1.18rem;
+}
+
+.crowdrisk-workbench .crowdrisk-row-identity > span {
+  font-size: 0.78rem;
+}
+
+.crowdrisk-workbench .crowdrisk-row-why {
+  padding: 0.24rem 0;
+}
+
+.crowdrisk-workbench .crowdrisk-row-why strong,
+.crowdrisk-workbench .crowdrisk-row-action strong {
+  font-size: 0.95rem;
+}
+
+.crowdrisk-workbench .crowdrisk-evidence-chips {
+  margin-top: 0.35rem;
+}
+
+.crowdrisk-workbench .crowdrisk-evidence-chips em {
+  padding: 0.16rem 0.38rem;
+  font-size: 0.68rem;
+}
+
+.crowdrisk-workbench .crowdrisk-row-ranges > div {
+  padding: 0.38rem 0.46rem;
+  border: 0;
+  border-left: 1px solid rgba(39, 39, 42, 0.08);
+  border-radius: 0;
+  background: transparent;
+}
+
+.crowdrisk-workbench .crowdrisk-row-ranges strong {
+  font-size: 0.92rem;
+}
+
+.crowdrisk-workbench .crowdrisk-row-ranges small {
+  font-size: 0.68rem;
+}
+
+.crowdrisk-workbench .crowdrisk-row-action {
+  gap: 0.36rem;
+}
+
+.crowdrisk-workbench .crowdrisk-row-action button {
+  min-height: 2.1rem;
+}
+
+.crowdrisk-app--dark .crowdrisk-topbar {
+  border-bottom-color: rgba(208, 131, 63, 0.2);
+  background: rgba(24, 23, 19, 0.96);
+}
+
+.crowdrisk-app--dark .crowdrisk-brand {
+  border-color: transparent;
+  background: transparent;
+  box-shadow: none;
+}
+
+.crowdrisk-app--dark .crowdrisk-brand-mark {
+  color: #f8efe2;
+}
+
+.crowdrisk-app--dark .crowdrisk-slogan-line {
+  border-color: transparent;
+  background: linear-gradient(currentColor, currentColor) 0 100% / 100% 1px no-repeat;
+  color: #f0b15d;
+}
+
+.crowdrisk-app--dark .crowdrisk-slogan-line--opportunity {
+  border-color: transparent;
+  background: linear-gradient(currentColor, currentColor) 0 100% / 100% 1px no-repeat;
+  color: var(--crowdrisk-green);
+}
+
+.crowdrisk-app--dark .crowdrisk-section-nav,
+.crowdrisk-app--dark .crowdrisk-locale-toggle,
+.crowdrisk-app--dark .crowdrisk-theme-toggle {
+  border-color: rgba(232, 218, 197, 0.12);
+  background: rgba(33, 31, 26, 0.92);
+}
+
+.crowdrisk-app--dark .crowdrisk-section-nav button.active,
+.crowdrisk-app--dark .crowdrisk-locale-toggle button.active,
+.crowdrisk-app--dark .crowdrisk-theme-toggle button.active,
+.crowdrisk-app--dark .crowdrisk-leaderboard-tabs button.active {
+  border-color: rgba(227, 154, 69, 0.32);
+  background: rgba(208, 131, 63, 0.18);
+  color: #f0b15d;
+  box-shadow: inset 0 0 0 1px rgba(255, 250, 242, 0.04);
+}
+
+.crowdrisk-app--dark .crowdrisk-command-surface {
+  border-color: rgba(208, 131, 63, 0.16);
+  background:
+    linear-gradient(90deg, rgba(208, 131, 63, 0.045) 1px, transparent 1px),
+    linear-gradient(180deg, rgba(208, 131, 63, 0.035) 1px, transparent 1px),
+    #211f1a;
+}
+
+.crowdrisk-app--dark .crowdrisk-command-bar input,
+.crowdrisk-app--dark .crowdrisk-command-bar--summary,
+.crowdrisk-app--dark .crowdrisk-summary-card,
+.crowdrisk-app--dark .crowdrisk-summary-grid > div,
+.crowdrisk-app--dark .crowdrisk-answer-card,
+.crowdrisk-app--dark .crowdrisk-answer-grid > div,
+.crowdrisk-app--dark .crowdrisk-leaderboard-panel,
+.crowdrisk-app--dark .crowdrisk-row-identity,
+.crowdrisk-app--dark .crowdrisk-row-ranges > div,
+.crowdrisk-app--dark .crowdrisk-home-stats span,
+.crowdrisk-app--dark .crowdrisk-queue-card,
+.crowdrisk-app--dark .crowdrisk-watch-list button,
+.crowdrisk-app--dark .crowdrisk-momentum-strip button {
+  border-color: rgba(232, 218, 197, 0.14);
+  background: rgba(33, 31, 26, 0.88);
+}
+
+.crowdrisk-app--dark .crowdrisk-leaderboard-tabs button,
+.crowdrisk-app--dark .crowdrisk-evidence-chips em {
+  border-color: rgba(208, 131, 63, 0.18);
+  background: rgba(244, 239, 230, 0.035);
+  color: #d7c6b3;
+}
+
+.crowdrisk-app--dark .crowdrisk-workbench .crowdrisk-leaderboard-tabs {
+  border-bottom-color: rgba(232, 218, 197, 0.1);
+  background: rgba(33, 31, 26, 0.32);
+}
+
+.crowdrisk-app--dark .crowdrisk-command-bar button {
+  border-color: rgba(208, 131, 63, 0.52);
+  background: linear-gradient(135deg, #d0833f, #a8561d);
+  color: #fffaf2;
+  box-shadow: none;
+}
+
+.crowdrisk-app--dark .crowdrisk-answer-grid button {
+  border-color: rgba(227, 154, 69, 0.34);
+  background: rgba(208, 131, 63, 0.14);
+  color: #f4c27d;
+}
+
+.crowdrisk-app--dark .crowdrisk-row-action button {
+  border-color: rgba(121, 212, 159, 0.28);
+  background: rgba(121, 212, 159, 0.12);
+  color: var(--crowdrisk-green);
+}
+
+.crowdrisk-app--dark .crowdrisk-summary-card__header button {
+  border-color: rgba(121, 212, 159, 0.28);
+  background: rgba(121, 212, 159, 0.12);
+  color: var(--crowdrisk-green);
+}
+
+.crowdrisk-app--dark .crowdrisk-research-row {
+  border-color: rgba(232, 218, 197, 0.11);
+  background: rgba(244, 239, 230, 0.026);
+}
+
+.crowdrisk-app--dark .crowdrisk-research-row:nth-child(even) {
+  background: rgba(244, 239, 230, 0.045);
+}
+
+.crowdrisk-app--dark .crowdrisk-research-row:hover {
+  border-color: rgba(208, 131, 63, 0.24);
+  background: rgba(208, 131, 63, 0.075);
+}
+
+.crowdrisk-app--dark .crowdrisk-workbench .crowdrisk-home-stats span {
+  border: 0;
+  border-left: 1px solid rgba(208, 131, 63, 0.2);
+  background: transparent;
+}
+
+.crowdrisk-app--dark .crowdrisk-workbench .crowdrisk-command-bar--summary {
+  border: 1px solid rgba(208, 131, 63, 0.26);
+  background: rgba(33, 31, 26, 0.52);
+}
+
+.crowdrisk-app--dark .crowdrisk-workbench .crowdrisk-command-bar--summary input {
+  border: 1px solid rgba(232, 218, 197, 0.2);
+  background: rgba(24, 23, 19, 0.66);
+  color: var(--text-main);
+}
+
+.crowdrisk-app--dark .crowdrisk-command-bar input:focus {
+  border-color: rgba(121, 212, 159, 0.5);
+  box-shadow: 0 0 0 3px rgba(121, 212, 159, 0.12);
+}
+
+.crowdrisk-app--dark .crowdrisk-workbench .crowdrisk-leaderboard-panel {
+  border-right: 0;
+  border-left: 0;
+  background: transparent;
+}
+
+.crowdrisk-app--dark .crowdrisk-workbench .crowdrisk-row-ranges > div {
+  border: 0;
+  border-left: 1px solid rgba(232, 218, 197, 0.12);
+  background: transparent;
+}
+
+.crowdrisk-app--dark .event-study-shell {
+  --eink-red: #f06f67;
+  --eink-blue: #b8ad9c;
+}
+
+.crowdrisk-app--dark .event-study-workbench,
+.crowdrisk-app--dark .glass-panel.event-study-workbench {
+  border-color: var(--border-light);
+  background: var(--surface-color);
+  color: var(--text-main);
+  box-shadow: none;
+}
+
+.crowdrisk-app--dark .event-study-workbench:hover {
+  border-color: rgba(208, 131, 63, 0.28);
+  box-shadow: none;
+}
+
+.crowdrisk-app--dark .event-study-workbench .panel-header {
+  color: var(--text-main);
+  border-bottom-color: var(--border-light);
+}
+
+.crowdrisk-app--dark .radar-panel-badge {
+  border-color: rgba(208, 131, 63, 0.26);
+  background: rgba(208, 131, 63, 0.14);
+  color: var(--crowdrisk-rust-dark);
+}
+
+.crowdrisk-app--dark .event-study-input {
+  border-color: rgba(232, 218, 197, 0.2);
+  background: rgba(24, 23, 19, 0.66);
+  color: var(--text-main);
+}
+
+.crowdrisk-app--dark .event-study-input:focus {
+  border-color: rgba(121, 212, 159, 0.5);
+  box-shadow: 0 0 0 3px rgba(121, 212, 159, 0.12);
+}
+
+.crowdrisk-app--dark .event-study-submit {
+  border-color: rgba(208, 131, 63, 0.52);
+  background: linear-gradient(135deg, #d0833f, #a8561d);
+  color: #fffaf2;
+  box-shadow: none;
+}
+
+.crowdrisk-app--dark .event-study-soft-alert {
+  border-color: rgba(208, 131, 63, 0.24);
+  background: rgba(208, 131, 63, 0.14);
+  color: #f4c27d;
+}
+
+.crowdrisk-app--dark .momentum-universe-table button,
+.crowdrisk-app--dark .crowdrisk-section-heading button {
+  border-color: rgba(121, 212, 159, 0.28);
+  background: rgba(121, 212, 159, 0.12);
+  color: var(--crowdrisk-green);
+  box-shadow: none;
+}
+
+.crowdrisk-app--dark .decision-pillar-card,
+.crowdrisk-app--dark .decision-trading-card,
+.crowdrisk-app--dark .decision-metric-card,
+.crowdrisk-app--dark .event-study-evidence-card,
+.crowdrisk-app--dark .earnings-snapshot-metric,
+.crowdrisk-app--dark .event-study-feedbar,
+.crowdrisk-app--dark .decision-chip,
+.crowdrisk-app--dark .decision-alert-item {
+  border-color: var(--border-light);
+  background: rgba(33, 31, 26, 0.72);
+  color: var(--text-main);
+}
+
+.crowdrisk-app--dark .decision-hero--expansion,
+.crowdrisk-app--dark .decision-hero--compression,
+.crowdrisk-app--dark .decision-hero--balanced,
+.crowdrisk-app--dark .event-study-evidence-card--earnings,
+.crowdrisk-app--dark .decision-trading-card--long,
+.crowdrisk-app--dark .decision-trading-card--short,
+.crowdrisk-app--dark .decision-trading-card--risk {
+  background: rgba(33, 31, 26, 0.78);
+}
+
+.crowdrisk-app--dark .decision-bias-pill--expansion {
+  color: var(--crowdrisk-green);
+  background: rgba(121, 212, 159, 0.12);
+  border-color: rgba(121, 212, 159, 0.24);
+}
+
+.crowdrisk-app--dark .decision-bias-pill--compression {
+  color: #f06f67;
+  background: rgba(240, 111, 103, 0.12);
+  border-color: rgba(240, 111, 103, 0.24);
+}
+
+.crowdrisk-app--dark .decision-bias-pill--balanced {
+  color: var(--text-muted);
+  background: rgba(244, 239, 230, 0.06);
+  border-color: rgba(232, 218, 197, 0.14);
+}
+
+.crowdrisk-app--dark .decision-hero::after {
+  background: radial-gradient(circle, rgba(208, 131, 63, 0.1), transparent 65%);
+}
+
+.crowdrisk-app--dark .event-study-feedbar__meta,
+.crowdrisk-app--dark .decision-pillar-card p,
+.crowdrisk-app--dark .decision-trading-card p,
+.crowdrisk-app--dark .decision-metric-card__label,
+.crowdrisk-app--dark .decision-metric-card__footnote,
+.crowdrisk-app--dark .event-study-evidence-card p {
+  color: var(--text-muted);
+}
+
+.crowdrisk-app--dark .quality-pill,
+.crowdrisk-app--dark .momentum-regime-pill,
+.crowdrisk-app--dark .peer-readthrough-pill {
+  border-color: rgba(232, 218, 197, 0.14);
+  background: rgba(244, 239, 230, 0.045);
+  color: var(--text-muted);
+}
+
+.crowdrisk-app--dark .pulse-improving,
+.crowdrisk-app--dark .momentum-positive {
+  border-color: rgba(121, 212, 159, 0.24);
+  background: rgba(121, 212, 159, 0.12);
+  color: var(--crowdrisk-green);
+}
+
+.crowdrisk-app--dark .momentum-crowded,
+.crowdrisk-app--dark .pulse-risk {
+  border-color: rgba(240, 111, 103, 0.24);
+  background: rgba(240, 111, 103, 0.12);
+  color: #f06f67;
+}
+
+.crowdrisk-app--dark .action-btn {
+  border-color: var(--border-color);
+  background: var(--surface-color);
+  color: var(--text-main);
+}
+
+.crowdrisk-app--dark .radar-row:hover,
+.crowdrisk-app--dark .radar-row.selected {
+  background: rgba(208, 131, 63, 0.075);
+}
+
+.crowdrisk-app--dark .bias-neutral,
+.crowdrisk-app--dark .badge-neutral {
+  background: rgba(244, 239, 230, 0.06);
+  color: var(--text-muted);
+}
+
+.crowdrisk-app--dark .bias-long,
+.crowdrisk-app--dark .badge-bull_trend_pullback {
+  background: rgba(121, 212, 159, 0.12);
+  color: var(--crowdrisk-green);
+}
+
+.crowdrisk-app--dark .bias-short,
+.crowdrisk-app--dark .badge-extended_crowded {
+  background: rgba(240, 111, 103, 0.12);
+  color: #f06f67;
+}
+
+.crowdrisk-app--dark .catalyst-radar__table th {
+  color: var(--text-muted);
+}
+
+.crowdrisk-app--dark .catalyst-radar__table td {
+  border-color: rgba(232, 218, 197, 0.12);
+  background: rgba(33, 31, 26, 0.72);
+  color: var(--text-main);
+}
+
+.crowdrisk-app--dark .catalyst-radar__table td:first-child,
+.crowdrisk-app--dark .catalyst-radar__table td:last-child {
+  border-color: rgba(232, 218, 197, 0.12);
+}
+
+.crowdrisk-app--dark .catalyst-radar__table tbody tr.is-active td {
+  border-color: rgba(208, 131, 63, 0.24);
+  background: rgba(208, 131, 63, 0.12);
+}
+
+.crowdrisk-app--dark .catalyst-radar__mono,
+.crowdrisk-app--dark .catalyst-radar__ticker-cell span,
+.crowdrisk-app--dark .conviction-stack span,
+.crowdrisk-app--dark .xray-card__headline span {
+  color: var(--text-muted);
+}
+
+.crowdrisk-app--dark .direction-pill--neutral {
+  border-color: rgba(232, 218, 197, 0.14);
+  background: rgba(244, 239, 230, 0.06);
+  color: var(--text-muted);
+}
+
+.crowdrisk-app--dark .direction-pill--long {
+  border-color: rgba(121, 212, 159, 0.24);
+  background: rgba(121, 212, 159, 0.12);
+  color: var(--crowdrisk-green);
+}
+
+.crowdrisk-app--dark .direction-pill--short {
+  border-color: rgba(240, 111, 103, 0.24);
+  background: rgba(240, 111, 103, 0.12);
+  color: #f06f67;
+}
+
+.crowdrisk-app--dark .dual-score-bar__track {
+  border-color: rgba(232, 218, 197, 0.14);
+  background: rgba(244, 239, 230, 0.08);
+}
+
+.crowdrisk-app--dark .dual-score-bar__midline {
+  background: rgba(232, 218, 197, 0.22);
+}
+
+.crowdrisk-app--dark .radar-badge--warning {
+  background: rgba(208, 131, 63, 0.14);
+  color: var(--crowdrisk-rust-dark);
+  border-color: rgba(208, 131, 63, 0.24);
+}
+
+.crowdrisk-app--dark .stock-dossier-side-nav,
+.crowdrisk-app--dark .stock-dossier-content-card,
+.crowdrisk-app--dark .dossier-hero-card,
+.crowdrisk-app--dark .dossier-case-summary,
+.crowdrisk-app--dark .dossier-company-overview-card,
+.crowdrisk-app--dark .dossier-valuation-core,
+.crowdrisk-app--dark .dossier-market-evidence-card,
+.crowdrisk-app--dark .dossier-scenario-card,
+.crowdrisk-app--dark .dossier-kill-card {
+  border-color: var(--border-light);
+  background: var(--surface-color);
+  color: var(--text-main);
+  box-shadow: none;
+}
+
+.crowdrisk-app--dark .stock-dossier-side-state,
+.crowdrisk-app--dark .dossier-why-now,
+.crowdrisk-app--dark .dossier-quick-facts > div,
+.crowdrisk-app--dark .dossier-profile-sections article,
+.crowdrisk-app--dark .dossier-verdict-grid div,
+.crowdrisk-app--dark .dossier-snapshot-board,
+.crowdrisk-app--dark .dossier-mini-chart,
+.crowdrisk-app--dark .dossier-radar-panel,
+.crowdrisk-app--dark .dossier-valuation-verdict > div,
+.crowdrisk-app--dark .dossier-valuation-metrics > div,
+.crowdrisk-app--dark .dossier-valuation-judgment,
+.crowdrisk-app--dark .dossier-event-study-summary-strip,
+.crowdrisk-app--dark .dossier-event-study-summary-strip > div,
+.crowdrisk-app--dark .dossier-event-study-board,
+.crowdrisk-app--dark .dossier-event-study-metrics > div,
+.crowdrisk-app--dark .dossier-scenario-grid > div,
+.crowdrisk-app--dark .dossier-quarter-table-wrap {
+  border-color: rgba(232, 218, 197, 0.12);
+  background: rgba(33, 31, 26, 0.72);
+  color: var(--text-main);
+  box-shadow: none;
+}
+
+.crowdrisk-app--dark .stock-dossier-side-logo,
+.crowdrisk-app--dark .stock-dossier-side-logo.logo-fallback-visible,
+.crowdrisk-app--dark .dossier-company-logo.logo-fallback-visible,
+.crowdrisk-app--dark .dossier-hero-pills span {
+  border-color: rgba(208, 131, 63, 0.24);
+  background: rgba(208, 131, 63, 0.12);
+  color: var(--crowdrisk-rust-dark);
+  box-shadow: none;
+}
+
+.crowdrisk-app--dark .stock-dossier-side-links a:hover,
+.crowdrisk-app--dark .stock-dossier-side-links a.active {
+  background: rgba(208, 131, 63, 0.12);
+  color: var(--text-main);
+  box-shadow: inset 0 0 0 1px rgba(208, 131, 63, 0.12);
+}
+
+.crowdrisk-app--dark .stock-dossier-side-links a.active {
+  border-left-color: var(--crowdrisk-rust);
+}
+
+.crowdrisk-app--dark .stock-dossier-side-links a span,
+.crowdrisk-app--dark .dossier-hero-read span,
+.crowdrisk-app--dark .dossier-why-now span {
+  color: var(--crowdrisk-rust-dark);
+}
+
+.crowdrisk-app--dark .dossier-market-strip,
+.crowdrisk-app--dark .dossier-market-strip > div,
+.crowdrisk-app--dark .dossier-event-study-board,
+.crowdrisk-app--dark .dossier-scenario-grid > div,
+.crowdrisk-app--dark .dossier-quarter-table th,
+.crowdrisk-app--dark .dossier-quarter-table td {
+  border-color: rgba(232, 218, 197, 0.12);
+}
+
+.crowdrisk-app--dark .dossier-quarter-table tbody tr:hover {
+  background: rgba(208, 131, 63, 0.075);
+}
+
+.crowdrisk-app--dark .dossier-section-link-button {
+  border-color: rgba(121, 212, 159, 0.28);
+  background: rgba(121, 212, 159, 0.12);
+  color: var(--crowdrisk-green);
+  box-shadow: none;
+}
+
+.crowdrisk-app--dark .dossier-snapshot-list,
+.crowdrisk-app--dark .dossier-valuation-read,
+.crowdrisk-app--dark .dossier-quarter-table-empty {
+  border-color: rgba(232, 218, 197, 0.12);
+  background: rgba(24, 23, 19, 0.54);
+  color: var(--text-main);
+}
+
+.crowdrisk-app--dark .dossier-snapshot-row,
+.crowdrisk-app--dark .dossier-snapshot-row.tone-positive,
+.crowdrisk-app--dark .dossier-snapshot-row.tone-warning {
+  border-bottom-color: rgba(232, 218, 197, 0.12);
+  background: rgba(33, 31, 26, 0.58);
+}
+
+.crowdrisk-app--dark .dossier-snapshot-row span,
+.crowdrisk-app--dark .dossier-valuation-verdict span,
+.crowdrisk-app--dark .dossier-valuation-metrics span,
+.crowdrisk-app--dark .dossier-event-study-copy span,
+.crowdrisk-app--dark .dossier-event-study-meta span,
+.crowdrisk-app--dark .dossier-event-study-metrics span {
+  color: var(--crowdrisk-rust-dark);
+}
+
+.crowdrisk-app--dark .dossier-snapshot-row strong,
+.crowdrisk-app--dark .dossier-valuation-read strong {
+  color: var(--text-main);
+}
+
+.crowdrisk-app--dark .dossier-quarter-table th {
+  background: #211f1a;
+  color: var(--text-muted);
+}
+
+.crowdrisk-app--dark .dossier-quarter-table td {
+  background: rgba(33, 31, 26, 0.72);
 }
 
 .crowdrisk-home-section {
@@ -2576,10 +4019,73 @@ html, body, #root, .app-container, .main-content {
   font-size: 0.95rem;
 }
 
+@media (max-width: 760px) {
+  .momentum-universe-table-wrap {
+    overflow-x: visible;
+  }
+
+  .momentum-universe-table {
+    min-width: 0;
+  }
+
+  .momentum-universe-table,
+  .momentum-universe-table tbody,
+  .momentum-universe-table tr,
+  .momentum-universe-table td {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .momentum-universe-table thead {
+    display: none;
+  }
+
+  .momentum-universe-table tr {
+    padding: 0.72rem 0;
+    border-bottom: 1px solid var(--border-light);
+  }
+
+  .momentum-universe-table tr:last-child {
+    border-bottom: 0;
+  }
+
+  .momentum-universe-table td {
+    display: grid;
+    grid-template-columns: minmax(7.5rem, 0.42fr) minmax(0, 0.58fr);
+    gap: 0.65rem;
+    align-items: start;
+    padding: 0.32rem 0.72rem;
+    border-bottom: 0;
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+
+  .momentum-universe-table td::before {
+    color: var(--text-muted);
+    font-size: 0.68rem;
+    font-weight: 900;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .momentum-universe-table td:nth-child(1)::before { content: "Rank"; }
+  .momentum-universe-table td:nth-child(2)::before { content: "Ticker"; }
+  .momentum-universe-table td:nth-child(3)::before { content: "Theme"; }
+  .momentum-universe-table td:nth-child(4)::before { content: "Score"; }
+  .momentum-universe-table td:nth-child(5)::before { content: "RS %"; }
+  .momentum-universe-table td:nth-child(6)::before { content: "Price"; }
+  .momentum-universe-table td:nth-child(7)::before { content: "50SMA"; }
+  .momentum-universe-table td:nth-child(8)::before { content: "200SMA"; }
+  .momentum-universe-table td:nth-child(9)::before { content: "Setup"; }
+  .momentum-universe-table td:nth-child(10)::before { content: "Action"; }
+}
+
 .stock-dossier-section {
   width: min(100%, 1320px);
   margin: 0 auto;
   padding: 1.5rem;
+  box-sizing: border-box;
 }
 
 .stock-dossier-back-row {
@@ -3374,6 +4880,274 @@ html, body, #root, .app-container, .main-content {
   font-weight: 850;
 }
 
+.event-study-results {
+  gap: 0.8rem;
+}
+
+.event-study-results .event-study-dossier-link {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  margin-bottom: 0;
+  padding: 0.7rem 0.85rem;
+  border-color: rgba(63, 143, 103, 0.2);
+  border-left: 3px solid rgba(63, 143, 103, 0.65);
+  border-radius: 0;
+  background: rgba(255, 250, 242, 0.58);
+  box-shadow: none;
+}
+
+.event-study-results .event-study-dossier-link span {
+  margin-bottom: 0.2rem;
+  color: #3f8f67;
+}
+
+.event-study-results .event-study-dossier-link strong {
+  font-size: 1rem;
+}
+
+.event-study-results .event-study-dossier-link button {
+  min-height: 2.2rem;
+  border-radius: 6px;
+  background: rgba(255, 250, 242, 0.92);
+}
+
+.event-study-results .event-study-decision-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0.75rem;
+}
+
+.event-study-results .best-setup-hint-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.8rem;
+  margin-bottom: 0;
+  padding: 0.8rem 0;
+  border: 0;
+  border-top: 1px solid rgba(44, 62, 80, 0.08);
+  border-bottom: 1px solid rgba(44, 62, 80, 0.08);
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.event-study-results .best-setup-hint-card__header,
+.event-study-results .best-setup-hint-card__footer {
+  min-width: 0;
+}
+
+.event-study-results .best-setup-hint-card__reason {
+  grid-column: 1 / -1;
+  max-width: 96ch;
+  margin: 0;
+  color: var(--text-muted);
+}
+
+.event-study-results .decision-trading-grid {
+  width: 100%;
+  grid-template-columns: repeat(3, minmax(230px, 1fr));
+  gap: 0;
+  border-top: 1px solid rgba(44, 62, 80, 0.08);
+  border-bottom: 1px solid rgba(44, 62, 80, 0.08);
+}
+
+.event-study-results .decision-trading-card {
+  min-height: 0;
+  padding: 0.95rem 1.05rem;
+  border: 0;
+  border-left: 1px solid rgba(44, 62, 80, 0.08);
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.event-study-results .decision-trading-card:first-child {
+  border-left: 0;
+}
+
+.event-study-results .decision-trading-card__eyebrow {
+  color: var(--crowdrisk-rust, var(--eink-gold-deep));
+}
+
+.event-study-results .decision-trading-card strong {
+  font-size: clamp(1.25rem, 1.6vw, 1.7rem);
+  letter-spacing: -0.01em;
+}
+
+.event-study-results .decision-trading-card p {
+  max-width: 42ch;
+  font-size: 0.9rem;
+  line-height: 1.55;
+}
+
+.event-study-results .decision-mini-metrics {
+  grid-template-columns: repeat(auto-fit, minmax(128px, 1fr));
+  gap: 0.55rem;
+}
+
+.event-study-results .decision-metric-card {
+  min-height: 0;
+  padding: 0.7rem;
+  border-radius: 0;
+  background: rgba(255, 250, 242, 0.72);
+}
+
+.event-study-results .decision-metric-card__label {
+  font-size: 0.68rem;
+}
+
+.event-study-results .decision-metric-card__value {
+  font-size: clamp(1.2rem, 1.5vw, 1.55rem);
+}
+
+.event-study-results .decision-metric-card__footnote {
+  font-size: 0.76rem;
+}
+
+.crowdrisk-app--dark .event-study-results .event-study-dossier-link {
+  border-color: rgba(121, 212, 159, 0.18);
+  border-left-color: rgba(121, 212, 159, 0.65);
+  background: rgba(33, 31, 26, 0.72);
+  color: var(--text-main);
+}
+
+.crowdrisk-app--dark .event-study-results .event-study-dossier-link span {
+  color: var(--crowdrisk-green);
+}
+
+.crowdrisk-app--dark .event-study-results .event-study-dossier-link button {
+  border-color: rgba(121, 212, 159, 0.26);
+  background: rgba(121, 212, 159, 0.1);
+  color: var(--crowdrisk-green);
+}
+
+.crowdrisk-app--dark .event-study-results .best-setup-hint-card,
+.crowdrisk-app--dark .event-study-results .decision-trading-grid {
+  border-color: rgba(232, 218, 197, 0.13);
+}
+
+.crowdrisk-app--dark .event-study-results .best-setup-hint-card {
+  background: transparent;
+}
+
+.crowdrisk-app--dark .event-study-results .best-setup-hint-card__title-group,
+.crowdrisk-app--dark .event-study-results .best-setup-hint-card__reason {
+  color: var(--text-main);
+}
+
+.crowdrisk-app--dark .event-study-results .decision-trading-card {
+  border-color: rgba(232, 218, 197, 0.13);
+  background: transparent;
+}
+
+.crowdrisk-app--dark .event-study-results .decision-metric-card {
+  border-color: rgba(232, 218, 197, 0.12);
+  background: rgba(24, 23, 19, 0.64);
+}
+
+@media (max-width: 980px) {
+  .event-study-results .event-study-dossier-link,
+  .event-study-results .best-setup-hint-card {
+    grid-template-columns: 1fr;
+  }
+
+  .event-study-results .event-study-dossier-link button {
+    width: 100%;
+  }
+
+  .catalyst-radar__table-wrap {
+    overflow-x: visible;
+  }
+
+  .dual-score-bar {
+    min-width: 0;
+    width: 100%;
+    max-width: 220px;
+  }
+
+  .catalyst-radar__table {
+    min-width: 0;
+    border-spacing: 0;
+  }
+
+  .catalyst-radar__table,
+  .catalyst-radar__table tbody,
+  .catalyst-radar__table tr,
+  .catalyst-radar__table td {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .catalyst-radar__table thead {
+    display: none;
+  }
+
+  .catalyst-radar__table tbody tr {
+    padding: 0.72rem 0;
+    border-bottom: 1px solid rgba(44, 62, 80, 0.08);
+    transform: none;
+  }
+
+  .crowdrisk-app--dark .catalyst-radar__table tbody tr {
+    border-bottom-color: rgba(232, 218, 197, 0.12);
+  }
+
+  .catalyst-radar__table td,
+  .catalyst-radar__table td:first-child,
+  .catalyst-radar__table td:last-child {
+    display: grid;
+    grid-template-columns: minmax(7.5rem, 0.42fr) minmax(0, 0.58fr);
+    gap: 0.65rem;
+    align-items: start;
+    padding: 0.32rem 0.72rem;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+
+  .crowdrisk-app--dark .catalyst-radar__table td,
+  .crowdrisk-app--dark .catalyst-radar__table td:first-child,
+  .crowdrisk-app--dark .catalyst-radar__table td:last-child {
+    background: transparent;
+  }
+
+  .catalyst-radar__table td::before {
+    color: var(--text-muted);
+    font-size: 0.68rem;
+    font-weight: 900;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .catalyst-radar__table td:nth-child(1)::before { content: "Ticker"; }
+  .catalyst-radar__table td:nth-child(2)::before { content: "Event"; }
+  .catalyst-radar__table td:nth-child(3)::before { content: "Direction"; }
+  .catalyst-radar__table td:nth-child(4)::before { content: "Score"; }
+  .catalyst-radar__table td:nth-child(5)::before { content: "Conviction"; }
+  .catalyst-radar__table td:nth-child(6)::before { content: "Tags"; }
+
+  .event-study-results .decision-trading-grid {
+    grid-template-columns: 1fr;
+    border-bottom: 0;
+  }
+
+  .event-study-results .decision-trading-card {
+    border-left: 0;
+    border-bottom: 1px solid rgba(44, 62, 80, 0.08);
+    padding-right: 0;
+    padding-left: 0;
+  }
+
+  .crowdrisk-app--dark .event-study-results .decision-trading-card {
+    border-bottom-color: rgba(232, 218, 197, 0.13);
+  }
+}
+
 
 .dossier-valuation-core {
   border-left: 4px solid rgba(168, 86, 29, 0.35);
@@ -3846,6 +5620,12 @@ body,
     flex-direction: column;
   }
 
+  .crowdrisk-brand {
+    flex: 0 0 auto;
+    min-width: 0;
+    max-width: none;
+  }
+
   .crowdrisk-topbar-right {
     align-items: flex-start;
     flex-direction: column;
@@ -3857,9 +5637,33 @@ body,
     overflow-x: auto;
   }
 
-  .crowdrisk-home-hero,
-  .crowdrisk-home-section.split,
-  .crowdrisk-card-grid.three,
+  .crowdrisk-home-terminal,
+  .crowdrisk-terminal-header {
+    grid-template-columns: 1fr;
+  }
+
+  .crowdrisk-terminal-side {
+    position: static;
+  }
+
+  .crowdrisk-workbench-header {
+    grid-template-columns: 1fr;
+  }
+
+  .crowdrisk-workbench .crowdrisk-research-row {
+    grid-template-columns: 1fr;
+    gap: 0.42rem;
+    padding: 0.72rem;
+  }
+
+  .crowdrisk-workbench .crowdrisk-row-ranges {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+	  .crowdrisk-home-hero,
+	  .crowdrisk-answer-card,
+	  .crowdrisk-home-section.split,
+	  .crowdrisk-card-grid.three,
   .dossier-hero-card,
   .dossier-market-strip,
   .dossier-quick-facts,
@@ -3946,10 +5750,44 @@ body,
     border-bottom: 0;
   }
 
-  .crowdrisk-home-stats,
-  .crowdrisk-momentum-strip {
+	  .crowdrisk-home-stats,
+	  .crowdrisk-momentum-strip,
+	  .crowdrisk-answer-grid {
+	    grid-template-columns: repeat(2, minmax(0, 1fr));
+	    min-width: 0;
+	  }
+
+  .crowdrisk-command-bar,
+  .crowdrisk-research-row {
+    grid-template-columns: 1fr;
+  }
+
+  .crowdrisk-row-ranges {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 720px) {
+  .crowdrisk-section-nav {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.35rem;
+    overflow: visible;
+    border-radius: 14px;
+  }
+
+  .crowdrisk-section-nav button {
+    width: 100%;
     min-width: 0;
+    min-height: 2.18rem;
+    padding: 0 0.48rem;
+    border-radius: 8px;
+    font-size: 0.82rem;
+    text-align: center;
+  }
+
+  .crowdrisk-section-nav button.active {
+    border-radius: 8px;
   }
 }
 
@@ -3960,25 +5798,131 @@ body,
     padding-right: 0.85rem;
   }
 
+  .crowdrisk-home-terminal {
+    padding-top: 0.5rem;
+  }
+
+  .crowdrisk-brand {
+    width: 100%;
+  }
+
+  .crowdrisk-brand-slogan {
+    font-size: 0.62rem;
+  }
+
+  .crowdrisk-terminal-header {
+    gap: 0.7rem;
+    margin-bottom: 0.65rem;
+    padding-bottom: 0.65rem;
+  }
+
+  .crowdrisk-terminal-header h1 {
+    font-size: 1.65rem;
+  }
+
+  .crowdrisk-workbench {
+    padding-top: 0.5rem;
+  }
+
+  .crowdrisk-workbench-header {
+    gap: 0.7rem;
+    padding-bottom: 0.65rem;
+  }
+
+  .crowdrisk-workbench-title h1 {
+    font-size: 1.65rem;
+  }
+
+  .crowdrisk-workbench .crowdrisk-command-bar--summary {
+    grid-template-columns: 1fr;
+  }
+
+  .crowdrisk-workbench .crowdrisk-command-bar--summary button {
+    width: 100%;
+  }
+
+  .crowdrisk-inline-summary {
+    grid-template-columns: 1fr;
+  }
+
   .crowdrisk-home-hero {
     padding-top: 1rem;
   }
 
-  .crowdrisk-home-stats,
-  .crowdrisk-momentum-strip {
-    grid-template-columns: 1fr;
+	  .crowdrisk-home-stats,
+	  .crowdrisk-momentum-strip,
+	  .crowdrisk-answer-grid,
+	  .crowdrisk-row-ranges {
+	    grid-template-columns: 1fr;
+	  }
+
+  .crowdrisk-home-stats {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.45rem;
   }
 
-  .crowdrisk-global-status {
-    align-items: flex-start;
+  .crowdrisk-home-stats span {
+    padding: 0.65rem 0.5rem;
+    font-size: 0.72rem;
+    line-height: 1.2;
+  }
+
+  .crowdrisk-home-stats strong {
+    font-size: 1.45rem;
+  }
+
+  .crowdrisk-command-bar {
+    align-items: stretch;
+  }
+
+  .crowdrisk-command-bar button,
+  .crowdrisk-answer-grid button,
+  .crowdrisk-row-action button {
+    width: 100%;
+  }
+
+	  .crowdrisk-global-status {
+	    align-items: flex-start;
     flex-direction: column;
     gap: 0.35rem;
     white-space: normal;
   }
 
+  .crowdrisk-control-stack {
+    align-items: flex-start;
+    width: 100%;
+  }
+
+  .crowdrisk-control-row {
+    flex-wrap: wrap;
+    justify-content: flex-start;
+  }
+
   .crowdrisk-section-heading {
     align-items: flex-start;
     flex-direction: column;
+  }
+
+  .dossier-event-study-summary-strip {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .dossier-event-study-summary-strip > div {
+    padding: 0.6rem 0.75rem;
+    border-bottom: 1px solid rgba(168, 86, 29, 0.12);
+  }
+
+  .dossier-event-study-summary-strip > div:nth-child(even) {
+    border-right: 0;
+  }
+
+  .dossier-event-study-summary-strip > div:nth-child(3),
+  .dossier-event-study-summary-strip > div:nth-child(4) {
+    border-bottom: 0;
+  }
+
+  .crowdrisk-app--dark .dossier-event-study-summary-strip > div {
+    border-bottom-color: rgba(232, 218, 197, 0.12);
   }
 }
 
@@ -3991,4 +5935,35 @@ body,
   font-size: 0.75rem;
   font-weight: 700;
   text-transform: uppercase;
+}
+
+html:has(.crowdrisk-app--dark),
+body:has(.crowdrisk-app--dark) {
+  background-color: #181713;
+  color: #f4efe6;
+}
+
+.crowdrisk-app--dark .event-study-refresh {
+  border-color: rgba(232, 218, 197, 0.18);
+  background: rgba(232, 218, 197, 0.08);
+  color: var(--text-main);
+}
+
+.crowdrisk-app--dark .event-study-refresh:hover:not(:disabled) {
+  background: rgba(232, 218, 197, 0.15);
+}
+
+.event-study-error-alert {
+  margin-top: 1rem;
+  padding: 1rem;
+  border-radius: 10px;
+  background: rgba(139, 0, 0, 0.08);
+  border: 1px solid rgba(139, 0, 0, 0.18);
+  color: #8b0000;
+}
+
+.crowdrisk-app--dark .event-study-error-alert {
+  background: rgba(239, 68, 68, 0.08);
+  border-color: rgba(239, 68, 68, 0.24);
+  color: #f87171;
 }

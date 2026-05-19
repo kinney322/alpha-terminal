@@ -542,7 +542,7 @@ const RadarMasterView = ({ payload, selectedEventId, onSelectEvent }) => {
       </div>
 
       <div className="radar-table-container">
-        <table className="radar-table">
+        <table className="radar-table radar-master-table">
           <thead>
             <tr>
               <th>Ticker</th>
@@ -754,7 +754,7 @@ const RadarMasterView = ({ payload, selectedEventId, onSelectEvent }) => {
                             {item.market_state?.bias}
                           </span>
                         </td>
-                        <td>
+                        <td className="radar-risk-flags-cell">
                           {item.market_state?.risk_flags?.map((flag, idx) => (
                             <span key={idx} className="risk-flag-mini">{flag}</span>
                           ))}

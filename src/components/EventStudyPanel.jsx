@@ -943,7 +943,7 @@ export default function EventStudyPanel({ payload, eventStudySeed, onOpenStockDo
           </div>
 
           {error && (
-            <div style={{ marginTop: '1rem', padding: '1rem', background: 'rgba(139,0,0,0.08)', border: '1px solid rgba(139,0,0,0.18)', borderRadius: '10px', color: '#8b0000' }}>
+            <div className="event-study-error-alert">
               <p>{error}</p>
             </div>
           )}
@@ -1253,7 +1253,7 @@ export default function EventStudyPanel({ payload, eventStudySeed, onOpenStockDo
         </div>
 
         {leaderboardError ? (
-          <div className="event-study-soft-alert" style={{ background: 'rgba(251, 191, 36, 0.1)', color: '#b45309', borderColor: 'rgba(217, 119, 6, 0.2)' }}>
+          <div className="event-study-soft-alert">
             <AlertCircle size={16} />
             <span>智能連線超時，啟動備用迴路。目前顯示 Demo Data 展示用數據。</span>
           </div>

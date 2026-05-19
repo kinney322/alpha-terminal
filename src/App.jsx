@@ -5,7 +5,6 @@ import EventStudyPanel from './components/EventStudyPanel.jsx';
 import QuantBotChat from './components/QuantBotChat.jsx';
 import CatalystRadarShell from './components/CatalystRadarShell.jsx';
 import StockDossierSection from './components/StockDossierSection.jsx';
-import PublicLeaderboardPreview from './components/PublicLeaderboardPreview.jsx';
 import CrowdRiskHome from './components/CrowdRiskHome.jsx';
 import MomentumUniverseSection from './components/MomentumUniverseSection.jsx';
 import { fetchAndNormalizeRadarPayload } from './data/payloadAdapter.js';
@@ -13,11 +12,32 @@ import { fetchAndNormalizeRadarPayload } from './data/payloadAdapter.js';
 const PRODUCT_MODE = import.meta.env.VITE_PRODUCT_MODE || 'crowdrisk';
 
 const CROWDRISK_SECTIONS = [
-  { id: 'earnings-radar', label: 'Earnings Radar', subtitle: 'Pre / Event / Post' },
-  { id: 'event-study', label: 'Event Study', subtitle: 'Historical evidence' },
-  { id: 'momentum-universe', label: 'Momentum Universe', subtitle: 'Trend follow-through' },
-  { id: 'stock-dossier', label: 'Stock Dossier', subtitle: 'Judgment layer' }
+  { id: 'earnings-radar', label: { en: 'Earnings Radar', zh: '財報雷達' }, subtitle: { en: 'Pre / Event / Post', zh: '財報前 / 當日 / 之後' } },
+  { id: 'event-study', label: { en: 'Event Study', zh: '事件研究' }, subtitle: { en: 'Historical evidence', zh: '歷史證據' } },
+  { id: 'momentum-universe', label: { en: 'Momentum Universe', zh: '動能宇宙' }, subtitle: { en: 'Trend follow-through', zh: '趨勢延續' } },
+  { id: 'stock-dossier', label: { en: 'Stock Dossier', zh: '股票檔案' }, subtitle: { en: 'Judgment layer', zh: '判斷層' } }
 ];
+
+const CROWDRISK_APP_COPY = {
+  en: {
+    slogan: 'Follow the trend. Find the opportunity.',
+    sloganParts: ['Follow the trend.', 'Find the opportunity.'],
+    themeLabel: 'Theme',
+    lightTheme: 'Light',
+    darkTheme: 'Dark',
+    lastUpdated: 'Last updated',
+    localeLabel: 'Language'
+  },
+  zh: {
+    slogan: '跟蹤趨勢，發現機會。',
+    sloganParts: ['跟蹤趨勢。', '發現機會。'],
+    themeLabel: '主題',
+    lightTheme: '淺色',
+    darkTheme: '深色',
+    lastUpdated: '更新',
+    localeLabel: '語言'
+  }
+};
 
 const INTERNAL_TABS = [
   { id: 'scanner', label: 'Alpha Scanner', icon: '◉' },
@@ -41,6 +61,8 @@ const scrollViewportToTop = () => {
 function App() {
   const isCrowdRisk = PRODUCT_MODE === 'crowdrisk';
   const [activeTab, setActiveTab] = useState(isCrowdRisk ? 'home' : 'scanner');
+  const [locale, setLocale] = useState('en');
+  const [theme, setTheme] = useState('light');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [payload, setPayload] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -110,7 +132,7 @@ function App() {
     const generatedAt = payload?.meta?.generated_at || payload?.generated_at;
     if (!generatedAt) return loading ? 'Loading' : 'Not available';
     try {
-      return new Intl.DateTimeFormat('en-US', {
+      return new Intl.DateTimeFormat(locale === 'zh' ? 'zh-HK' : 'en-US', {
         month: 'short',
         day: 'numeric',
         hour: 'numeric',
@@ -119,7 +141,9 @@ function App() {
     } catch {
       return generatedAt;
     }
-  }, [loading, payload]);
+  }, [loading, locale, payload]);
+
+  const crowdRiskCopy = CROWDRISK_APP_COPY[locale] || CROWDRISK_APP_COPY.en;
 
   const crowdRiskPanels = {
     home: (
@@ -129,6 +153,7 @@ function App() {
         error={error}
         onNavigate={handleNavigate}
         onOpenStockDossier={handleOpenStockDossier}
+        locale={locale}
       />
     ),
     'earnings-radar': (
@@ -176,7 +201,7 @@ function App() {
 
   if (isCrowdRisk) {
     return (
-      <div className="crowdrisk-app">
+      <div className={`crowdrisk-app crowdrisk-app--${theme}`}>
         <header className="crowdrisk-topbar">
           <button
             className="crowdrisk-brand"
@@ -184,29 +209,71 @@ function App() {
             onClick={() => handleNavigate('home')}
             aria-label="Go to CrowdRisk home"
           >
-            <span>CrowdRisk</span>
-            <small>Follow the trend. Find the opportunity.</small>
+            <span className="crowdrisk-brand-mark">CrowdRisk</span>
+            <small className="crowdrisk-brand-slogan" aria-label={crowdRiskCopy.slogan}>
+              {(crowdRiskCopy.sloganParts || [crowdRiskCopy.slogan]).map((line, index) => (
+                <span
+                  className={`crowdrisk-slogan-line crowdrisk-slogan-line--${index === 0 ? 'trend' : 'opportunity'}`}
+                  key={line}
+                >
+                  {line}
+                </span>
+              ))}
+            </small>
           </button>
 
           <div className="crowdrisk-topbar-right">
-            {activeTab !== 'home' && (
-              <nav className="crowdrisk-section-nav" aria-label="CrowdRisk sections">
-                {CROWDRISK_SECTIONS.map((section) => (
-                  <button
-                    key={section.id}
-                    type="button"
-                    className={activeTab === section.id ? 'active' : ''}
-                    onClick={() => handleNavigate(section.id)}
-                    title={section.subtitle}
-                  >
-                    {section.label}
-                  </button>
-                ))}
-              </nav>
-            )}
+            <nav className="crowdrisk-section-nav" aria-label="CrowdRisk sections">
+              {CROWDRISK_SECTIONS.map((section) => (
+                <button
+                  key={section.id}
+                  type="button"
+                  className={activeTab === section.id ? 'active' : ''}
+                  onClick={() => handleNavigate(section.id)}
+                  title={section.subtitle[locale] || section.subtitle.en}
+                >
+                  {section.label[locale] || section.label.en}
+                </button>
+              ))}
+            </nav>
             <div className="crowdrisk-global-status" aria-label="CrowdRisk display status">
-              <span>Light / Dark</span>
-              <span>Last updated {lastUpdated}</span>
+              <div className="crowdrisk-control-stack">
+                <div className="crowdrisk-control-row">
+                  <div className="crowdrisk-locale-toggle" aria-label={crowdRiskCopy.localeLabel}>
+                    <button
+                      type="button"
+                      className={locale === 'en' ? 'active' : ''}
+                      onClick={() => setLocale('en')}
+                    >
+                      EN
+                    </button>
+                    <button
+                      type="button"
+                      className={locale === 'zh' ? 'active' : ''}
+                      onClick={() => setLocale('zh')}
+                    >
+                      繁
+                    </button>
+                  </div>
+                  <div className="crowdrisk-theme-toggle" aria-label={crowdRiskCopy.themeLabel}>
+                    <button
+                      type="button"
+                      className={theme === 'light' ? 'active' : ''}
+                      onClick={() => setTheme('light')}
+                    >
+                      {crowdRiskCopy.lightTheme}
+                    </button>
+                    <button
+                      type="button"
+                      className={theme === 'dark' ? 'active' : ''}
+                      onClick={() => setTheme('dark')}
+                    >
+                      {crowdRiskCopy.darkTheme}
+                    </button>
+                  </div>
+                </div>
+                <span className="crowdrisk-last-updated">{crowdRiskCopy.lastUpdated} {lastUpdated}</span>
+              </div>
             </div>
           </div>
         </header>

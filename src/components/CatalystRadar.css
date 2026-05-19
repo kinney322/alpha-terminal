@@ -36,19 +36,28 @@
 }
 
 .radar-header {
-  display: flex;
+  display: grid;
+  grid-template-columns: minmax(170px, 0.35fr) minmax(0, 0.65fr);
   justify-content: space-between;
-  align-items: center;
+  align-items: start;
+  gap: 16px;
   margin-bottom: 20px;
+}
+
+.radar-tabs,
+.radar-list-switch {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
 }
 
 .radar-tabs button, .radar-list-switch button {
   background: var(--surface-color);
   border: 1px solid var(--border-light);
+  color: var(--text-muted);
   padding: 8px 16px;
   cursor: pointer;
   border-radius: 6px;
-  margin-right: 10px;
   font-weight: 600;
   transition: all 0.2s ease;
 }
@@ -320,13 +329,17 @@
 
 .risk-flag-mini {
   display: inline-block;
-  background: #fef08a;
-  color: #854d0e;
-  padding: 2px 6px;
+  background: rgba(208, 131, 63, 0.14);
+  border: 1px solid rgba(208, 131, 63, 0.24);
+  color: #8a4b16;
+  padding: 2px 7px;
   border-radius: 4px;
   font-size: 0.75em;
   margin-right: 4px;
   margin-bottom: 4px;
+  max-width: 100%;
+  white-space: normal;
+  overflow-wrap: anywhere;
 }
 
 .post-result-cell {
@@ -572,6 +585,94 @@
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
 }
 
+.crowdrisk-app--dark .radar-detail-pane,
+.crowdrisk-app--dark .catalyst-intelligence-panel .panel-header,
+.crowdrisk-app--dark .radar-detail-tabs {
+  background: var(--background-color, #181713);
+  color: var(--text-main);
+}
+
+.crowdrisk-app--dark .radar-header {
+  border-bottom-color: rgba(232, 218, 197, 0.12);
+}
+
+.crowdrisk-app--dark .radar-tabs button,
+.crowdrisk-app--dark .radar-list-switch button,
+.crowdrisk-app--dark .momentum-group-filter button,
+.crowdrisk-app--dark .momentum-group-filter-compact button,
+.crowdrisk-app--dark .radar-detail-tabs button,
+.crowdrisk-app--dark .radar-search-clear,
+.crowdrisk-app--dark .close-btn {
+  border-color: rgba(232, 218, 197, 0.14);
+  background: rgba(33, 31, 26, 0.72);
+  color: var(--text-muted);
+}
+
+.crowdrisk-app--dark .radar-tabs button.active,
+.crowdrisk-app--dark .radar-list-switch button.active,
+.crowdrisk-app--dark .momentum-group-filter button.active,
+.crowdrisk-app--dark .momentum-group-filter-compact button.active,
+.crowdrisk-app--dark .radar-detail-tabs button.active {
+  border-color: rgba(208, 131, 63, 0.42);
+  background: rgba(208, 131, 63, 0.92);
+  color: #fffaf2;
+}
+
+.crowdrisk-app--dark .radar-search-input {
+  border-color: rgba(232, 218, 197, 0.18);
+  background: rgba(24, 23, 19, 0.66);
+  color: var(--text-main);
+}
+
+.crowdrisk-app--dark .radar-search-input::placeholder {
+  color: rgba(184, 173, 156, 0.72);
+}
+
+.crowdrisk-app--dark .radar-table th,
+.crowdrisk-app--dark .radar-table td {
+  border-color: rgba(232, 218, 197, 0.12);
+  color: var(--text-main);
+}
+
+.crowdrisk-app--dark .radar-row.selected {
+  background: rgba(208, 131, 63, 0.1);
+}
+
+.crowdrisk-app--dark .risk-flag-mini {
+  border-color: rgba(208, 131, 63, 0.3);
+  background: rgba(208, 131, 63, 0.16);
+  color: #f4c27d;
+}
+
+.crowdrisk-app--dark .card,
+.crowdrisk-app--dark .drawer-summary-strip > div,
+.crowdrisk-app--dark .reaction-summary-grid > div,
+.crowdrisk-app--dark .peer-readthrough-case,
+.crowdrisk-app--dark .peer-readthrough-metrics > div,
+.crowdrisk-app--dark .completed-refresh-status,
+.crowdrisk-app--dark .momentum-board-note,
+.crowdrisk-app--dark .radar-search-empty {
+  border-color: rgba(232, 218, 197, 0.12);
+  background: rgba(33, 31, 26, 0.72);
+  color: var(--text-main);
+  box-shadow: none;
+}
+
+.crowdrisk-app--dark .phase-badge {
+  border: 1px solid rgba(208, 131, 63, 0.28);
+  background: rgba(208, 131, 63, 0.14);
+  color: #f4c27d;
+}
+
+.radar-master-table td.radar-risk-flags-cell {
+  max-width: 360px;
+  white-space: normal !important;
+}
+
+.radar-master-table .risk-flag-mini {
+  vertical-align: top;
+}
+
 .grid-2col {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -634,4 +735,129 @@
   .radar-detail-tabs {
     top: 45px;
   }
+}
+
+@media (max-width: 760px) {
+  .radar-header {
+    grid-template-columns: 1fr;
+  }
+
+  .radar-tabs,
+  .radar-list-switch {
+    align-items: stretch;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    width: 100%;
+  }
+
+  .radar-tabs button,
+  .radar-list-switch button {
+    width: 100%;
+    padding-right: 10px;
+    padding-left: 10px;
+    text-align: center;
+  }
+
+  .radar-search-row {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .radar-search-input {
+    width: 100%;
+  }
+
+  .radar-risk-flags-cell {
+    min-width: 220px;
+  }
+
+  .radar-master-table {
+    min-width: 100%;
+    table-layout: fixed;
+  }
+
+  .radar-master-table th,
+  .radar-master-table td {
+    overflow-wrap: anywhere;
+    white-space: normal;
+  }
+
+  .radar-master-table th:nth-child(1),
+  .radar-master-table td:nth-child(1) {
+    width: 22%;
+  }
+
+  .radar-master-table th:nth-child(2),
+  .radar-master-table td:nth-child(2) {
+    width: 13%;
+  }
+
+  .radar-master-table th:nth-child(3),
+  .radar-master-table td:nth-child(3) {
+    width: 17%;
+  }
+
+  .radar-master-table th:nth-child(4),
+  .radar-master-table td:nth-child(4) {
+    width: 36%;
+  }
+
+  .radar-master-table th:nth-child(5),
+  .radar-master-table td:nth-child(5) {
+    width: 12%;
+  }
+
+  .stock-dossier-index-table {
+    min-width: 0;
+    table-layout: auto;
+  }
+
+  .stock-dossier-index-table,
+  .stock-dossier-index-table tbody,
+  .stock-dossier-index-table tr,
+  .stock-dossier-index-table td {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .stock-dossier-index-table thead {
+    display: none;
+  }
+
+  .stock-dossier-index-table tr {
+    padding: 0.72rem 0;
+    border-bottom: 1px solid var(--border-light);
+  }
+
+  .stock-dossier-index-table tr:last-child {
+    border-bottom: 0;
+  }
+
+  .stock-dossier-index-table td {
+    display: grid;
+    grid-template-columns: minmax(7.5rem, 0.42fr) minmax(0, 0.58fr);
+    gap: 0.65rem;
+    align-items: start;
+    padding: 0.32rem 0.72rem;
+    border-bottom: 0;
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+
+  .stock-dossier-index-table td::before {
+    color: var(--text-muted);
+    font-size: 0.68rem;
+    font-weight: 900;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .stock-dossier-index-table td:nth-child(1)::before { content: "Ticker"; }
+  .stock-dossier-index-table td:nth-child(2)::before { content: "Theme"; }
+  .stock-dossier-index-table td:nth-child(3)::before { content: "State"; }
+  .stock-dossier-index-table td:nth-child(4)::before { content: "Move"; }
+  .stock-dossier-index-table td:nth-child(5)::before { content: "Pulse"; }
+  .stock-dossier-index-table td:nth-child(6)::before { content: "Coverage"; }
+  .stock-dossier-index-table td:nth-child(7)::before { content: "Action"; }
 }
