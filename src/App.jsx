@@ -12,10 +12,10 @@ import { fetchAndNormalizeRadarPayload } from './data/payloadAdapter.js';
 const PRODUCT_MODE = import.meta.env.VITE_PRODUCT_MODE || 'crowdrisk';
 
 const CROWDRISK_SECTIONS = [
-  { id: 'earnings-radar', label: { en: 'Earnings Radar', zh: '財報雷達' }, subtitle: { en: 'Pre / Event / Post', zh: '財報前 / 當日 / 之後' } },
-  { id: 'event-study', label: { en: 'Event Study', zh: '事件研究' }, subtitle: { en: 'Historical evidence', zh: '歷史證據' } },
-  { id: 'momentum-universe', label: { en: 'Momentum Universe', zh: '動能宇宙' }, subtitle: { en: 'Trend follow-through', zh: '趨勢延續' } },
-  { id: 'stock-dossier', label: { en: 'Stock Dossier', zh: '股票檔案' }, subtitle: { en: 'Judgment layer', zh: '判斷層' } }
+  { id: 'earnings-radar', label: { en: 'Earnings Radar', zh: '財報雷達' }, shortLabel: { en: 'Earnings', zh: '財報' }, subtitle: { en: 'Pre / Event / Post', zh: '財報前 / 當日 / 之後' } },
+  { id: 'event-study', label: { en: 'Event Study', zh: '事件研究' }, shortLabel: { en: 'Event', zh: '事件' }, subtitle: { en: 'Historical evidence', zh: '歷史證據' } },
+  { id: 'momentum-universe', label: { en: 'Momentum Universe', zh: '動能宇宙' }, shortLabel: { en: 'Trend', zh: '動能' }, subtitle: { en: 'Trend follow-through', zh: '趨勢延續' } },
+  { id: 'stock-dossier', label: { en: 'Stock Dossier', zh: '股票檔案' }, shortLabel: { en: 'Dossier', zh: '檔案' }, subtitle: { en: 'Judgment layer', zh: '判斷層' } }
 ];
 
 const CROWDRISK_APP_COPY = {
@@ -232,7 +232,8 @@ function App() {
                   onClick={() => handleNavigate(section.id)}
                   title={section.subtitle[locale] || section.subtitle.en}
                 >
-                  {section.label[locale] || section.label.en}
+                  <span className="crowdrisk-section-label-long">{section.label[locale] || section.label.en}</span>
+                  <span className="crowdrisk-section-label-short">{section.shortLabel[locale] || section.shortLabel.en}</span>
                 </button>
               ))}
             </nav>
