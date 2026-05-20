@@ -7,6 +7,7 @@ import CatalystRadarShell from './components/CatalystRadarShell.jsx';
 import StockDossierSection from './components/StockDossierSection.jsx';
 import CrowdRiskHome from './components/CrowdRiskHome.jsx';
 import MomentumUniverseSection from './components/MomentumUniverseSection.jsx';
+import { buildMomentumUniverseSyntheticDetail } from './components/dossierHelpers.js';
 import { fetchAndNormalizeRadarPayload } from './data/payloadAdapter.js';
 
 const PRODUCT_MODE = import.meta.env.VITE_PRODUCT_MODE || 'crowdrisk';
@@ -26,7 +27,9 @@ const CROWDRISK_APP_COPY = {
     lightTheme: 'Light',
     darkTheme: 'Dark',
     lastUpdated: 'Last updated',
-    localeLabel: 'Language'
+    localeLabel: 'Language',
+    tickerSearchPlaceholder: 'Search ticker',
+    tickerSearchError: 'Enter a ticker'
   },
   zh: {
     slogan: '跟蹤趨勢，發現機會。',
@@ -35,7 +38,9 @@ const CROWDRISK_APP_COPY = {
     lightTheme: '淺色',
     darkTheme: '深色',
     lastUpdated: '更新',
-    localeLabel: '語言'
+    localeLabel: '語言',
+    tickerSearchPlaceholder: '搜尋代號',
+    tickerSearchError: '請輸入股票代號'
   }
 };
 
@@ -58,6 +63,24 @@ const scrollViewportToTop = () => {
   document.body.scrollTop = 0;
 };
 
+const normalizeTicker = (value) => String(value || '').trim().toUpperCase();
+
+const resolveDossierDetail = (payload, ticker) => {
+  const normalizedTicker = normalizeTicker(ticker);
+  if (!normalizedTicker) return null;
+
+  const details = Object.values(payload?.events_detail || {})
+    .filter((detail) => normalizeTicker(detail?.ticker) === normalizedTicker);
+
+  const preferredDetail = details.find((detail) => detail.event_phase === 'post_earnings')
+    || details.find((detail) => detail.event_phase === 'pre_earnings')
+    || details[0];
+
+  if (preferredDetail) return preferredDetail;
+
+  return buildMomentumUniverseSyntheticDetail(normalizedTicker, payload) || { ticker: normalizedTicker };
+};
+
 function App() {
   const isCrowdRisk = PRODUCT_MODE === 'crowdrisk';
   const [activeTab, setActiveTab] = useState(isCrowdRisk ? 'home' : 'scanner');
@@ -69,6 +92,8 @@ function App() {
   const [error, setError] = useState(null);
   const [dossierSeed, setDossierSeed] = useState(null);
   const [eventStudySeed, setEventStudySeed] = useState(null);
+  const [tickerSearchQuery, setTickerSearchQuery] = useState('');
+  const [tickerSearchError, setTickerSearchError] = useState('');
 
   useEffect(() => {
     let alive = true;
@@ -105,6 +130,19 @@ function App() {
     setDossierSeed({ ticker, eventDetail });
     setActiveTab(isCrowdRisk ? 'stock-dossier' : 'dossier');
     setIsMobileMenuOpen(false);
+  };
+
+  const handleTickerSearchSubmit = (event) => {
+    event.preventDefault();
+    const ticker = normalizeTicker(tickerSearchQuery);
+    if (!ticker) {
+      setTickerSearchError(crowdRiskCopy.tickerSearchError);
+      return;
+    }
+
+    setTickerSearchError('');
+    setTickerSearchQuery(ticker);
+    handleOpenStockDossier(ticker, resolveDossierDetail(payload, ticker));
   };
 
   const handleOpenEventStudy = (ticker) => {
@@ -223,6 +261,23 @@ function App() {
           </button>
 
           <div className="crowdrisk-topbar-right">
+            <form
+              className="crowdrisk-ticker-search"
+              onSubmit={handleTickerSearchSubmit}
+              aria-label="Open Stock Dossier by ticker"
+            >
+              <input
+                type="search"
+                value={tickerSearchQuery}
+                onChange={(event) => {
+                  setTickerSearchQuery(event.target.value.toUpperCase());
+                  if (tickerSearchError) setTickerSearchError('');
+                }}
+                placeholder={crowdRiskCopy.tickerSearchPlaceholder}
+                aria-invalid={tickerSearchError ? 'true' : 'false'}
+              />
+              {tickerSearchError && <span role="alert">{tickerSearchError}</span>}
+            </form>
             <nav className="crowdrisk-section-nav" aria-label="CrowdRisk sections">
               {CROWDRISK_SECTIONS.map((section) => (
                 <button

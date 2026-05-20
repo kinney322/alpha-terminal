@@ -2373,6 +2373,52 @@ html, body, #root, .app-container, .main-content {
   min-width: 0;
 }
 
+.crowdrisk-ticker-search {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(8.5rem, 13rem);
+  align-items: center;
+  gap: 0.35rem;
+  flex: 0 0 auto;
+  min-width: 0;
+}
+
+.crowdrisk-ticker-search input {
+  width: 100%;
+  min-height: 2.45rem;
+  box-sizing: border-box;
+  border: 1px solid var(--border-light);
+  border-radius: 999px;
+  background: var(--surface-color);
+  color: var(--text-main);
+  font: inherit;
+  font-weight: 750;
+  letter-spacing: 0;
+  padding: 0 0.85rem;
+  text-transform: uppercase;
+}
+
+.crowdrisk-ticker-search input::placeholder {
+  color: var(--text-muted);
+  text-transform: none;
+}
+
+.crowdrisk-ticker-search input:focus {
+  outline: none;
+  border-color: rgba(168, 86, 29, 0.55);
+  box-shadow: 0 0 0 3px rgba(168, 86, 29, 0.12);
+}
+
+.crowdrisk-ticker-search span {
+  position: absolute;
+  top: calc(100% + 0.25rem);
+  left: 0.75rem;
+  color: var(--signal-sell);
+  font-size: 0.74rem;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
 .crowdrisk-section-nav {
   display: flex;
   align-items: center;
@@ -3378,6 +3424,7 @@ html, body, #root, .app-container, .main-content {
 }
 
 .crowdrisk-app--dark .crowdrisk-section-nav,
+.crowdrisk-app--dark .crowdrisk-ticker-search input,
 .crowdrisk-app--dark .crowdrisk-locale-toggle,
 .crowdrisk-app--dark .crowdrisk-theme-toggle {
   border-color: rgba(232, 218, 197, 0.12);
@@ -5657,6 +5704,11 @@ body,
     width: 100%;
   }
 
+  .crowdrisk-ticker-search {
+    width: 100%;
+    grid-template-columns: minmax(0, 1fr);
+  }
+
   .crowdrisk-section-nav {
     width: 100%;
     overflow-x: auto;
@@ -5867,6 +5919,15 @@ body,
 
   .crowdrisk-brand {
     width: 100%;
+  }
+
+  .crowdrisk-ticker-search {
+    grid-template-columns: 1fr;
+  }
+
+  .crowdrisk-ticker-search span {
+    position: static;
+    padding-left: 0.75rem;
   }
 
   .crowdrisk-brand-slogan {
