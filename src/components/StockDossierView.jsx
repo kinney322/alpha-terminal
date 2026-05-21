@@ -74,6 +74,51 @@ const formatTechnicalPrice = (value) => {
   return `$${num.toFixed(2)}`;
 };
 
+const formatMarketPrice = (value) => {
+  const num = Number(value);
+  if (!Number.isFinite(num) || num <= 0) return null;
+  return `$${num.toFixed(2)}`;
+};
+
+const resolveLatestMarketPrice = (eventDetail, payload, ticker) => {
+  const normalizedTicker = String(ticker || eventDetail?.ticker || '').trim().toUpperCase();
+  const matchingMomentumRow = (payload?.momentum_universe?.rankings || [])
+    .find((row) => String(row?.ticker || '').trim().toUpperCase() === normalizedTicker);
+
+  const sources = [
+    eventDetail?.current_price,
+    eventDetail?.latest_price,
+    eventDetail?.price,
+    eventDetail?.close,
+    eventDetail?.trend_setup?.metrics?.latest_close,
+    matchingMomentumRow?.price,
+    matchingMomentumRow?.latest_close,
+    matchingMomentumRow?.trend_setup?.metrics?.latest_close
+  ];
+
+  for (const source of sources) {
+    const formatted = formatMarketPrice(source);
+    if (formatted) return formatted;
+  }
+
+  return null;
+};
+
+const buildLiveMarketSnapshot = (snapshot, eventDetail, payload, ticker) => {
+  const latestPrice = resolveLatestMarketPrice(eventDetail, payload, ticker);
+  if (!snapshot && latestPrice) {
+    return {
+      currentPrice: latestPrice
+    };
+  }
+  if (!snapshot) return null;
+  if (!latestPrice) return snapshot;
+  return {
+    ...snapshot,
+    currentPrice: latestPrice
+  };
+};
+
 const shouldShowTechnicalSupport = (setup) => (
   setup.action_family === 'support'
   || setup.action_family === 'downtrend'
@@ -318,6 +363,7 @@ const StockDossierView = ({ eventDetail, payload, onOpenEventStudy }) => {
   const priceTrendRisk = buildPriceTrendRisk(enrichedEventDetail, payload);
   const valuationCore = buildValuationCore(enrichedEventDetail, dossierProfile);
   const stockOverview = buildStockOverview(enrichedEventDetail, payload, dossierProfile);
+  const marketSnapshot = buildLiveMarketSnapshot(dossierProfile?.marketSnapshot, enrichedEventDetail, payload, tickerForSummary);
   const marketEvidence = dossierProfile?.marketEvidence || {
     title: 'Market evidence requires more context before it can support a research conclusion.',
     points: [
@@ -396,9 +442,9 @@ const StockDossierView = ({ eventDetail, payload, onOpenEventStudy }) => {
             <p>{valuationGate}. {breakPoint}</p>
           </div>
 
-          {dossierProfile?.marketSnapshot && (
+          {marketSnapshot && (
             <div className="dossier-market-strip" aria-label={`${ticker} market snapshot`}>
-              {Object.entries(dossierProfile.marketSnapshot).map(([key, value]) => (
+              {Object.entries(marketSnapshot).map(([key, value]) => (
                 <div key={key}>
                   <span>{formatLabel(key)}</span>
                   <strong>{value}</strong>

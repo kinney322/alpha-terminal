@@ -11,6 +11,7 @@ import { buildMomentumUniverseSyntheticDetail } from './components/dossierHelper
 import { fetchAndNormalizeRadarPayload } from './data/payloadAdapter.js';
 
 const PRODUCT_MODE = import.meta.env.VITE_PRODUCT_MODE || 'crowdrisk';
+const RADAR_PAYLOAD_REFRESH_MS = 5 * 60 * 1000;
 
 const CROWDRISK_SECTIONS = [
   { id: 'earnings-radar', label: { en: 'Earnings Radar', zh: '財報雷達' }, shortLabel: { en: 'Earnings', zh: '財報' }, subtitle: { en: 'Pre / Event / Post', zh: '財報前 / 當日 / 之後' } },
@@ -97,22 +98,29 @@ function App() {
 
   useEffect(() => {
     let alive = true;
-    fetchAndNormalizeRadarPayload()
-      .then((data) => {
-        if (!alive) return;
-        setPayload(data);
-        setError(null);
-      })
-      .catch((err) => {
-        if (!alive) return;
-        console.error('Failed to load CrowdRisk radar payload', err);
-        setError(err);
-      })
-      .finally(() => {
-        if (alive) setLoading(false);
-      });
+    const loadPayload = () => {
+      fetchAndNormalizeRadarPayload()
+        .then((data) => {
+          if (!alive) return;
+          setPayload(data);
+          setError(null);
+        })
+        .catch((err) => {
+          if (!alive) return;
+          console.error('Failed to load CrowdRisk radar payload', err);
+          setError(err);
+        })
+        .finally(() => {
+          if (alive) setLoading(false);
+        });
+    };
+
+    loadPayload();
+    const refreshTimer = window.setInterval(loadPayload, RADAR_PAYLOAD_REFRESH_MS);
+
     return () => {
       alive = false;
+      window.clearInterval(refreshTimer);
     };
   }, []);
 
