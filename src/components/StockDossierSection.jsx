@@ -1,10 +1,13 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import StockDossierIndex from './StockDossierIndex';
 import StockDossierView from './StockDossierView';
+import StockLogo from './StockLogo';
 import { buildDossierRecords, normalizeTicker } from './dossierHelpers';
 import { getStockDossierProfile } from '../data/stockDossierProfiles';
+import { buildStockLogoUrl } from '../data/stockLogoUrls';
 
 const DOSSIER_SECTIONS = [
+  { id: 'case-summary', label: 'Case Summary' },
   { id: 'company-overview', label: 'Company Overview' },
   { id: 'valuation-core', label: 'Valuation Core' },
   { id: 'market-evidence', label: 'Market Evidence' },
@@ -115,8 +118,9 @@ export default function StockDossierSection({ payload, loading, error, dossierSe
 
   const companyLogoUrl = resolvedDetail?.company_logo_url
     || resolvedDetail?.logo_url
+    || resolvedDetail?.logoUrl
     || dossierProfile?.logoUrl
-    || '';
+    || buildStockLogoUrl(selectedTicker);
   const companyName = resolvedDetail?.company_name || dossierProfile?.companyName || selectedTicker;
   const exchange = resolvedDetail?.exchange || dossierProfile?.exchange || '';
   const tickerLine = exchange ? `${exchange}:${normalizeTicker(selectedTicker)}` : normalizeTicker(selectedTicker);
@@ -140,19 +144,13 @@ export default function StockDossierSection({ payload, loading, error, dossierSe
       <div className="stock-dossier-detail-layout">
         <aside className="stock-dossier-side-nav" aria-label="Dossier sections">
           <div className="stock-dossier-side-profile">
-            <div className={`stock-dossier-side-logo ${companyLogoUrl ? 'has-logo' : ''}`}>
-              {companyLogoUrl && (
-                <img
-                  src={companyLogoUrl}
-                  alt={`${companyName} logo`}
-                  onError={(event) => {
-                    event.currentTarget.style.display = 'none';
-                    event.currentTarget.parentElement?.classList.add('logo-fallback-visible');
-                  }}
-                />
-              )}
-              <span>{normalizeTicker(selectedTicker).slice(0, 4)}</span>
-            </div>
+            <StockLogo
+              ticker={selectedTicker}
+              companyName={companyName}
+              logoUrl={companyLogoUrl}
+              size="side"
+              className="stock-dossier-side-logo"
+            />
             <div>
               <strong>{companyName}</strong>
               <span>{tickerLine} Stock Dossier</span>

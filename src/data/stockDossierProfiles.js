@@ -1,9 +1,11 @@
+import { buildStockLogoUrl } from './stockLogoUrls';
+
 const stockDossierProfiles = {
   DDOG: {
     ticker: 'DDOG',
     companyName: 'Datadog, Inc.',
     exchange: 'NASDAQ',
-    logoUrl: 'https://pub-03e0405010774afe9ca6d569e0cb43b1.r2.dev/crowdrisk/logos/DDOG.png',
+    logoUrl: buildStockLogoUrl('DDOG'),
     overview:
       'Datadog is a cloud-based observability and security platform used by engineering and operations teams to monitor infrastructure, applications, logs, user experience, and cloud-security workflows.',
     category: 'Cloud & AI Platform',

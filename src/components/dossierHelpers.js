@@ -1,3 +1,5 @@
+import { buildStockLogoUrl } from '../data/stockLogoUrls.js';
+
 export const normalizeTicker = (t) => String(t || '').trim().toUpperCase();
 
 const formatSignedPct = (value) => {
@@ -355,9 +357,12 @@ export const buildEvidenceBoard = (eventDetail, payload) => {
 export const buildMomentumUniverseSyntheticDetail = (ticker, payload) => {
   const ranking = (payload?.momentum_universe?.rankings || []).find(r => r.ticker === ticker);
   if (!ranking) return null;
+  const normalizedTicker = normalizeTicker(ticker);
   return {
-    event_id: `${ticker}-MomentumUniverse`,
-    ticker,
+    event_id: `${normalizedTicker}-MomentumUniverse`,
+    ticker: normalizedTicker,
+    logoUrl: buildStockLogoUrl(normalizedTicker),
+    company_logo_url: buildStockLogoUrl(normalizedTicker),
     event_phase: "off_cycle_universe",
     event_category: "Momentum Universe",
     status: "momentum_universe",
@@ -408,6 +413,7 @@ export const buildDossierRecords = (payload) => {
     if (!tickerMap.has(norm)) {
       tickerMap.set(norm, {
         ticker: norm,
+        logoUrl: buildStockLogoUrl(norm),
         companyName: null,
         primaryEventDetail: null,
         secondaryContexts: {
@@ -425,6 +431,9 @@ export const buildDossierRecords = (payload) => {
   Object.entries(payload.events_detail || {}).forEach(([eventId, detail]) => {
     const rec = getOrCreate(detail.ticker);
     if (!rec.companyName && detail.company_name) rec.companyName = detail.company_name;
+    if (detail.company_logo_url || detail.logo_url) {
+      rec.logoUrl = detail.company_logo_url || detail.logo_url;
+    }
 
     let score = 150; // default unknown real event
 

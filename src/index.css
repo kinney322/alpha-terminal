@@ -4228,6 +4228,84 @@ html, body, #root, .app-container, .main-content {
   display: block;
 }
 
+.stock-logo {
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  border-radius: 12px;
+  letter-spacing: 0;
+}
+
+.stock-logo > * {
+  grid-area: 1 / 1;
+}
+
+.stock-logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.stock-logo.has-logo span {
+  display: none;
+}
+
+.stock-logo.has-logo {
+  border: 1px solid rgba(168, 86, 29, 0.16);
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: none;
+}
+
+.stock-logo.has-brand-container {
+  border-color: color-mix(in srgb, var(--stock-logo-brand-bg) 24%, transparent);
+  background: var(--stock-logo-brand-bg);
+  box-shadow: 0 10px 24px color-mix(in srgb, var(--stock-logo-brand-bg) 18%, transparent);
+}
+
+.stock-logo.has-generated-logo {
+  border-color: color-mix(in srgb, var(--stock-logo-bg) 42%, transparent);
+  background:
+    linear-gradient(145deg, color-mix(in srgb, var(--stock-logo-bg) 88%, #ffffff 12%), var(--stock-logo-bg));
+  color: var(--stock-logo-fg);
+  box-shadow: inset 0 -18px 34px rgba(0, 0, 0, 0.14), 0 10px 24px rgba(28, 25, 23, 0.1);
+}
+
+.stock-logo.has-generated-logo span {
+  display: block;
+}
+
+.stock-logo--side {
+  width: 4.1rem;
+  aspect-ratio: 1;
+  font-size: 1rem;
+  font-weight: 950;
+}
+
+.stock-logo--side img {
+  padding: 0;
+}
+
+.stock-logo--index {
+  width: 2.45rem;
+  aspect-ratio: 1;
+  border: 1px solid rgba(168, 86, 29, 0.18);
+  border-radius: 10px;
+  font-size: 0.72rem;
+  font-weight: 950;
+  flex: 0 0 auto;
+}
+
+.stock-logo--index img {
+  padding: 0;
+}
+
+.stock-dossier-index-identity {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  min-width: 0;
+}
+
 .stock-dossier-side-profile strong {
   display: block;
   color: var(--text-primary);
@@ -4541,7 +4619,7 @@ html, body, #root, .app-container, .main-content {
 
 .dossier-verdict-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
   gap: 0.9rem;
   margin-top: 0;
 }
@@ -4578,7 +4656,7 @@ html, body, #root, .app-container, .main-content {
 
 .dossier-case-summary {
   display: grid;
-  grid-template-columns: minmax(220px, 0.3fr) minmax(0, 0.7fr);
+  grid-template-columns: minmax(190px, 0.24fr) minmax(0, 1fr);
   gap: 1.25rem;
   margin-bottom: 1.5rem;
   padding: 1.25rem;
@@ -4801,6 +4879,7 @@ html, body, #root, .app-container, .main-content {
   border-left: 4px solid rgba(168, 86, 29, 0.32);
 }
 
+#case-summary,
 #company-overview,
 #valuation-core,
 #market-evidence,

@@ -504,7 +504,7 @@ const StockDossierView = ({ eventDetail, payload, onOpenEventStudy }) => {
       </section>
 
       {(renderedVerdict.support.length > 0 || renderedVerdict.risks.length > 0) && (
-        <section className="card dossier-case-summary" aria-label={`${ticker} verdict summary`}>
+        <section id="case-summary" className="card dossier-case-summary" aria-label={`${ticker} verdict summary`}>
           <div>
             <p className="crowdrisk-kicker">Case Summary</p>
             <h3>What has to keep working?</h3>

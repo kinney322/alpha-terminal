@@ -1,5 +1,7 @@
 import React, { useMemo } from 'react';
 import { buildDossierRecords } from './dossierHelpers';
+import StockLogo from './StockLogo';
+import { getStockDossierProfile } from '../data/stockDossierProfiles';
 
 const formatLabel = (val) => val ? val.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase()) : 'Not Included';
 
@@ -41,9 +43,19 @@ export default function StockDossierIndex({ payload, onOpenTicker }) {
               dossierRecords.map(rec => (
                 <tr key={rec.ticker} className="radar-row" onClick={() => onOpenTicker(rec.ticker, rec.primaryEventDetail)}>
                   <td>
-                    <div style={{ fontWeight: 'bold' }}>{rec.ticker}</div>
-                    <div style={{ fontSize: '0.8em', color: 'var(--text-muted)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: '120px' }}>
-                      {rec.companyName || 'Company Pending'}
+                    <div className="stock-dossier-index-identity">
+                      <StockLogo
+                        ticker={rec.ticker}
+                        companyName={rec.companyName}
+                        logoUrl={rec.logoUrl || rec.primaryEventDetail?.company_logo_url || rec.primaryEventDetail?.logo_url || getStockDossierProfile(rec.ticker)?.logoUrl || ''}
+                        size="index"
+                      />
+                      <div>
+                        <div style={{ fontWeight: 'bold' }}>{rec.ticker}</div>
+                        <div style={{ fontSize: '0.8em', color: 'var(--text-muted)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: '120px' }}>
+                          {rec.companyName || 'Company Pending'}
+                        </div>
+                      </div>
                     </div>
                   </td>
                   <td>
