@@ -1373,6 +1373,51 @@ body {
   color: var(--eink-ink);
 }
 
+.audit-pending-value {
+  color: var(--eink-muted);
+  font-style: italic;
+  font-weight: 700;
+}
+
+.audit-status-cell {
+  max-width: 180px;
+}
+
+.audit-status-pill {
+  display: inline-flex;
+  align-items: center;
+  max-width: 100%;
+  padding: 0.38rem 0.58rem;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 800;
+  line-height: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  border: 1px solid rgba(44, 62, 80, 0.08);
+  background: rgba(255, 253, 247, 0.72);
+  color: var(--eink-muted);
+}
+
+.audit-status-pill--ready {
+  border-color: rgba(58, 141, 105, 0.22);
+  background: rgba(235, 250, 243, 0.82);
+  color: var(--eink-green);
+}
+
+.audit-status-pill--pending {
+  border-color: rgba(181, 89, 28, 0.2);
+  background: rgba(250, 242, 232, 0.92);
+  color: var(--eink-gold-deep);
+}
+
+.audit-status-pill--excluded {
+  border-color: rgba(165, 58, 58, 0.18);
+  background: rgba(250, 236, 234, 0.9);
+  color: var(--eink-red);
+}
+
 .event-study-refresh {
   display: inline-flex;
   align-items: center;
