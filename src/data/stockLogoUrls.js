@@ -179,10 +179,16 @@ const STOCK_LOGO_SELECTED_BATCH2_V4_TICKERS = new Set([
   'KDP', 'KO', 'LIN', 'LMT', 'MDLZ', 'MPWR', 'UBER', 'VRTX'
 ]);
 
+const STOCK_LOGO_REMAINING7_V1_TICKERS = new Set([
+  'BKNG', 'CEG', 'COST', 'EMR', 'EXC', 'MRVL', 'SPG'
+]);
+
 export const buildStockLogoUrl = (ticker) => {
   const normalizedTicker = String(ticker || '').trim().toUpperCase();
   if (!normalizedTicker) return '';
-  const version = STOCK_LOGO_SELECTED_BATCH2_V4_TICKERS.has(normalizedTicker)
+  const version = STOCK_LOGO_REMAINING7_V1_TICKERS.has(normalizedTicker)
+    ? 'remaining7-v1-20260521'
+    : STOCK_LOGO_SELECTED_BATCH2_V4_TICKERS.has(normalizedTicker)
     ? 'selected-batch2-v4-20260521'
     : STOCK_LOGO_SELECTED_V3_TICKERS.has(normalizedTicker)
     ? 'selected-v3-20260521'
