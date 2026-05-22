@@ -76,7 +76,7 @@ const STOCK_LOGO_VERSION_BY_TICKER = {
   "HTGC": 'batch-20260521',
   "IBM": 'batch-20260521',
   "IDXX": 'batch-20260521',
-  "INTU": 'batch-20260521',
+  "INTU": 'intu-normalized-20260522',
   "ISRG": 'batch-20260521',
   "JNJ": 'batch-20260521',
   "JPM": 'batch-20260521',
