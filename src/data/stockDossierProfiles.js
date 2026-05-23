@@ -82,14 +82,14 @@ const stockDossierProfiles = {
         marginOfSafety: 'None',
         overallRead: 'High quality compounder; valuation leaves no margin of safety.',
         why:
-          'DDOG is executing well, with Q1 revenue growth of 32% and strong free-cash-flow conversion. At roughly 16x FY26 revenue guide and about 55x FY26 FCF if Q1 margin holds, the price already assumes years of durable growth and strong cash margins.'
+          'DDOG is executing well, with Q1 revenue growth of 32% and strong free-cash-flow conversion. At roughly 16x FY2026 revenue guide and about 55x FY2026 FCF if Q1 margin holds, the price already assumes years of durable growth and strong cash margins.'
       },
       coreMetrics: [
         { id: 'revenue_growth', label: 'Revenue Growth', value: 0.32, format: 'percent' },
         { id: 'fcf_margin', label: 'FCF Margin', value: 0.29, format: 'percent' },
         { id: 'rule_of_40', label: 'Rule of 40', value: 61, format: 'number' },
-        { id: 'ev_revenue', label: 'EV / FY26 Revenue', value: 16, format: 'multiple' },
-        { id: 'ev_fcf', label: 'EV / FY26 FCF', value: 55, format: 'multiple' },
+        { id: 'ev_revenue', label: 'EV / FY2026 Revenue', value: 16, format: 'multiple' },
+        { id: 'ev_fcf', label: 'EV / FY2026 FCF', value: 55, format: 'multiple' },
         { id: 'sbc_revenue', label: 'SBC / Revenue', value: 0.196, format: 'percent' },
         { id: 'gross_margin', label: 'GAAP Gross Margin', value: 0.79, format: 'percent' },
         { id: 'cash_securities', label: 'Cash + Securities', value: 4.76, format: 'billion' },
@@ -106,18 +106,73 @@ const stockDossierProfiles = {
         'Customer concentration detail',
         'Clean ROIC after excess cash and SBC adjustment'
       ],
+      forwardValuationRange: {
+        valuationMethod: 'FY2028 model revenue x EV / revenue range, with EV / FCF as cross-check',
+        forwardModelHorizon: 'FY2027 / FY2028 model assumption',
+        forecastMetric: 'Revenue',
+        dataType: 'Model assumption, not live consensus',
+        confidence: 'Medium-low until current full consensus model and clean FCF bridge are added',
+        fy26RevenueGuide: '$4.30B-$4.34B',
+        fy26RevenueMid: 4.32,
+        netCashAdjustment: 3.8,
+        methodNote: 'Model assumption, not live consensus. Current company guidance is FY2026; FY2027 and FY2028 are forward model years used for valuation only.',
+        fiscalYearNote: 'Fiscal-year note: current company guide is FY2026. FY2027 and FY2028 figures below are model assumptions, not live consensus. Datadog fiscal year-end is not verified in the current payload.',
+        missingEvidence: [
+          'Current full consensus model',
+          'Explicit diluted share count',
+          'Clean FY2028 model FCF bridge for EV / FCF valuation'
+        ],
+        scenarios: [
+          {
+            label: 'Bear',
+            fy27Revenue: 5.18,
+            fy28Revenue: 5.9,
+            revenueGrowth: 'FY2027 model +20% / FY2028 model +14%',
+            evRevenueMultiple: 9,
+            evFcfMultiple: 31
+          },
+          {
+            label: 'Base',
+            fy27Revenue: 5.36,
+            fy28Revenue: 6.49,
+            revenueGrowth: 'FY2027 model +24% / FY2028 model +21%',
+            evRevenueMultiple: 13,
+            evFcfMultiple: 43
+          },
+          {
+            label: 'Bull',
+            fy27Revenue: 5.53,
+            fy28Revenue: 7.19,
+            revenueGrowth: 'FY2027 model +28% / FY2028 model +30%',
+            evRevenueMultiple: 16,
+            evFcfMultiple: 52
+          }
+        ]
+      },
       scenarios: [
         {
           label: 'Bull Case',
-          text: 'Revenue compounds 25%-30%, net retention stays in the low-120%s or better, AI/security products expand wallet share, FCF margin moves above 30%, and SBC as a percentage of revenue declines.'
+          text: 'Revenue compounds 25%-30%, net retention stays in the low-120%s or better, AI/security products expand wallet share, FCF margin moves above 30%, and SBC as a percentage of revenue declines.',
+          impliedOutcome: 'Premium valuation can remain defensible if DDOG proves AI/security workload expansion is additive and margins stay above 30%.',
+          upsideDownside: 'References the Valuation Core forward model; price range and median return are model-derived, not formal price targets.',
+          threeYearIrr: 'Scenario-level IRR is not separately modeled here; see Valuation Core 3Y IRR to median.',
+          trigger: 'RPO, $100k+ ARR customers, net retention, FCF margin, and SBC discipline all improve together.'
         },
         {
           label: 'Base Case',
-          text: 'Revenue decelerates from 32% toward the low/mid-20%s, FCF margin stays high-20%s, SBC improves gradually, and upside is mostly limited by multiple risk.'
+          text: 'Revenue decelerates from 32% toward the low/mid-20%s, FCF margin stays high-20%s, SBC improves gradually, and upside is mostly limited by multiple risk.',
+          impliedOutcome: 'Business quality stays high, but expected return is capped because valuation already capitalizes much of the story.',
+          upsideDownside: 'References the Valuation Core forward model; price range and median return are model-derived, not formal price targets.',
+          threeYearIrr: 'Scenario-level IRR is not separately modeled here; see Valuation Core 3Y IRR to median.',
+          trigger: 'Growth moderates, FCF holds high-20%s, and the market keeps DDOG on a premium but less forgiving multiple.'
         },
         {
           label: 'Bear Case',
-          text: 'Growth falls below 20%, cloud optimization or native tools pressure pricing, product expansion slows, or SBC stays elevated. Downside would be valuation-led.'
+          text: 'Growth falls below 20%, cloud optimization or native tools pressure pricing, product expansion slows, or SBC stays elevated. Downside would be valuation-led.',
+          impliedOutcome: 'Multiple compression becomes the main downside path if execution no longer supports priced-for-perfection assumptions.',
+          upsideDownside: 'References the Valuation Core forward model; price range and median return are model-derived, not formal price targets.',
+          threeYearIrr: 'Scenario-level IRR is not separately modeled here; see Valuation Core 3Y IRR to median.',
+          trigger: 'Revenue growth drops below 20%-25%, retention weakens, margins slip, or dilution stays elevated.'
         }
       ],
       killData: [

@@ -63,30 +63,51 @@ export default function StockDossierSection({ payload, loading, error, dossierSe
   useEffect(() => {
     if (!selectedTicker) return undefined;
 
-    const sections = DOSSIER_SECTIONS
+    let frame = null;
+    const timers = [];
+    const scrollRoot = document.querySelector('.main-content');
+
+    const getSections = () => DOSSIER_SECTIONS
       .map(section => document.getElementById(section.id))
       .filter(Boolean);
 
-    if (sections.length === 0) return undefined;
+    const updateActiveFromScroll = () => {
+      frame = null;
+      const sections = getSections();
+      if (sections.length === 0) return;
+      const anchorY = Math.min(220, window.innerHeight * 0.36);
+      let current = sections[0]?.id;
 
-    const observer = new IntersectionObserver((entries) => {
-      const visible = entries
-        .filter(entry => entry.isIntersecting)
-        .sort((a, b) => (
-          Math.abs(a.boundingClientRect.top - 132) - Math.abs(b.boundingClientRect.top - 132)
-        ))[0];
+      sections.forEach((section) => {
+        if (section.getBoundingClientRect().top <= anchorY) {
+          current = section.id;
+        }
+      });
 
-      if (visible?.target?.id) {
-        setActiveSection(visible.target.id);
+      if (current) {
+        setActiveSection(current);
       }
-    }, {
-      rootMargin: '-22% 0px -58% 0px',
-      threshold: [0.12, 0.24, 0.48]
-    });
+    };
 
-    sections.forEach(section => observer.observe(section));
+    const requestUpdate = () => {
+      if (frame !== null) return;
+      frame = window.requestAnimationFrame(updateActiveFromScroll);
+    };
 
-    return () => observer.disconnect();
+    requestUpdate();
+    timers.push(window.setTimeout(requestUpdate, 80));
+    timers.push(window.setTimeout(requestUpdate, 240));
+    window.addEventListener('scroll', requestUpdate, { passive: true });
+    scrollRoot?.addEventListener('scroll', requestUpdate, { passive: true });
+    window.addEventListener('resize', requestUpdate);
+
+    return () => {
+      if (frame !== null) window.cancelAnimationFrame(frame);
+      timers.forEach(timer => window.clearTimeout(timer));
+      window.removeEventListener('scroll', requestUpdate);
+      scrollRoot?.removeEventListener('scroll', requestUpdate);
+      window.removeEventListener('resize', requestUpdate);
+    };
   }, [selectedTicker, resolvedDetail]);
 
   if (loading) {

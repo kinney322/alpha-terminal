@@ -3840,6 +3840,7 @@ html, body, #root, .app-container, .main-content {
 .crowdrisk-app--dark .stock-dossier-side-state,
 .crowdrisk-app--dark .dossier-why-now,
 .crowdrisk-app--dark .dossier-quick-facts > div,
+.crowdrisk-app--dark .dossier-overview-lens-grid article,
 .crowdrisk-app--dark .dossier-profile-sections article,
 .crowdrisk-app--dark .dossier-verdict-grid div,
 .crowdrisk-app--dark .dossier-snapshot-board,
@@ -3847,12 +3848,21 @@ html, body, #root, .app-container, .main-content {
 .crowdrisk-app--dark .dossier-radar-panel,
 .crowdrisk-app--dark .dossier-valuation-verdict > div,
 .crowdrisk-app--dark .dossier-valuation-metrics > div,
+.crowdrisk-app--dark .dossier-forward-valuation-range,
+.crowdrisk-app--dark .dossier-forward-fiscal-note,
+.crowdrisk-app--dark .dossier-forward-method-grid > div,
+.crowdrisk-app--dark .dossier-forward-range-summary > div,
+.crowdrisk-app--dark .dossier-forward-range-table-wrap,
+.crowdrisk-app--dark .dossier-valuation-research-block,
+.crowdrisk-app--dark .dossier-valuation-research-metrics > div,
 .crowdrisk-app--dark .dossier-valuation-judgment,
 .crowdrisk-app--dark .dossier-event-study-summary-strip,
 .crowdrisk-app--dark .dossier-event-study-summary-strip > div,
+.crowdrisk-app--dark .dossier-reaction-quality-grid > div,
 .crowdrisk-app--dark .dossier-event-study-board,
 .crowdrisk-app--dark .dossier-event-study-metrics > div,
 .crowdrisk-app--dark .dossier-scenario-grid > div,
+.crowdrisk-app--dark .dossier-risk-monitor-grid > div,
 .crowdrisk-app--dark .dossier-quarter-table-wrap {
   border-color: rgba(232, 218, 197, 0.12);
   background: rgba(33, 31, 26, 0.72);
@@ -3883,7 +3893,16 @@ html, body, #root, .app-container, .main-content {
 
 .crowdrisk-app--dark .stock-dossier-side-links a span,
 .crowdrisk-app--dark .dossier-hero-read span,
-.crowdrisk-app--dark .dossier-why-now span {
+.crowdrisk-app--dark .dossier-why-now span,
+.crowdrisk-app--dark .dossier-overview-lens-grid span,
+.crowdrisk-app--dark .dossier-valuation-research-block span,
+.crowdrisk-app--dark .dossier-valuation-research-metrics em,
+.crowdrisk-app--dark .dossier-forward-range-header span,
+.crowdrisk-app--dark .dossier-forward-fiscal-note span,
+.crowdrisk-app--dark .dossier-forward-method-grid span,
+.crowdrisk-app--dark .dossier-forward-range-summary span,
+.crowdrisk-app--dark .dossier-risk-monitor-grid span,
+.crowdrisk-app--dark .dossier-scenario-path dt {
   color: var(--crowdrisk-rust-dark);
 }
 
@@ -3891,6 +3910,8 @@ html, body, #root, .app-container, .main-content {
 .crowdrisk-app--dark .dossier-market-strip > div,
 .crowdrisk-app--dark .dossier-event-study-board,
 .crowdrisk-app--dark .dossier-scenario-grid > div,
+.crowdrisk-app--dark .dossier-forward-range-table th,
+.crowdrisk-app--dark .dossier-forward-range-table td,
 .crowdrisk-app--dark .dossier-quarter-table th,
 .crowdrisk-app--dark .dossier-quarter-table td {
   border-color: rgba(232, 218, 197, 0.12);
@@ -3925,6 +3946,7 @@ html, body, #root, .app-container, .main-content {
 .crowdrisk-app--dark .dossier-snapshot-row span,
 .crowdrisk-app--dark .dossier-valuation-verdict span,
 .crowdrisk-app--dark .dossier-valuation-metrics span,
+.crowdrisk-app--dark .dossier-reaction-quality-grid span,
 .crowdrisk-app--dark .dossier-event-study-copy span,
 .crowdrisk-app--dark .dossier-event-study-meta span,
 .crowdrisk-app--dark .dossier-event-study-metrics span {
@@ -3939,6 +3961,11 @@ html, body, #root, .app-container, .main-content {
 .crowdrisk-app--dark .dossier-quarter-table th {
   background: #211f1a;
   color: var(--text-muted);
+}
+
+.crowdrisk-app--dark .dossier-forward-range-table th {
+  background: rgba(33, 31, 26, 0.92);
+  color: var(--crowdrisk-rust-dark);
 }
 
 .crowdrisk-app--dark .dossier-quarter-table td {
@@ -4983,6 +5010,46 @@ html, body, #root, .app-container, .main-content {
   margin-top: 0.9rem;
 }
 
+.dossier-overview-lens-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.8rem;
+  margin-top: 0.95rem;
+}
+
+.dossier-overview-lens-grid article {
+  min-width: 0;
+  padding: 0.95rem;
+  border: 1px solid rgba(168, 86, 29, 0.16);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.64);
+}
+
+.dossier-overview-lens-grid span {
+  display: block;
+  margin-bottom: 0.35rem;
+  color: #a8561d;
+  font-size: 0.7rem;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.dossier-overview-lens-grid strong {
+  display: block;
+  color: var(--text-main);
+  font-size: 0.98rem;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+
+.dossier-overview-lens-grid p {
+  margin: 0.45rem 0 0;
+  color: var(--text-muted);
+  font-size: 0.88rem;
+  line-height: 1.48;
+}
+
 .dossier-profile-sections article {
   min-width: 0;
   padding: 0.9rem;
@@ -5429,6 +5496,257 @@ html, body, #root, .app-container, .main-content {
   margin-bottom: 1rem;
 }
 
+.dossier-forward-valuation-range {
+  margin-bottom: 1rem;
+  padding: 0.95rem;
+  border: 1px solid rgba(168, 86, 29, 0.18);
+  border-radius: 8px;
+  background: rgba(255, 250, 242, 0.62);
+}
+
+.dossier-forward-range-header {
+  display: grid;
+  grid-template-columns: minmax(220px, 0.35fr) minmax(0, 0.65fr);
+  gap: 1rem;
+  align-items: start;
+}
+
+.dossier-forward-range-header span,
+.dossier-forward-method-grid span,
+.dossier-forward-range-summary span {
+  display: block;
+  color: #a8561d;
+  font-size: 0.7rem;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.dossier-forward-range-header h4 {
+  margin: 0.34rem 0 0;
+  color: var(--text-main);
+  font-size: 1.08rem;
+  line-height: 1.22;
+}
+
+.dossier-forward-range-header p {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  line-height: 1.48;
+}
+
+.dossier-forward-fiscal-note {
+  display: grid;
+  gap: 0.3rem;
+  margin-top: 0.9rem;
+  padding: 0.78rem 0.85rem;
+  border: 1px solid rgba(168, 86, 29, 0.16);
+  border-radius: 8px;
+  background: rgba(255, 247, 236, 0.7);
+}
+
+.dossier-forward-fiscal-note strong {
+  color: var(--text-main);
+  font-size: 0.9rem;
+  line-height: 1.42;
+}
+
+.dossier-forward-fiscal-note span {
+  color: #a8561d;
+  font-size: 0.78rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.dossier-forward-method-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.65rem;
+  margin-top: 0.9rem;
+}
+
+.dossier-forward-method-grid > div {
+  min-width: 0;
+  padding: 0.72rem 0.78rem;
+  border: 1px solid rgba(168, 86, 29, 0.13);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.58);
+}
+
+.dossier-forward-method-grid strong {
+  display: block;
+  margin-top: 0.32rem;
+  color: var(--text-main);
+  font-size: 0.9rem;
+  line-height: 1.24;
+  overflow-wrap: anywhere;
+}
+
+.dossier-forward-method-grid em {
+  display: block;
+  margin-top: 0.28rem;
+  color: var(--text-muted);
+  font-size: 0.72rem;
+  font-style: normal;
+  font-weight: 750;
+  line-height: 1.35;
+}
+
+.dossier-forward-range-summary {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.65rem;
+  margin-top: 0.9rem;
+}
+
+.dossier-forward-range-summary > div {
+  min-width: 0;
+  padding: 0.72rem 0.78rem;
+  border: 1px solid rgba(39, 39, 42, 0.08);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.dossier-forward-range-summary strong {
+  display: block;
+  margin-top: 0.32rem;
+  color: var(--text-main);
+  font-size: 0.98rem;
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+}
+
+.dossier-forward-range-table-wrap {
+  max-width: 100%;
+  margin-top: 0.9rem;
+  overflow-x: auto;
+  border: 1px solid rgba(39, 39, 42, 0.08);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.74);
+}
+
+.dossier-forward-range-table {
+  width: 100%;
+  min-width: 980px;
+  border-collapse: collapse;
+  font-size: 0.82rem;
+}
+
+.dossier-forward-range-table th,
+.dossier-forward-range-table td {
+  padding: 0.68rem 0.74rem;
+  border-bottom: 1px solid rgba(39, 39, 42, 0.07);
+  color: var(--text-muted);
+  text-align: left;
+  vertical-align: top;
+}
+
+.dossier-forward-range-table th {
+  background: rgba(255, 250, 242, 0.88);
+  color: #a8561d;
+  font-size: 0.66rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.dossier-forward-range-table td:first-child,
+.dossier-forward-range-table td:nth-child(7),
+.dossier-forward-range-table td:nth-child(8),
+.dossier-forward-range-table td:nth-child(9) {
+  color: var(--text-main);
+  font-weight: 900;
+}
+
+.dossier-forward-range-table td:nth-child(10) {
+  min-width: 210px;
+  line-height: 1.38;
+}
+
+.dossier-forward-range-table strong,
+.dossier-forward-range-table span {
+  display: block;
+}
+
+.dossier-forward-range-table strong {
+  color: var(--text-main);
+}
+
+.dossier-forward-range-table span {
+  margin-top: 0.24rem;
+  font-size: 0.75rem;
+}
+
+.dossier-forward-range-table tr:last-child td {
+  border-bottom: 0;
+}
+
+.dossier-valuation-research-stack {
+  display: grid;
+  gap: 0.85rem;
+  margin-bottom: 1rem;
+}
+
+.dossier-valuation-research-block {
+  display: grid;
+  grid-template-columns: minmax(220px, 0.34fr) minmax(0, 0.66fr);
+  gap: 0.85rem;
+  align-items: stretch;
+  min-width: 0;
+  padding: 0.9rem;
+  border: 1px solid rgba(168, 86, 29, 0.16);
+  border-radius: 8px;
+  background: rgba(255, 250, 242, 0.56);
+}
+
+.dossier-valuation-research-block > div {
+  min-width: 0;
+}
+
+.dossier-valuation-research-block span,
+.dossier-valuation-research-metrics em {
+  display: block;
+  color: #a8561d;
+  font-size: 0.7rem;
+  font-style: normal;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.dossier-valuation-research-block p {
+  margin: 0.48rem 0 0;
+  color: var(--text-muted);
+  font-size: 0.88rem;
+  line-height: 1.5;
+}
+
+.dossier-valuation-research-metrics {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.55rem;
+}
+
+.dossier-valuation-research-metrics > div {
+  min-width: 0;
+  padding: 0.68rem 0.72rem;
+  border: 1px solid rgba(39, 39, 42, 0.08);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.7);
+}
+
+.dossier-valuation-research-metrics strong {
+  display: block;
+  margin-top: 0.28rem;
+  color: var(--text-main);
+  font-size: 0.92rem;
+  line-height: 1.18;
+  overflow-wrap: anywhere;
+}
+
 .dossier-valuation-judgment {
   display: grid;
   grid-template-columns: minmax(0, 1.1fr) minmax(260px, 0.9fr);
@@ -5488,6 +5806,42 @@ html, body, #root, .app-container, .main-content {
   line-height: 1.5;
 }
 
+.dossier-scenario-model-note {
+  max-width: 820px;
+  margin: 0 0 0.95rem;
+  color: var(--text-muted);
+  font-size: 0.92rem;
+  line-height: 1.45;
+}
+
+.dossier-scenario-path dl {
+  display: grid;
+  gap: 0.62rem;
+  margin: 0.9rem 0 0;
+}
+
+.dossier-scenario-path dl > div {
+  min-width: 0;
+  padding-top: 0.62rem;
+  border-top: 1px solid rgba(168, 86, 29, 0.13);
+}
+
+.dossier-scenario-path dt {
+  margin: 0 0 0.25rem;
+  color: #a8561d;
+  font-size: 0.66rem;
+  font-weight: 900;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+
+.dossier-scenario-path dd {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  line-height: 1.42;
+}
+
 .dossier-market-evidence-card h3 {
   margin: 0 0 0.85rem;
   color: var(--text-main);
@@ -5507,7 +5861,7 @@ html, body, #root, .app-container, .main-content {
 
 .dossier-event-study-summary-strip {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: 0;
   margin: 1rem 0 0;
   border: 1px solid rgba(168, 86, 29, 0.14);
@@ -5565,6 +5919,49 @@ html, body, #root, .app-container, .main-content {
 
 .dossier-event-study-status--error {
   color: var(--signal-sell);
+}
+
+.dossier-reaction-quality-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.75rem;
+  margin-top: 0.8rem;
+}
+
+.dossier-reaction-quality-grid > div {
+  min-width: 0;
+  padding: 0.78rem 0.85rem;
+  border: 1px solid rgba(168, 86, 29, 0.14);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.66);
+}
+
+.dossier-reaction-quality-grid span {
+  display: block;
+  color: var(--text-muted);
+  font-size: 0.66rem;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.dossier-reaction-quality-grid strong {
+  display: block;
+  margin-top: 0.32rem;
+  color: var(--text-main);
+  font-size: 1rem;
+  line-height: 1.18;
+  overflow-wrap: anywhere;
+}
+
+.dossier-reaction-quality-grid em {
+  display: block;
+  margin-top: 0.22rem;
+  color: var(--text-muted);
+  font-size: 0.74rem;
+  font-style: normal;
+  font-weight: 750;
+  line-height: 1.35;
 }
 
 .dossier-event-study-copy span,
@@ -5803,6 +6200,41 @@ html, body, #root, .app-container, .main-content {
   border-left: 4px solid rgba(184, 95, 31, 0.42);
 }
 
+.dossier-risk-monitor-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(260px, 0.85fr);
+  gap: 1.1rem;
+}
+
+.dossier-risk-monitor-grid > div {
+  min-width: 0;
+  padding: 0.95rem;
+  border: 1px solid rgba(168, 86, 29, 0.16);
+  border-radius: 8px;
+  background: rgba(255, 250, 242, 0.58);
+}
+
+.dossier-risk-monitor-grid span {
+  display: block;
+  color: #a8561d;
+  font-size: 0.7rem;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.dossier-risk-monitor-grid ul {
+  margin: 0.7rem 0 0;
+  padding-left: 1.1rem;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  line-height: 1.52;
+}
+
+.dossier-risk-monitor-grid li + li {
+  margin-top: 0.36rem;
+}
+
 html,
 body,
 #root,
@@ -5869,15 +6301,23 @@ body,
   .dossier-hero-card,
   .dossier-market-strip,
   .dossier-quick-facts,
+  .dossier-overview-lens-grid,
   .dossier-profile-sections,
   .dossier-verdict-grid,
   .dossier-case-summary,
   .dossier-valuation-verdict,
   .dossier-valuation-metrics,
+  .dossier-forward-range-header,
+  .dossier-forward-method-grid,
+  .dossier-forward-range-summary,
+  .dossier-valuation-research-block,
+  .dossier-valuation-research-metrics,
   .dossier-valuation-judgment,
   .dossier-event-study-detail,
+  .dossier-reaction-quality-grid,
   .dossier-event-study-metrics,
   .dossier-scenario-grid,
+  .dossier-risk-monitor-grid,
   .dossier-market-evidence-card ul {
     grid-template-columns: 1fr;
   }
@@ -6165,8 +6605,7 @@ body,
     border-right: 0;
   }
 
-  .dossier-event-study-summary-strip > div:nth-child(3),
-  .dossier-event-study-summary-strip > div:nth-child(4) {
+  .dossier-event-study-summary-strip > div:last-child {
     border-bottom: 0;
   }
 

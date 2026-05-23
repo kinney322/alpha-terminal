@@ -219,6 +219,224 @@ const SummaryMetric = ({ label, summary, value }) => (
   </div>
 );
 
+const metricById = (valuationCore, id) => (
+  valuationCore.coreMetrics.find((metric) => metric.id === id) || null
+);
+
+const valuationMetricValue = (valuationCore, id) => {
+  const metric = metricById(valuationCore, id);
+  return metric ? formatValuationMetric(metric) : 'Pending';
+};
+
+const marketSnapshotValue = (snapshot, key) => snapshot?.[key] || 'Pending';
+
+const parseDollarValue = (value) => {
+  if (value === undefined || value === null) return null;
+  const text = String(value).replace(/[$,]/g, '').trim();
+  const match = text.match(/-?\d+(\.\d+)?/);
+  if (!match) return null;
+  const numeric = Number(match[0]);
+  return Number.isFinite(numeric) ? numeric : null;
+};
+
+const formatBillionValue = (value) => (
+  Number.isFinite(Number(value)) ? `$${Number(value).toFixed(1)}B` : 'Pending'
+);
+
+const formatBillionRange = (low, high) => {
+  if (!Number.isFinite(Number(low)) || !Number.isFinite(Number(high))) return 'Pending';
+  return `$${Number(low).toFixed(1)}B-$${Number(high).toFixed(1)}B`;
+};
+
+const formatWholePrice = (value) => (
+  Number.isFinite(Number(value)) ? `$${Number(value).toFixed(0)}` : 'Pending'
+);
+
+const formatWholePriceRange = (low, high) => {
+  if (!Number.isFinite(Number(low)) || !Number.isFinite(Number(high))) return 'Pending';
+  return `$${Number(low).toFixed(0)}-$${Number(high).toFixed(0)}`;
+};
+
+const formatScenarioMultiple = (value, suffix) => (
+  Number.isFinite(Number(value)) ? `${Number(value).toFixed(1)}x ${suffix}` : 'Pending'
+);
+
+const formatMultipleRange = (low, high, suffix) => {
+  if (!Number.isFinite(Number(low)) || !Number.isFinite(Number(high))) return 'Pending';
+  return `${Number(low).toFixed(1)}x-${Number(high).toFixed(1)}x ${suffix}`;
+};
+
+const formatScenarioPct = (value) => {
+  if (value === undefined || value === null || value === '') return 'Pending';
+  const numeric = Number(value);
+  if (!Number.isFinite(numeric)) return 'Pending';
+  return `${numeric > 0 ? '+' : ''}${numeric.toFixed(1)}%`;
+};
+
+const medianNumber = (values) => {
+  const nums = values.map(Number).filter(Number.isFinite).sort((a, b) => a - b);
+  if (!nums.length) return null;
+  const mid = Math.floor(nums.length / 2);
+  return nums.length % 2 ? nums[mid] : (nums[mid - 1] + nums[mid]) / 2;
+};
+
+const buildForwardValuationRange = (valuationCore, marketSnapshot) => {
+  const range = valuationCore.forwardValuationRange;
+  if (!range?.scenarios?.length) return null;
+
+  const currentPrice = parseDollarValue(marketSnapshot?.currentPrice);
+  const marketCap = parseDollarValue(marketSnapshot?.marketCap);
+  const netCashAdjustment = Number.isFinite(Number(range.netCashAdjustment))
+    ? Number(range.netCashAdjustment)
+    : null;
+  const explicitShareCount = Number.isFinite(Number(range.shareCountBillions))
+    ? Number(range.shareCountBillions)
+    : null;
+  const estimatedShareCount = currentPrice && marketCap ? marketCap / currentPrice : null;
+  const shareCountBillions = explicitShareCount || estimatedShareCount;
+
+  const scenarioRows = range.scenarios.map((scenario) => {
+    const fy28Revenue = Number(scenario.fy28Revenue);
+    const evRevenueMultiple = Number(scenario.evRevenueMultiple);
+    const impliedEv = Number.isFinite(fy28Revenue) && Number.isFinite(evRevenueMultiple)
+      ? fy28Revenue * evRevenueMultiple
+      : null;
+    const impliedEquityValue = impliedEv !== null && netCashAdjustment !== null
+      ? impliedEv + netCashAdjustment
+      : null;
+    const impliedPrice = impliedEquityValue !== null && shareCountBillions
+      ? impliedEquityValue / shareCountBillions
+      : null;
+    const upsideDownside = impliedPrice !== null && currentPrice
+      ? ((impliedPrice / currentPrice) - 1) * 100
+      : null;
+    const threeYearIrr = impliedPrice !== null && currentPrice
+      ? ((Math.pow(impliedPrice / currentPrice, 1 / 3) - 1) * 100)
+      : null;
+    const irrDisplay = threeYearIrr === null
+      ? 'Pending: current price or share count is missing.'
+      : formatScenarioPct(threeYearIrr);
+
+    return {
+      ...scenario,
+      impliedEv,
+      impliedEquityValue,
+      impliedPrice,
+      upsideDownside,
+      threeYearIrr,
+      irrDisplay
+    };
+  });
+
+  const fy28Values = scenarioRows.map(row => row.fy28Revenue);
+  const evRevenueMultiples = scenarioRows.map(row => row.evRevenueMultiple);
+  const impliedEvs = scenarioRows.map(row => row.impliedEv);
+  const equityValues = scenarioRows.map(row => row.impliedEquityValue);
+  const impliedPrices = scenarioRows.map(row => row.impliedPrice);
+  const rangeLowPrice = Math.min(...impliedPrices.filter(Number.isFinite));
+  const rangeHighPrice = Math.max(...impliedPrices.filter(Number.isFinite));
+  const medianPrice = medianNumber(impliedPrices);
+  const medianUpsideDownside = medianPrice !== null && currentPrice
+    ? ((medianPrice / currentPrice) - 1) * 100
+    : null;
+  const medianThreeYearIrr = medianPrice !== null && currentPrice
+    ? ((Math.pow(medianPrice / currentPrice, 1 / 3) - 1) * 100)
+    : null;
+
+  return {
+    valuationMethod: range.valuationMethod || 'Forecast revenue x EV / revenue range',
+    forwardModelHorizon: range.forwardModelHorizon || 'FY2027 / FY2028 model assumption',
+    forecastMetric: range.forecastMetric || 'Revenue',
+    forecastMetricRange: formatBillionRange(Math.min(...fy28Values.filter(Number.isFinite)), Math.max(...fy28Values.filter(Number.isFinite))),
+    multipleRange: formatMultipleRange(Math.min(...evRevenueMultiples.filter(Number.isFinite)), Math.max(...evRevenueMultiples.filter(Number.isFinite)), 'EV / Rev'),
+    fy26RevenueGuide: range.fy26RevenueGuide || marketSnapshotValue(marketSnapshot, 'fiscalYearRevenueGuide'),
+    fy27Fy28Assumption: range.methodNote || 'Model assumption, not live consensus.',
+    fiscalYearNote: range.fiscalYearNote || 'Fiscal-year note: current company guide is FY2026. FY2027 and FY2028 figures below are model assumptions, not live consensus. Datadog fiscal year-end is not verified in the current payload.',
+    fiscalYearEndDisplay: range.fiscalYearEnd
+      ? `Fiscal Year End: ${range.fiscalYearEnd}`
+      : 'Fiscal Year End: Not verified in current payload',
+    dataType: range.dataType || 'Model assumption, not live consensus',
+    confidence: range.confidence || 'Medium-low until current full consensus model is added',
+    missingEvidence: range.missingEvidence || valuationCore.missingEvidence,
+    netCashAdjustment,
+    currentPrice,
+    currentPriceDisplay: currentPrice ? formatWholePrice(currentPrice) : 'Pending: current price missing',
+    shareCountBillions,
+    shareCountDisplay: shareCountBillions
+      ? `${shareCountBillions.toFixed(3)}B ${explicitShareCount ? 'explicit shares' : 'estimated shares from market cap / current price'}`
+      : 'Pending: explicit share count missing and market cap / current price unavailable',
+    impliedEvRange: formatBillionRange(Math.min(...impliedEvs.filter(Number.isFinite)), Math.max(...impliedEvs.filter(Number.isFinite))),
+    impliedEquityValueRange: formatBillionRange(Math.min(...equityValues.filter(Number.isFinite)), Math.max(...equityValues.filter(Number.isFinite))),
+    impliedPriceRange: Number.isFinite(rangeLowPrice) && Number.isFinite(rangeHighPrice)
+      ? formatWholePriceRange(rangeLowPrice, rangeHighPrice)
+      : 'Pending',
+    medianPrice,
+    medianPriceDisplay: medianPrice !== null ? formatWholePrice(medianPrice) : 'Pending: scenario prices missing',
+    medianUpsideDownside,
+    medianUpsideDownsideDisplay: medianUpsideDownside !== null ? formatScenarioPct(medianUpsideDownside) : 'Pending: median price or current price missing',
+    medianThreeYearIrr,
+    medianThreeYearIrrDisplay: medianThreeYearIrr !== null ? formatScenarioPct(medianThreeYearIrr) : 'Pending: median price or current price missing',
+    scenarios: scenarioRows
+  };
+};
+
+const buildValuationResearchGroups = (valuationCore, marketSnapshot) => ([
+  {
+    title: 'Current Valuation',
+    note: 'Current price, market cap, enterprise value, and forward guide stay together with valuation multiples.',
+    metrics: [
+      { label: 'Current Price', value: marketSnapshotValue(marketSnapshot, 'currentPrice') },
+      { label: 'Market Cap', value: marketSnapshotValue(marketSnapshot, 'marketCap') },
+      { label: 'Enterprise Value', value: marketSnapshotValue(marketSnapshot, 'enterpriseValue') },
+      { label: 'FY Revenue Guide', value: marketSnapshotValue(marketSnapshot, 'fiscalYearRevenueGuide') },
+      { label: 'EV / Revenue', value: valuationMetricValue(valuationCore, 'ev_revenue') },
+      { label: 'EV / FCF', value: valuationMetricValue(valuationCore, 'ev_fcf') }
+    ]
+  },
+  {
+    title: 'Future Growth',
+    note: valuationCore.researchJudgment[0] || 'Forward growth assumptions are pending.',
+    metrics: [
+      { label: 'Revenue Growth', value: valuationMetricValue(valuationCore, 'revenue_growth') },
+      { label: 'Rule of 40', value: valuationMetricValue(valuationCore, 'rule_of_40') },
+      { label: 'Base Case Support', value: valuationCore.topVerdict.baseCaseSupport },
+      { label: 'Margin of Safety', value: valuationCore.topVerdict.marginOfSafety }
+    ]
+  },
+  {
+    title: 'Past Performance Trend',
+    note: 'Recent growth and margin evidence are grouped here before judging whether the forward case is realistic.',
+    metrics: [
+      { label: 'Revenue Growth', value: valuationMetricValue(valuationCore, 'revenue_growth') },
+      { label: 'Gross Margin', value: valuationMetricValue(valuationCore, 'gross_margin') },
+      { label: 'Operating Margin', value: valuationMetricValue(valuationCore, 'operating_margin') },
+      { label: 'FCF Margin', value: valuationMetricValue(valuationCore, 'fcf_margin') }
+    ]
+  },
+  {
+    title: 'Financial Health',
+    note: valuationCore.researchJudgment[2] || 'Financial health needs balance-sheet, cash-flow, and dilution context.',
+    metrics: [
+      { label: 'Cash + Securities', value: valuationMetricValue(valuationCore, 'cash_securities') },
+      { label: 'Convertible Notes', value: valuationMetricValue(valuationCore, 'convertible_debt') },
+      { label: 'Debt / Equity', value: valuationMetricValue(valuationCore, 'debt_equity') },
+      { label: 'SBC / Revenue', value: valuationMetricValue(valuationCore, 'sbc_revenue') }
+    ]
+  },
+  {
+    title: 'Peer / Historical Multiple Check',
+    note: valuationCore.missingEvidence.includes('Current full consensus model')
+      ? 'Peer and historical multiple context still needs the current consensus model.'
+      : 'Use EV / revenue, EV / FCF, and peer or historical bands before upgrading valuation confidence.',
+    metrics: [
+      { label: 'EV / Revenue', value: valuationMetricValue(valuationCore, 'ev_revenue') },
+      { label: 'EV / FCF', value: valuationMetricValue(valuationCore, 'ev_fcf') },
+      { label: 'Business Quality', value: valuationCore.topVerdict.businessQuality },
+      { label: 'Valuation Judgment', value: valuationCore.topVerdict.valuationState }
+    ]
+  }
+]);
+
 const clamp = (value, min = 8, max = 96) => Math.max(min, Math.min(max, value));
 
 const buildSparklinePath = (values, width = 220, height = 74, pad = 8) => {
@@ -407,6 +625,25 @@ const StockDossierView = ({ eventDetail, payload, onOpenEventStudy }) => {
   const eventStudyDigest = eventStudySummary?.dossier_digest || null;
   const forwardGapUps = eventStudySummary?.forward_returns?.after_all_gap_ups || null;
   const measuredGapCount = eventStudyDigest?.measured_gap_count ?? eventStudyCoverage?.measured_gap_count ?? null;
+  const valuationResearchGroups = buildValuationResearchGroups(valuationCore, marketSnapshot);
+  const forwardValuationRange = buildForwardValuationRange(valuationCore, marketSnapshot);
+  const latestReactionRows = [
+    {
+      label: 'Latest reaction',
+      value: formatPct(enrichedEventDetail.pead_signal?.reaction?.t1_return),
+      note: enrichedEventDetail.pead_signal?.direction || 'Direction pending'
+    },
+    {
+      label: 'Current post-return',
+      value: formatPct(enrichedEventDetail.pead_signal?.reaction?.current_post_return),
+      note: 'Follow-through since the event'
+    },
+    {
+      label: 'Volume / reaction quality',
+      value: enrichedEventDetail.pead_signal?.reaction_quality || enrichedEventDetail.pead_signal?.volume_quality || 'Pending',
+      note: 'Needs confirmed volume evidence'
+    }
+  ];
   const truthLayerMetrics = eventStudyDigest ? [
     { label: 'Gap-up Rate', value: formatRatioReturn(eventStudyDigest.gap_up_rate) || 'Pending', tone: rateToneClass(eventStudyDigest.gap_up_rate) },
     { label: 'Avg Gap Up', value: formatRatioReturn(eventStudyDigest.average_gap_up) || 'Pending', tone: returnToneClass(eventStudyDigest.average_gap_up) },
@@ -538,7 +775,8 @@ const StockDossierView = ({ eventDetail, payload, onOpenEventStudy }) => {
         <section id="company-overview" className="dossier-company-overview-card card">
           <div className="dossier-company-overview">
             <p className="crowdrisk-kicker">Company Overview</p>
-            <h3>Business Engine</h3>
+            <h3>Business, customers, and competitive position</h3>
+            <p>{stockOverview.profileLine}</p>
             <div className="dossier-quick-facts">
               {stockOverview.quickFacts.map((fact) => (
                 <div key={fact.label}>
@@ -546,6 +784,28 @@ const StockDossierView = ({ eventDetail, payload, onOpenEventStudy }) => {
                   <strong>{fact.value}</strong>
                 </div>
               ))}
+            </div>
+            <div className="dossier-overview-lens-grid">
+              <article>
+                <span>How it makes money</span>
+                <strong>{stockOverview.theme}</strong>
+                <p>{dossierProfile.sections?.[0]?.points?.[0] || stockOverview.profileLine}</p>
+              </article>
+              <article>
+                <span>Customer quality</span>
+                <strong>{stockOverview.quickFacts.find(fact => fact.label.includes('$100k'))?.value || stockOverview.quickFacts.find(fact => fact.label.includes('Customer'))?.value || 'Pending'}</strong>
+                <p>{stockOverview.quickFacts.find(fact => fact.label.includes('Net Retention'))?.value ? `Net retention remains ${stockOverview.quickFacts.find(fact => fact.label.includes('Net Retention')).value}, so customer expansion stays central to the dossier.` : 'Customer quality needs retention, expansion, and concentration evidence.'}</p>
+              </article>
+              <article>
+                <span>Business quality</span>
+                <strong>{valuationCore.topVerdict.businessQuality}</strong>
+                <p>{valuationCore.topVerdict.why}</p>
+              </article>
+              <article>
+                <span>Peer competition</span>
+                <strong>{dossierProfile.sections?.find(section => section.id === 'competitive-position')?.title || 'Peer context pending'}</strong>
+                <p>{dossierProfile.sections?.find(section => section.id === 'competitive-position')?.points?.[1] || 'Competition and peer positioning need company-specific coverage.'}</p>
+              </article>
             </div>
             {dossierProfile.sections?.length > 0 && (
               <div className="dossier-profile-sections">
@@ -570,8 +830,8 @@ const StockDossierView = ({ eventDetail, payload, onOpenEventStudy }) => {
       <div id="valuation-core" className="card dossier-valuation-core" style={{ marginBottom: '24px' }}>
         <div className="dossier-valuation-core__header">
           <div>
-            <p className="crowdrisk-kicker">Fundamentals Summary / Valuation Core</p>
-            <h3>Does company quality support continued research?</h3>
+            <p className="crowdrisk-kicker">Valuation Core</p>
+            <h3>Does the price still leave a medium-term research margin?</h3>
           </div>
         </div>
 
@@ -597,6 +857,162 @@ const StockDossierView = ({ eventDetail, payload, onOpenEventStudy }) => {
         <div className="dossier-valuation-read">
           <strong>{valuationCore.topVerdict.overallRead}</strong>
           <p>{valuationCore.topVerdict.why}</p>
+        </div>
+
+        {forwardValuationRange && (
+          <section className="dossier-forward-valuation-range" aria-label={`${ticker} forward valuation range`}>
+            <div className="dossier-forward-range-header">
+              <div>
+                <span>Forward Valuation Range</span>
+                <h4>Forecast metric x valuation multiple range</h4>
+              </div>
+              <p>{forwardValuationRange.fy27Fy28Assumption}</p>
+            </div>
+            <div className="dossier-forward-fiscal-note">
+              <strong>{forwardValuationRange.fiscalYearNote}</strong>
+              <span>{forwardValuationRange.fiscalYearEndDisplay}</span>
+            </div>
+            <div className="dossier-forward-method-grid">
+              <div>
+                <span>Valuation Method</span>
+                <strong>{forwardValuationRange.valuationMethod}</strong>
+              </div>
+              <div>
+                <span>Current Company Guide</span>
+                <strong>FY2026 Revenue Guide</strong>
+              </div>
+              <div>
+                <span>Forward Model Horizon</span>
+                <strong>{forwardValuationRange.forwardModelHorizon}</strong>
+              </div>
+              <div>
+                <span>Forecast Metric</span>
+                <strong>FY2028 model {forwardValuationRange.forecastMetric}</strong>
+              </div>
+              <div>
+                <span>Multiple Range Used</span>
+                <strong>{forwardValuationRange.multipleRange}</strong>
+              </div>
+              <div>
+                <span>Data Type</span>
+                <strong>{forwardValuationRange.dataType}</strong>
+              </div>
+              <div>
+                <span>Confidence / Missing Evidence</span>
+                <strong>{forwardValuationRange.confidence}</strong>
+                <em>{forwardValuationRange.missingEvidence.join('; ')}</em>
+              </div>
+            </div>
+            <div className="dossier-forward-range-summary">
+              <div>
+                <span>FY2026 Revenue Guide</span>
+                <strong>{forwardValuationRange.fy26RevenueGuide}</strong>
+              </div>
+              <div>
+                <span>FY2028 Model Revenue Range</span>
+                <strong>{forwardValuationRange.forecastMetricRange}</strong>
+              </div>
+              <div>
+                <span>Valuation Multiple Range</span>
+                <strong>{forwardValuationRange.multipleRange}</strong>
+              </div>
+              <div>
+                <span>Implied EV Range</span>
+                <strong>{forwardValuationRange.impliedEvRange}</strong>
+              </div>
+              <div>
+                <span>Net Cash Adjustment</span>
+                <strong>{formatBillionValue(forwardValuationRange.netCashAdjustment)}</strong>
+              </div>
+              <div>
+                <span>Implied Equity Value Range</span>
+                <strong>{forwardValuationRange.impliedEquityValueRange}</strong>
+              </div>
+              <div>
+                <span>Implied Price Range</span>
+                <strong>{forwardValuationRange.impliedPriceRange}</strong>
+              </div>
+              <div>
+                <span>Median Price</span>
+                <strong>{forwardValuationRange.medianPriceDisplay}</strong>
+              </div>
+              <div>
+                <span>Current Price</span>
+                <strong>{marketSnapshotValue(marketSnapshot, 'currentPrice')}</strong>
+              </div>
+              <div>
+                <span>Upside / Downside to Median</span>
+                <strong>{forwardValuationRange.medianUpsideDownsideDisplay}</strong>
+              </div>
+              <div>
+                <span>3Y IRR to Median</span>
+                <strong>{forwardValuationRange.medianThreeYearIrrDisplay}</strong>
+              </div>
+              <div>
+                <span>Share Count</span>
+                <strong>{forwardValuationRange.shareCountDisplay}</strong>
+              </div>
+            </div>
+            <div className="dossier-forward-range-table-wrap">
+              <table className="dossier-forward-range-table">
+                <thead>
+                  <tr>
+                    <th>Scenario</th>
+                    <th>FY2027 / FY2028 Model Assumption</th>
+                    <th>Revenue Growth</th>
+                    <th>Applied Multiple</th>
+                    <th>Implied EV</th>
+                    <th>Net Cash</th>
+                    <th>Implied Equity Value</th>
+                    <th>Implied Price</th>
+                    <th>Upside / Downside</th>
+                    <th>3Y IRR</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {forwardValuationRange.scenarios.map((scenario) => (
+                    <tr key={scenario.label}>
+                      <td>
+                        <strong>{scenario.label}</strong>
+                        <span>Scenario point estimate</span>
+                      </td>
+                      <td>{formatBillionValue(scenario.fy27Revenue)} / {formatBillionValue(scenario.fy28Revenue)}</td>
+                      <td>{scenario.revenueGrowth || 'Pending'}</td>
+                      <td>
+                        <strong>{formatScenarioMultiple(scenario.evRevenueMultiple, 'EV / Rev')}</strong>
+                        <span>{formatScenarioMultiple(scenario.evFcfMultiple, 'EV / FCF')}</span>
+                      </td>
+                      <td>{formatBillionValue(scenario.impliedEv)}</td>
+                      <td>{formatBillionValue(forwardValuationRange.netCashAdjustment)}</td>
+                      <td>{formatBillionValue(scenario.impliedEquityValue)}</td>
+                      <td>{formatWholePrice(scenario.impliedPrice)}</td>
+                      <td>{formatScenarioPct(scenario.upsideDownside)}</td>
+                      <td>{scenario.irrDisplay}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </section>
+        )}
+
+        <div className="dossier-valuation-research-stack">
+          {valuationResearchGroups.map((group) => (
+            <section key={group.title} className="dossier-valuation-research-block">
+              <div>
+                <span>{group.title}</span>
+                <p>{group.note}</p>
+              </div>
+              <div className="dossier-valuation-research-metrics">
+                {group.metrics.map((metric) => (
+                  <div key={`${group.title}-${metric.label}`}>
+                    <em>{metric.label}</em>
+                    <strong>{metric.value}</strong>
+                  </div>
+                ))}
+              </div>
+            </section>
+          ))}
         </div>
 
         {valuationCore.coreMetrics.length > 0 && (
@@ -629,79 +1045,6 @@ const StockDossierView = ({ eventDetail, payload, onOpenEventStudy }) => {
           </div>
         </div>
 
-      </div>
-
-      <div id="market-evidence" className="card dossier-market-evidence-card" style={{ marginBottom: '24px' }}>
-        <p className="crowdrisk-kicker">Market Evidence</p>
-        <h3>{marketEvidence.title}</h3>
-        <div className="dossier-event-study-summary-strip" aria-label={`${ticker} earnings event summary`}>
-          <div>
-            <span>Measured quarters</span>
-            <strong>
-              {measuredGapCount ?? <em className="dossier-pending-value">Pending</em>}
-              {eventStudyCoverage?.excluded_count !== undefined && <small>{eventStudyCoverage.excluded_count} excluded</small>}
-            </strong>
-          </div>
-          <div>
-            <span>Gap-up rate</span>
-            <strong>
-              {formatRatioReturn(eventStudyDigest?.gap_up_rate) || <em className="dossier-pending-value">Pending</em>}
-            </strong>
-          </div>
-          <SummaryMetric label="Post-gap 3D avg" summary={forwardGapUps?.r_plus_3} />
-          <SummaryMetric label="Post-gap 30D avg" summary={forwardGapUps?.r_plus_30} />
-        </div>
-        {eventStudyDigest?.summary_line && (
-          <p className="dossier-event-study-summary-line">{eventStudyDigest.summary_line}</p>
-        )}
-        {eventStudyLoading && <p className="dossier-event-study-status">Loading earnings-event summary...</p>}
-        {eventStudyError && <p className="dossier-event-study-status dossier-event-study-status--error">{eventStudyError}</p>}
-        <div className="dossier-event-study-detail">
-          <div className="dossier-event-study-copy">
-            <span>Event Study Detail</span>
-            <strong>{eventStudyDetail.title}</strong>
-            <p>{eventStudyDetail.interpretation}</p>
-            {onOpenEventStudy && (
-              <button
-                type="button"
-                className="dossier-section-link-button"
-                onClick={() => onOpenEventStudy(ticker)}
-              >
-                Open {ticker} Event Study
-              </button>
-            )}
-            <ul>
-              {marketEvidence.points.map((point) => (
-                <li key={point}>{point}</li>
-              ))}
-            </ul>
-          </div>
-          <div className="dossier-event-study-board" aria-label={`${ticker} event study evidence`}>
-            <div className="dossier-event-study-meta">
-              <span>Earnings summary</span>
-              <strong>
-                {measuredGapCount !== null
-                  ? `N=${measuredGapCount}`
-                  : 'Sample not included'}
-              </strong>
-            </div>
-            <div className="dossier-event-study-metrics">
-              {truthLayerMetrics.map((metric) => (
-                <div key={metric.label} className={`tone-${metric.tone}`}>
-                  <span>{metric.label}</span>
-                  <strong>{metric.value}</strong>
-                </div>
-              ))}
-            </div>
-            <ul className="dossier-event-study-notes">
-              {[
-                eventStudyDigest?.summary_line || 'Verified earnings gap evidence is pending.'
-              ].map((note) => (
-                <li key={note}>{note}</li>
-              ))}
-            </ul>
-          </div>
-        </div>
       </div>
 
       <div id="momentum" className="card dossier-scenario-card" style={{ marginBottom: '24px' }}>
@@ -779,15 +1122,119 @@ const StockDossierView = ({ eventDetail, payload, onOpenEventStudy }) => {
         </div>
       </div>
 
+      <div id="market-evidence" className="card dossier-market-evidence-card" style={{ marginBottom: '24px' }}>
+        <p className="crowdrisk-kicker">Market Evidence</p>
+        <h3>Event Study connection: {marketEvidence.title}</h3>
+        <div className="dossier-event-study-summary-strip" aria-label={`${ticker} earnings event summary`}>
+          <div>
+            <span>Measured quarters</span>
+            <strong>
+              {measuredGapCount ?? <em className="dossier-pending-value">Pending</em>}
+              {eventStudyCoverage?.excluded_count !== undefined && <small>{eventStudyCoverage.excluded_count} excluded</small>}
+            </strong>
+          </div>
+          <div>
+            <span>Gap-up rate</span>
+            <strong>
+              {formatRatioReturn(eventStudyDigest?.gap_up_rate) || <em className="dossier-pending-value">Pending</em>}
+            </strong>
+          </div>
+          <SummaryMetric label="Post-gap 3D avg" summary={forwardGapUps?.r_plus_3} />
+          <SummaryMetric label="Post-gap 10D avg" summary={forwardGapUps?.r_plus_10} />
+          <SummaryMetric label="Post-gap 30D avg" summary={forwardGapUps?.r_plus_30} />
+        </div>
+        <div className="dossier-reaction-quality-grid">
+          {latestReactionRows.map((row) => (
+            <div key={row.label}>
+              <span>{row.label}</span>
+              <strong>{row.value}</strong>
+              <em>{row.note}</em>
+            </div>
+          ))}
+        </div>
+        {eventStudyDigest?.summary_line && (
+          <p className="dossier-event-study-summary-line">{eventStudyDigest.summary_line}</p>
+        )}
+        {eventStudyLoading && <p className="dossier-event-study-status">Loading earnings-event summary...</p>}
+        {eventStudyError && <p className="dossier-event-study-status dossier-event-study-status--error">{eventStudyError}</p>}
+        <div className="dossier-event-study-detail">
+          <div className="dossier-event-study-copy">
+            <span>Event Study Detail</span>
+            <strong>{eventStudyDetail.title}</strong>
+            <p>{eventStudyDetail.interpretation}</p>
+            {onOpenEventStudy && (
+              <button
+                type="button"
+                className="dossier-section-link-button"
+                onClick={() => onOpenEventStudy(ticker)}
+              >
+                Open {ticker} Event Study
+              </button>
+            )}
+            <ul>
+              {marketEvidence.points.map((point) => (
+                <li key={point}>{point}</li>
+              ))}
+            </ul>
+          </div>
+          <div className="dossier-event-study-board" aria-label={`${ticker} event study evidence`}>
+            <div className="dossier-event-study-meta">
+              <span>Earnings summary</span>
+              <strong>
+                {measuredGapCount !== null
+                  ? `N=${measuredGapCount}`
+                  : 'Sample not included'}
+              </strong>
+            </div>
+            <div className="dossier-event-study-metrics">
+              {truthLayerMetrics.map((metric) => (
+                <div key={metric.label} className={`tone-${metric.tone}`}>
+                  <span>{metric.label}</span>
+                  <strong>{metric.value}</strong>
+                </div>
+              ))}
+            </div>
+            <ul className="dossier-event-study-notes">
+              {[
+                eventStudyDigest?.summary_line || 'Verified earnings gap evidence is pending.'
+              ].map((note) => (
+                <li key={note}>{note}</li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </div>
+
       {valuationCore.scenarios && (
         <div id="scenario-range" className="card dossier-scenario-card">
           <p className="crowdrisk-kicker">Scenario Range</p>
-          <h3>What changes the expected outcome?</h3>
+          <h3>Bull / base / bear path: what must be true?</h3>
+          <p className="dossier-scenario-model-note">
+            References the Valuation Core forward model; price range and median return are model-derived, not formal price targets.
+          </p>
           <div className="dossier-scenario-grid">
             {valuationCore.scenarios.map((scenario) => (
-              <div key={scenario.label}>
+              <div key={scenario.label} className="dossier-scenario-path">
                 <span>{scenario.label}</span>
                 <p>{scenario.text}</p>
+                <dl>
+                  <div>
+                    <dt>Implied outcome</dt>
+                    <dd>{scenario.impliedOutcome || (scenario.label.includes('Bull') ? 'Premium multiple can persist if growth and margins stay exceptional.' : scenario.label.includes('Bear') ? 'Downside becomes valuation-led if growth or dilution evidence worsens.' : 'Expected return is capped unless execution improves faster than the multiple compresses.')}</dd>
+                  </div>
+                  <div>
+                    <dt>Upside / downside</dt>
+                    <dd>{scenario.upsideDownside || 'Not modeled in current payload'}</dd>
+                  </div>
+                  <div>
+                    <dt>3Y IRR</dt>
+                    <dd>{scenario.threeYearIrr || 'Pending'}</dd>
+                  </div>
+                  <div>
+                    <dt>Scenario trigger</dt>
+                    <dd>{scenario.trigger || scenario.mustBeTrue || 'Needs updated growth, margin, multiple, and event-follow-through evidence.'}</dd>
+                  </div>
+                </dl>
               </div>
             ))}
           </div>
@@ -796,16 +1243,18 @@ const StockDossierView = ({ eventDetail, payload, onOpenEventStudy }) => {
 
       {/* 6. Thesis Risk Monitor */}
       <div id="thesis-risk-monitor" className="card dossier-pulse-watch dossier-kill-card" style={{ marginBottom: '24px' }}>
-        <div className="grid-2col" style={{ gap: '24px' }}>
+        <p className="crowdrisk-kicker">Thesis Risk Monitor</p>
+        <h3>What would weaken the medium-term dossier?</h3>
+        <div className="dossier-risk-monitor-grid">
           <div>
-            <h3>Thesis Risk Monitor</h3>
-            <ul style={{ paddingLeft: '20px', color: 'var(--text-muted)', fontSize: '0.9em', margin: '8px 0' }}>
+            <span>Fundamental risk triggers</span>
+            <ul>
               {(valuationCore.killData || killSwitch).map((item, i) => <li key={i}>{item}</li>)}
             </ul>
           </div>
           <div>
-            <h3>Price Trend Risk</h3>
-            <ul style={{ paddingLeft: '20px', color: 'var(--text-muted)', fontSize: '0.9em', margin: '8px 0' }}>
+            <span>Price / market evidence triggers</span>
+            <ul>
               {priceTrendRisk.map((item, i) => <li key={i}>{item}</li>)}
             </ul>
           </div>
