@@ -4927,9 +4927,10 @@ html, body, #root, .app-container, .main-content {
 #case-summary,
 #company-overview,
 #valuation-core,
+#momentum,
 #market-evidence,
 #scenario-range,
-#kill-data {
+#thesis-risk-monitor {
   scroll-margin-top: 7rem;
 }
 

@@ -704,8 +704,8 @@ const StockDossierView = ({ eventDetail, payload, onOpenEventStudy }) => {
         </div>
       </div>
 
-      <div id="technical-setup" className="card dossier-scenario-card" style={{ marginBottom: '24px' }}>
-        <p className="crowdrisk-kicker">Technical Setup</p>
+      <div id="momentum" className="card dossier-scenario-card" style={{ marginBottom: '24px' }}>
+        <p className="crowdrisk-kicker">Momentum</p>
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '12px' }}>
           <h3 style={{ margin: 0 }}>Structure & Execution</h3>
           {(() => {
@@ -794,11 +794,11 @@ const StockDossierView = ({ eventDetail, payload, onOpenEventStudy }) => {
         </div>
       )}
 
-      {/* 6. Kill Data */}
-      <div id="kill-data" className="card dossier-pulse-watch dossier-kill-card" style={{ marginBottom: '24px' }}>
+      {/* 6. Thesis Risk Monitor */}
+      <div id="thesis-risk-monitor" className="card dossier-pulse-watch dossier-kill-card" style={{ marginBottom: '24px' }}>
         <div className="grid-2col" style={{ gap: '24px' }}>
           <div>
-            <h3>Kill Data</h3>
+            <h3>Thesis Risk Monitor</h3>
             <ul style={{ paddingLeft: '20px', color: 'var(--text-muted)', fontSize: '0.9em', margin: '8px 0' }}>
               {(valuationCore.killData || killSwitch).map((item, i) => <li key={i}>{item}</li>)}
             </ul>

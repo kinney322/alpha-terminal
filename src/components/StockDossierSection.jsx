@@ -7,12 +7,12 @@ import { getStockDossierProfile } from '../data/stockDossierProfiles';
 import { buildStockLogoUrl } from '../data/stockLogoUrls';
 
 const DOSSIER_SECTIONS = [
-  { id: 'case-summary', label: 'Case Summary' },
   { id: 'company-overview', label: 'Company Overview' },
   { id: 'valuation-core', label: 'Valuation Core' },
+  { id: 'momentum', label: 'Momentum' },
   { id: 'market-evidence', label: 'Market Evidence' },
   { id: 'scenario-range', label: 'Scenario Range' },
-  { id: 'kill-data', label: 'Kill Data' }
+  { id: 'thesis-risk-monitor', label: 'Thesis Risk Monitor' }
 ];
 
 const scrollDossierToTop = () => {
