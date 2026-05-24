@@ -3868,6 +3868,8 @@ html, body, #root, .app-container, .main-content {
 .crowdrisk-app--dark .dossier-event-study-board,
 .crowdrisk-app--dark .dossier-event-study-metrics > div,
 .crowdrisk-app--dark .dossier-scenario-grid > div,
+.crowdrisk-app--dark .dossier-momentum-strength-panel,
+.crowdrisk-app--dark .dossier-momentum-strength-grid > div,
 .crowdrisk-app--dark .dossier-momentum-zone-visual,
 .crowdrisk-app--dark .dossier-risk-monitor-grid > div,
 .crowdrisk-app--dark .dossier-quarter-table-wrap {
@@ -3914,6 +3916,8 @@ html, body, #root, .app-container, .main-content {
 .crowdrisk-app--dark .dossier-forward-range-legend span,
 .crowdrisk-app--dark .dossier-forward-scenario-head span,
 .crowdrisk-app--dark .dossier-forward-scenario-facts dt,
+.crowdrisk-app--dark .dossier-momentum-strength-head span,
+.crowdrisk-app--dark .dossier-momentum-strength-grid span,
 .crowdrisk-app--dark .dossier-momentum-zone-head span,
 .crowdrisk-app--dark .dossier-momentum-zone-legend span,
 .crowdrisk-app--dark .dossier-event-evidence-visual span,
@@ -3924,6 +3928,8 @@ html, body, #root, .app-container, .main-content {
 
 .crowdrisk-app--dark .dossier-market-strip,
 .crowdrisk-app--dark .dossier-market-strip > div,
+.crowdrisk-app--dark .dossier-momentum-strength-panel,
+.crowdrisk-app--dark .dossier-momentum-strength-grid > div,
 .crowdrisk-app--dark .dossier-event-study-board,
 .crowdrisk-app--dark .dossier-scenario-grid > div,
 .crowdrisk-app--dark .dossier-forward-range-table th,
@@ -4640,6 +4646,80 @@ html, body, #root, .app-container, .main-content {
   margin-top: 1.05rem;
   padding-top: 0.85rem;
   border-top: 1px solid rgba(168, 86, 29, 0.16);
+}
+
+.dossier-momentum-strength-panel {
+  padding: 1rem;
+  border: 1px solid rgba(168, 86, 29, 0.14);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.54);
+}
+
+.dossier-momentum-strength-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.8rem;
+}
+
+.dossier-momentum-strength-head span,
+.dossier-momentum-strength-grid span {
+  display: block;
+  color: #a8561d;
+  font-size: 0.68rem;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.dossier-momentum-strength-head strong {
+  color: var(--text-main);
+  font-size: clamp(1.05rem, 1.4vw, 1.32rem);
+  line-height: 1.1;
+  text-align: right;
+}
+
+.dossier-momentum-strength-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(145px, 1fr));
+  gap: 0.6rem;
+}
+
+.dossier-momentum-strength-grid > div {
+  min-width: 0;
+  padding: 0.72rem;
+  border: 1px solid rgba(168, 86, 29, 0.12);
+  border-radius: 8px;
+  background: rgba(255, 250, 242, 0.68);
+}
+
+.dossier-momentum-strength-grid strong {
+  display: block;
+  margin-top: 0.28rem;
+  color: var(--text-main);
+  font-size: clamp(1rem, 1.2vw, 1.16rem);
+  line-height: 1.12;
+  overflow-wrap: anywhere;
+}
+
+.dossier-momentum-strength-grid small {
+  display: block;
+  margin-top: 0.32rem;
+  color: var(--text-muted);
+  font-size: 0.78rem;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.dossier-momentum-strength-grid .tone-positive {
+  border-color: rgba(24, 143, 122, 0.18);
+  background: rgba(24, 143, 122, 0.08);
+}
+
+.dossier-momentum-strength-grid .tone-warning {
+  border-color: rgba(192, 132, 62, 0.24);
+  background: rgba(192, 132, 62, 0.1);
 }
 
 .dossier-market-strip > div {
@@ -7069,11 +7149,13 @@ body,
   }
 
   .dossier-forward-range-visual__head,
+  .dossier-momentum-strength-head,
   .dossier-momentum-zone-head {
     display: grid;
   }
 
-  .dossier-forward-range-visual__head > div:last-child {
+  .dossier-forward-range-visual__head > div:last-child,
+  .dossier-momentum-strength-head strong {
     text-align: left;
   }
 

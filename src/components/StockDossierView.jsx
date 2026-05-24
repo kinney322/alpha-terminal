@@ -80,10 +80,16 @@ const formatMarketPrice = (value) => {
   return `$${num.toFixed(2)}`;
 };
 
+const findMomentumUniverseRow = (payload, ticker) => {
+  const normalizedTicker = String(ticker || '').trim().toUpperCase();
+  if (!normalizedTicker) return null;
+  return (payload?.momentum_universe?.rankings || [])
+    .find((row) => String(row?.ticker || '').trim().toUpperCase() === normalizedTicker) || null;
+};
+
 const resolveLatestMarketPrice = (eventDetail, payload, ticker) => {
   const normalizedTicker = String(ticker || eventDetail?.ticker || '').trim().toUpperCase();
-  const matchingMomentumRow = (payload?.momentum_universe?.rankings || [])
-    .find((row) => String(row?.ticker || '').trim().toUpperCase() === normalizedTicker);
+  const matchingMomentumRow = findMomentumUniverseRow(payload, normalizedTicker);
 
   const sources = [
     eventDetail?.current_price,
@@ -99,6 +105,29 @@ const resolveLatestMarketPrice = (eventDetail, payload, ticker) => {
   for (const source of sources) {
     const formatted = formatMarketPrice(source);
     if (formatted) return formatted;
+  }
+
+  return null;
+};
+
+const resolveLatestTechnicalPrice = (eventDetail, payload, ticker) => {
+  const normalizedTicker = String(ticker || eventDetail?.ticker || '').trim().toUpperCase();
+  const matchingMomentumRow = findMomentumUniverseRow(payload, normalizedTicker);
+  const sources = [
+    eventDetail?.current_price,
+    eventDetail?.latest_price,
+    eventDetail?.price,
+    eventDetail?.close,
+    eventDetail?.trend_setup?.metrics?.latest_close,
+    eventDetail?.momentum_evidence?.evidence?.latest_close,
+    matchingMomentumRow?.price,
+    matchingMomentumRow?.latest_close,
+    matchingMomentumRow?.trend_setup?.metrics?.latest_close
+  ];
+
+  for (const source of sources) {
+    const numeric = toNumeric(source);
+    if (numeric !== null && numeric > 0) return numeric;
   }
 
   return null;
@@ -514,6 +543,38 @@ const buildRadarAxes = ({ momentum, metrics, valuationCore, eventDetail }) => {
   ];
 };
 
+const formatRank = (rank, count) => {
+  const numericRank = toNumeric(rank);
+  const numericCount = toNumeric(count);
+  if (numericRank === null) return 'Pending';
+  return numericCount === null ? `#${numericRank}` : `#${numericRank} / ${numericCount}`;
+};
+
+const formatPercentile = (value) => {
+  const numeric = toNumeric(value);
+  if (numeric === null) return 'Pending';
+  return `${numeric.toFixed(0)}th percentile`;
+};
+
+const formatZScore = (value) => {
+  const numeric = toNumeric(value);
+  if (numeric === null) return 'Pending';
+  return `Z ${numeric.toFixed(2)}`;
+};
+
+const formatUpperBandDays = (value) => {
+  const numeric = toNumeric(value);
+  if (numeric === null) return 'Pending';
+  return `${numeric.toFixed(0)} days`;
+};
+
+const metricTone = (value, positiveCutoff, warningCutoff = null) => {
+  const numeric = toNumeric(value);
+  if (numeric === null) return 'pending';
+  if (warningCutoff !== null && numeric >= warningCutoff) return 'warning';
+  return numeric >= positiveCutoff ? 'positive' : 'neutral';
+};
+
 const buildEventStudyDetail = (eventDetail, dossierProfile = null) => {
   return {
     hasBaseRate: false,
@@ -600,8 +661,13 @@ const StockDossierView = ({ eventDetail, payload, onOpenEventStudy }) => {
   };
   const eventStudyDetail = buildEventStudyDetail(enrichedEventDetail, dossierProfile);
 
-  const momentum = enrichedEventDetail.momentum_evidence || {};
-  const metrics = momentum.evidence || enrichedEventDetail.trend_setup?.metrics || {};
+  const momentumRanking = findMomentumUniverseRow(payload, tickerForSummary);
+  const momentum = enrichedEventDetail.momentum_evidence || momentumRanking?.momentum_evidence || {};
+  const metrics = {
+    ...(enrichedEventDetail.trend_setup?.metrics || {}),
+    ...(momentum.evidence || {}),
+    ...(momentumRanking?.trend_setup?.metrics || {})
+  };
   const priceSeries = extractPriceSeries(enrichedEventDetail);
   const sparklinePath = buildSparklinePath(priceSeries);
 
@@ -626,6 +692,63 @@ const StockDossierView = ({ eventDetail, payload, onOpenEventStudy }) => {
     { label: 'Margin of Safety', value: valuationCore.topVerdict.marginOfSafety, tone: valuationCore.topVerdict.marginOfSafety === 'None' ? 'warning' : 'neutral' }
   ];
   const radarAxes = buildRadarAxes({ momentum, metrics, valuationCore, eventDetail: enrichedEventDetail });
+  const latestMomentumPrice = priceSeries.length
+    ? priceSeries[priceSeries.length - 1]
+    : resolveLatestTechnicalPrice(enrichedEventDetail, payload, tickerForSummary);
+  const momentumScore = toNumeric(momentum.score ?? momentumRanking?.score);
+  const zScore = toNumeric(metrics.zscore_200d);
+  const upperBandDays = toNumeric(metrics.days_above_upper_band_60d);
+  const momentumStrengthRead = momentumScore === null
+    ? 'Momentum evidence pending'
+    : momentumScore >= 70 && zScore !== null && zScore >= 2.5
+      ? 'Strong trend, but extended'
+      : momentumScore >= 70
+        ? 'Strong trend'
+        : momentumScore >= 50
+          ? 'Constructive trend'
+          : 'Trend needs confirmation';
+  const momentumStrengthRows = [
+    {
+      label: 'Momentum Score',
+      value: momentumScore === null ? 'Pending' : `${momentumScore}/100`,
+      detail: momentum.regime ? formatLabel(momentum.regime) : formatLabel(momentumRanking?.regime),
+      tone: metricTone(momentumScore, 70)
+    },
+    {
+      label: 'Universe Rank',
+      value: formatRank(momentum.universe_rank ?? momentumRanking?.rank, momentum.universe_count ?? payload?.momentum_universe?.ranked_count),
+      detail: 'Overall scan',
+      tone: metricTone(momentumScore, 70)
+    },
+    {
+      label: 'Theme Rank',
+      value: formatRank(momentum.theme_rank ?? momentumRanking?.theme_rank),
+      detail: momentum.industry_theme_label || momentumRanking?.industry_theme_label || 'Theme',
+      tone: toNumeric(momentum.theme_rank ?? momentumRanking?.theme_rank) === 1 ? 'positive' : 'neutral'
+    },
+    {
+      label: 'Relative Strength',
+      value: formatPercentile(momentumRanking?.relative_strength_percentile),
+      detail: metrics.relative_strength_vs_spy_63d !== undefined ? `${formatPct(metrics.relative_strength_vs_spy_63d)} vs SPY 63D` : 'Percentile',
+      tone: metricTone(momentumRanking?.relative_strength_percentile, 75)
+    },
+    {
+      label: 'Trend Stack',
+      value: [
+        metrics.price_vs_sma20_pct ?? momentumRanking?.price_vs_sma20_pct,
+        metrics.price_vs_sma50_pct ?? momentumRanking?.price_vs_sma50_pct,
+        metrics.price_vs_sma200_pct ?? momentumRanking?.price_vs_sma200_pct
+      ].map((value) => formatPct(value)).join(' / '),
+      detail: 'vs SMA20 / 50 / 200',
+      tone: 'positive'
+    },
+    {
+      label: 'Crowding Risk',
+      value: `${formatZScore(zScore)} / ${formatUpperBandDays(upperBandDays)}`,
+      detail: '200D stretch / upper band',
+      tone: zScore !== null && zScore >= 2.5 ? 'warning' : 'neutral'
+    }
+  ];
   const valuationGate = valuationCore.topVerdict.marginOfSafety === 'None'
     ? 'No margin of safety'
     : valuationCore.topVerdict.valuationState;
@@ -1151,6 +1274,23 @@ const StockDossierView = ({ eventDetail, payload, onOpenEventStudy }) => {
               return <p className={hasSetup ? '' : 'crowdrisk-muted'}>{sentence}</p>;
             })()}
           </div>
+          {momentumStrengthRows.length > 0 && (
+            <div className="dossier-momentum-strength-panel" aria-label={`${ticker} momentum strength`}>
+              <div className="dossier-momentum-strength-head">
+                <span>Strength read</span>
+                <strong>{momentumStrengthRead}</strong>
+              </div>
+              <div className="dossier-momentum-strength-grid">
+                {momentumStrengthRows.map((row) => (
+                  <div key={row.label} className={`tone-${row.tone}`}>
+                    <span>{row.label}</span>
+                    <strong>{row.value}</strong>
+                    {row.detail && <small>{row.detail}</small>}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
           {(() => {
              const ts = enrichedEventDetail.trend_setup?.technical_setup || {};
              const hasSetup = ts.status && ts.status !== 'unavailable';
@@ -1159,7 +1299,7 @@ const StockDossierView = ({ eventDetail, payload, onOpenEventStudy }) => {
              const breakout = formatTechnicalZone(ts.breakout_area);
              const target = formatTechnicalZone(ts.target_zone);
              const hold = formatTechnicalZone(ts.hold_zone);
-             const latestPrice = priceSeries.length ? priceSeries[priceSeries.length - 1] : null;
+             const latestPrice = latestMomentumPrice;
              const breakoutZone = normalizeTechnicalZone(ts.breakout_area);
              const targetZone = normalizeTechnicalZone(ts.target_zone);
              const upsideBase = latestPrice || breakoutZone?.[1];
