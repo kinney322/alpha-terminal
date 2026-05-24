@@ -273,6 +273,15 @@ const formatScenarioPct = (value) => {
   return `${numeric > 0 ? '+' : ''}${numeric.toFixed(1)}%`;
 };
 
+const formatRangeMarkerPct = (value, low, high) => {
+  const numeric = Number(value);
+  const min = Number(low);
+  const max = Number(high);
+  if (!Number.isFinite(numeric) || !Number.isFinite(min) || !Number.isFinite(max) || max <= min) return '50%';
+  const pct = ((numeric - min) / (max - min)) * 100;
+  return `${Math.max(0, Math.min(100, pct)).toFixed(1)}%`;
+};
+
 const medianNumber = (values) => {
   const nums = values.map(Number).filter(Number.isFinite).sort((a, b) => a - b);
   if (!nums.length) return null;
@@ -627,6 +636,92 @@ const StockDossierView = ({ eventDetail, payload, onOpenEventStudy }) => {
   const measuredGapCount = eventStudyDigest?.measured_gap_count ?? eventStudyCoverage?.measured_gap_count ?? null;
   const valuationResearchGroups = buildValuationResearchGroups(valuationCore, marketSnapshot);
   const forwardValuationRange = buildForwardValuationRange(valuationCore, marketSnapshot);
+  const forwardMethodRows = forwardValuationRange ? [
+    ['Valuation method', forwardValuationRange.valuationMethod],
+    ['Current guide', 'FY2026 Revenue Guide'],
+    ['Model horizon', forwardValuationRange.forwardModelHorizon],
+    ['Forecast metric', `FY2028 model ${forwardValuationRange.forecastMetric}`],
+    ['Multiple range', forwardValuationRange.multipleRange],
+    ['Data type', forwardValuationRange.dataType],
+    ['Confidence', forwardValuationRange.confidence],
+    ['Missing evidence', forwardValuationRange.missingEvidence.join('; ')]
+  ] : [];
+  const forwardRangePrimary = forwardValuationRange ? [
+    { label: 'Implied Price Range', value: forwardValuationRange.impliedPriceRange, tone: 'primary' },
+    { label: 'Median Price', value: forwardValuationRange.medianPriceDisplay, tone: 'primary' },
+    { label: 'Upside / Downside to Median', value: forwardValuationRange.medianUpsideDownsideDisplay, tone: 'secondary' },
+    { label: '3Y IRR to Median', value: forwardValuationRange.medianThreeYearIrrDisplay, tone: 'secondary' }
+  ] : [];
+  const forwardRangeInputs = forwardValuationRange ? [
+    ['FY2026 Revenue Guide', forwardValuationRange.fy26RevenueGuide],
+    ['FY2028 Model Revenue Range', forwardValuationRange.forecastMetricRange],
+    ['Valuation Multiple Range', forwardValuationRange.multipleRange],
+    ['Implied EV Range', forwardValuationRange.impliedEvRange],
+    ['Net Cash Adjustment', formatBillionValue(forwardValuationRange.netCashAdjustment)],
+    ['Implied Equity Value Range', forwardValuationRange.impliedEquityValueRange],
+    ['Current Price', marketSnapshotValue(marketSnapshot, 'currentPrice')],
+    ['Share Count', forwardValuationRange.shareCountDisplay]
+  ] : [];
+  const forwardRangeVisual = forwardValuationRange ? (() => {
+    const impliedPrices = forwardValuationRange.scenarios
+      .map(scenario => Number(scenario.impliedPrice))
+      .filter(Number.isFinite);
+    const low = impliedPrices.length ? Math.min(...impliedPrices) : null;
+    const high = impliedPrices.length ? Math.max(...impliedPrices) : null;
+    return {
+      low,
+      high,
+      current: forwardValuationRange.currentPrice,
+      median: forwardValuationRange.medianPrice,
+      currentPct: formatRangeMarkerPct(forwardValuationRange.currentPrice, low, high),
+      medianPct: formatRangeMarkerPct(forwardValuationRange.medianPrice, low, high)
+    };
+  })() : null;
+  const forwardScenarioCards = forwardValuationRange ? (() => {
+    const prices = forwardValuationRange.scenarios
+      .map(scenario => Number(scenario.impliedPrice))
+      .filter(Number.isFinite);
+    const low = prices.length ? Math.min(...prices) : null;
+    const high = prices.length ? Math.max(...prices) : null;
+
+    return forwardValuationRange.scenarios.map((scenario) => {
+      const impliedPrice = Number(scenario.impliedPrice);
+      const marker = low !== null && high !== null && high !== low && Number.isFinite(impliedPrice)
+        ? `${Math.max(0, Math.min(100, ((impliedPrice - low) / (high - low)) * 100)).toFixed(1)}%`
+        : '50%';
+      return {
+        ...scenario,
+        tone: String(scenario.label || '').toLowerCase(),
+        marker
+      };
+    });
+  })() : [];
+  const eventEvidenceVisuals = [
+    {
+      label: 'Gap-up rate',
+      value: formatRatioReturn(eventStudyDigest?.gap_up_rate) || 'Pending',
+      score: eventStudyDigest?.gap_up_rate !== undefined ? Math.max(0, Math.min(100, Number(eventStudyDigest.gap_up_rate) * 100)) : 0,
+      tone: rateToneClass(eventStudyDigest?.gap_up_rate)
+    },
+    {
+      label: 'R+3 avg',
+      value: formatRatioReturn(forwardGapUps?.r_plus_3?.avg_return) || 'Pending',
+      score: forwardGapUps?.r_plus_3?.avg_return !== undefined ? clamp(50 + Number(forwardGapUps.r_plus_3.avg_return) * 180, 0, 100) : 0,
+      tone: returnToneClass(forwardGapUps?.r_plus_3?.avg_return)
+    },
+    {
+      label: 'R+10 avg',
+      value: formatRatioReturn(forwardGapUps?.r_plus_10?.avg_return) || 'Pending',
+      score: forwardGapUps?.r_plus_10?.avg_return !== undefined ? clamp(50 + Number(forwardGapUps.r_plus_10.avg_return) * 180, 0, 100) : 0,
+      tone: returnToneClass(forwardGapUps?.r_plus_10?.avg_return)
+    },
+    {
+      label: 'R+30 avg',
+      value: formatRatioReturn(forwardGapUps?.r_plus_30?.avg_return) || 'Pending',
+      score: forwardGapUps?.r_plus_30?.avg_return !== undefined ? clamp(50 + Number(forwardGapUps.r_plus_30.avg_return) * 180, 0, 100) : 0,
+      tone: returnToneClass(forwardGapUps?.r_plus_30?.avg_return)
+    }
+  ];
   const latestReactionRows = [
     {
       label: 'Latest reaction',
@@ -689,12 +784,6 @@ const StockDossierView = ({ eventDetail, payload, onOpenEventStudy }) => {
               ))}
             </div>
           )}
-
-          <div className="dossier-why-now">
-            <span>Why now</span>
-            <strong>{renderedVerdict.reason}</strong>
-            {renderedVerdict.thesisShift && <p>{renderedVerdict.thesisShift}</p>}
-          </div>
         </div>
 
         <div className="dossier-snapshot-board" aria-label={`${ticker} dossier snapshot`}>
@@ -737,6 +826,12 @@ const StockDossierView = ({ eventDetail, payload, onOpenEventStudy }) => {
               </div>
             </div>
           </div>
+        </div>
+
+        <div className="dossier-why-now">
+          <span>Why now</span>
+          <strong>{renderedVerdict.reason}</strong>
+          {renderedVerdict.thesisShift && <p>{renderedVerdict.thesisShift}</p>}
         </div>
       </section>
 
@@ -808,6 +903,12 @@ const StockDossierView = ({ eventDetail, payload, onOpenEventStudy }) => {
               </article>
             </div>
             {dossierProfile.sections?.length > 0 && (
+              <div className="dossier-profile-section-heading">
+                <span>Operating notes</span>
+                <strong>Business engine, cash-flow quality, and competitive position</strong>
+              </div>
+            )}
+            {dossierProfile.sections?.length > 0 && (
               <div className="dossier-profile-sections">
                 {dossierProfile.sections.map((section) => (
                   <article key={section.id}>
@@ -866,132 +967,115 @@ const StockDossierView = ({ eventDetail, payload, onOpenEventStudy }) => {
                 <span>Forward Valuation Range</span>
                 <h4>Forecast metric x valuation multiple range</h4>
               </div>
-              <p>{forwardValuationRange.fy27Fy28Assumption}</p>
             </div>
             <div className="dossier-forward-fiscal-note">
               <strong>{forwardValuationRange.fiscalYearNote}</strong>
               <span>{forwardValuationRange.fiscalYearEndDisplay}</span>
             </div>
-            <div className="dossier-forward-method-grid">
-              <div>
-                <span>Valuation Method</span>
-                <strong>{forwardValuationRange.valuationMethod}</strong>
+            <div className="dossier-forward-result-grid">
+              {forwardRangePrimary.map((item) => (
+                <div key={item.label} className={`tone-${item.tone}`}>
+                  <span>{item.label}</span>
+                  <strong>{item.value}</strong>
+                </div>
+              ))}
+            </div>
+            {forwardRangeVisual?.low !== null && forwardRangeVisual?.high !== null && (
+              <div className="dossier-forward-range-visual" aria-label={`${ticker} implied valuation range visual`}>
+                <div className="dossier-forward-range-visual__head">
+                  <div>
+                    <span>Valuation map</span>
+                    <strong>Current price vs model range</strong>
+                  </div>
+                  <div>
+                    <span>Range</span>
+                    <strong>{formatWholePrice(forwardRangeVisual.low)} - {formatWholePrice(forwardRangeVisual.high)}</strong>
+                  </div>
+                </div>
+                <div
+                  className="dossier-forward-value-rail"
+                  style={{
+                    '--current-marker': forwardRangeVisual.currentPct,
+                    '--median-marker': forwardRangeVisual.medianPct
+                  }}
+                >
+                  <i className="marker-current" />
+                  <i className="marker-median" />
+                </div>
+                <div className="dossier-forward-range-legend">
+                  <span>Bear {formatWholePrice(forwardRangeVisual.low)}</span>
+                  <span>Current {formatWholePrice(forwardRangeVisual.current)}</span>
+                  <span>Median {formatWholePrice(forwardRangeVisual.median)}</span>
+                  <span>Bull {formatWholePrice(forwardRangeVisual.high)}</span>
+                </div>
               </div>
-              <div>
-                <span>Current Company Guide</span>
-                <strong>FY2026 Revenue Guide</strong>
-              </div>
-              <div>
-                <span>Forward Model Horizon</span>
-                <strong>{forwardValuationRange.forwardModelHorizon}</strong>
-              </div>
-              <div>
-                <span>Forecast Metric</span>
-                <strong>FY2028 model {forwardValuationRange.forecastMetric}</strong>
-              </div>
-              <div>
-                <span>Multiple Range Used</span>
-                <strong>{forwardValuationRange.multipleRange}</strong>
-              </div>
-              <div>
-                <span>Data Type</span>
-                <strong>{forwardValuationRange.dataType}</strong>
-              </div>
-              <div>
-                <span>Confidence / Missing Evidence</span>
-                <strong>{forwardValuationRange.confidence}</strong>
-                <em>{forwardValuationRange.missingEvidence.join('; ')}</em>
+            )}
+            <div className="dossier-forward-detail-layout">
+              <dl className="dossier-forward-method-list">
+                {forwardMethodRows.map(([label, value]) => (
+                  <div key={label}>
+                    <dt>{label}</dt>
+                    <dd>{value}</dd>
+                  </div>
+                ))}
+              </dl>
+              <div className="dossier-forward-range-summary" aria-label={`${ticker} forward valuation inputs`}>
+                {forwardRangeInputs.map(([label, value]) => (
+                  <div key={label}>
+                    <span>{label}</span>
+                    <strong>{value}</strong>
+                  </div>
+                ))}
               </div>
             </div>
-            <div className="dossier-forward-range-summary">
-              <div>
-                <span>FY2026 Revenue Guide</span>
-                <strong>{forwardValuationRange.fy26RevenueGuide}</strong>
-              </div>
-              <div>
-                <span>FY2028 Model Revenue Range</span>
-                <strong>{forwardValuationRange.forecastMetricRange}</strong>
-              </div>
-              <div>
-                <span>Valuation Multiple Range</span>
-                <strong>{forwardValuationRange.multipleRange}</strong>
-              </div>
-              <div>
-                <span>Implied EV Range</span>
-                <strong>{forwardValuationRange.impliedEvRange}</strong>
-              </div>
-              <div>
-                <span>Net Cash Adjustment</span>
-                <strong>{formatBillionValue(forwardValuationRange.netCashAdjustment)}</strong>
-              </div>
-              <div>
-                <span>Implied Equity Value Range</span>
-                <strong>{forwardValuationRange.impliedEquityValueRange}</strong>
-              </div>
-              <div>
-                <span>Implied Price Range</span>
-                <strong>{forwardValuationRange.impliedPriceRange}</strong>
-              </div>
-              <div>
-                <span>Median Price</span>
-                <strong>{forwardValuationRange.medianPriceDisplay}</strong>
-              </div>
-              <div>
-                <span>Current Price</span>
-                <strong>{marketSnapshotValue(marketSnapshot, 'currentPrice')}</strong>
-              </div>
-              <div>
-                <span>Upside / Downside to Median</span>
-                <strong>{forwardValuationRange.medianUpsideDownsideDisplay}</strong>
-              </div>
-              <div>
-                <span>3Y IRR to Median</span>
-                <strong>{forwardValuationRange.medianThreeYearIrrDisplay}</strong>
-              </div>
-              <div>
-                <span>Share Count</span>
-                <strong>{forwardValuationRange.shareCountDisplay}</strong>
-              </div>
-            </div>
-            <div className="dossier-forward-range-table-wrap">
-              <table className="dossier-forward-range-table">
-                <thead>
-                  <tr>
-                    <th>Scenario</th>
-                    <th>FY2027 / FY2028 Model Assumption</th>
-                    <th>Revenue Growth</th>
-                    <th>Applied Multiple</th>
-                    <th>Implied EV</th>
-                    <th>Net Cash</th>
-                    <th>Implied Equity Value</th>
-                    <th>Implied Price</th>
-                    <th>Upside / Downside</th>
-                    <th>3Y IRR</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {forwardValuationRange.scenarios.map((scenario) => (
-                    <tr key={scenario.label}>
-                      <td>
-                        <strong>{scenario.label}</strong>
-                        <span>Scenario point estimate</span>
-                      </td>
-                      <td>{formatBillionValue(scenario.fy27Revenue)} / {formatBillionValue(scenario.fy28Revenue)}</td>
-                      <td>{scenario.revenueGrowth || 'Pending'}</td>
-                      <td>
-                        <strong>{formatScenarioMultiple(scenario.evRevenueMultiple, 'EV / Rev')}</strong>
-                        <span>{formatScenarioMultiple(scenario.evFcfMultiple, 'EV / FCF')}</span>
-                      </td>
-                      <td>{formatBillionValue(scenario.impliedEv)}</td>
-                      <td>{formatBillionValue(forwardValuationRange.netCashAdjustment)}</td>
-                      <td>{formatBillionValue(scenario.impliedEquityValue)}</td>
-                      <td>{formatWholePrice(scenario.impliedPrice)}</td>
-                      <td>{formatScenarioPct(scenario.upsideDownside)}</td>
-                      <td>{scenario.irrDisplay}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+            <div className="dossier-forward-scenario-board" aria-label={`${ticker} forward valuation scenario range`}>
+              {forwardScenarioCards.map((scenario) => (
+                <article key={scenario.label} className={`dossier-forward-scenario-card tone-${scenario.tone}`}>
+                  <div className="dossier-forward-scenario-head">
+                    <div>
+                      <span>{scenario.label}</span>
+                      <strong>{formatWholePrice(scenario.impliedPrice)}</strong>
+                    </div>
+                    <div>
+                      <span>3Y IRR</span>
+                      <strong>{scenario.irrDisplay}</strong>
+                    </div>
+                  </div>
+                  <div className="dossier-forward-range-rail" aria-hidden="true">
+                    <i style={{ '--marker': scenario.marker }} />
+                  </div>
+                  <dl className="dossier-forward-scenario-facts">
+                    <div>
+                      <dt>FY2027 / FY2028 model</dt>
+                      <dd>{formatBillionValue(scenario.fy27Revenue)} / {formatBillionValue(scenario.fy28Revenue)}</dd>
+                    </div>
+                    <div>
+                      <dt>Revenue growth</dt>
+                      <dd>{scenario.revenueGrowth || 'Pending'}</dd>
+                    </div>
+                    <div>
+                      <dt>Applied multiple</dt>
+                      <dd>{formatScenarioMultiple(scenario.evRevenueMultiple, 'EV / Rev')} / {formatScenarioMultiple(scenario.evFcfMultiple, 'EV / FCF')}</dd>
+                    </div>
+                    <div>
+                      <dt>Implied EV</dt>
+                      <dd>{formatBillionValue(scenario.impliedEv)}</dd>
+                    </div>
+                    <div>
+                      <dt>Net cash</dt>
+                      <dd>{formatBillionValue(forwardValuationRange.netCashAdjustment)}</dd>
+                    </div>
+                    <div>
+                      <dt>Equity value</dt>
+                      <dd>{formatBillionValue(scenario.impliedEquityValue)}</dd>
+                    </div>
+                    <div>
+                      <dt>Upside / downside</dt>
+                      <dd>{formatScenarioPct(scenario.upsideDownside)}</dd>
+                    </div>
+                  </dl>
+                </article>
+              ))}
             </div>
           </section>
         )}
@@ -1087,36 +1171,81 @@ const StockDossierView = ({ eventDetail, payload, onOpenEventStudy }) => {
              const hasTypedLevels = typedLevels.length > 0;
              const fallbackSupport = shouldShowTechnicalSupport(ts) ? formatTechnicalZone(ts.support_area) : null;
              const fallbackInvalid = !shouldShowTechnicalSupport(ts) ? formatTechnicalPrice(ts.invalid_below) : null;
+             const numericLevels = [
+               latestPrice,
+               ...(breakoutZone || []),
+               ...(targetZone || []),
+               ...(normalizeTechnicalZone(ts.hold_zone) || []),
+               ...typedLevels.map(level => toNumeric(level.price)).filter(value => value !== null),
+               toNumeric(ts.invalid_below)
+             ].filter(Number.isFinite);
+             const visualLow = numericLevels.length ? Math.min(...numericLevels) : null;
+             const visualHigh = numericLevels.length ? Math.max(...numericLevels) : null;
+             const zonePct = (value) => formatRangeMarkerPct(value, visualLow, visualHigh);
+             const breakoutLeft = breakoutZone ? zonePct(breakoutZone[0]) : null;
+             const breakoutRight = breakoutZone ? zonePct(breakoutZone[1]) : null;
+             const targetLeft = targetZone ? zonePct(targetZone[0]) : null;
+             const targetRight = targetZone ? zonePct(targetZone[1]) : null;
 
              if (!breakout && !target && !hold && !potentialUpside && !hasTypedLevels && !fallbackSupport && !fallbackInvalid) return null;
 
              return (
-               <div className="dossier-market-strip" style={{ marginTop: '16px', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))' }}>
-                 {breakout && <div><span>Breakout Area</span><strong>{breakout}</strong></div>}
-                 {target && <div><span>Target Zone</span><strong>{target}</strong></div>}
-                 {potentialUpside && <div><span>Potential Upside</span><strong>{potentialUpside}</strong></div>}
-                 {hold && <div><span>Hold Zone</span><strong>{hold}</strong></div>}
-                 {hasTypedLevels ? (
-                   typedLevels.map((lvl, index) => {
-                     // Hide deep context support if we already have a primary execution level
-                     if (lvl.display_role === 'deep_context_only' && typedLevels.some(l => l.display_role === 'primary_execution')) {
-                       return null;
-                     }
-                     const formattedPrice = lvl.price ? formatTechnicalPrice(lvl.price) : formatTechnicalZone(lvl.area);
-                     return formattedPrice ? (
-                       <div key={`${lvl.type}-${lvl.source || 'level'}-${index}`}>
-                         <span>{lvl.label_en || formatLabel(lvl.type)}</span>
-                         <strong>{formattedPrice}</strong>
-                       </div>
-                     ) : null;
-                   })
-                 ) : (
-                   <>
-                     {fallbackSupport && <div><span>Support Area</span><strong>{fallbackSupport}</strong></div>}
-                     {fallbackInvalid && <div><span>Invalid Below</span><strong>{fallbackInvalid}</strong></div>}
-                   </>
+               <>
+                 {visualLow !== null && visualHigh !== null && visualHigh > visualLow && (
+                   <div className="dossier-momentum-zone-visual">
+                     <div className="dossier-momentum-zone-head">
+                       <span>Execution map</span>
+                       <strong>{latestPrice ? `Latest ${formatTechnicalPrice(latestPrice)}` : 'Latest price pending'}</strong>
+                     </div>
+                     <div
+                       className="dossier-momentum-zone-track"
+                       style={{
+                         '--latest-marker': zonePct(latestPrice),
+                         '--breakout-left': breakoutLeft || '0%',
+                         '--breakout-width': breakoutLeft && breakoutRight ? `${Math.max(0, parseFloat(breakoutRight) - parseFloat(breakoutLeft)).toFixed(1)}%` : '0%',
+                         '--target-left': targetLeft || '0%',
+                         '--target-width': targetLeft && targetRight ? `${Math.max(0, parseFloat(targetRight) - parseFloat(targetLeft)).toFixed(1)}%` : '0%'
+                       }}
+                     >
+                       {breakoutZone && <b className="zone-breakout" />}
+                       {targetZone && <b className="zone-target" />}
+                       {latestPrice && <i />}
+                     </div>
+                     <div className="dossier-momentum-zone-legend">
+                       <span>{formatTechnicalPrice(visualLow)}</span>
+                       <span>Breakout</span>
+                       <span>Target</span>
+                       <span>{formatTechnicalPrice(visualHigh)}</span>
+                     </div>
+                   </div>
                  )}
-               </div>
+                 <div className="dossier-market-strip" style={{ marginTop: '16px', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))' }}>
+                   {breakout && <div><span>Breakout Area</span><strong>{breakout}</strong></div>}
+                   {target && <div><span>Target Zone</span><strong>{target}</strong></div>}
+                   {potentialUpside && <div><span>Potential Upside</span><strong>{potentialUpside}</strong></div>}
+                   {hold && <div><span>Hold Zone</span><strong>{hold}</strong></div>}
+                   {hasTypedLevels ? (
+                     typedLevels.map((lvl, index) => {
+                       // Hide deep context support if we already have a primary execution level
+                       if (lvl.display_role === 'deep_context_only' && typedLevels.some(l => l.display_role === 'primary_execution')) {
+                         return null;
+                       }
+                       const formattedPrice = lvl.price ? formatTechnicalPrice(lvl.price) : formatTechnicalZone(lvl.area);
+                       return formattedPrice ? (
+                         <div key={`${lvl.type}-${lvl.source || 'level'}-${index}`}>
+                           <span>{lvl.label_en || formatLabel(lvl.type)}</span>
+                           <strong>{formattedPrice}</strong>
+                         </div>
+                       ) : null;
+                     })
+                   ) : (
+                     <>
+                       {fallbackSupport && <div><span>Support Area</span><strong>{fallbackSupport}</strong></div>}
+                       {fallbackInvalid && <div><span>Invalid Below</span><strong>{fallbackInvalid}</strong></div>}
+                     </>
+                   )}
+                 </div>
+               </>
              );
           })()}
         </div>
@@ -1142,6 +1271,17 @@ const StockDossierView = ({ eventDetail, payload, onOpenEventStudy }) => {
           <SummaryMetric label="Post-gap 3D avg" summary={forwardGapUps?.r_plus_3} />
           <SummaryMetric label="Post-gap 10D avg" summary={forwardGapUps?.r_plus_10} />
           <SummaryMetric label="Post-gap 30D avg" summary={forwardGapUps?.r_plus_30} />
+        </div>
+        <div className="dossier-event-evidence-visual" aria-label={`${ticker} earnings evidence visual`}>
+          {eventEvidenceVisuals.map((item) => (
+            <div key={item.label} className={`tone-${item.tone}`}>
+              <div>
+                <span>{item.label}</span>
+                <strong>{item.value}</strong>
+              </div>
+              <i style={{ '--score': `${item.score}%` }} />
+            </div>
+          ))}
         </div>
         <div className="dossier-reaction-quality-grid">
           {latestReactionRows.map((row) => (
