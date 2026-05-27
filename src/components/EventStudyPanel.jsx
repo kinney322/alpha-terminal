@@ -1,184 +1,8 @@
 import React, { useEffect, useMemo, useState, useCallback } from 'react';
-import { Search, Crosshair, BarChart3, Clock, Radar, Database, RefreshCcw, AlertCircle, Scale, ShieldAlert, Layers3, Lightbulb } from 'lucide-react';
+import { Search, Crosshair, BarChart3, Clock, Database, Scale, ShieldAlert, Layers3, Lightbulb } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import CatalystRadarTable from './CatalystRadarTable';
-import OpportunityXRayCard from './OpportunityXRayCard';
 
 const API_BASE = (import.meta.env.VITE_KW_TERMINAL_API_BASE || 'https://kw-terminal-api.myfootballplaces.workers.dev').replace(/\/$/, '');
-const LEADERBOARD_FALLBACK_URLS = [
-  `${API_BASE}/event-opportunity/leaderboard-latest`,
-  'https://pub-03e0405010774afe9ca6d569e0cb43b1.r2.dev/event-study/leaderboard-latest.json.gz',
-  import.meta.env.VITE_EVENT_LEADERBOARD_URL,
-].filter(Boolean);
-const CATALYST_WINDOW_DAYS = 14;
-
-const DEMO_RADAR_ROWS = [
-  {
-    ticker: 'SNOW',
-    eventDate: '2026-05-22',
-    preferredDirection: 'SHORT',
-    longScore: 34,
-    shortScore: 91,
-    conviction: 57,
-    tags: ['God-tier Short Setup', 'Euphoric Run-up'],
-    headlineTag: 'Reflexive Fade',
-    historicalLongEdge: 28,
-    historicalShortEdge: 85,
-    longSetupFit: 31,
-    shortSetupFit: 89,
-    reflexivityRho: -0.47,
-    imrv: 1.28,
-    runupPercentile: 97.3,
-    relativeStrengthPercentile: 91.2,
-    mu1: -2.1,
-    mu3: -3.4,
-    mu10: -4.8,
-    winLong: 29,
-    winShort: 71,
-  },
-  {
-    ticker: 'NVDA',
-    eventDate: '2026-05-21',
-    preferredDirection: 'LONG',
-    longScore: 84,
-    shortScore: 29,
-    conviction: 42,
-    tags: ['Clean Long Continuation'],
-    headlineTag: 'Healthy Continuation',
-    historicalLongEdge: 91,
-    historicalShortEdge: 22,
-    longSetupFit: 77,
-    shortSetupFit: 24,
-    reflexivityRho: 0.32,
-    imrv: 0.93,
-    runupPercentile: 64.1,
-    relativeStrengthPercentile: 88.4,
-    mu1: 1.9,
-    mu3: 3.1,
-    mu10: 4.7,
-    winLong: 68,
-    winShort: 32,
-  },
-  {
-    ticker: 'CRWD',
-    eventDate: '2026-06-03',
-    preferredDirection: 'SHORT',
-    longScore: 43,
-    shortScore: 78,
-    conviction: 26,
-    tags: ['Euphoric Run-up'],
-    headlineTag: 'Crowded Long',
-    historicalLongEdge: 41,
-    historicalShortEdge: 74,
-    longSetupFit: 46,
-    shortSetupFit: 82,
-    reflexivityRho: -0.29,
-    imrv: 1.19,
-    runupPercentile: 94.8,
-    relativeStrengthPercentile: 85.7,
-    mu1: -1.1,
-    mu3: -2.2,
-    mu10: -3.9,
-    winLong: 38,
-    winShort: 62,
-  },
-];
-
-function normalizeLeaderboardRow(row) {
-  return {
-    ticker: row.Ticker ?? row.ticker,
-    eventDate: row.EventDate ?? row.eventDate,
-    preferredDirection: row.PreferredDirection ?? row.preferredDirection ?? 'NEUTRAL',
-    longScore: Number(row.LongScore ?? row.longScore ?? 0),
-    shortScore: Number(row.ShortScore ?? row.shortScore ?? 0),
-    conviction: Number(row.Conviction ?? row.conviction ?? 0),
-    tags: row.Tags ?? row.tags ?? [],
-    headlineTag: row.HeadlineTag ?? row.headlineTag ?? '',
-    historicalLongEdge: Number(row.HistoricalLongEdge ?? row.historicalLongEdge ?? 0),
-    historicalShortEdge: Number(row.HistoricalShortEdge ?? row.historicalShortEdge ?? 0),
-    longSetupFit: Number(row.LongSetupFit ?? row.longSetupFit ?? 0),
-    shortSetupFit: Number(row.ShortSetupFit ?? row.shortSetupFit ?? 0),
-    reflexivityRho: Number(row.ReflexivityRho ?? row.Diagnostics?.ReflexivityRho ?? row.reflexivityRho ?? 0),
-    imrv: Number(row.IMRV ?? row.imrv ?? 0),
-    runupPercentile: Number(row.RunupPercentile ?? row.runupPercentile ?? 0),
-    relativeStrengthPercentile: Number(row.RelativeStrengthPercentile ?? row.relativeStrengthPercentile ?? 0),
-    mu1: Number(row.Mu1 ?? row.mu1 ?? 0),
-    mu3: Number(row.Mu3 ?? row.mu3 ?? 0),
-    mu10: Number(row.Mu10 ?? row.mu10 ?? 0),
-    winLong: Number(row.WinLong ?? row.winLong ?? 0),
-    winShort: Number(row.WinShort ?? row.winShort ?? 0),
-  };
-}
-
-function parseEventDate(row) {
-  const date = new Date(`${row.eventDate}T00:00:00Z`);
-  return Number.isNaN(date.getTime()) ? null : date;
-}
-
-function rankCatalystRows(rows, now = new Date()) {
-  const today = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()));
-  const windowEnd = new Date(today);
-  windowEnd.setUTCDate(today.getUTCDate() + CATALYST_WINDOW_DAYS);
-
-  return rows
-    .map((row) => ({ row, eventDate: parseEventDate(row) }))
-    .filter(({ eventDate }) => eventDate && eventDate >= today && eventDate <= windowEnd)
-    .sort((a, b) => {
-      const byDate = a.eventDate.getTime() - b.eventDate.getTime();
-      if (byDate !== 0) return byDate;
-      return String(a.row.ticker).localeCompare(String(b.row.ticker));
-    })
-    .map(({ row }) => row);
-}
-
-async function fetchLeaderboardPayload(signal) {
-  let lastError = null;
-
-  for (const url of LEADERBOARD_FALLBACK_URLS) {
-    try {
-      const res = await fetch(url, { signal, headers: { Accept: 'application/json' } });
-      if (!res.ok) {
-        throw new Error(`Fetch failed ${res.status}`);
-      }
-
-      const json = await res.json();
-      const rows = Array.isArray(json) ? json : Array.isArray(json?.leaderboard) ? json.leaderboard : [];
-      if (rows.length === 0) {
-        throw new Error(`Empty leaderboard payload`);
-      }
-
-      const rankedRows = rankCatalystRows(rows.map(normalizeLeaderboardRow));
-      if (rankedRows.length === 0) {
-        throw new Error(`No earnings events inside ${CATALYST_WINDOW_DAYS}D window`);
-      }
-
-      return {
-        rows: rankedRows,
-        source: url,
-        lastUpdated: json?.meta?.generated_at ?? null,
-      };
-    } catch (error) {
-      lastError = error;
-    }
-  }
-
-  throw lastError ?? new Error('Unable to load leaderboard payload');
-}
-
-function RadarSkeleton() {
-  return (
-    <div className="radar-skeleton">
-      <div className="radar-skeleton__header shimmer" />
-      {Array.from({ length: 5 }).map((_, index) => (
-        <div key={index} className="radar-skeleton__row">
-          <div className="radar-skeleton__cell shimmer" />
-          <div className="radar-skeleton__bar shimmer" />
-          <div className="radar-skeleton__badge shimmer" />
-        </div>
-      ))}
-    </div>
-  );
-}
 
 function formatPercent(value, digits = 2, withSign = false) {
   if (value === undefined || value === null || value === '') return '—';
@@ -730,14 +554,7 @@ export default function EventStudyPanel({ payload, eventStudySeed, onOpenStockDo
   const [data, setData] = useState(null);
   const [error, setError] = useState(null);
 
-  const [leaderboardRows, setLeaderboardRows] = useState(DEMO_RADAR_ROWS);
-  const [leaderboardLoading, setLeaderboardLoading] = useState(true);
-  const [leaderboardError, setLeaderboardError] = useState(null);
-  const [leaderboardMeta, setLeaderboardMeta] = useState({ source: 'demo', lastUpdated: null, usingFallback: true });
   const [historyRows, setHistoryRows] = useState([]);
-
-  const [selectedRadarRow, setSelectedRadarRow] = useState(DEMO_RADAR_ROWS[0]);
-  const [drawerOpen, setDrawerOpen] = useState(false);
   const [expandedRows, setExpandedRows] = useState(new Set());
 
   const toggleRow = (index) => {
@@ -790,77 +607,12 @@ export default function EventStudyPanel({ payload, eventStudySeed, onOpenStockDo
     fetchEventStudy(symbol);
   }, [fetchEventStudy, symbol]);
 
-  const fetchLeaderboard = useCallback(async () => {
-    const controller = new AbortController();
-    setLeaderboardLoading(true);
-    setLeaderboardError(null);
-
-    try {
-      const payload = await fetchLeaderboardPayload(controller.signal);
-      setLeaderboardRows(payload.rows);
-      setSelectedRadarRow((current) => {
-        if (!current) return payload.rows[0] ?? null;
-        return payload.rows.find((row) => row.ticker === current.ticker) ?? payload.rows[0] ?? null;
-      });
-      setLeaderboardMeta({
-        source: payload.source,
-        lastUpdated: payload.lastUpdated,
-        usingFallback: false,
-      });
-    } catch (err) {
-      setLeaderboardRows(DEMO_RADAR_ROWS);
-      setSelectedRadarRow((current) => current ?? DEMO_RADAR_ROWS[0]);
-      setLeaderboardError(err.message);
-      setLeaderboardMeta({
-        source: 'demo-fallback',
-        lastUpdated: null,
-        usingFallback: true,
-      });
-    } finally {
-      setLeaderboardLoading(false);
-    }
-
-    return () => controller.abort();
-  }, []);
-
   useEffect(() => {
     const seededTicker = String(eventStudySeed?.ticker || '').trim().toUpperCase();
     if (!seededTicker) return;
     setSymbol(seededTicker);
     fetchEventStudy(seededTicker, { keepPrevious: false });
   }, [eventStudySeed?.openedAt]);
-
-  useEffect(() => {
-    const controller = new AbortController();
-    setLeaderboardLoading(true);
-    setLeaderboardError(null);
-
-    (async () => {
-      try {
-        const payload = await fetchLeaderboardPayload(controller.signal);
-        setLeaderboardRows(payload.rows);
-        setSelectedRadarRow(payload.rows[0] ?? null);
-        setLeaderboardMeta({
-          source: payload.source,
-          lastUpdated: payload.lastUpdated,
-          usingFallback: false,
-        });
-      } catch (err) {
-        setLeaderboardRows(DEMO_RADAR_ROWS);
-        setSelectedRadarRow(DEMO_RADAR_ROWS[0]);
-        setLeaderboardError(err.message);
-        setLeaderboardMeta({
-          source: 'demo-fallback',
-          lastUpdated: null,
-          usingFallback: true,
-        });
-      } finally {
-        setLeaderboardLoading(false);
-      }
-    })();
-
-    return () => controller.abort();
-  }, []);
 
   useEffect(() => {
     if (typeof window === 'undefined') return undefined;
@@ -871,38 +623,11 @@ export default function EventStudyPanel({ payload, eventStudySeed, onOpenStockDo
     return () => media.removeEventListener('change', update);
   }, []);
 
-  useEffect(() => {
-    if (typeof document === 'undefined') return undefined;
-    const original = document.body.style.overflow;
-    if (drawerOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = original;
-    }
-    return () => {
-      document.body.style.overflow = original;
-    };
-  }, [drawerOpen]);
-
-  const radarRows = useMemo(() => {
-    if (Array.isArray(data?.leaderboard) && data.leaderboard.length > 0) {
-      return rankCatalystRows(data.leaderboard.map(normalizeLeaderboardRow));
-    }
-    return leaderboardRows;
-  }, [data, leaderboardRows]);
-
   const decisionModel = useMemo(() => getDecisionModel(data?.summary), [data]);
   const mergedDetails = useMemo(() => mergeHistoryIntoDetails(data?.details ?? [], historyRows), [data?.details, historyRows]);
   const latestEarningsSnapshot = useMemo(() => getLatestEarningsSnapshot(historyRows), [historyRows]);
   const isTruthLayerData = data?.truth_layer_status === 'truth_layer_v1';
   const measuredReactionCount = data?.coverage?.measured_gap_count ?? data?.summary?.total_events ?? 0;
-
-  const handleSelectRadarRow = useCallback((row) => {
-    setSelectedRadarRow(row);
-    setDrawerOpen(true);
-    setSymbol(row.ticker);
-    fetchEventStudy(row.ticker, { keepPrevious: true, silent: true });
-  }, [fetchEventStudy]);
 
   const resolveDossierDetail = useCallback((ticker) => {
     const normalizedTicker = String(ticker || '').trim().toUpperCase();
@@ -921,10 +646,10 @@ export default function EventStudyPanel({ payload, eventStudySeed, onOpenStockDo
 
   const handleOpenCurrentDossier = useCallback(() => {
     if (!onOpenStockDossier) return;
-    const ticker = String(data?.ticker || data?.summary?.ticker || symbol || selectedRadarRow?.ticker || '').trim().toUpperCase();
+    const ticker = String(data?.ticker || data?.summary?.ticker || symbol || '').trim().toUpperCase();
     if (!ticker) return;
     onOpenStockDossier(ticker, resolveDossierDetail(ticker));
-  }, [data, onOpenStockDossier, resolveDossierDetail, selectedRadarRow?.ticker, symbol]);
+  }, [data, onOpenStockDossier, resolveDossierDetail, symbol]);
 
   return (
     <div className="dashboard-grid fade-in flex flex-col gap-4 event-study-shell">
@@ -1005,7 +730,7 @@ export default function EventStudyPanel({ payload, eventStudySeed, onOpenStockDo
               <div className="event-study-dossier-link">
                 <div>
                   <span>Linked research object</span>
-                  <strong>{String(data?.ticker || data?.summary?.ticker || symbol || selectedRadarRow?.ticker || '').toUpperCase()} Stock Dossier</strong>
+                  <strong>{String(data?.ticker || data?.summary?.ticker || symbol || '').toUpperCase()} Stock Dossier</strong>
                 </div>
                 <button type="button" onClick={handleOpenCurrentDossier}>
                   Open Stock Dossier
@@ -1281,73 +1006,6 @@ export default function EventStudyPanel({ payload, eventStudySeed, onOpenStockDo
             </div>
           </motion.div>
         )}
-      </AnimatePresence>
-      <div className="glass-panel event-study-workbench">
-        <div className="panel-header">
-          <Radar size={18} className="text-accent" />
-          <span>Catalyst Radar</span>
-          <span className="badge panel-badge radar-panel-badge">{leaderboardMeta.usingFallback ? 'Demo Fallback' : 'R2 Live Feed'}</span>
-        </div>
-
-        <div className="event-study-feedbar">
-          <div className="event-study-feedbar__meta">
-            <Database size={14} />
-            <span>Rows: {radarRows.length}</span>
-            <span>Updated: {leaderboardMeta.lastUpdated ? new Date(leaderboardMeta.lastUpdated).toLocaleString() : 'n/a'}</span>
-          </div>
-          <button className="event-study-refresh" onClick={fetchLeaderboard} disabled={leaderboardLoading}>
-            <RefreshCcw size={14} />
-            {leaderboardLoading ? '同步中...' : '刷新 Radar'}
-          </button>
-        </div>
-
-        {leaderboardError ? (
-          <div className="event-study-soft-alert">
-            <AlertCircle size={16} />
-            <span>智能連線超時，啟動備用迴路。目前顯示 Demo Data 展示用數據。</span>
-          </div>
-        ) : null}
-
-        {leaderboardLoading ? (
-          <RadarSkeleton />
-        ) : (
-          <CatalystRadarTable
-            rows={radarRows}
-            selectedTicker={selectedRadarRow?.ticker}
-            onSelect={handleSelectRadarRow}
-          />
-        )}
-      </div>
-
-      <AnimatePresence>
-        {drawerOpen && selectedRadarRow ? (
-          <>
-            <motion.button
-              type="button"
-              className="xray-drawer-backdrop"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setDrawerOpen(false)}
-              aria-label="Close drawer backdrop"
-            />
-            <motion.aside
-              className="xray-drawer"
-              initial={isMobile ? { opacity: 0, y: 56 } : { opacity: 0, x: 48 }}
-              animate={isMobile ? { opacity: 1, y: 0 } : { opacity: 1, x: 0 }}
-              exit={isMobile ? { opacity: 0, y: 64 } : { opacity: 0, x: 56 }}
-              transition={{ type: 'tween', ease: 'easeOut', duration: 0.24 }}
-            >
-              <OpportunityXRayCard
-                row={selectedRadarRow}
-                onClose={() => setDrawerOpen(false)}
-                eventStudy={data}
-                eventStudyLoading={loading}
-                eventStudyError={error}
-              />
-            </motion.aside>
-          </>
-        ) : null}
       </AnimatePresence>
     </div>
   );
