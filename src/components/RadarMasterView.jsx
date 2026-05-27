@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { buildMomentumUniverseSyntheticDetail } from './dossierHelpers';
+import CatalystRadarTable from './CatalystRadarTable';
 
 const CompletedEarningsRefreshStatus = ({ refresh }) => {
   if (!refresh) return null;
@@ -154,6 +155,15 @@ const SearchEmptyState = ({ context, onSwitch }) => {
 const formatResultLabel = (value) => {
   if (!value) return 'Unknown';
   return value.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+};
+
+const firstFiniteNumber = (...values) => {
+  for (const value of values) {
+    if (value === null || value === undefined || value === '') continue;
+    const numeric = Number(value);
+    if (Number.isFinite(numeric)) return numeric;
+  }
+  return null;
 };
 
 const RadarMasterView = ({ payload, selectedEventId, onSelectEvent }) => {
@@ -391,6 +401,73 @@ const RadarMasterView = ({ payload, selectedEventId, onSelectEvent }) => {
     getMomentumGroupKey(item)
   );
 
+  const buildCatalystXRayRow = (item, eventId) => {
+    const rawBias = String(item?.market_state?.bias || item?.trend_setup?.direction || 'neutral').toUpperCase();
+    const preferredDirection = rawBias === 'LONG' || rawBias === 'SHORT' ? rawBias : 'NEUTRAL';
+    const attentionScore = firstFiniteNumber(
+      item?.attention_score?.total_score,
+      item?.attention_score,
+      item?.opportunity_score,
+      item?.score
+    );
+    const longScore = firstFiniteNumber(
+      item?.attention_score?.long_score,
+      item?.long_score,
+      preferredDirection === 'LONG' ? attentionScore : null,
+      attentionScore
+    );
+    const shortScore = firstFiniteNumber(
+      item?.attention_score?.short_score,
+      item?.risk_score,
+      item?.short_score,
+      preferredDirection === 'SHORT' ? attentionScore : null,
+      0
+    );
+    const peerSummary = getPeerReadthroughSummary(item);
+    const riskFlags = Array.isArray(item?.market_state?.risk_flags) ? item.market_state.risk_flags : [];
+    const tags = [
+      ...(item?.headline_tag ? [item.headline_tag] : []),
+      ...(item?.setup_label ? [item.setup_label] : []),
+      ...riskFlags,
+      ...(peerSummary ? [peerSummary.label] : []),
+    ].filter(Boolean).slice(0, 4);
+
+    return {
+      eventId,
+      eventDetail: item,
+      ticker: item?.ticker || eventId,
+      eventDate: item?.event_date || item?.catalyst_date || 'Date Pending',
+      preferredDirection,
+      longScore: longScore ?? 0,
+      shortScore: shortScore ?? 0,
+      conviction: firstFiniteNumber(item?.conviction, item?.attention_score?.conviction, attentionScore, 0) ?? 0,
+      tags,
+      headlineTag: item?.headline_tag || item?.setup_label || formatResultLabel(item?.thesis_lifecycle?.phase || item?.event_phase || 'Watchlist'),
+      historicalLongEdge: firstFiniteNumber(item?.historical_edge?.long_edge, item?.post_earnings_base_rate?.continuation_rate),
+      historicalShortEdge: firstFiniteNumber(item?.historical_edge?.short_edge, item?.post_earnings_base_rate?.reversal_rate),
+      longSetupFit: firstFiniteNumber(item?.setup_fit?.long_setup, longScore),
+      shortSetupFit: firstFiniteNumber(item?.setup_fit?.short_setup, shortScore),
+      reflexivityRho: firstFiniteNumber(item?.reflexivity?.rho, item?.reflexivity_rho),
+      imrv: firstFiniteNumber(item?.options_pricing?.imrv, item?.imrv),
+      runupPercentile: firstFiniteNumber(item?.market_state?.runup_percentile, item?.runup_percentile),
+      relativeStrengthPercentile: firstFiniteNumber(item?.market_state?.relative_strength_percentile, item?.relative_strength_percentile),
+      mu1: firstFiniteNumber(item?.historical_edge?.mu1, item?.event_study_linkage?.mu1),
+      mu3: firstFiniteNumber(item?.historical_edge?.mu3, item?.event_study_linkage?.mu3),
+      mu10: firstFiniteNumber(item?.historical_edge?.mu10, item?.event_study_linkage?.mu10),
+      winLong: firstFiniteNumber(item?.historical_edge?.win_long, item?.event_study_linkage?.win_long),
+      winShort: firstFiniteNumber(item?.historical_edge?.win_short, item?.event_study_linkage?.win_short),
+    };
+  };
+
+  const catalystRows = activeTab === 'pre_earnings'
+    ? filteredListIds
+        .map((id) => {
+          const item = payload?.events_detail?.[id];
+          return item ? buildCatalystXRayRow(item, id) : null;
+        })
+        .filter(Boolean)
+    : [];
+
   return (
     <div className="radar-master-view">
       <div className="radar-header">
@@ -540,6 +617,14 @@ const RadarMasterView = ({ payload, selectedEventId, onSelectEvent }) => {
           </button>
         )}
       </div>
+
+      {activeTab === 'pre_earnings' && catalystRows.length > 0 ? (
+        <CatalystRadarTable
+          rows={catalystRows}
+          selectedTicker={selectedEventId ? catalystRows.find(row => row.eventId === selectedEventId)?.ticker : null}
+          onSelect={(row) => onSelectEvent(row.eventId, row.eventDetail, row)}
+        />
+      ) : (
 
       <div className="radar-table-container">
         <table className="radar-table radar-master-table">
@@ -774,6 +859,7 @@ const RadarMasterView = ({ payload, selectedEventId, onSelectEvent }) => {
           </tbody>
         </table>
       </div>
+      )}
     </div>
   );
 };

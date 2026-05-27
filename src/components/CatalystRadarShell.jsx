@@ -1,15 +1,24 @@
 import React, { useState } from 'react';
 import RadarMasterView from './RadarMasterView';
 import SelectedCatalystIntelligence from './SelectedCatalystIntelligence';
+import OpportunityXRayCard from './OpportunityXRayCard';
 import './CatalystRadar.css';
 
 const CatalystRadarShell = ({ payload, loading, error, onOpenStockDossier }) => {
   const [selectedEventId, setSelectedEventId] = useState(null);
   const [selectedEventDetailOverride, setSelectedEventDetailOverride] = useState(null);
+  const [selectedXRayRow, setSelectedXRayRow] = useState(null);
 
-  const handleSelectEvent = (eventId, eventDetailOverride = null) => {
+  const handleSelectEvent = (eventId, eventDetailOverride = null, xrayRow = null) => {
     setSelectedEventId(eventId);
     setSelectedEventDetailOverride(eventDetailOverride);
+    setSelectedXRayRow(xrayRow);
+  };
+
+  const handleCloseDetail = () => {
+    setSelectedEventId(null);
+    setSelectedEventDetailOverride(null);
+    setSelectedXRayRow(null);
   };
 
   if (loading) {
@@ -35,16 +44,23 @@ const CatalystRadarShell = ({ payload, loading, error, onOpenStockDossier }) => 
           <button
             className="radar-detail-backdrop"
             aria-label="Close catalyst detail"
-            onClick={() => { setSelectedEventId(null); setSelectedEventDetailOverride(null); }}
+            onClick={handleCloseDetail}
           />
           <aside className="radar-detail-pane fade-in" role="dialog" aria-modal="true">
-            <SelectedCatalystIntelligence 
-              eventDetail={selectedEventDetailOverride || payload.events_detail[selectedEventId]}
-              payload={payload}
-              peerReadthroughCases={payload.peer_readthrough_cases || {}}
-              onClose={() => { setSelectedEventId(null); setSelectedEventDetailOverride(null); }}
-              onOpenStockDossier={onOpenStockDossier}
-            />
+            {selectedXRayRow ? (
+              <OpportunityXRayCard
+                row={selectedXRayRow}
+                onClose={handleCloseDetail}
+              />
+            ) : (
+              <SelectedCatalystIntelligence
+                eventDetail={selectedEventDetailOverride || payload.events_detail[selectedEventId]}
+                payload={payload}
+                peerReadthroughCases={payload.peer_readthrough_cases || {}}
+                onClose={handleCloseDetail}
+                onOpenStockDossier={onOpenStockDossier}
+              />
+            )}
           </aside>
         </>
       )}
