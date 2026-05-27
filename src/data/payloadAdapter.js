@@ -3,6 +3,16 @@
 const API_BASE = 'https://kw-terminal-api.myfootballplaces.workers.dev';
 const V1_2_URL = `${API_BASE}/event-opportunity/radar-v1.2-latest`;
 const V1_1_URL = `${API_BASE}/event-opportunity/radar-v1.1-latest`;
+const LOCAL_ENRICHED_PAYLOAD_URL = 'http://127.0.0.1:5055/radar-v1.2-enriched.module.preview.json';
+
+function shouldUseLocalEnrichedPayload() {
+  if (typeof window === 'undefined') return false;
+  const isLocalhost = ['127.0.0.1', 'localhost', '::1'].includes(window.location.hostname);
+  if (!isLocalhost) return false;
+  const params = new URLSearchParams(window.location.search);
+  if (params.get('payload') === 'local-enriched') return true;
+  return window.localStorage?.getItem('crowdrisk_payload_override') === 'local-enriched';
+}
 
 function isValidV12Payload(payload) {
   if (!payload || typeof payload !== 'object' || Array.isArray(payload)) return false;
@@ -24,6 +34,22 @@ function isValidV11Payload(payload) {
 
 export async function fetchAndNormalizeRadarPayload() {
   let rawData = null;
+
+  // Local QA only: never active on production hostnames.
+  if (shouldUseLocalEnrichedPayload()) {
+    try {
+      const res = await fetch(LOCAL_ENRICHED_PAYLOAD_URL, { headers: { Accept: 'application/json' } });
+      if (res.ok) {
+        const data = await res.json();
+        if (isValidV12Payload(data)) {
+          return data;
+        }
+        console.warn(`[Schema Error] Local QA payload from ${LOCAL_ENRICHED_PAYLOAD_URL} is not valid v1.2.`);
+      }
+    } catch (error) {
+      console.warn(`[Fetch Error] Failed to fetch local QA payload from ${LOCAL_ENRICHED_PAYLOAD_URL}:`, error);
+    }
+  }
 
   // 1. Primary Fetch: v1.2
   try {
