@@ -4,7 +4,8 @@ import {
   buildResearchKillSwitch,
   buildPriceTrendRisk,
   buildValuationCore,
-  buildStockOverview
+  buildStockOverview,
+  resolveValueCore
 } from './dossierHelpers';
 import { getStockDossierProfile } from '../data/stockDossierProfiles';
 
@@ -662,6 +663,10 @@ const StockDossierView = ({ eventDetail, payload, onOpenEventStudy }) => {
   const eventStudyDetail = buildEventStudyDetail(enrichedEventDetail, dossierProfile);
 
   const momentumRanking = findMomentumUniverseRow(payload, tickerForSummary);
+  const valueCore = resolveValueCore({
+    ...enrichedEventDetail,
+    value_core: enrichedEventDetail.value_core || momentumRanking?.value_core || null
+  }, dossierProfile);
   const momentum = enrichedEventDetail.momentum_evidence || momentumRanking?.momentum_evidence || {};
   const metrics = {
     ...(enrichedEventDetail.trend_setup?.metrics || {}),
@@ -862,6 +867,14 @@ const StockDossierView = ({ eventDetail, payload, onOpenEventStudy }) => {
       note: 'Needs confirmed volume evidence'
     }
   ];
+  const valueCoreRows = [
+    { label: 'Value Core Type', value: valueCore.valueCoreType },
+    { label: 'Company Stage', value: valueCore.companyStage },
+    { label: 'Primary Driver', value: valueCore.primaryValueDriver },
+    { label: 'Break Trigger', value: valueCore.thesisBreakTrigger },
+    { label: 'Evidence Quality', value: valueCore.evidenceQuality },
+    { label: 'Coverage', value: valueCore.frontendLabel }
+  ];
   const truthLayerMetrics = eventStudyDigest ? [
     { label: 'Gap-up Rate', value: formatRatioReturn(eventStudyDigest.gap_up_rate) || 'Pending', tone: rateToneClass(eventStudyDigest.gap_up_rate) },
     { label: 'Avg Gap Up', value: formatRatioReturn(eventStudyDigest.average_gap_up) || 'Pending', tone: returnToneClass(eventStudyDigest.average_gap_up) },
@@ -1049,6 +1062,28 @@ const StockDossierView = ({ eventDetail, payload, onOpenEventStudy }) => {
           </div>
         </section>
       )}
+
+      <section id="value-core" className="dossier-valuation-core dossier-value-core" style={{ marginBottom: '24px', padding: '18px 0 0 16px' }} aria-label={`${ticker} value core`}>
+        <div className="dossier-valuation-core__header">
+          <div>
+            <p className="crowdrisk-kicker">Value Core</p>
+            <h3>What drives company value?</h3>
+          </div>
+          <div className="dossier-hero-pills">
+            <span>{valueCore.frontendLabel}</span>
+            {valueCore.needsHumanReview && <span>Human Review</span>}
+          </div>
+        </div>
+
+        <div className="dossier-valuation-verdict">
+          {valueCoreRows.map((row) => (
+            <div key={row.label}>
+              <span>{row.label}</span>
+              <strong>{row.value}</strong>
+            </div>
+          ))}
+        </div>
+      </section>
 
       {/* 5b. Fundamentals Summary / Valuation Core */}
       <div id="valuation-core" className="card dossier-valuation-core" style={{ marginBottom: '24px' }}>

@@ -8,6 +8,30 @@ const formatSignedPct = (value) => {
   return `${n > 0 ? '+' : ''}${n.toFixed(1)}%`;
 };
 
+const valueOrFallback = (value, fallback) => {
+  if (value === undefined || value === null || value === '') return fallback;
+  return value;
+};
+
+export const resolveValueCore = (eventDetail, dossierProfile = null) => {
+  const valueCore = eventDetail?.value_core || null;
+  const hasValueCore = valueCore && typeof valueCore === 'object' && !Array.isArray(valueCore);
+
+  return {
+    valueCoreType: hasValueCore ? valueOrFallback(valueCore.value_core_type, 'Coverage Pending') : 'Coverage Pending',
+    companyStage: hasValueCore ? valueOrFallback(valueCore.company_stage, 'Not Verified') : 'Not Verified',
+    primaryValueDriver: hasValueCore ? valueOrFallback(valueCore.primary_value_driver, 'Pending') : 'Pending',
+    thesisBreakTrigger: hasValueCore ? valueOrFallback(valueCore.thesis_break_trigger, 'Pending') : 'Pending',
+    evidenceQuality: hasValueCore ? valueOrFallback(valueCore.evidence_quality, 'Not Verified') : 'Not Verified',
+    frontendLabel: hasValueCore ? valueOrFallback(valueCore.frontend_label, 'Coverage Pending') : (dossierProfile ? 'Golden Sample' : 'Coverage Pending'),
+    dossierState: hasValueCore ? valueOrFallback(valueCore.dossier_state, 'coverage_pending') : (dossierProfile ? 'golden_sample' : 'coverage_pending'),
+    needsHumanReview: hasValueCore ? Boolean(valueCore.needs_human_review) : !dossierProfile,
+    sector: hasValueCore ? valueOrFallback(valueCore.sector, 'Pending') : 'Pending',
+    industry: hasValueCore ? valueOrFallback(valueCore.industry, 'Pending') : 'Pending',
+    source: hasValueCore ? valueOrFallback(valueCore.source, 'value_core_pending') : 'value_core_pending'
+  };
+};
+
 const toFiniteNumber = (value) => {
   const numeric = Number(value);
   return Number.isFinite(numeric) ? numeric : null;
@@ -366,6 +390,7 @@ export const buildMomentumUniverseSyntheticDetail = (ticker, payload) => {
     event_phase: "off_cycle_universe",
     event_category: "Momentum Universe",
     status: "momentum_universe",
+    value_core: ranking.value_core || null,
     trend_setup: ranking.trend_setup || {},
     momentum_evidence: {
       ...ranking.momentum_evidence,
