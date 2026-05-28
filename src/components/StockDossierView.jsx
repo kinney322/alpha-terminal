@@ -576,6 +576,74 @@ const metricTone = (value, positiveCutoff, warningCutoff = null) => {
   return numeric >= positiveCutoff ? 'positive' : 'neutral';
 };
 
+const formatPerformanceReturn = (value) => {
+  const numeric = toNumeric(value);
+  if (numeric === null) return 'Not verified';
+  return `${numeric > 0 ? '+' : ''}${numeric.toFixed(1)}%`;
+};
+
+const performanceTone = (value) => {
+  const numeric = toNumeric(value);
+  if (numeric === null) return 'pending';
+  if (numeric > 0) return 'positive';
+  if (numeric < 0) return 'negative';
+  return 'neutral';
+};
+
+const normalizeNotVerified = (value) => {
+  if (!value || value === 'Not Included' || value === 'Pending') return 'Not verified';
+  return value;
+};
+
+const ContextualFaq = ({ title, items }) => {
+  if (!Array.isArray(items) || items.length === 0) return null;
+  return (
+    <div className="dossier-contextual-faq" aria-label={title}>
+      <div className="dossier-contextual-faq__heading">
+        <span>Contextual FAQ</span>
+        <strong>{title}</strong>
+      </div>
+      <div className="dossier-contextual-faq__rows">
+        {items.map((item) => (
+          <details key={item.question}>
+            <summary>{item.question}</summary>
+            <p>{item.answer}</p>
+          </details>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+const DOSSIER_INTERNAL_TABS = [
+  { id: 'overview', label: 'Overview' },
+  { id: 'business-core', label: 'Business Core' },
+  { id: 'market-evidence', label: 'Market Evidence' },
+  { id: 'valuation', label: 'Valuation' },
+  { id: 'thesis-risk', label: 'Thesis Risk' },
+  { id: 'financial-health', label: 'Financial Health' }
+];
+
+const PendingDossierPanel = ({ title, subtitle, rows, note }) => (
+  <section className="dossier-tab-placeholder" aria-label={title}>
+    <div className="dossier-tab-placeholder__head">
+      <span>Coverage Pending</span>
+      <strong>{title}</strong>
+      <p>{subtitle}</p>
+    </div>
+    <div className="dossier-tab-placeholder__grid">
+      {rows.map((row) => (
+        <div key={row.label}>
+          <span>{row.label}</span>
+          <strong>{row.value}</strong>
+          {row.note && <em>{row.note}</em>}
+        </div>
+      ))}
+    </div>
+    <p className="dossier-tab-placeholder__note">{note}</p>
+  </section>
+);
+
 const buildEventStudyDetail = (eventDetail, dossierProfile = null) => {
   return {
     hasBaseRate: false,
@@ -594,6 +662,7 @@ const StockDossierView = ({ eventDetail, payload, onOpenEventStudy }) => {
   const [eventStudySummary, setEventStudySummary] = React.useState(null);
   const [eventStudyLoading, setEventStudyLoading] = React.useState(false);
   const [eventStudyError, setEventStudyError] = React.useState(null);
+  const [activeInternalTab, setActiveInternalTab] = React.useState('overview');
 
   React.useEffect(() => {
     if (!tickerForSummary) {
@@ -632,6 +701,10 @@ const StockDossierView = ({ eventDetail, payload, onOpenEventStudy }) => {
     return () => controller.abort();
   }, [tickerForSummary]);
 
+  React.useEffect(() => {
+    setActiveInternalTab('overview');
+  }, [tickerForSummary]);
+
   if (!eventDetail) return null;
 
   const dossierProfile = getStockDossierProfile(eventDetail.ticker);
@@ -661,6 +734,7 @@ const StockDossierView = ({ eventDetail, payload, onOpenEventStudy }) => {
     ]
   };
   const eventStudyDetail = buildEventStudyDetail(enrichedEventDetail, dossierProfile);
+  const visualPhaseOne = dossierProfile?.visualPhaseOne || null;
 
   const momentumRanking = findMomentumUniverseRow(payload, tickerForSummary);
   const valueCore = resolveValueCore({
@@ -867,7 +941,18 @@ const StockDossierView = ({ eventDetail, payload, onOpenEventStudy }) => {
       note: 'Needs confirmed volume evidence'
     }
   ];
-  const valueCoreRows = [
+  const businessEvidenceQuality = valueCore.coverageStatus
+    ? `${valueCore.evidenceQuality} / ${valueCore.coverageStatus}`
+    : valueCore.evidenceQuality;
+  const businessCoreRows = [
+    { label: 'Type', value: valueCore.valueCoreType },
+    { label: 'Stage', value: valueCore.companyStage },
+    { label: 'Primary Driver', value: valueCore.primaryValueDriver },
+    { label: 'Thesis Break Trigger', value: valueCore.thesisBreakTrigger },
+    { label: 'Evidence Quality', value: businessEvidenceQuality },
+    { label: 'Coverage', value: valueCore.frontendLabel }
+  ];
+  const legacyValueCoreRows = [
     { label: 'Value Core Type', value: valueCore.valueCoreType },
     { label: 'Company Stage', value: valueCore.companyStage },
     { label: 'Primary Driver', value: valueCore.primaryValueDriver },
@@ -875,6 +960,40 @@ const StockDossierView = ({ eventDetail, payload, onOpenEventStudy }) => {
     { label: 'Evidence Quality', value: valueCore.evidenceQuality },
     { label: 'Coverage', value: valueCore.frontendLabel }
   ];
+  const performanceRows = visualPhaseOne?.performanceGrid?.periods || [];
+  const signalScreens = visualPhaseOne?.signalScreens || [];
+  const overviewFaq = visualPhaseOne?.faq?.overview || [];
+  const businessCoreFaq = visualPhaseOne?.faq?.businessCore || [];
+  const marketEvidenceFaq = visualPhaseOne?.faq?.marketEvidence || [];
+  const coreSectionLabel = visualPhaseOne ? 'Business Core' : 'Value Core';
+  const coreSectionHeading = visualPhaseOne ? 'What creates company value?' : 'What drives company value?';
+  const coreSectionRows = visualPhaseOne ? businessCoreRows : legacyValueCoreRows;
+  const marketEvidenceCards = visualPhaseOne ? [
+    {
+      label: 'Trend / momentum',
+      value: momentumScore === null ? 'Not verified' : `${momentumScore}/100`,
+      note: momentumStrengthRead,
+      tone: metricTone(momentumScore, 70)
+    },
+    {
+      label: 'Post-earnings reaction',
+      value: normalizeNotVerified(formatPct(enrichedEventDetail.pead_signal?.reaction?.current_post_return)),
+      note: 'Follow-through evidence',
+      tone: metricTone(enrichedEventDetail.pead_signal?.reaction?.current_post_return, 0)
+    },
+    {
+      label: 'Relative strength',
+      value: momentumRanking?.relative_strength_percentile !== undefined ? formatPercentile(momentumRanking.relative_strength_percentile) : 'Not verified',
+      note: metrics.relative_strength_vs_spy_63d !== undefined ? `${formatPct(metrics.relative_strength_vs_spy_63d)} vs SPY 63D` : 'Relative-strength feed pending',
+      tone: metricTone(momentumRanking?.relative_strength_percentile, 75)
+    },
+    {
+      label: 'Evidence freshness',
+      value: dossierProfile?.analysisDate || 'Not verified',
+      note: dossierProfile?.latestFiscalPeriod || 'Latest period pending',
+      tone: 'neutral'
+    }
+  ] : [];
   const truthLayerMetrics = eventStudyDigest ? [
     { label: 'Gap-up Rate', value: formatRatioReturn(eventStudyDigest.gap_up_rate) || 'Pending', tone: rateToneClass(eventStudyDigest.gap_up_rate) },
     { label: 'Avg Gap Up', value: formatRatioReturn(eventStudyDigest.average_gap_up) || 'Pending', tone: returnToneClass(eventStudyDigest.average_gap_up) },
@@ -886,6 +1005,236 @@ const StockDossierView = ({ eventDetail, payload, onOpenEventStudy }) => {
     { label: 'Avg Gap Down', value: 'Pending', tone: 'neutral' },
     { label: 'Measured Gaps', value: 'Pending', tone: 'neutral' }
   ];
+
+  if (visualPhaseOne) {
+    const valuationPreviewRows = [
+      { label: 'Business Quality', value: valuationCore.topVerdict.businessQuality, note: 'Current curated read' },
+      { label: 'Valuation', value: valuationCore.topVerdict.valuationState, note: 'Needs full tab build-out' },
+      { label: 'Base Case', value: valuationCore.topVerdict.baseCaseSupport, note: 'Evidence status' },
+      { label: 'Evidence State', value: 'Coverage Pending', note: 'Visual tab pending' }
+    ];
+    const thesisRiskRows = (renderedVerdict.risks.length ? renderedVerdict.risks : [
+      'Risk monitor needs curated trigger thresholds before full tab release.'
+    ]).slice(0, 4).map((risk, index) => ({
+      label: `Risk ${index + 1}`,
+      value: index === 0 ? 'Not verified' : 'Coverage pending',
+      note: risk
+    }));
+    const financialHealthMetrics = valuationResearchGroups
+      .find(group => group.title === 'Financial Health')?.metrics || [];
+    const financialHealthRows = (financialHealthMetrics.length ? financialHealthMetrics : [
+      { label: 'Cash + Securities', value: 'Not verified' },
+      { label: 'Debt / Equity', value: 'Not verified' },
+      { label: 'FCF Margin', value: 'Not verified' },
+      { label: 'SBC / Revenue', value: 'Not verified' }
+    ]).map((metric) => ({
+      label: metric.label,
+      value: metric.value,
+      note: 'Financial Health tab pending'
+    }));
+
+    return (
+      <div className="stock-dossier-view stock-dossier-view--internal-tabs">
+        <section className="card dossier-tab-shell" aria-label={`${ticker} Stock Dossier internal tabs`}>
+          <div className="dossier-tab-shell__header">
+            <div>
+              <p className="crowdrisk-kicker">Stock Dossier</p>
+              <h2>{companyDisplayName}</h2>
+              <span>{tickerLine}</span>
+            </div>
+            <div className="dossier-hero-pills">
+              <span>{researchState}</span>
+              {industryTheme && <span>{formatLabel(industryTheme)}</span>}
+              <span>{valueCore.frontendLabel}</span>
+            </div>
+          </div>
+
+          <div className="dossier-internal-tabs" role="tablist" aria-label={`${ticker} Stock Dossier tabs`}>
+            {DOSSIER_INTERNAL_TABS.map((tab) => (
+              <button
+                key={tab.id}
+                type="button"
+                role="tab"
+                aria-selected={activeInternalTab === tab.id}
+                className={activeInternalTab === tab.id ? 'active' : ''}
+                onClick={() => setActiveInternalTab(tab.id)}
+              >
+                {tab.label}
+              </button>
+            ))}
+          </div>
+
+          <div className="dossier-internal-tab-panel">
+            {activeInternalTab === 'overview' && (
+              <section className="dossier-visual-cockpit" aria-label={`${ticker} overview visual cockpit`}>
+                <div className="dossier-visual-cockpit__header">
+                  <div>
+                    <p className="crowdrisk-kicker">Overview</p>
+                    <h3>Visual research cockpit</h3>
+                  </div>
+                  <span>{valueCore.frontendLabel}</span>
+                </div>
+
+                <div className="dossier-visual-cockpit__grid">
+                  <article className="dossier-cockpit-card">
+                    <span>Company identity / stage</span>
+                    <strong>{companyDisplayName}</strong>
+                    <p>{valueCore.companyStage}. {industryTheme ? formatLabel(industryTheme) : 'Business classification pending'}.</p>
+                  </article>
+
+                  <article className="dossier-cockpit-card">
+                    <span>Business Core</span>
+                    <strong>{valueCore.valueCoreType}</strong>
+                    <p>{valueCore.primaryValueDriver}</p>
+                  </article>
+
+                  <article className="dossier-cockpit-card dossier-cockpit-card--wide">
+                    <div className="dossier-cockpit-card__heading">
+                      <span>Stock Performance</span>
+                      <em>{visualPhaseOne.performanceGrid?.source || 'Verified return series pending'}</em>
+                    </div>
+                    <div className="dossier-stock-performance-grid">
+                      {performanceRows.map((period) => (
+                        <div key={period.label} className={`dossier-performance-cell tone-${performanceTone(period.value)}`}>
+                          <span>{period.label}</span>
+                          <strong>{formatPerformanceReturn(period.value)}</strong>
+                          <em>{period.note || 'Return feed pending'}</em>
+                        </div>
+                      ))}
+                    </div>
+                  </article>
+
+                  <article className="dossier-cockpit-card">
+                    <div className="dossier-cockpit-card__heading">
+                      <span>Signal Screens / Evidence Tags</span>
+                      <em>Screen evidence, not a conclusion</em>
+                    </div>
+                    <div className="dossier-signal-tag-list">
+                      {signalScreens.map((signal) => (
+                        <div key={signal.title} className="dossier-signal-tag">
+                          <div>
+                            <strong>{signal.title}</strong>
+                            <p>{signal.explanation}</p>
+                          </div>
+                          <span>{signal.evidenceState}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </article>
+
+                  <article className="dossier-cockpit-card">
+                    <span>Market Evidence</span>
+                    <strong>{momentumStrengthRead}</strong>
+                    <p>{marketEvidence.title}</p>
+                  </article>
+                </div>
+
+                <ContextualFaq title={`${ticker} overview questions`} items={overviewFaq} />
+              </section>
+            )}
+
+            {activeInternalTab === 'business-core' && (
+              <section className="dossier-tab-content" aria-label={`${ticker} Business Core`}>
+                <div className="dossier-tab-content__header">
+                  <p className="crowdrisk-kicker">Business Core</p>
+                  <h3>What creates company value?</h3>
+                </div>
+                <div className="dossier-valuation-verdict dossier-business-core-grid">
+                  {businessCoreRows.map((row) => (
+                    <div key={row.label}>
+                      <span>{row.label}</span>
+                      <strong>{row.value}</strong>
+                    </div>
+                  ))}
+                </div>
+                {valueCore.evidenceNeeded.length > 0 && (
+                  <div className="dossier-business-evidence">
+                    <span>Evidence to monitor</span>
+                    <div className="dossier-evidence-chip-list">
+                      {valueCore.evidenceNeeded.map((item) => (
+                        <em key={item}>{item}</em>
+                      ))}
+                    </div>
+                  </div>
+                )}
+                <ContextualFaq title={`${ticker} Business Core questions`} items={businessCoreFaq} />
+              </section>
+            )}
+
+            {activeInternalTab === 'market-evidence' && (
+              <section className="dossier-tab-content" aria-label={`${ticker} Market Evidence`}>
+                <div className="dossier-tab-content__header">
+                  <p className="crowdrisk-kicker">Market Evidence</p>
+                  <h3>{marketEvidence.title}</h3>
+                </div>
+                <div className="dossier-market-visual-grid" aria-label={`${ticker} market evidence visual cards`}>
+                  {marketEvidenceCards.map((item) => (
+                    <div key={item.label} className={`tone-${item.tone}`}>
+                      <span>{item.label}</span>
+                      <strong>{item.value}</strong>
+                      <em>{item.note}</em>
+                    </div>
+                  ))}
+                </div>
+                <div className="dossier-event-study-summary-strip" aria-label={`${ticker} earnings event summary`}>
+                  <div>
+                    <span>Measured quarters</span>
+                    <strong>
+                      {measuredGapCount ?? <em className="dossier-pending-value">Pending</em>}
+                    </strong>
+                  </div>
+                  <div>
+                    <span>Gap-up rate</span>
+                    <strong>{formatRatioReturn(eventStudyDigest?.gap_up_rate) || <em className="dossier-pending-value">Pending</em>}</strong>
+                  </div>
+                  <SummaryMetric label="Post-gap 3D avg" summary={forwardGapUps?.r_plus_3} />
+                  <SummaryMetric label="Post-gap 10D avg" summary={forwardGapUps?.r_plus_10} />
+                  <SummaryMetric label="Post-gap 30D avg" summary={forwardGapUps?.r_plus_30} />
+                </div>
+                <div className="dossier-reaction-quality-grid">
+                  {latestReactionRows.map((row) => (
+                    <div key={row.label}>
+                      <span>{row.label}</span>
+                      <strong>{normalizeNotVerified(row.value)}</strong>
+                      <em>{row.note}</em>
+                    </div>
+                  ))}
+                </div>
+                <ContextualFaq title={`${ticker} Market Evidence questions`} items={marketEvidenceFaq} />
+              </section>
+            )}
+
+            {activeInternalTab === 'valuation' && (
+              <PendingDossierPanel
+                title="Valuation"
+                subtitle="A full visual valuation tab is not complete in this phase."
+                rows={valuationPreviewRows}
+                note="Keep the current valuation read as context only until the tab has a dedicated visual range and evidence model."
+              />
+            )}
+
+            {activeInternalTab === 'thesis-risk' && (
+              <PendingDossierPanel
+                title="Thesis Risk"
+                subtitle="Risk monitoring needs tighter trigger thresholds before full release."
+                rows={thesisRiskRows}
+                note="This phase keeps risk evidence visible without turning it into a separate recommendation layer."
+              />
+            )}
+
+            {activeInternalTab === 'financial-health' && (
+              <PendingDossierPanel
+                title="Financial Health"
+                subtitle="Financial health needs a dedicated visual model before this tab is complete."
+                rows={financialHealthRows}
+                note="Cash flow, dilution, debt, and SBC evidence should be grouped here in the next tab build."
+              />
+            )}
+          </div>
+        </section>
+      </div>
+    );
+  }
 
   return (
     <div className="stock-dossier-view">
@@ -970,6 +1319,74 @@ const StockDossierView = ({ eventDetail, payload, onOpenEventStudy }) => {
           {renderedVerdict.thesisShift && <p>{renderedVerdict.thesisShift}</p>}
         </div>
       </section>
+
+      {visualPhaseOne && (
+        <section id="overview" className="card dossier-visual-cockpit" aria-label={`${ticker} overview visual cockpit`}>
+          <div className="dossier-visual-cockpit__header">
+            <div>
+              <p className="crowdrisk-kicker">Overview</p>
+              <h3>Visual research cockpit</h3>
+            </div>
+            <span>{valueCore.frontendLabel}</span>
+          </div>
+
+          <div className="dossier-visual-cockpit__grid">
+            <article className="dossier-cockpit-card">
+              <span>Company identity / stage</span>
+              <strong>{companyDisplayName}</strong>
+              <p>{valueCore.companyStage}. {industryTheme ? formatLabel(industryTheme) : 'Business classification pending'}.</p>
+            </article>
+
+            <article className="dossier-cockpit-card">
+              <span>Business Core</span>
+              <strong>{valueCore.valueCoreType}</strong>
+              <p>{valueCore.primaryValueDriver}</p>
+            </article>
+
+            <article className="dossier-cockpit-card dossier-cockpit-card--wide">
+              <div className="dossier-cockpit-card__heading">
+                <span>Stock Performance</span>
+                <em>{visualPhaseOne.performanceGrid?.source || 'Verified return series pending'}</em>
+              </div>
+              <div className="dossier-stock-performance-grid">
+                {performanceRows.map((period) => (
+                  <div key={period.label} className={`dossier-performance-cell tone-${performanceTone(period.value)}`}>
+                    <span>{period.label}</span>
+                    <strong>{formatPerformanceReturn(period.value)}</strong>
+                    <em>{period.note || 'Return feed pending'}</em>
+                  </div>
+                ))}
+              </div>
+            </article>
+
+            <article className="dossier-cockpit-card">
+              <div className="dossier-cockpit-card__heading">
+                <span>Signal Screens / Evidence Tags</span>
+                <em>Screen evidence, not a conclusion</em>
+              </div>
+              <div className="dossier-signal-tag-list">
+                {signalScreens.map((signal) => (
+                  <div key={signal.title} className="dossier-signal-tag">
+                    <div>
+                      <strong>{signal.title}</strong>
+                      <p>{signal.explanation}</p>
+                    </div>
+                    <span>{signal.evidenceState}</span>
+                  </div>
+                ))}
+              </div>
+            </article>
+
+            <article className="dossier-cockpit-card">
+              <span>Market Evidence</span>
+              <strong>{momentumStrengthRead}</strong>
+              <p>{marketEvidence.title}</p>
+            </article>
+          </div>
+
+          <ContextualFaq title={`${ticker} overview questions`} items={overviewFaq} />
+        </section>
+      )}
 
       {(renderedVerdict.support.length > 0 || renderedVerdict.risks.length > 0) && (
         <section id="case-summary" className="card dossier-case-summary" aria-label={`${ticker} verdict summary`}>
@@ -1063,11 +1480,11 @@ const StockDossierView = ({ eventDetail, payload, onOpenEventStudy }) => {
         </section>
       )}
 
-      <section id="value-core" className="dossier-valuation-core dossier-value-core" style={{ marginBottom: '24px', padding: '18px 0 0 16px' }} aria-label={`${ticker} value core`}>
+      <section id="value-core" className="dossier-valuation-core dossier-value-core" style={{ marginBottom: '24px', padding: '18px 0 0 16px' }} aria-label={`${ticker} ${coreSectionLabel.toLowerCase()}`}>
         <div className="dossier-valuation-core__header">
           <div>
-            <p className="crowdrisk-kicker">Value Core</p>
-            <h3>What drives company value?</h3>
+            <p className="crowdrisk-kicker">{coreSectionLabel}</p>
+            <h3>{coreSectionHeading}</h3>
           </div>
           <div className="dossier-hero-pills">
             <span>{valueCore.frontendLabel}</span>
@@ -1076,13 +1493,26 @@ const StockDossierView = ({ eventDetail, payload, onOpenEventStudy }) => {
         </div>
 
         <div className="dossier-valuation-verdict">
-          {valueCoreRows.map((row) => (
+          {coreSectionRows.map((row) => (
             <div key={row.label}>
               <span>{row.label}</span>
               <strong>{row.value}</strong>
             </div>
           ))}
         </div>
+
+        {visualPhaseOne && valueCore.evidenceNeeded.length > 0 && (
+          <div className="dossier-business-evidence">
+            <span>Evidence to monitor</span>
+            <div className="dossier-evidence-chip-list">
+              {valueCore.evidenceNeeded.map((item) => (
+                <em key={item}>{item}</em>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {visualPhaseOne && <ContextualFaq title={`${ticker} Business Core questions`} items={businessCoreFaq} />}
       </section>
 
       {/* 5b. Fundamentals Summary / Valuation Core */}
@@ -1429,6 +1859,17 @@ const StockDossierView = ({ eventDetail, payload, onOpenEventStudy }) => {
       <div id="market-evidence" className="card dossier-market-evidence-card" style={{ marginBottom: '24px' }}>
         <p className="crowdrisk-kicker">Market Evidence</p>
         <h3>Event Study connection: {marketEvidence.title}</h3>
+        {marketEvidenceCards.length > 0 && (
+          <div className="dossier-market-visual-grid" aria-label={`${ticker} market evidence visual cards`}>
+            {marketEvidenceCards.map((item) => (
+              <div key={item.label} className={`tone-${item.tone}`}>
+                <span>{item.label}</span>
+                <strong>{item.value}</strong>
+                <em>{item.note}</em>
+              </div>
+            ))}
+          </div>
+        )}
         <div className="dossier-event-study-summary-strip" aria-label={`${ticker} earnings event summary`}>
           <div>
             <span>Measured quarters</span>
@@ -1518,6 +1959,7 @@ const StockDossierView = ({ eventDetail, payload, onOpenEventStudy }) => {
             </ul>
           </div>
         </div>
+        <ContextualFaq title={`${ticker} Market Evidence questions`} items={marketEvidenceFaq} />
       </div>
 
       {valuationCore.scenarios && (

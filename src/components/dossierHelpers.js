@@ -14,15 +14,17 @@ const valueOrFallback = (value, fallback) => {
 };
 
 export const resolveValueCore = (eventDetail, dossierProfile = null) => {
-  const valueCore = eventDetail?.value_core || null;
+  const valueCore = eventDetail?.value_core || dossierProfile?.valueCore || null;
   const hasValueCore = valueCore && typeof valueCore === 'object' && !Array.isArray(valueCore);
 
   return {
     valueCoreType: hasValueCore ? valueOrFallback(valueCore.value_core_type, 'Coverage Pending') : 'Coverage Pending',
-    companyStage: hasValueCore ? valueOrFallback(valueCore.company_stage, 'Not Verified') : 'Not Verified',
+    companyStage: hasValueCore ? valueOrFallback(valueCore.company_stage ?? valueCore.company_stage_candidate, 'Not Verified') : 'Not Verified',
     primaryValueDriver: hasValueCore ? valueOrFallback(valueCore.primary_value_driver, 'Pending') : 'Pending',
     thesisBreakTrigger: hasValueCore ? valueOrFallback(valueCore.thesis_break_trigger, 'Pending') : 'Pending',
     evidenceQuality: hasValueCore ? valueOrFallback(valueCore.evidence_quality, 'Not Verified') : 'Not Verified',
+    evidenceNeeded: hasValueCore && Array.isArray(valueCore.evidence_needed) ? valueCore.evidence_needed : [],
+    coverageStatus: hasValueCore ? valueOrFallback(valueCore.coverage_status, null) : null,
     frontendLabel: hasValueCore ? valueOrFallback(valueCore.frontend_label, 'Coverage Pending') : (dossierProfile ? 'Golden Sample' : 'Coverage Pending'),
     dossierState: hasValueCore ? valueOrFallback(valueCore.dossier_state, 'coverage_pending') : (dossierProfile ? 'golden_sample' : 'coverage_pending'),
     needsHumanReview: hasValueCore ? Boolean(valueCore.needs_human_review) : !dossierProfile,

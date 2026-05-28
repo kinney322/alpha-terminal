@@ -73,6 +73,99 @@ const stockDossierProfiles = {
         risk: '5D risk budget'
       }
     },
+    valueCore: {
+      ticker: 'DDOG',
+      value_core_type: 'Software / SaaS',
+      company_stage_candidate: 'Scaling',
+      primary_value_driver: 'Net retention and large customer expansion',
+      thesis_break_trigger: 'NRR deterioration, large customer growth slowdown, or durable FCF margin compression',
+      evidence_needed: [
+        'NRR / DBNR trend',
+        '$100k+ ARR customer growth',
+        'RPO / cRPO growth',
+        'FCF margin',
+        'SBC as percentage of revenue',
+        'AI-native workload adoption signal'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'golden_sample',
+      frontend_label: 'Golden Sample',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'stockDossierProfiles.js'
+    },
+    visualPhaseOne: {
+      performanceGrid: {
+        source: 'Verified return series pending',
+        periods: [
+          { label: 'Today', value: null, note: 'Intraday return not verified' },
+          { label: '1 Week', value: null, note: 'Short-term return feed pending' },
+          { label: '1 Month', value: null, note: 'Monthly return feed pending' },
+          { label: '3 Months', value: null, note: 'Quarter return feed pending' },
+          { label: '6 Months', value: null, note: 'Half-year return feed pending' },
+          { label: '1 Year', value: null, note: 'Annual return feed pending' }
+        ]
+      },
+      signalScreens: [
+        {
+          title: 'Revenue Growth Leaders',
+          explanation: 'Q1 revenue grew 32% year over year, so growth remains a core evidence point.',
+          evidenceState: 'Curated'
+        },
+        {
+          title: 'Strong Momentum Stocks',
+          explanation: 'Momentum evidence keeps DDOG on the research queue, but it does not prove the business case.',
+          evidenceState: 'Market-derived'
+        },
+        {
+          title: 'RSI Stretch Check',
+          explanation: 'RSI-specific evidence is not verified in the current dossier and should remain a stretch monitor.',
+          evidenceState: 'Not verified'
+        },
+        {
+          title: 'Cloud Observability Leader',
+          explanation: 'Datadog remains a broad observability and security platform for cloud operations teams.',
+          evidenceState: 'Curated'
+        },
+        {
+          title: 'Growth Screen Signal',
+          explanation: 'Revenue growth, large-customer expansion, and FCF margin make it suitable for a growth-quality screen review.',
+          evidenceState: 'Curated'
+        }
+      ],
+      faq: {
+        overview: [
+          {
+            question: 'What does DDOG do?',
+            answer: 'Datadog provides observability and security software for cloud infrastructure, applications, logs, and user experience. The dossier treats it as a subscription SaaS platform with land-and-expand economics.'
+          },
+          {
+            question: 'Why does DDOG matter in AI/cloud operations?',
+            answer: 'AI and cloud workloads can increase infrastructure complexity. That makes monitoring, security visibility, and operational telemetry more important evidence to track.'
+          }
+        ],
+        businessCore: [
+          {
+            question: 'What creates value for DDOG?',
+            answer: 'The main value driver is customer expansion after adoption. Net retention, larger customers, product breadth, and FCF margin show whether the platform keeps compounding.'
+          },
+          {
+            question: 'Which metrics matter most?',
+            answer: 'NRR or DBNR, $100k+ ARR customer growth, RPO or cRPO growth, FCF margin, and SBC as a percentage of revenue matter most. These metrics monitor durability rather than a short-term price move.'
+          }
+        ],
+        marketEvidence: [
+          {
+            question: 'Does strong momentum mean the thesis is proven?',
+            answer: 'No. Momentum is market evidence, not proof of company quality or valuation support. It helps decide whether the name deserves continued monitoring.'
+          },
+          {
+            question: 'What would make the market evidence weaker?',
+            answer: 'The market evidence weakens if relative strength fades, the post-earnings move retraces, or event follow-through data turns negative. Those signals should be monitored beside business and valuation evidence.'
+          }
+        ]
+      }
+    },
     valuationCore: {
       status: 'available',
       topVerdict: {
