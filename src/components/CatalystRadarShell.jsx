@@ -1,13 +1,37 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import RadarMasterView from './RadarMasterView';
 import SelectedCatalystIntelligence from './SelectedCatalystIntelligence';
 import OpportunityXRayCard from './OpportunityXRayCard';
+import { fetchPreopenCatalystRadarPayload } from '../data/payloadAdapter';
 import './CatalystRadar.css';
 
 const CatalystRadarShell = ({ payload, loading, error, onOpenStockDossier }) => {
   const [selectedEventId, setSelectedEventId] = useState(null);
   const [selectedEventDetailOverride, setSelectedEventDetailOverride] = useState(null);
   const [selectedXRayRow, setSelectedXRayRow] = useState(null);
+  const [preopenPayload, setPreopenPayload] = useState(null);
+
+  useEffect(() => {
+    if (loading || error || !payload) {
+      setPreopenPayload(null);
+      return undefined;
+    }
+
+    let alive = true;
+    fetchPreopenCatalystRadarPayload()
+      .then((data) => {
+        if (alive) setPreopenPayload(data);
+      })
+      .catch((err) => {
+        if (!alive) return;
+        console.warn('Failed to load dedicated preopen catalyst payload; falling back to canonical radar payload.', err);
+        setPreopenPayload(null);
+      });
+
+    return () => {
+      alive = false;
+    };
+  }, [payload, loading, error]);
 
   const handleSelectEvent = (eventId, eventDetailOverride = null, xrayRow = null) => {
     setSelectedEventId(eventId);
@@ -34,6 +58,7 @@ const CatalystRadarShell = ({ payload, loading, error, onOpenStockDossier }) => 
       <div className="radar-master-pane">
         <RadarMasterView 
           payload={payload} 
+          preopenPayload={preopenPayload}
           selectedEventId={selectedEventId} 
           onSelectEvent={handleSelectEvent} 
         />

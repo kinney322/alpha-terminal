@@ -3,6 +3,7 @@
 const API_BASE = 'https://kw-terminal-api.myfootballplaces.workers.dev';
 const V1_2_URL = `${API_BASE}/event-opportunity/radar-v1.2-latest`;
 const V1_1_URL = `${API_BASE}/event-opportunity/radar-v1.1-latest`;
+const PREOPEN_CATALYST_URL = `${API_BASE}/event-opportunity/preopen-catalyst-radar-latest`;
 const LOCAL_ENRICHED_PAYLOAD_URL = 'http://127.0.0.1:5055/radar-v1.2-enriched.module.preview.json';
 
 function shouldUseLocalEnrichedPayload() {
@@ -89,4 +90,18 @@ export async function fetchAndNormalizeRadarPayload() {
   }
 
   return rawData;
+}
+
+export async function fetchPreopenCatalystRadarPayload() {
+  const res = await fetch(PREOPEN_CATALYST_URL, { headers: { Accept: 'application/json' } });
+  if (!res.ok) {
+    throw new Error(`Preopen catalyst payload unavailable (${res.status})`);
+  }
+
+  const data = await res.json();
+  if (!isValidV12Payload(data)) {
+    throw new Error('Preopen catalyst payload is not a valid v1.2 schema');
+  }
+
+  return data;
 }

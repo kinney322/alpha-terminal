@@ -166,11 +166,17 @@ const firstFiniteNumber = (...values) => {
   return null;
 };
 
-const RadarMasterView = ({ payload, selectedEventId, onSelectEvent }) => {
+const RadarMasterView = ({ payload, preopenPayload, selectedEventId, onSelectEvent }) => {
   const [activeTab, setActiveTab] = useState('pre_earnings'); // pre_earnings, event_day, post_earnings, momentum, tracked, between_catalysts
   const [listType, setListType] = useState('top_opportunities'); // top_opportunities, top_risk_alerts
   const [searchQuery, setSearchQuery] = useState('');
   const [momentumGroupFilter, setMomentumGroupFilter] = useState('all');
+  const hasDedicatedPreopenPayload = Boolean(
+    preopenPayload?.events_detail &&
+    preopenPayload?.radar_lists?.pre_earnings
+  );
+  const preEarningsPayload = hasDedicatedPreopenPayload ? preopenPayload : payload;
+  const listPayload = activeTab === 'pre_earnings' ? preEarningsPayload : payload;
 
   const getSyntheticDetail = (ticker) => buildMomentumUniverseSyntheticDetail(ticker, payload);
 
@@ -252,11 +258,11 @@ const RadarMasterView = ({ payload, selectedEventId, onSelectEvent }) => {
       ? momentumFilteredListIds
     : activeTab === 'between_catalysts'
       ? payload?.radar_lists?.off_cycle_watch?.thesis_watch || []
-      : payload?.radar_lists?.[activeTab]?.[listType] || [];
+      : listPayload?.radar_lists?.[activeTab]?.[listType] || [];
   const normalizedSearch = searchQuery.trim().toUpperCase();
   const filteredListIds = normalizedSearch
     ? baseListIds.filter(id => {
-        const item = isMomentumAllRanking ? getSyntheticDetail(id) : payload?.events_detail?.[id];
+        const item = isMomentumAllRanking ? getSyntheticDetail(id) : listPayload?.events_detail?.[id];
         const ticker = String(item?.ticker || id).toUpperCase();
         return ticker.includes(normalizedSearch) || String(id).toUpperCase().includes(normalizedSearch);
       })
@@ -462,14 +468,17 @@ const RadarMasterView = ({ payload, selectedEventId, onSelectEvent }) => {
   const catalystRows = activeTab === 'pre_earnings'
     ? filteredListIds
         .map((id) => {
-          const item = payload?.events_detail?.[id];
+          const item = preEarningsPayload?.events_detail?.[id];
           return item ? buildCatalystXRayRow(item, id) : null;
         })
         .filter(Boolean)
     : [];
 
   return (
-    <div className="radar-master-view">
+    <div
+      className="radar-master-view"
+      data-preopen-feed-source={hasDedicatedPreopenPayload ? 'dedicated' : 'canonical-fallback'}
+    >
       <div className="radar-header">
         <h2>Catalyst Radar</h2>
         <div className="radar-tabs">
@@ -693,7 +702,7 @@ const RadarMasterView = ({ payload, selectedEventId, onSelectEvent }) => {
               </tr>
             ) : (
               filteredListIds.map(id => {
-                const item = isMomentumAllRanking ? getSyntheticDetail(id) : payload.events_detail[id];
+                const item = isMomentumAllRanking ? getSyntheticDetail(id) : listPayload.events_detail[id];
                 if (!item) return null;
                 const eventId = isMomentumAllRanking ? item.event_id : id;
                 const isSelected = selectedEventId === eventId;
