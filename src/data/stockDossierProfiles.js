@@ -167,7 +167,97 @@ const stockDossierProfiles = {
             question: 'What would make the market evidence weaker?',
             answer: 'The market evidence weakens if relative strength fades, the post-earnings move retraces, or event follow-through data turns negative. Those signals should be monitored beside business and valuation evidence.'
           }
+        ],
+        valuation: [
+          {
+            question: 'Why does valuation matter even if growth is strong?',
+            answer: 'Strong growth can still disappoint if the market already assumes years of durable expansion. This tab checks whether growth, margin, and dilution evidence are enough to support a demanding setup.'
+          },
+          {
+            question: 'What would make the valuation case cleaner?',
+            answer: 'The case becomes cleaner if growth stays above the mid-20%s, FCF margin holds near 30%, and SBC trends down as a share of revenue. Peer and consensus context are still needed before raising confidence.'
+          }
+        ],
+        thesisRisk: [
+          {
+            question: 'What risk would change the thesis first?',
+            answer: 'The first risk to watch is business durability: weaker retention, slower large-customer growth, or lower RPO support. Those signals would challenge the expansion engine before the headline story changes.'
+          },
+          {
+            question: 'How should risk signals be read?',
+            answer: 'Risk signals are evidence monitors, not instructions. They show what needs follow-up before the dossier read becomes stronger or weaker.'
+          }
+        ],
+        financialHealth: [
+          {
+            question: 'What financial signal matters most for DDOG?',
+            answer: 'The cleanest signal is whether revenue growth can convert into durable free cash flow while SBC becomes less burdensome. Cash generation is strong, but dilution discipline still needs monitoring.'
+          },
+          {
+            question: 'Is cash flow enough by itself?',
+            answer: 'No. FCF margin helps, but the quality of that cash flow depends on reinvestment needs, SBC, and whether growth remains broad-based. This tab keeps those items together.'
+          }
         ]
+      },
+      phaseTwo: {
+        valuation: {
+          posture: {
+            title: 'Premium assumptions',
+            label: 'Valuation posture',
+            note: 'Execution quality is visible, but revenue growth and cash margins need to stay strong.'
+          },
+          metricCards: [
+            { label: 'EV / FY2026 Revenue', value: '16x', note: 'Premium revenue multiple' },
+            { label: 'EV / FY2026 FCF', value: '55x', note: 'Cash-flow expectations are high' },
+            { label: 'Rule of 40', value: '61', note: 'Growth plus FCF margin evidence' },
+            { label: 'Base Case Support', value: 'Partial', note: 'Quality visible; valuation still demanding' }
+          ],
+          tensionCards: [
+            { title: 'Growth vs multiple', state: 'Needs sustained growth', text: 'The setup depends on DDOG keeping revenue growth above the mid-20%s while the revenue multiple remains elevated.' },
+            { title: 'Margin sensitivity', state: 'FCF must hold', text: 'A slip below high-20%s FCF margin would make the current valuation read less forgiving.' },
+            { title: 'Peer context', state: 'Not verified', text: 'A current peer and consensus multiple set is still needed before the valuation read can be considered complete.' }
+          ],
+          checklist: [
+            'Revenue growth remains above 25% for multiple years',
+            'FCF margin stays near or above 30%',
+            'NRR / DBNR stays around low-120%s',
+            'SBC declines as a percentage of revenue',
+            'RPO / cRPO supports forward revenue durability'
+          ]
+        },
+        thesisRisk: {
+          lead: 'The main risk is not balance-sheet stress; it is whether platform durability keeps matching a demanding valuation read.',
+          riskMap: [
+            { label: 'Growth deceleration', severity: 'High', watch: 'Revenue growth below 25% or weaker RPO support' },
+            { label: 'Margin / efficiency', severity: 'Medium', watch: 'FCF margin below 25% or SBC staying elevated' },
+            { label: 'Platform breadth', severity: 'Medium', watch: 'Large-customer expansion or multi-product adoption slows' },
+            { label: 'AI / cloud spend sensitivity', severity: 'Medium', watch: 'Optimization cycle reduces workload expansion signal' }
+          ],
+          evidenceNeeded: [
+            'NRR / DBNR trend',
+            '$100k+ ARR customer growth',
+            'RPO / cRPO growth',
+            'FCF margin durability',
+            'SBC as percentage of revenue',
+            'AI-native workload adoption signal'
+          ]
+        },
+        financialHealth: {
+          qualityRead: 'Growth quality is strong when revenue expansion, FCF margin, and balance-sheet flexibility move together.',
+          metricCards: [
+            { label: 'Revenue Growth', value: '32.0%', note: 'Q1 year-over-year growth' },
+            { label: 'FCF Margin', value: '29.0%', note: 'Strong cash conversion' },
+            { label: 'Gross Margin', value: '79.0%', note: 'Software margin profile' },
+            { label: 'Cash + Securities', value: '$4.8B', note: 'Liquidity cushion' },
+            { label: 'Convertible Notes', value: '$1.0B', note: 'Balance-sheet item to monitor' },
+            { label: 'SBC / Revenue', value: '19.6%', note: 'Dilution discipline still matters' }
+          ],
+          qualityCards: [
+            { title: 'Scale and growth', state: 'Constructive', text: 'Revenue crossed the $1B quarterly run-rate threshold while growth remained above 30%.' },
+            { title: 'Cash generation', state: 'Strong but needs quality check', text: 'FCF margin is strong, but the read should stay paired with SBC and reinvestment evidence.' },
+            { title: 'Reinvestment balance', state: 'Monitor', text: 'The research question is whether DDOG can keep investing in platform breadth while improving shareholder economics.' }
+          ]
+        }
       }
     },
     valuationCore: {

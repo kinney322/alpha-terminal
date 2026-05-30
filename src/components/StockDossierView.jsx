@@ -968,6 +968,10 @@ const StockDossierView = ({ eventDetail, payload, onOpenEventStudy }) => {
   const overviewFaq = visualPhaseOne?.faq?.overview || [];
   const businessCoreFaq = visualPhaseOne?.faq?.businessCore || [];
   const marketEvidenceFaq = visualPhaseOne?.faq?.marketEvidence || [];
+  const valuationFaq = visualPhaseOne?.faq?.valuation || [];
+  const thesisRiskFaq = visualPhaseOne?.faq?.thesisRisk || [];
+  const financialHealthFaq = visualPhaseOne?.faq?.financialHealth || [];
+  const phaseTwo = visualPhaseOne?.phaseTwo || {};
   const coreSectionLabel = visualPhaseOne ? 'Business Core' : 'Value Core';
   const coreSectionHeading = visualPhaseOne ? 'What creates company value?' : 'What drives company value?';
   const coreSectionRows = visualPhaseOne ? businessCoreRows : legacyValueCoreRows;
@@ -1010,22 +1014,31 @@ const StockDossierView = ({ eventDetail, payload, onOpenEventStudy }) => {
   ];
 
   if (visualPhaseOne) {
-    const valuationPreviewRows = [
+    const valuationTab = phaseTwo.valuation || {};
+    const valuationMetricCards = valuationTab.metricCards || [
       { label: 'Business Quality', value: valuationCore.topVerdict.businessQuality, note: 'Current curated read' },
-      { label: 'Valuation', value: valuationCore.topVerdict.valuationState, note: 'Needs full tab build-out' },
+      { label: 'Valuation', value: valuationCore.topVerdict.valuationState, note: 'Valuation state' },
       { label: 'Base Case', value: valuationCore.topVerdict.baseCaseSupport, note: 'Evidence status' },
-      { label: 'Evidence State', value: 'Coverage Pending', note: 'Visual tab pending' }
+      { label: 'Margin of Safety', value: valuationCore.topVerdict.marginOfSafety, note: 'Risk cushion' }
     ];
-    const thesisRiskRows = (renderedVerdict.risks.length ? renderedVerdict.risks : [
+    const valuationTensionCards = valuationTab.tensionCards || [
+      { title: 'Growth vs multiple', state: 'Coverage pending', text: valuationCore.topVerdict.why },
+      { title: 'Evidence gap', state: 'Not verified', text: valuationCore.missingEvidence.join('; ') || 'Missing evidence pending.' }
+    ];
+    const valuationChecklist = valuationTab.checklist || valuationCore.researchJudgment;
+    const thesisRiskTab = phaseTwo.thesisRisk || {};
+    const thesisRiskMap = thesisRiskTab.riskMap || (renderedVerdict.risks.length ? renderedVerdict.risks : [
       'Risk monitor needs curated trigger thresholds before full tab release.'
     ]).slice(0, 4).map((risk, index) => ({
       label: `Risk ${index + 1}`,
-      value: index === 0 ? 'Not verified' : 'Coverage pending',
-      note: risk
+      severity: index === 0 ? 'High' : 'Medium',
+      watch: risk
     }));
+    const thesisRiskEvidence = thesisRiskTab.evidenceNeeded || valueCore.evidenceNeeded;
     const financialHealthMetrics = valuationResearchGroups
       .find(group => group.title === 'Financial Health')?.metrics || [];
-    const financialHealthRows = (financialHealthMetrics.length ? financialHealthMetrics : [
+    const financialHealthTab = phaseTwo.financialHealth || {};
+    const financialHealthMetricCards = financialHealthTab.metricCards || (financialHealthMetrics.length ? financialHealthMetrics : [
       { label: 'Cash + Securities', value: 'Not verified' },
       { label: 'Debt / Equity', value: 'Not verified' },
       { label: 'FCF Margin', value: 'Not verified' },
@@ -1033,8 +1046,11 @@ const StockDossierView = ({ eventDetail, payload, onOpenEventStudy }) => {
     ]).map((metric) => ({
       label: metric.label,
       value: metric.value,
-      note: 'Financial Health tab pending'
+      note: metric.note || 'Financial health evidence'
     }));
+    const financialQualityCards = financialHealthTab.qualityCards || [
+      { title: 'Quality of growth', state: 'Coverage pending', text: financialHealthTab.qualityRead || 'Growth quality needs cash-flow and dilution context.' }
+    ];
     const overviewHighlightCards = [
       {
         label: 'Business Core',
@@ -1270,30 +1286,117 @@ const StockDossierView = ({ eventDetail, payload, onOpenEventStudy }) => {
             )}
 
             {activeInternalTab === 'valuation' && (
-              <PendingDossierPanel
-                title="Valuation"
-                subtitle="A full visual valuation tab is not complete in this phase."
-                rows={valuationPreviewRows}
-                note="Keep the current valuation read as context only until the tab has a dedicated visual range and evidence model."
-              />
+              <section className="dossier-tab-content" aria-label={`${ticker} Valuation`}>
+                <div className="dossier-tab-content__header">
+                  <p className="crowdrisk-kicker">Valuation</p>
+                  <h3>{valuationTab.posture?.title || valuationCore.topVerdict.valuationState}</h3>
+                </div>
+                <div className="dossier-phase2-lead">
+                  <span>{valuationTab.posture?.label || 'Valuation posture'}</span>
+                  <strong>{valuationCore.topVerdict.valuationState}</strong>
+                  <p>{valuationTab.posture?.note || valuationCore.topVerdict.why}</p>
+                </div>
+                <div className="dossier-phase2-metric-grid">
+                  {valuationMetricCards.map((card) => (
+                    <div key={card.label}>
+                      <span>{card.label}</span>
+                      <strong>{card.value}</strong>
+                      <em>{card.note}</em>
+                    </div>
+                  ))}
+                </div>
+                <div className="dossier-phase2-card-grid">
+                  {valuationTensionCards.map((card) => (
+                    <article key={card.title}>
+                      <span>{card.title}</span>
+                      <strong>{card.state}</strong>
+                      <p>{card.text}</p>
+                    </article>
+                  ))}
+                </div>
+                <div className="dossier-phase2-checklist">
+                  <div>
+                    <span>What would need to be true?</span>
+                    <strong>Evidence checklist</strong>
+                  </div>
+                  <ul>
+                    {valuationChecklist.map((item) => (
+                      <li key={item}>{item}</li>
+                    ))}
+                  </ul>
+                </div>
+                <ContextualFaq title={`${ticker} Valuation questions`} items={valuationFaq} />
+              </section>
             )}
 
             {activeInternalTab === 'thesis-risk' && (
-              <PendingDossierPanel
-                title="Thesis Risk"
-                subtitle="Risk monitoring needs tighter trigger thresholds before full release."
-                rows={thesisRiskRows}
-                note="This phase keeps risk evidence visible without turning it into a separate recommendation layer."
-              />
+              <section className="dossier-tab-content" aria-label={`${ticker} Thesis Risk`}>
+                <div className="dossier-tab-content__header">
+                  <p className="crowdrisk-kicker">Thesis Risk</p>
+                  <h3>What could weaken the dossier read?</h3>
+                </div>
+                <div className="dossier-phase2-lead">
+                  <span>Risk posture</span>
+                  <strong>Business durability monitor</strong>
+                  <p>{thesisRiskTab.lead || valueCore.thesisBreakTrigger}</p>
+                </div>
+                <div className="dossier-risk-map-grid">
+                  {thesisRiskMap.map((risk) => (
+                    <article key={risk.label}>
+                      <div>
+                        <span>{risk.label}</span>
+                        <strong>{risk.severity}</strong>
+                      </div>
+                      <p>{risk.watch}</p>
+                    </article>
+                  ))}
+                </div>
+                <div className="dossier-phase2-checklist">
+                  <div>
+                    <span>Evidence needed to reduce risk</span>
+                    <strong>Watch signals</strong>
+                  </div>
+                  <ul>
+                    {thesisRiskEvidence.map((item) => (
+                      <li key={item}>{item}</li>
+                    ))}
+                  </ul>
+                </div>
+                <ContextualFaq title={`${ticker} Thesis Risk questions`} items={thesisRiskFaq} />
+              </section>
             )}
 
             {activeInternalTab === 'financial-health' && (
-              <PendingDossierPanel
-                title="Financial Health"
-                subtitle="Financial health needs a dedicated visual model before this tab is complete."
-                rows={financialHealthRows}
-                note="Cash flow, dilution, debt, and SBC evidence should be grouped here in the next tab build."
-              />
+              <section className="dossier-tab-content" aria-label={`${ticker} Financial Health`}>
+                <div className="dossier-tab-content__header">
+                  <p className="crowdrisk-kicker">Financial Health</p>
+                  <h3>Quality of growth and cash generation</h3>
+                </div>
+                <div className="dossier-phase2-lead">
+                  <span>Quality of growth</span>
+                  <strong>Growth plus FCF, with SBC still monitored</strong>
+                  <p>{financialHealthTab.qualityRead || 'Financial health needs cash-flow, dilution, and balance-sheet context.'}</p>
+                </div>
+                <div className="dossier-phase2-metric-grid dossier-phase2-metric-grid--six">
+                  {financialHealthMetricCards.map((card) => (
+                    <div key={card.label}>
+                      <span>{card.label}</span>
+                      <strong>{card.value}</strong>
+                      <em>{card.note}</em>
+                    </div>
+                  ))}
+                </div>
+                <div className="dossier-phase2-card-grid">
+                  {financialQualityCards.map((card) => (
+                    <article key={card.title}>
+                      <span>{card.title}</span>
+                      <strong>{card.state}</strong>
+                      <p>{card.text}</p>
+                    </article>
+                  ))}
+                </div>
+                <ContextualFaq title={`${ticker} Financial Health questions`} items={financialHealthFaq} />
+              </section>
             )}
           </div>
         </section>

@@ -3853,6 +3853,11 @@ html, body, #root, .app-container, .main-content {
 .crowdrisk-app--dark .dossier-business-evidence,
 .crowdrisk-app--dark .dossier-contextual-faq details,
 .crowdrisk-app--dark .dossier-market-visual-grid > div,
+.crowdrisk-app--dark .dossier-phase2-lead,
+.crowdrisk-app--dark .dossier-phase2-metric-grid > div,
+.crowdrisk-app--dark .dossier-phase2-card-grid article,
+.crowdrisk-app--dark .dossier-risk-map-grid article,
+.crowdrisk-app--dark .dossier-phase2-checklist,
 .crowdrisk-app--dark .dossier-valuation-verdict > div,
 .crowdrisk-app--dark .dossier-valuation-metrics > div,
 .crowdrisk-app--dark .dossier-forward-valuation-range,
@@ -6164,6 +6169,154 @@ html, body, #root, .app-container, .main-content {
   font-style: normal;
 }
 
+.dossier-phase2-lead {
+  margin-bottom: 0.85rem;
+  padding: 0.95rem;
+  border: 1px solid rgba(168, 86, 29, 0.16);
+  border-radius: 8px;
+  background: rgba(255, 250, 242, 0.62);
+}
+
+.dossier-phase2-lead span,
+.dossier-phase2-metric-grid span,
+.dossier-phase2-card-grid span,
+.dossier-phase2-checklist span,
+.dossier-risk-map-grid span {
+  display: block;
+  margin-bottom: 0.34rem;
+  color: var(--text-muted);
+  font-size: 0.68rem;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.dossier-phase2-lead strong {
+  display: block;
+  color: var(--text-main);
+  font-size: 1.18rem;
+  line-height: 1.22;
+}
+
+.dossier-phase2-lead p,
+.dossier-phase2-card-grid p,
+.dossier-risk-map-grid p {
+  margin: 0.42rem 0 0;
+  color: var(--text-muted);
+  line-height: 1.45;
+}
+
+.dossier-phase2-metric-grid,
+.dossier-phase2-card-grid,
+.dossier-risk-map-grid {
+  display: grid;
+  gap: 0.65rem;
+  margin-bottom: 1rem;
+}
+
+.dossier-phase2-metric-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.dossier-phase2-metric-grid--six {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.dossier-phase2-card-grid,
+.dossier-risk-map-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.dossier-phase2-metric-grid > div,
+.dossier-phase2-card-grid article,
+.dossier-risk-map-grid article,
+.dossier-phase2-checklist {
+  min-width: 0;
+  padding: 0.82rem;
+  border: 1px solid rgba(168, 86, 29, 0.14);
+  border-radius: 8px;
+  background: rgba(255, 252, 247, 0.78);
+}
+
+.dossier-phase2-metric-grid strong,
+.dossier-phase2-card-grid strong,
+.dossier-risk-map-grid strong,
+.dossier-phase2-checklist strong {
+  display: block;
+  color: var(--text-main);
+  line-height: 1.22;
+  overflow-wrap: anywhere;
+}
+
+.dossier-phase2-metric-grid em {
+  display: block;
+  margin-top: 0.35rem;
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  font-style: normal;
+  line-height: 1.38;
+}
+
+.dossier-phase2-checklist {
+  display: grid;
+  grid-template-columns: minmax(12rem, 0.8fr) minmax(0, 1.2fr);
+  gap: 0.85rem;
+  align-items: start;
+  margin-bottom: 1rem;
+  background: rgba(246, 252, 248, 0.78);
+  border-color: rgba(63, 143, 103, 0.14);
+}
+
+.dossier-phase2-checklist ul {
+  display: grid;
+  gap: 0.4rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.dossier-phase2-checklist li {
+  position: relative;
+  padding-left: 1rem;
+  color: var(--text-main);
+  line-height: 1.4;
+}
+
+.dossier-phase2-checklist li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.62em;
+  width: 0.38rem;
+  height: 0.38rem;
+  border-radius: 999px;
+  background: rgba(63, 143, 103, 0.82);
+}
+
+.dossier-risk-map-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.dossier-risk-map-grid article {
+  background: rgba(255, 250, 242, 0.74);
+}
+
+.dossier-risk-map-grid article > div {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.65rem;
+}
+
+.dossier-risk-map-grid strong {
+  flex: 0 0 auto;
+  padding: 0.22rem 0.42rem;
+  border-radius: 999px;
+  color: #6b4a2e;
+  font-size: 0.72rem;
+  background: rgba(232, 214, 190, 0.78);
+}
+
 .dossier-valuation-metrics {
   grid-template-columns: repeat(3, minmax(0, 1fr));
   margin-bottom: 1rem;
@@ -7416,6 +7569,11 @@ body,
   .dossier-valuation-judgment,
   .dossier-event-study-detail,
   .dossier-market-visual-grid,
+  .dossier-phase2-metric-grid,
+  .dossier-phase2-metric-grid--six,
+  .dossier-phase2-card-grid,
+  .dossier-risk-map-grid,
+  .dossier-phase2-checklist,
   .dossier-reaction-quality-grid,
   .dossier-event-study-metrics,
   .dossier-scenario-grid,
