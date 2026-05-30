@@ -8,6 +8,7 @@ import {
   resolveValueCore
 } from './dossierHelpers';
 import { getStockDossierProfile } from '../data/stockDossierProfiles';
+import StockLogo from './StockLogo';
 
 const API_BASE = 'https://kw-terminal-api.myfootballplaces.workers.dev';
 
@@ -756,8 +757,10 @@ const StockDossierView = ({ eventDetail, payload, onOpenEventStudy }) => {
   const ticker = tickerForSummary || enrichedEventDetail.ticker;
   const companyName = enrichedEventDetail.company_name || '';
   const exchange = enrichedEventDetail.exchange || enrichedEventDetail.market || '';
+  const companyLogoUrl = enrichedEventDetail.company_logo_url || enrichedEventDetail.logo_url || dossierProfile?.logoUrl || '';
   const companyDisplayName = companyName || ticker;
   const tickerLine = exchange ? `${exchange}:${ticker} Stock Dossier` : `${ticker} Stock Dossier`;
+  const compactTickerLine = exchange ? `${exchange}:${ticker}` : ticker;
   const industryTheme = stockOverview.theme || momentum.industry_theme_label || momentum.industry_theme || enrichedEventDetail.trend_setup?.supply_chain_stage || '';
   const researchState = isMomentumUniverse ? 'Momentum Candidate'
                       : (enrichedEventDetail.status === 'off_cycle_watch' || enrichedEventDetail.event_phase === 'off_cycle') ? 'Between Catalysts'
@@ -1032,20 +1035,67 @@ const StockDossierView = ({ eventDetail, payload, onOpenEventStudy }) => {
       value: metric.value,
       note: 'Financial Health tab pending'
     }));
+    const overviewHighlightCards = [
+      {
+        label: 'Business Core',
+        value: valueCore.primaryValueDriver,
+        state: `${valueCore.valueCoreType} / ${valueCore.companyStage}`,
+        note: 'Business engine to verify first.',
+        tone: 'positive'
+      },
+      {
+        label: 'Market Evidence',
+        value: `Trend: ${momentumStrengthRead}`,
+        state: measuredGapCount !== null ? `Event sample N=${measuredGapCount}` : 'Event sample pending',
+        note: 'Momentum and event evidence are supportive context, not proof of valuation.',
+        tone: momentumScore !== null && momentumScore >= 70 ? 'positive' : 'neutral'
+      },
+      {
+        label: 'Valuation',
+        value: valuationCore.topVerdict.valuationState,
+        state: `Margin of safety: ${valuationCore.topVerdict.marginOfSafety}`,
+        note: 'Price expectations remain the key pressure point.',
+        tone: 'warning'
+      },
+      {
+        label: 'Thesis Risk',
+        value: valueCore.thesisBreakTrigger,
+        state: 'Break trigger monitor',
+        note: 'Track whether business durability evidence weakens.',
+        tone: 'warning'
+      },
+      {
+        label: 'Financial Health',
+        value: `${valuationMetricValue(valuationCore, 'revenue_growth')} revenue growth / ${valuationMetricValue(valuationCore, 'fcf_margin')} FCF margin`,
+        state: `Cash + securities ${valuationMetricValue(valuationCore, 'cash_securities')}`,
+        note: `SBC / Revenue ${valuationMetricValue(valuationCore, 'sbc_revenue')}`,
+        tone: 'neutral'
+      }
+    ];
+    const primaryRead = dossierProfile?.dossierVerdict?.finalRead || valuationCore.topVerdict.overallRead;
+    const evidenceFocus = valueCore.evidenceNeeded.slice(0, 3).join(' / ') || 'Evidence checklist pending';
 
     return (
       <div className="stock-dossier-view stock-dossier-view--internal-tabs">
         <section className="card dossier-tab-shell" aria-label={`${ticker} Stock Dossier internal tabs`}>
           <div className="dossier-tab-shell__header">
-            <div>
-              <p className="crowdrisk-kicker">Stock Dossier</p>
-              <h2>{companyDisplayName}</h2>
-              <span>{tickerLine}</span>
+            <div className="dossier-tab-shell__identity">
+              <StockLogo
+                ticker={ticker}
+                companyName={companyDisplayName}
+                logoUrl={companyLogoUrl}
+                size="side"
+                className="dossier-tab-shell__logo"
+              />
+              <div>
+                <p className="crowdrisk-kicker">Stock Dossier</p>
+                <h2>{companyDisplayName}</h2>
+                <span>{compactTickerLine}</span>
+              </div>
             </div>
             <div className="dossier-hero-pills">
-              <span>{researchState}</span>
-              {industryTheme && <span>{formatLabel(industryTheme)}</span>}
-              <span>{valueCore.frontendLabel}</span>
+              {dossierProfile?.analysisDate && <span>As of {dossierProfile.analysisDate}</span>}
+              <span>{valueCore.coverageStatus || 'Curated'}</span>
             </div>
           </div>
 
@@ -1066,26 +1116,41 @@ const StockDossierView = ({ eventDetail, payload, onOpenEventStudy }) => {
 
           <div className="dossier-internal-tab-panel">
             {activeInternalTab === 'overview' && (
-              <section className="dossier-visual-cockpit" aria-label={`${ticker} overview visual cockpit`}>
+              <section className="dossier-visual-cockpit" aria-label={`${ticker} dossier snapshot`}>
                 <div className="dossier-visual-cockpit__header">
                   <div>
-                    <p className="crowdrisk-kicker">Overview</p>
-                    <h3>Visual research cockpit</h3>
+                    <h3>Dossier snapshot</h3>
                   </div>
-                  <span>{valueCore.frontendLabel}</span>
                 </div>
 
                 <div className="dossier-visual-cockpit__grid">
                   <article className="dossier-cockpit-card">
-                    <span>Company identity / stage</span>
-                    <strong>{companyDisplayName}</strong>
-                    <p>{valueCore.companyStage}. {industryTheme ? formatLabel(industryTheme) : 'Business classification pending'}.</p>
+                    <span>Primary read</span>
+                    <strong>{primaryRead}</strong>
+                    <p>Context: {researchState}. Check whether evidence still supports this read.</p>
                   </article>
 
                   <article className="dossier-cockpit-card">
-                    <span>Business Core</span>
+                    <span>Evidence focus</span>
                     <strong>{valueCore.valueCoreType}</strong>
-                    <p>{valueCore.primaryValueDriver}</p>
+                    <p>{evidenceFocus}.</p>
+                  </article>
+
+                  <article className="dossier-cockpit-card dossier-cockpit-card--wide">
+                    <div className="dossier-cockpit-card__heading">
+                      <span>Executive Highlights</span>
+                      <em>Cross-section read</em>
+                    </div>
+                    <div className="dossier-overview-highlight-grid">
+                      {overviewHighlightCards.map((card) => (
+                        <div key={card.label} className={`tone-${card.tone}`}>
+                          <span>{card.label}</span>
+                          <strong>{card.value}</strong>
+                          <em>{card.state}</em>
+                          <p>{card.note}</p>
+                        </div>
+                      ))}
+                    </div>
                   </article>
 
                   <article className="dossier-cockpit-card dossier-cockpit-card--wide">
@@ -1321,11 +1386,11 @@ const StockDossierView = ({ eventDetail, payload, onOpenEventStudy }) => {
       </section>
 
       {visualPhaseOne && (
-        <section id="overview" className="card dossier-visual-cockpit" aria-label={`${ticker} overview visual cockpit`}>
+        <section id="overview" className="card dossier-visual-cockpit" aria-label={`${ticker} dossier snapshot`}>
           <div className="dossier-visual-cockpit__header">
             <div>
               <p className="crowdrisk-kicker">Overview</p>
-              <h3>Visual research cockpit</h3>
+              <h3>Dossier snapshot</h3>
             </div>
             <span>{valueCore.frontendLabel}</span>
           </div>

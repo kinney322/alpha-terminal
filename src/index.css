@@ -5667,6 +5667,19 @@ html, body, #root, .app-container, .main-content {
   border-bottom: 1px solid rgba(168, 86, 29, 0.14);
 }
 
+.dossier-tab-shell__identity {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  gap: 0.85rem;
+}
+
+.dossier-tab-shell__logo {
+  width: 3.75rem;
+  height: 3.75rem;
+  flex: 0 0 3.75rem;
+}
+
 .dossier-tab-shell__header h2 {
   margin: 0;
   color: var(--text-main);
@@ -5674,12 +5687,18 @@ html, body, #root, .app-container, .main-content {
   line-height: 1;
 }
 
-.dossier-tab-shell__header span {
+.dossier-tab-shell__identity > div > span {
   display: block;
   margin-top: 0.35rem;
   color: var(--text-muted);
   font-size: 1rem;
   font-weight: 800;
+}
+
+.dossier-tab-shell .dossier-hero-pills {
+  flex: 0 1 auto;
+  justify-content: flex-end;
+  margin-top: 0;
 }
 
 .dossier-internal-tabs {
@@ -5896,6 +5915,66 @@ html, body, #root, .app-container, .main-content {
   color: var(--text-muted);
   font-size: 0.88rem;
   line-height: 1.45;
+}
+
+.dossier-overview-highlight-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 0.6rem;
+  margin-top: 0.65rem;
+}
+
+.dossier-overview-highlight-grid > div {
+  min-width: 0;
+  padding: 0.78rem;
+  border: 1px solid rgba(44, 62, 80, 0.08);
+  border-radius: 8px;
+  background: rgba(248, 246, 242, 0.72);
+}
+
+.dossier-overview-highlight-grid span {
+  display: block;
+  margin-bottom: 0.34rem;
+  color: var(--text-muted);
+  font-size: 0.66rem;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.dossier-overview-highlight-grid strong {
+  display: block;
+  color: var(--text-main);
+  font-size: 0.94rem;
+  line-height: 1.24;
+  overflow-wrap: anywhere;
+}
+
+.dossier-overview-highlight-grid em {
+  display: block;
+  margin-top: 0.38rem;
+  color: #6b4a2e;
+  font-size: 0.74rem;
+  font-style: normal;
+  font-weight: 900;
+  line-height: 1.25;
+}
+
+.dossier-overview-highlight-grid p {
+  margin: 0.34rem 0 0;
+  color: var(--text-muted);
+  font-size: 0.78rem;
+  line-height: 1.38;
+}
+
+.dossier-overview-highlight-grid .tone-positive {
+  border-color: rgba(63, 143, 103, 0.16);
+  background: rgba(246, 252, 248, 0.78);
+}
+
+.dossier-overview-highlight-grid .tone-warning {
+  border-color: rgba(168, 86, 29, 0.18);
+  background: rgba(255, 250, 242, 0.82);
 }
 
 .dossier-cockpit-card__heading em {
@@ -7321,6 +7400,7 @@ body,
   .dossier-tab-shell__header,
   .dossier-business-core-grid,
   .dossier-tab-placeholder__grid,
+  .dossier-overview-highlight-grid,
   .dossier-quick-facts,
   .dossier-overview-lens-grid,
   .dossier-verdict-grid,
@@ -7534,6 +7614,19 @@ body,
 
   .dossier-tab-shell {
     padding: 0.85rem;
+  }
+
+  .dossier-tab-shell__header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .dossier-tab-shell__identity {
+    align-items: flex-start;
+  }
+
+  .dossier-tab-shell .dossier-hero-pills {
+    justify-content: flex-start;
   }
 
   .dossier-internal-tabs {

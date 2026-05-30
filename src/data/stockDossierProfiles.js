@@ -136,6 +136,10 @@ const stockDossierProfiles = {
       faq: {
         overview: [
           {
+            question: 'What should I check first in this dossier?',
+            answer: 'Start with Business Core to understand what creates value, then check Market Evidence for current support. After that, review Valuation, Thesis Risk, and Financial Health to see what still needs proof.'
+          },
+          {
             question: 'What does DDOG do?',
             answer: 'Datadog provides observability and security software for cloud infrastructure, applications, logs, and user experience. The dossier treats it as a subscription SaaS platform with land-and-expand economics.'
           },
