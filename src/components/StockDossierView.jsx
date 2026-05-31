@@ -1070,7 +1070,7 @@ const StockDossierView = ({ eventDetail, payload, onOpenEventStudy }) => {
         label: 'Valuation',
         value: valuationCore.topVerdict.valuationState,
         state: `Margin of safety: ${valuationCore.topVerdict.marginOfSafety}`,
-        note: 'Price expectations remain the key pressure point.',
+        note: 'Valuation pressure remains high.',
         tone: 'warning'
       },
       {
@@ -1135,7 +1135,7 @@ const StockDossierView = ({ eventDetail, payload, onOpenEventStudy }) => {
               <section className="dossier-visual-cockpit" aria-label={`${ticker} dossier snapshot`}>
                 <div className="dossier-visual-cockpit__header">
                   <div>
-                    <h3>Dossier snapshot</h3>
+                    <h3>Snapshot</h3>
                   </div>
                 </div>
 
@@ -1155,7 +1155,7 @@ const StockDossierView = ({ eventDetail, payload, onOpenEventStudy }) => {
                   <article className="dossier-cockpit-card dossier-cockpit-card--wide">
                     <div className="dossier-cockpit-card__heading">
                       <span>Executive Highlights</span>
-                      <em>Cross-section read</em>
+                      <em>Highlights</em>
                     </div>
                     <div className="dossier-overview-highlight-grid">
                       {overviewHighlightCards.map((card) => (
@@ -1493,7 +1493,7 @@ const StockDossierView = ({ eventDetail, payload, onOpenEventStudy }) => {
           <div className="dossier-visual-cockpit__header">
             <div>
               <p className="crowdrisk-kicker">Overview</p>
-              <h3>Dossier snapshot</h3>
+              <h3>Snapshot</h3>
             </div>
             <span>{valueCore.frontendLabel}</span>
           </div>
@@ -2135,7 +2135,7 @@ const StockDossierView = ({ eventDetail, payload, onOpenEventStudy }) => {
           <p className="crowdrisk-kicker">Scenario Range</p>
           <h3>Bull / base / bear path: what must be true?</h3>
           <p className="dossier-scenario-model-note">
-            References the Valuation Core forward model; price range and median return are model-derived, not formal price targets.
+            References the Valuation Core forward model; valuation range and median return are model-derived, not formal targets.
           </p>
           <div className="dossier-scenario-grid">
             {valuationCore.scenarios.map((scenario) => (

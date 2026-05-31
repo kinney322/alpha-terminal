@@ -341,7 +341,7 @@ const stockDossierProfiles = {
           label: 'Bull Case',
           text: 'Revenue compounds 25%-30%, net retention stays in the low-120%s or better, AI/security products expand wallet share, FCF margin moves above 30%, and SBC as a percentage of revenue declines.',
           impliedOutcome: 'Premium valuation can remain defensible if DDOG proves AI/security workload expansion is additive and margins stay above 30%.',
-          upsideDownside: 'References the Valuation Core forward model; price range and median return are model-derived, not formal price targets.',
+          upsideDownside: 'References the Valuation Core forward model; valuation range and median return are model-derived, not formal targets.',
           threeYearIrr: 'Scenario-level IRR is not separately modeled here; see Valuation Core 3Y IRR to median.',
           trigger: 'RPO, $100k+ ARR customers, net retention, FCF margin, and SBC discipline all improve together.'
         },
@@ -349,7 +349,7 @@ const stockDossierProfiles = {
           label: 'Base Case',
           text: 'Revenue decelerates from 32% toward the low/mid-20%s, FCF margin stays high-20%s, SBC improves gradually, and upside is mostly limited by multiple risk.',
           impliedOutcome: 'Business quality stays high, but expected return is capped because valuation already capitalizes much of the story.',
-          upsideDownside: 'References the Valuation Core forward model; price range and median return are model-derived, not formal price targets.',
+          upsideDownside: 'References the Valuation Core forward model; valuation range and median return are model-derived, not formal targets.',
           threeYearIrr: 'Scenario-level IRR is not separately modeled here; see Valuation Core 3Y IRR to median.',
           trigger: 'Growth moderates, FCF holds high-20%s, and the market keeps DDOG on a premium but less forgiving multiple.'
         },
@@ -357,7 +357,7 @@ const stockDossierProfiles = {
           label: 'Bear Case',
           text: 'Growth falls below 20%, cloud optimization or native tools pressure pricing, product expansion slows, or SBC stays elevated. Downside would be valuation-led.',
           impliedOutcome: 'Multiple compression becomes the main downside path if execution no longer supports priced-for-perfection assumptions.',
-          upsideDownside: 'References the Valuation Core forward model; price range and median return are model-derived, not formal price targets.',
+          upsideDownside: 'References the Valuation Core forward model; valuation range and median return are model-derived, not formal targets.',
           threeYearIrr: 'Scenario-level IRR is not separately modeled here; see Valuation Core 3Y IRR to median.',
           trigger: 'Revenue growth drops below 20%-25%, retention weakens, margins slip, or dilution stays elevated.'
         }
