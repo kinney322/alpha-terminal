@@ -608,16 +608,15 @@ const buildLiveStockPerformanceGrid = (ticker, fallbackGrid, stockPerformancePay
   }
 
   const asOfDate = row.as_of_date || stockPerformancePayload?.meta?.as_of_date || null;
-  const sourceDate = asOfDate ? ` as of ${asOfDate}` : '';
-  const status = row.status ? formatLabel(row.status) : 'Available';
-  const note = `${status}${sourceDate}`;
+  const asOfLabel = asOfDate ? `as of ${asOfDate}` : 'Return feed available';
 
   return {
-    source: `Live D1 OHLCV feed${sourceDate}`,
+    source: asOfLabel,
+    feedSource: 'dedicated',
     periods: STOCK_PERFORMANCE_PERIODS.map((period) => ({
       label: period.label,
       value: toNumeric(row[period.key]),
-      note
+      note: asOfLabel
     }))
   };
 };
@@ -996,7 +995,7 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, onOpe
   ];
   const performanceGrid = buildLiveStockPerformanceGrid(tickerForSummary, visualPhaseOne?.performanceGrid, stockPerformancePayload);
   const performanceRows = performanceGrid?.periods || [];
-  const stockPerformanceFeedSource = String(performanceGrid?.source || '').startsWith('Live D1 OHLCV feed')
+  const stockPerformanceFeedSource = performanceGrid?.feedSource === 'dedicated'
     ? 'dedicated'
     : 'fallback';
   const signalScreens = visualPhaseOne?.signalScreens || [];
