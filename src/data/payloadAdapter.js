@@ -4,6 +4,7 @@ const API_BASE = 'https://kw-terminal-api.myfootballplaces.workers.dev';
 const V1_2_URL = `${API_BASE}/event-opportunity/radar-v1.2-latest`;
 const V1_1_URL = `${API_BASE}/event-opportunity/radar-v1.1-latest`;
 const PREOPEN_CATALYST_URL = `${API_BASE}/event-opportunity/preopen-catalyst-radar-latest`;
+const STOCK_PERFORMANCE_URL = `${API_BASE}/event-opportunity/stock-performance-latest`;
 const LOCAL_ENRICHED_PAYLOAD_URL = 'http://127.0.0.1:5055/radar-v1.2-enriched.module.preview.json';
 
 function shouldUseLocalEnrichedPayload() {
@@ -30,6 +31,13 @@ function isValidV11Payload(payload) {
   if (payload.meta && payload.meta.version && payload.meta.version !== "1.1") return false;
   if (!payload.events_detail || typeof payload.events_detail !== 'object') return false;
   if (!payload.radar_lists || typeof payload.radar_lists !== 'object') return false;
+  return true;
+}
+
+function isValidStockPerformancePayload(payload) {
+  if (!payload || typeof payload !== 'object' || Array.isArray(payload)) return false;
+  if (!payload.meta || typeof payload.meta !== 'object') return false;
+  if (!payload.returns || typeof payload.returns !== 'object' || Array.isArray(payload.returns)) return false;
   return true;
 }
 
@@ -101,6 +109,20 @@ export async function fetchPreopenCatalystRadarPayload() {
   const data = await res.json();
   if (!isValidV12Payload(data)) {
     throw new Error('Preopen catalyst payload is not a valid v1.2 schema');
+  }
+
+  return data;
+}
+
+export async function fetchStockPerformancePayload() {
+  const res = await fetch(STOCK_PERFORMANCE_URL, { headers: { Accept: 'application/json' } });
+  if (!res.ok) {
+    throw new Error(`Stock performance payload unavailable (${res.status})`);
+  }
+
+  const data = await res.json();
+  if (!isValidStockPerformancePayload(data)) {
+    throw new Error('Stock performance payload is not a valid schema');
   }
 
   return data;

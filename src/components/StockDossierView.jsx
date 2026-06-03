@@ -591,6 +591,37 @@ const performanceTone = (value) => {
   return 'neutral';
 };
 
+const STOCK_PERFORMANCE_PERIODS = [
+  { label: 'Today', key: 'today' },
+  { label: '1 Week', key: 'one_week' },
+  { label: '1 Month', key: 'one_month' },
+  { label: '3 Months', key: 'three_month' },
+  { label: '6 Months', key: 'six_month' },
+  { label: '1 Year', key: 'one_year' }
+];
+
+const buildLiveStockPerformanceGrid = (ticker, fallbackGrid, stockPerformancePayload) => {
+  const normalizedTicker = String(ticker || '').trim().toUpperCase();
+  const row = normalizedTicker ? stockPerformancePayload?.returns?.[normalizedTicker] : null;
+  if (!row || typeof row !== 'object' || Array.isArray(row)) {
+    return fallbackGrid || null;
+  }
+
+  const asOfDate = row.as_of_date || stockPerformancePayload?.meta?.as_of_date || null;
+  const sourceDate = asOfDate ? ` as of ${asOfDate}` : '';
+  const status = row.status ? formatLabel(row.status) : 'Available';
+  const note = `${status}${sourceDate}`;
+
+  return {
+    source: `Live D1 OHLCV feed${sourceDate}`,
+    periods: STOCK_PERFORMANCE_PERIODS.map((period) => ({
+      label: period.label,
+      value: toNumeric(row[period.key]),
+      note
+    }))
+  };
+};
+
 const normalizeNotVerified = (value) => {
   if (!value || value === 'Not Included' || value === 'Pending') return 'Not verified';
   return value;
@@ -658,7 +689,7 @@ const buildEventStudyDetail = (eventDetail, dossierProfile = null) => {
   };
 };
 
-const StockDossierView = ({ eventDetail, payload, onOpenEventStudy }) => {
+const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, onOpenEventStudy }) => {
   const tickerForSummary = String(eventDetail?.ticker || '').trim().toUpperCase();
   const [eventStudySummary, setEventStudySummary] = React.useState(null);
   const [eventStudyLoading, setEventStudyLoading] = React.useState(false);
@@ -963,7 +994,11 @@ const StockDossierView = ({ eventDetail, payload, onOpenEventStudy }) => {
     { label: 'Evidence Quality', value: valueCore.evidenceQuality },
     { label: 'Coverage', value: valueCore.frontendLabel }
   ];
-  const performanceRows = visualPhaseOne?.performanceGrid?.periods || [];
+  const performanceGrid = buildLiveStockPerformanceGrid(tickerForSummary, visualPhaseOne?.performanceGrid, stockPerformancePayload);
+  const performanceRows = performanceGrid?.periods || [];
+  const stockPerformanceFeedSource = String(performanceGrid?.source || '').startsWith('Live D1 OHLCV feed')
+    ? 'dedicated'
+    : 'fallback';
   const signalScreens = visualPhaseOne?.signalScreens || [];
   const overviewFaq = visualPhaseOne?.faq?.overview || [];
   const businessCoreFaq = visualPhaseOne?.faq?.businessCore || [];
@@ -1169,10 +1204,10 @@ const StockDossierView = ({ eventDetail, payload, onOpenEventStudy }) => {
                     </div>
                   </article>
 
-                  <article className="dossier-cockpit-card dossier-cockpit-card--wide">
+                  <article className="dossier-cockpit-card dossier-cockpit-card--wide" data-stock-performance-feed-source={stockPerformanceFeedSource}>
                     <div className="dossier-cockpit-card__heading">
                       <span>Stock Performance</span>
-                      <em>{visualPhaseOne.performanceGrid?.source || 'Verified return series pending'}</em>
+                      <em>{performanceGrid?.source || 'Verified return series pending'}</em>
                     </div>
                     <div className="dossier-stock-performance-grid">
                       {performanceRows.map((period) => (
@@ -1488,6 +1523,28 @@ const StockDossierView = ({ eventDetail, payload, onOpenEventStudy }) => {
         </div>
       </section>
 
+      {!visualPhaseOne && performanceGrid && (
+        <section className="card dossier-visual-cockpit" aria-label={`${ticker} stock performance`}>
+          <div className="dossier-visual-cockpit__header">
+            <div>
+              <p className="crowdrisk-kicker">Market Evidence</p>
+              <h3>Stock Performance</h3>
+            </div>
+            <span>{performanceGrid.source || 'Verified return series pending'}</span>
+          </div>
+
+          <div className="dossier-stock-performance-grid" data-stock-performance-feed-source={stockPerformanceFeedSource}>
+            {performanceRows.map((period) => (
+              <div key={period.label} className={`dossier-performance-cell tone-${performanceTone(period.value)}`}>
+                <span>{period.label}</span>
+                <strong>{formatPerformanceReturn(period.value)}</strong>
+                <em>{period.note || 'Return feed pending'}</em>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
+
       {visualPhaseOne && (
         <section id="overview" className="card dossier-visual-cockpit" aria-label={`${ticker} dossier snapshot`}>
           <div className="dossier-visual-cockpit__header">
@@ -1511,10 +1568,10 @@ const StockDossierView = ({ eventDetail, payload, onOpenEventStudy }) => {
               <p>{valueCore.primaryValueDriver}</p>
             </article>
 
-            <article className="dossier-cockpit-card dossier-cockpit-card--wide">
+            <article className="dossier-cockpit-card dossier-cockpit-card--wide" data-stock-performance-feed-source={stockPerformanceFeedSource}>
               <div className="dossier-cockpit-card__heading">
                 <span>Stock Performance</span>
-                <em>{visualPhaseOne.performanceGrid?.source || 'Verified return series pending'}</em>
+                <em>{performanceGrid?.source || 'Verified return series pending'}</em>
               </div>
               <div className="dossier-stock-performance-grid">
                 {performanceRows.map((period) => (

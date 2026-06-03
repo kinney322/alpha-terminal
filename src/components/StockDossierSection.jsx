@@ -25,7 +25,7 @@ const scrollDossierToTop = () => {
   window.scrollTo(0, 0);
 };
 
-export default function StockDossierSection({ payload, loading, error, dossierSeed, onClearSeed, onOpenEventStudy }) {
+export default function StockDossierSection({ payload, stockPerformancePayload, loading, error, dossierSeed, onClearSeed, onOpenEventStudy }) {
   const [selectedTicker, setSelectedTicker] = useState(null);
   const [selectedEventDetail, setSelectedEventDetail] = useState(null);
   const [activeSection, setActiveSection] = useState(DOSSIER_SECTIONS[0].id);
@@ -202,6 +202,7 @@ export default function StockDossierSection({ payload, loading, error, dossierSe
             <StockDossierView
               eventDetail={resolvedDetail}
               payload={payload}
+              stockPerformancePayload={stockPerformancePayload}
               onOpenEventStudy={onOpenEventStudy}
             />
           ) : (
