@@ -5922,6 +5922,48 @@ html, body, #root, .app-container, .main-content {
   line-height: 1.45;
 }
 
+.dossier-overview-key-stat-grid {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 0.55rem;
+  margin-top: 0.65rem;
+}
+
+.dossier-overview-key-stat-grid > div {
+  min-width: 0;
+  padding: 0.72rem;
+  border: 1px solid rgba(44, 62, 80, 0.08);
+  border-radius: 8px;
+  background: rgba(248, 246, 242, 0.72);
+}
+
+.dossier-overview-key-stat-grid span {
+  display: block;
+  margin-bottom: 0.3rem;
+  color: var(--text-muted);
+  font-size: 0.64rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.dossier-overview-key-stat-grid strong {
+  display: block;
+  color: var(--text-main);
+  font-size: 0.95rem;
+  line-height: 1.22;
+  overflow-wrap: anywhere;
+}
+
+.dossier-overview-key-stat-grid em {
+  display: block;
+  margin-top: 0.26rem;
+  color: var(--text-muted);
+  font-size: 0.7rem;
+  font-style: normal;
+  line-height: 1.28;
+}
+
 .dossier-overview-highlight-grid {
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
@@ -5982,12 +6024,86 @@ html, body, #root, .app-container, .main-content {
   background: rgba(255, 250, 242, 0.82);
 }
 
+.dossier-cockpit-card--evidence-board {
+  display: flex;
+  flex-direction: column;
+}
+
 .dossier-cockpit-card__heading em {
   flex: 0 1 auto;
   color: var(--text-muted);
   font-size: 0.74rem;
   font-style: normal;
   text-align: right;
+}
+
+.dossier-overview-evidence-metrics {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.55rem;
+  margin-top: 0.75rem;
+}
+
+.dossier-overview-evidence-metrics > div {
+  min-width: 0;
+  padding: 0.68rem;
+  border: 1px solid rgba(44, 62, 80, 0.08);
+  border-radius: 8px;
+  background: rgba(248, 246, 242, 0.72);
+}
+
+.dossier-overview-evidence-metrics span {
+  display: block;
+  margin-bottom: 0.24rem;
+  color: var(--text-muted);
+  font-size: 0.64rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.dossier-overview-evidence-metrics strong {
+  display: block;
+  color: var(--text-main);
+  font-size: 0.9rem;
+  line-height: 1.22;
+  overflow-wrap: anywhere;
+}
+
+.dossier-overview-evidence-metrics em {
+  display: block;
+  margin-top: 0.28rem;
+  color: var(--text-muted);
+  font-size: 0.7rem;
+  font-style: normal;
+  line-height: 1.28;
+}
+
+.dossier-overview-evidence-metrics .tone-positive strong {
+  color: #16805f;
+}
+
+.dossier-overview-evidence-metrics .tone-warning strong {
+  color: #a8561d;
+}
+
+.dossier-overview-screen-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: auto;
+  padding-top: 0.85rem;
+}
+
+.dossier-overview-screen-chips span {
+  margin: 0;
+  padding: 0.32rem 0.48rem;
+  border-radius: 999px;
+  color: #4f3424;
+  font-size: 0.64rem;
+  font-weight: 900;
+  line-height: 1;
+  background: rgba(232, 214, 190, 0.72);
 }
 
 .dossier-stock-performance-grid {
@@ -7569,6 +7685,7 @@ body,
   .dossier-valuation-judgment,
   .dossier-event-study-detail,
   .dossier-market-visual-grid,
+  .dossier-overview-key-stat-grid,
   .dossier-phase2-metric-grid,
   .dossier-phase2-metric-grid--six,
   .dossier-phase2-card-grid,
@@ -7759,6 +7876,14 @@ body,
 
   .dossier-stock-performance-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .dossier-overview-key-stat-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .dossier-overview-evidence-metrics {
+    grid-template-columns: 1fr;
   }
 
   .dossier-signal-tag {

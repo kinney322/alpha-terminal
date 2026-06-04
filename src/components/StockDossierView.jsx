@@ -135,18 +135,54 @@ const resolveLatestTechnicalPrice = (eventDetail, payload, ticker) => {
   return null;
 };
 
-const buildLiveMarketSnapshot = (snapshot, eventDetail, payload, ticker) => {
-  const latestPrice = resolveLatestMarketPrice(eventDetail, payload, ticker);
+const formatLiveMarketCap = (value) => {
+  const numeric = toNumeric(value);
+  if (numeric === null || numeric <= 0) return null;
+  if (numeric >= 1_000_000_000_000) return `$${(numeric / 1_000_000_000_000).toFixed(1)}T`;
+  if (numeric >= 1_000_000_000) return `$${(numeric / 1_000_000_000).toFixed(1)}B`;
+  if (numeric >= 1_000_000) return `$${(numeric / 1_000_000).toFixed(1)}M`;
+  return `$${numeric.toLocaleString('en-US', { maximumFractionDigits: 0 })}`;
+};
+
+const findStockPerformanceRow = (stockPerformancePayload, ticker) => {
+  const normalizedTicker = String(ticker || '').trim().toUpperCase();
+  if (!normalizedTicker) return null;
+  const row = stockPerformancePayload?.returns?.[normalizedTicker];
+  return row && typeof row === 'object' && !Array.isArray(row) ? row : null;
+};
+
+const resolveLiveCapitalization = (stockPerformancePayload, ticker) => {
+  const row = findStockPerformanceRow(stockPerformancePayload, ticker);
+  const capitalization = row?.capitalization;
+  if (!capitalization || typeof capitalization !== 'object' || Array.isArray(capitalization)) return null;
+  if (capitalization.status !== 'available') return null;
+  const marketCap = formatLiveMarketCap(capitalization.market_cap);
+  if (!marketCap) return null;
+
+  return {
+    marketCap,
+    sharesOutstanding: capitalization.shares_outstanding,
+    sharesOutstandingAsOf: capitalization.shares_outstanding_as_of,
+    qualityStatus: capitalization.quality_status || 'available'
+  };
+};
+
+const buildLiveMarketSnapshot = (snapshot, eventDetail, payload, ticker, stockPerformancePayload) => {
+  const stockPerformanceRow = findStockPerformanceRow(stockPerformancePayload, ticker);
+  const latestPrice = formatMarketPrice(stockPerformanceRow?.price) || resolveLatestMarketPrice(eventDetail, payload, ticker);
+  const liveCapitalization = resolveLiveCapitalization(stockPerformancePayload, ticker);
   if (!snapshot && latestPrice) {
     return {
-      currentPrice: latestPrice
+      currentPrice: latestPrice,
+      ...(liveCapitalization?.marketCap ? { marketCap: liveCapitalization.marketCap } : {})
     };
   }
   if (!snapshot) return null;
-  if (!latestPrice) return snapshot;
+  if (!latestPrice && !liveCapitalization?.marketCap) return snapshot;
   return {
     ...snapshot,
-    currentPrice: latestPrice
+    ...(latestPrice ? { currentPrice: latestPrice } : {}),
+    ...(liveCapitalization?.marketCap ? { marketCap: liveCapitalization.marketCap } : {})
   };
 };
 
@@ -756,7 +792,8 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, onOpe
   const priceTrendRisk = buildPriceTrendRisk(enrichedEventDetail, payload);
   const valuationCore = buildValuationCore(enrichedEventDetail, dossierProfile);
   const stockOverview = buildStockOverview(enrichedEventDetail, payload, dossierProfile);
-  const marketSnapshot = buildLiveMarketSnapshot(dossierProfile?.marketSnapshot, enrichedEventDetail, payload, tickerForSummary);
+  const marketSnapshot = buildLiveMarketSnapshot(dossierProfile?.marketSnapshot, enrichedEventDetail, payload, tickerForSummary, stockPerformancePayload);
+  const liveCapitalization = resolveLiveCapitalization(stockPerformancePayload, tickerForSummary);
   const marketEvidence = dossierProfile?.marketEvidence || {
     title: 'Market evidence requires more context before it can support a research conclusion.',
     points: [
@@ -1085,6 +1122,42 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, onOpe
     const financialQualityCards = financialHealthTab.qualityCards || [
       { title: 'Quality of growth', state: 'Coverage pending', text: financialHealthTab.qualityRead || 'Growth quality needs cash-flow and dilution context.' }
     ];
+    const overviewKeyStatistics = [
+      {
+        label: 'Current Price',
+        value: marketSnapshotValue(marketSnapshot, 'currentPrice'),
+        note: 'Latest market snapshot'
+      },
+      {
+        label: 'Market Cap',
+        value: marketSnapshotValue(marketSnapshot, 'marketCap'),
+        note: liveCapitalization?.sharesOutstandingAsOf
+          ? `Shares as of ${liveCapitalization.sharesOutstandingAsOf}`
+          : 'Equity value'
+      },
+      {
+        label: 'EV / Revenue',
+        value: valuationMetricValue(valuationCore, 'ev_revenue'),
+        note: 'Valuation multiple'
+      },
+      {
+        label: 'Revenue Growth',
+        value: valuationMetricValue(valuationCore, 'revenue_growth'),
+        note: dossierProfile?.latestFiscalPeriod || 'Latest verified period'
+      },
+      {
+        label: 'FCF Margin',
+        value: valuationMetricValue(valuationCore, 'fcf_margin'),
+        note: 'Cash-flow quality'
+      },
+      {
+        label: 'Relative Strength',
+        value: formatPercentile(momentumRanking?.relative_strength_percentile),
+        note: metrics.relative_strength_vs_spy_63d !== undefined ? `${formatPct(metrics.relative_strength_vs_spy_63d)} vs SPY 63D` : 'Percentile'
+      }
+    ];
+    const overviewMarketEvidenceRows = marketEvidenceCards.slice(0, 4);
+    const overviewSignalChips = signalScreens.slice(0, 4);
     const overviewHighlightCards = [
       {
         label: 'Business Core',
@@ -1188,6 +1261,22 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, onOpe
 
                   <article className="dossier-cockpit-card dossier-cockpit-card--wide">
                     <div className="dossier-cockpit-card__heading">
+                      <span>Key Statistics</span>
+                      <em>Snapshot metrics</em>
+                    </div>
+                    <div className="dossier-overview-key-stat-grid">
+                      {overviewKeyStatistics.map((stat) => (
+                        <div key={stat.label}>
+                          <span>{stat.label}</span>
+                          <strong>{stat.value}</strong>
+                          <em>{stat.note}</em>
+                        </div>
+                      ))}
+                    </div>
+                  </article>
+
+                  <article className="dossier-cockpit-card dossier-cockpit-card--wide">
+                    <div className="dossier-cockpit-card__heading">
                       <span>Executive Highlights</span>
                       <em>Highlights</em>
                     </div>
@@ -1237,10 +1326,29 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, onOpe
                     </div>
                   </article>
 
-                  <article className="dossier-cockpit-card">
-                    <span>Market Evidence</span>
+                  <article className="dossier-cockpit-card dossier-cockpit-card--evidence-board">
+                    <div className="dossier-cockpit-card__heading">
+                      <span>Market Evidence</span>
+                      <em>Evidence overview</em>
+                    </div>
                     <strong>{momentumStrengthRead}</strong>
                     <p>{marketEvidence.title}</p>
+                    <div className="dossier-overview-evidence-metrics">
+                      {overviewMarketEvidenceRows.map((item) => (
+                        <div key={item.label} className={`tone-${item.tone}`}>
+                          <span>{item.label}</span>
+                          <strong>{item.value}</strong>
+                          <em>{item.note}</em>
+                        </div>
+                      ))}
+                    </div>
+                    {overviewSignalChips.length > 0 && (
+                      <div className="dossier-overview-screen-chips" aria-label={`${ticker} overview screen tags`}>
+                        {overviewSignalChips.map((signal) => (
+                          <span key={signal.title}>{signal.title}</span>
+                        ))}
+                      </div>
+                    )}
                   </article>
                 </div>
 
