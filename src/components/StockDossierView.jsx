@@ -8,6 +8,7 @@ import {
   resolveValueCore
 } from './dossierHelpers';
 import { getStockDossierProfile } from '../data/stockDossierProfiles';
+import { resolvePeerEcosystemSnapshot } from '../data/stockDossierPeerEcosystemSamples';
 import StockLogo from './StockLogo';
 
 const API_BASE = 'https://kw-terminal-api.myfootballplaces.workers.dev';
@@ -691,6 +692,84 @@ const DOSSIER_INTERNAL_TABS = [
   { id: 'financial-health', label: 'Financial Health' }
 ];
 
+const PeerPill = ({ peer, currentTicker }) => {
+  const isCurrent = String(peer.ticker || '').toUpperCase() === String(currentTicker || '').toUpperCase();
+  return (
+    <span className={`dossier-peer-pill dossier-peer-pill--${peer.status || 'active'}${isCurrent ? ' is-current' : ''}`}>
+      <strong>{peer.ticker}</strong>
+      <em>{peer.label}</em>
+      <small>{peer.layer}</small>
+    </span>
+  );
+};
+
+const PeerEcosystemPanel = ({ ecosystem, ticker }) => {
+  if (!ecosystem) return null;
+  const candidateCount = ecosystem.candidateAdditions?.length || 0;
+
+  return (
+    <article className="dossier-cockpit-card dossier-cockpit-card--wide dossier-peer-ecosystem-panel">
+      <div className="dossier-cockpit-card__heading">
+        <span>Peer Ecosystem</span>
+        <em>{ecosystem.ecosystemName}</em>
+      </div>
+      <div className="dossier-peer-ecosystem-layout">
+        <div className="dossier-peer-position-card">
+          <span>Position</span>
+          <strong>{ecosystem.position.layer}</strong>
+          <p>{ecosystem.position.role}</p>
+        </div>
+        <div className="dossier-peer-groups">
+          <div className="dossier-peer-group">
+            <div>
+              <span>Active coverage</span>
+              <em>CrowdRisk universe</em>
+            </div>
+            <div className="dossier-peer-pill-row">
+              <PeerPill
+                peer={{
+                  ticker,
+                  label: 'Current dossier',
+                  layer: ecosystem.position.layer,
+                  status: 'active'
+                }}
+                currentTicker={ticker}
+              />
+              {ecosystem.activeCoverage.map((peer) => (
+                <PeerPill key={`${peer.status}-${peer.ticker}`} peer={peer} currentTicker={ticker} />
+              ))}
+            </div>
+          </div>
+          <div className="dossier-peer-group">
+            <div>
+              <span>Reference peers</span>
+              <em>Context only</em>
+            </div>
+            <div className="dossier-peer-pill-row">
+              {ecosystem.referencePeers.map((peer) => (
+                <PeerPill key={`${peer.status}-${peer.ticker}`} peer={peer} currentTicker={ticker} />
+              ))}
+            </div>
+          </div>
+          {candidateCount > 0 && (
+            <div className="dossier-peer-group">
+              <div>
+                <span>Potential additions</span>
+                <em>Not active</em>
+              </div>
+              <div className="dossier-peer-pill-row">
+                {ecosystem.candidateAdditions.map((peer) => (
+                  <PeerPill key={`${peer.status}-${peer.ticker}`} peer={peer} currentTicker={ticker} />
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    </article>
+  );
+};
+
 const PendingDossierPanel = ({ title, subtitle, rows, note }) => (
   <section className="dossier-tab-placeholder" aria-label={title}>
     <div className="dossier-tab-placeholder__head">
@@ -1031,6 +1110,7 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, onOpe
     { label: 'Coverage', value: valueCore.frontendLabel }
   ];
   const performanceGrid = buildLiveStockPerformanceGrid(tickerForSummary, visualPhaseOne?.performanceGrid, stockPerformancePayload);
+  const peerEcosystem = resolvePeerEcosystemSnapshot(tickerForSummary);
   const performanceRows = performanceGrid?.periods || [];
   const stockPerformanceFeedSource = performanceGrid?.feedSource === 'dedicated'
     ? 'dedicated'
@@ -1274,6 +1354,8 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, onOpe
                       ))}
                     </div>
                   </article>
+
+                  <PeerEcosystemPanel ecosystem={peerEcosystem} ticker={tickerForSummary} />
 
                   <article className="dossier-cockpit-card dossier-cockpit-card--wide">
                     <div className="dossier-cockpit-card__heading">
@@ -1629,6 +1711,14 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, onOpe
           {renderedVerdict.thesisShift && <p>{renderedVerdict.thesisShift}</p>}
         </div>
       </section>
+
+      {!visualPhaseOne && peerEcosystem && (
+        <section className="card dossier-visual-cockpit" aria-label={`${ticker} peer ecosystem`}>
+          <div className="dossier-visual-cockpit__grid">
+            <PeerEcosystemPanel ecosystem={peerEcosystem} ticker={tickerForSummary} />
+          </div>
+        </section>
+      )}
 
       {!visualPhaseOne && performanceGrid && (
         <section className="card dossier-visual-cockpit" aria-label={`${ticker} stock performance`}>

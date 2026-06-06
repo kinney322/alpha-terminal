@@ -6024,6 +6024,147 @@ html, body, #root, .app-container, .main-content {
   background: rgba(255, 250, 242, 0.82);
 }
 
+.dossier-peer-ecosystem-panel {
+  border-color: rgba(63, 143, 103, 0.16);
+  background: rgba(250, 253, 250, 0.82);
+}
+
+.dossier-peer-ecosystem-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 0.76fr) minmax(0, 1.6fr);
+  gap: 0.75rem;
+  margin-top: 0.65rem;
+}
+
+.dossier-peer-position-card {
+  min-width: 0;
+  padding: 0.78rem;
+  border: 1px solid rgba(63, 143, 103, 0.16);
+  border-radius: 8px;
+  background: rgba(246, 252, 248, 0.86);
+}
+
+.dossier-peer-position-card span,
+.dossier-peer-group > div:first-child span {
+  display: block;
+  margin-bottom: 0.28rem;
+  color: var(--text-muted);
+  font-size: 0.64rem;
+  font-weight: 900;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+
+.dossier-peer-position-card strong {
+  display: block;
+  color: var(--text-main);
+  font-size: 0.96rem;
+  line-height: 1.24;
+}
+
+.dossier-peer-position-card p {
+  margin: 0.42rem 0 0;
+  color: var(--text-muted);
+  font-size: 0.78rem;
+  line-height: 1.38;
+}
+
+.dossier-peer-groups {
+  display: grid;
+  gap: 0.62rem;
+  min-width: 0;
+}
+
+.dossier-peer-group {
+  min-width: 0;
+  padding: 0.68rem;
+  border: 1px solid rgba(44, 62, 80, 0.08);
+  border-radius: 8px;
+  background: rgba(248, 246, 242, 0.72);
+}
+
+.dossier-peer-group > div:first-child {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.7rem;
+  margin-bottom: 0.52rem;
+}
+
+.dossier-peer-group > div:first-child em {
+  color: var(--text-muted);
+  font-size: 0.68rem;
+  font-style: normal;
+  font-weight: 800;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.dossier-peer-pill-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.42rem;
+}
+
+.dossier-peer-pill {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  column-gap: 0.38rem;
+  row-gap: 0.08rem;
+  align-items: baseline;
+  max-width: 14rem;
+  min-width: 0;
+  padding: 0.42rem 0.52rem;
+  border: 1px solid rgba(44, 62, 80, 0.1);
+  border-radius: 8px;
+  background: rgba(255, 252, 247, 0.86);
+}
+
+.dossier-peer-pill strong {
+  color: var(--text-main);
+  font-size: 0.75rem;
+  line-height: 1.1;
+}
+
+.dossier-peer-pill em {
+  min-width: 0;
+  color: var(--text-main);
+  font-size: 0.72rem;
+  font-style: normal;
+  font-weight: 800;
+  line-height: 1.16;
+  overflow-wrap: anywhere;
+}
+
+.dossier-peer-pill small {
+  grid-column: 1 / -1;
+  color: var(--text-muted);
+  font-size: 0.66rem;
+  line-height: 1.22;
+}
+
+.dossier-peer-pill--active {
+  border-color: rgba(63, 143, 103, 0.18);
+  background: rgba(246, 252, 248, 0.9);
+}
+
+.dossier-peer-pill--reference {
+  border-style: dashed;
+  color: var(--text-muted);
+  background: rgba(255, 252, 247, 0.64);
+}
+
+.dossier-peer-pill--candidate {
+  border-color: rgba(168, 86, 29, 0.24);
+  border-style: dashed;
+  background: rgba(255, 248, 238, 0.82);
+}
+
+.dossier-peer-pill.is-current {
+  border-color: rgba(63, 143, 103, 0.34);
+  box-shadow: inset 3px 0 0 rgba(63, 143, 103, 0.52);
+}
+
 .dossier-cockpit-card--evidence-board {
   display: flex;
   flex-direction: column;
@@ -7785,6 +7926,15 @@ body,
 
   .crowdrisk-row-ranges {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .dossier-peer-ecosystem-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .dossier-peer-pill {
+    max-width: none;
+    width: min(100%, 16rem);
   }
 }
 
