@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import PublicLeaderboardPreview from './PublicLeaderboardPreview.jsx';
 import { getStockDossierProfile } from '../data/stockDossierProfiles.js';
+import { resolveReferencePeerEcosystemSnapshot } from '../data/referencePeerMapAdapter.js';
 
 const HOME_COPY = {
   en: {
@@ -32,6 +33,7 @@ const HOME_COPY = {
     watchQueue: 'Decision Queue',
     technicalZone: 'Technical setup zone',
     supportResistance: 'Support / resistance',
+    peerContext: 'Ecosystem / peers',
     unavailableReason: 'Current payload does not expose a formal valuation-implied price range.'
   },
   zh: {
@@ -64,6 +66,7 @@ const HOME_COPY = {
     technicalZone: '技術形態區間',
     supportResistance: '支撐 / 阻力',
     unavailableReason: '目前 payload 未提供正式估值推導價格區間。',
+    peerContext: '產業鏈 / 同行',
     valuationStates: {
       'Priced for Perfection': '反映高預期',
       'Valuation Stretched': '估值偏緊',
@@ -203,12 +206,13 @@ const buildValuationRangeSummary = (ticker, payload, copy) => {
   };
 };
 
-const buildConfluenceSummary = (ticker, payload, copy) => {
+const buildConfluenceSummary = (ticker, payload, referencePeerMapPayload, copy) => {
   if (!ticker) {
     return {
       ticker: '',
       valuation: { value: copy.notAvailable, status: 'missing', source: copy.notAvailable },
       momentum: { value: copy.notAvailable, status: 'missing', source: copy.notAvailable },
+      peerContext: null,
       overlap: copy.notComputable,
       state: copy.needsValidation,
       nextAction: copy.openDossier
@@ -216,6 +220,13 @@ const buildConfluenceSummary = (ticker, payload, copy) => {
   }
   const valuation = buildValuationRangeSummary(ticker, payload, copy);
   const momentum = buildMomentumRangeSummary(ticker, payload, copy);
+  const ecosystem = resolveReferencePeerEcosystemSnapshot(referencePeerMapPayload, ticker);
+  const directPeers = ecosystem
+    ? [
+      ...(ecosystem.activeCoverage || []).slice(0, 4),
+      ...(ecosystem.referencePeers || []).slice(0, 3)
+    ].map((peer) => peer.ticker).filter(Boolean)
+    : [];
   const overlap = valuation.status === 'available' && momentum.status === 'available'
     ? copy.needsDossierReview
     : copy.notComputable;
@@ -223,13 +234,17 @@ const buildConfluenceSummary = (ticker, payload, copy) => {
     ticker,
     valuation,
     momentum,
+    peerContext: ecosystem ? {
+      ecosystemName: ecosystem.ecosystemName,
+      peers: directPeers
+    } : null,
     overlap,
     state: momentum.status === 'available' ? copy.researchQueue : copy.needsValidation,
     nextAction: copy.openDossier
   };
 };
 
-function CrowdRiskHome({ payload, loading, error, onNavigate, onOpenStockDossier, locale = 'en' }) {
+function CrowdRiskHome({ payload, loading, error, referencePeerMapPayload, onNavigate, onOpenStockDossier, locale = 'en' }) {
   const copy = HOME_COPY[locale] || HOME_COPY.en;
   const radarLists = payload?.radar_lists || {};
   const postEarnings = radarLists.post_earnings || {};
@@ -245,7 +260,7 @@ function CrowdRiskHome({ payload, loading, error, onNavigate, onOpenStockDossier
   const [selectedTicker, setSelectedTicker] = useState('');
   const [askQuery, setAskQuery] = useState('');
 
-  const confluence = buildConfluenceSummary(selectedTicker, payload, copy);
+  const confluence = buildConfluenceSummary(selectedTicker, payload, referencePeerMapPayload, copy);
   const hasAskResult = Boolean(selectedTicker);
 
   const openSummaryDossier = () => {
@@ -350,6 +365,9 @@ function CrowdRiskHome({ payload, loading, error, onNavigate, onOpenStockDossier
             <strong>{confluence.ticker}</strong>
             <span>{copy.valuationRange}: {confluence.valuation.value}</span>
             <span>{copy.momentumRange}: {confluence.momentum.value}</span>
+            {confluence.peerContext && (
+              <span>{copy.peerContext || 'Ecosystem / peers'}: {confluence.peerContext.ecosystemName} · {confluence.peerContext.peers.join(', ')}</span>
+            )}
             <span>{copy.overlap}: {confluence.overlap}</span>
             <button type="button" onClick={openSummaryDossier}>
               {confluence.nextAction}

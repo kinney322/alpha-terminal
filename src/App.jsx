@@ -8,7 +8,7 @@ import StockDossierSection from './components/StockDossierSection.jsx';
 import CrowdRiskHome from './components/CrowdRiskHome.jsx';
 import MomentumUniverseSection from './components/MomentumUniverseSection.jsx';
 import { buildMomentumUniverseSyntheticDetail } from './components/dossierHelpers.js';
-import { fetchAndNormalizeRadarPayload, fetchStockPerformancePayload } from './data/payloadAdapter.js';
+import { fetchAndNormalizeRadarPayload, fetchReferencePeerMapPayload, fetchStockPerformancePayload } from './data/payloadAdapter.js';
 
 const PRODUCT_MODE = import.meta.env.VITE_PRODUCT_MODE || 'crowdrisk';
 const RADAR_PAYLOAD_REFRESH_MS = 5 * 60 * 1000;
@@ -90,6 +90,7 @@ function App() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [payload, setPayload] = useState(null);
   const [stockPerformancePayload, setStockPerformancePayload] = useState(null);
+  const [referencePeerMapPayload, setReferencePeerMapPayload] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [dossierSeed, setDossierSeed] = useState(null);
@@ -142,6 +143,30 @@ function App() {
 
     loadStockPerformancePayload();
     const refreshTimer = window.setInterval(loadStockPerformancePayload, RADAR_PAYLOAD_REFRESH_MS);
+
+    return () => {
+      alive = false;
+      window.clearInterval(refreshTimer);
+    };
+  }, []);
+
+  useEffect(() => {
+    let alive = true;
+    const loadReferencePeerMapPayload = () => {
+      fetchReferencePeerMapPayload()
+        .then((data) => {
+          if (!alive) return;
+          setReferencePeerMapPayload(data);
+        })
+        .catch((err) => {
+          if (!alive) return;
+          console.warn('Failed to load CrowdRisk reference peer map payload', err);
+          setReferencePeerMapPayload(null);
+        });
+    };
+
+    loadReferencePeerMapPayload();
+    const refreshTimer = window.setInterval(loadReferencePeerMapPayload, RADAR_PAYLOAD_REFRESH_MS);
 
     return () => {
       alive = false;
@@ -222,6 +247,7 @@ function App() {
         payload={payload}
         loading={loading}
         error={error}
+        referencePeerMapPayload={referencePeerMapPayload}
         onNavigate={handleNavigate}
         onOpenStockDossier={handleOpenStockDossier}
         locale={locale}
@@ -254,6 +280,7 @@ function App() {
       <StockDossierSection
         payload={payload}
         stockPerformancePayload={stockPerformancePayload}
+        referencePeerMapPayload={referencePeerMapPayload}
         loading={loading}
         error={error}
         dossierSeed={dossierSeed}

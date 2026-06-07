@@ -2670,7 +2670,7 @@ html, body, #root, .app-container, .main-content {
 
 .crowdrisk-inline-summary {
   display: grid;
-  grid-template-columns: auto repeat(3, minmax(0, 1fr)) auto;
+  grid-template-columns: auto repeat(4, minmax(0, 1fr)) auto;
   gap: 0.45rem;
   align-items: center;
   padding: 0.46rem;

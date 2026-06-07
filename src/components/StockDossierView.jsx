@@ -8,7 +8,7 @@ import {
   resolveValueCore
 } from './dossierHelpers';
 import { getStockDossierProfile } from '../data/stockDossierProfiles';
-import { resolvePeerEcosystemSnapshot } from '../data/stockDossierPeerEcosystemSamples';
+import { resolveReferencePeerEcosystemSnapshot } from '../data/referencePeerMapAdapter';
 import StockLogo from './StockLogo';
 
 const API_BASE = 'https://kw-terminal-api.myfootballplaces.workers.dev';
@@ -722,7 +722,7 @@ const PeerEcosystemPanel = ({ ecosystem, ticker }) => {
         <div className="dossier-peer-groups">
           <div className="dossier-peer-group">
             <div>
-              <span>Active coverage</span>
+              <span>Covered Ecosystem</span>
               <em>CrowdRisk universe</em>
             </div>
             <div className="dossier-peer-pill-row">
@@ -742,7 +742,7 @@ const PeerEcosystemPanel = ({ ecosystem, ticker }) => {
           </div>
           <div className="dossier-peer-group">
             <div>
-              <span>Reference peers</span>
+              <span>Direct / Reference Peers</span>
               <em>Context only</em>
             </div>
             <div className="dossier-peer-pill-row">
@@ -803,7 +803,7 @@ const buildEventStudyDetail = (eventDetail, dossierProfile = null) => {
   };
 };
 
-const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, onOpenEventStudy }) => {
+const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, referencePeerMapPayload, onOpenEventStudy }) => {
   const tickerForSummary = String(eventDetail?.ticker || '').trim().toUpperCase();
   const [eventStudySummary, setEventStudySummary] = React.useState(null);
   const [eventStudyLoading, setEventStudyLoading] = React.useState(false);
@@ -1110,7 +1110,7 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, onOpe
     { label: 'Coverage', value: valueCore.frontendLabel }
   ];
   const performanceGrid = buildLiveStockPerformanceGrid(tickerForSummary, visualPhaseOne?.performanceGrid, stockPerformancePayload);
-  const peerEcosystem = resolvePeerEcosystemSnapshot(tickerForSummary);
+  const peerEcosystem = resolveReferencePeerEcosystemSnapshot(referencePeerMapPayload, tickerForSummary);
   const performanceRows = performanceGrid?.periods || [];
   const stockPerformanceFeedSource = performanceGrid?.feedSource === 'dedicated'
     ? 'dedicated'
