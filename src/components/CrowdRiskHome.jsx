@@ -2,6 +2,7 @@ import { useState } from 'react';
 import PublicLeaderboardPreview from './PublicLeaderboardPreview.jsx';
 import { getStockDossierProfile } from '../data/stockDossierProfiles.js';
 import { resolveReferencePeerEcosystemSnapshot } from '../data/referencePeerMapAdapter.js';
+import { answerAskCrowdRiskQuestion } from '../data/askCrowdRiskResponder.js';
 
 const HOME_COPY = {
   en: {
@@ -10,7 +11,7 @@ const HOME_COPY = {
     body: 'Ranked names that need research attention now. Open the Dossier to judge valuation, momentum, and missing evidence before acting.',
     askLabel: 'Ask CrowdRisk',
     askButton: 'Ask',
-    summaryKicker: 'Ask CrowdRisk Summary',
+    summaryKicker: 'Ask CrowdRisk Answer',
     valuationRange: 'Valuation-implied range',
     momentumRange: 'Momentum-implied range',
     overlap: 'Overlap',
@@ -42,7 +43,7 @@ const HOME_COPY = {
     body: '優先顯示今日值得研究的股票。進入股票檔案後，再判斷估值、動能與欠缺證據。',
     askLabel: '問 CrowdRisk',
     askButton: '生成摘要',
-    summaryKicker: 'Ask CrowdRisk 摘要',
+    summaryKicker: 'Ask CrowdRisk 回答',
     valuationRange: '估值推導區間',
     momentumRange: '動能推導區間',
     overlap: '重疊',
@@ -244,7 +245,7 @@ const buildConfluenceSummary = (ticker, payload, referencePeerMapPayload, copy) 
   };
 };
 
-function CrowdRiskHome({ payload, loading, error, referencePeerMapPayload, onNavigate, onOpenStockDossier, locale = 'en' }) {
+function CrowdRiskHome({ payload, loading, error, stockPerformancePayload, referencePeerMapPayload, onNavigate, onOpenStockDossier, locale = 'en' }) {
   const copy = HOME_COPY[locale] || HOME_COPY.en;
   const radarLists = payload?.radar_lists || {};
   const postEarnings = radarLists.post_earnings || {};
@@ -259,12 +260,13 @@ function CrowdRiskHome({ payload, loading, error, referencePeerMapPayload, onNav
 
   const [selectedTicker, setSelectedTicker] = useState('');
   const [askQuery, setAskQuery] = useState('');
+  const [askResponse, setAskResponse] = useState(null);
 
   const confluence = buildConfluenceSummary(selectedTicker, payload, referencePeerMapPayload, copy);
-  const hasAskResult = Boolean(selectedTicker);
+  const hasAskResult = Boolean(askResponse || selectedTicker);
 
   const openSummaryDossier = () => {
-    const ticker = normalizeTicker(selectedTicker);
+    const ticker = normalizeTicker(askResponse?.ticker || selectedTicker);
     if (!ticker) {
       onNavigate('stock-dossier');
       return;
@@ -272,10 +274,26 @@ function CrowdRiskHome({ payload, loading, error, referencePeerMapPayload, onNav
     onOpenStockDossier(ticker, findEventDetail(payload, ticker) || { ticker });
   };
 
+  const openAskAction = () => {
+    if (askResponse?.action?.type === 'open_momentum') {
+      onNavigate('momentum-universe');
+      return;
+    }
+    openSummaryDossier();
+  };
+
   const handleAskSubmit = (event) => {
     event.preventDefault();
     const resolvedTicker = resolveAvailableTicker(askQuery, payload, selectedTicker);
-    if (resolvedTicker) setSelectedTicker(resolvedTicker);
+    const response = answerAskCrowdRiskQuestion({
+      question: askQuery,
+      locale,
+      payload,
+      stockPerformancePayload,
+      referencePeerMapPayload
+    });
+    setAskResponse(response);
+    if (response?.ticker || resolvedTicker) setSelectedTicker(response?.ticker || resolvedTicker);
   };
 
   const lifecycleCards = [
@@ -361,18 +379,46 @@ function CrowdRiskHome({ payload, loading, error, referencePeerMapPayload, onNav
         </header>
 
         {hasAskResult && (
-          <section className="crowdrisk-inline-summary" aria-label={copy.summaryKicker}>
-            <strong>{confluence.ticker}</strong>
-            <span>{copy.valuationRange}: {confluence.valuation.value}</span>
-            <span>{copy.momentumRange}: {confluence.momentum.value}</span>
-            {confluence.peerContext && (
-              <span>{copy.peerContext || 'Ecosystem / peers'}: {confluence.peerContext.ecosystemName} · {confluence.peerContext.peers.join(', ')}</span>
-            )}
-            <span>{copy.overlap}: {confluence.overlap}</span>
-            <button type="button" onClick={openSummaryDossier}>
-              {confluence.nextAction}
-            </button>
-          </section>
+          askResponse ? (
+            <section className="crowdrisk-inline-summary crowdrisk-inline-summary--answer" aria-label={copy.summaryKicker}>
+              <div className="crowdrisk-ask-answer-main">
+                <strong>{askResponse.ticker || copy.summaryKicker}</strong>
+                <div>
+                  {askResponse.lines.map((line, index) => (
+                    <p key={`${askResponse.intent}-${index}`}>{line}</p>
+                  ))}
+                </div>
+              </div>
+              {askResponse.factsList?.length > 0 && (
+                <div className="crowdrisk-ask-facts" aria-label="Ask CrowdRisk facts">
+                  {askResponse.factsList.slice(0, 4).map((fact) => (
+                    <span key={`${fact.label}-${fact.value}`}>
+                      <em>{fact.label}</em>
+                      <strong>{fact.value}</strong>
+                    </span>
+                  ))}
+                </div>
+              )}
+              {askResponse.action && (
+                <button type="button" onClick={openAskAction}>
+                  {askResponse.action.label}
+                </button>
+              )}
+            </section>
+          ) : (
+            <section className="crowdrisk-inline-summary" aria-label={copy.summaryKicker}>
+              <strong>{confluence.ticker}</strong>
+              <span>{copy.valuationRange}: {confluence.valuation.value}</span>
+              <span>{copy.momentumRange}: {confluence.momentum.value}</span>
+              {confluence.peerContext && (
+                <span>{copy.peerContext || 'Ecosystem / peers'}: {confluence.peerContext.ecosystemName} · {confluence.peerContext.peers.join(', ')}</span>
+              )}
+              <span>{copy.overlap}: {confluence.overlap}</span>
+              <button type="button" onClick={openSummaryDossier}>
+                {confluence.nextAction}
+              </button>
+            </section>
+          )
         )}
 
         <section className="crowdrisk-home-leaderboard" aria-label="Priority leaderboard">

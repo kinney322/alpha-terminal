@@ -247,6 +247,7 @@ function App() {
         payload={payload}
         loading={loading}
         error={error}
+        stockPerformancePayload={stockPerformancePayload}
         referencePeerMapPayload={referencePeerMapPayload}
         onNavigate={handleNavigate}
         onOpenStockDossier={handleOpenStockDossier}
