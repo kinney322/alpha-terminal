@@ -66,6 +66,98 @@ const medianNumber = (values) => {
   return nums.length % 2 ? nums[mid] : (nums[mid - 1] + nums[mid]) / 2;
 };
 
+const includesAny = (value, terms) => {
+  const text = String(value || '').toLowerCase();
+  return terms.some((term) => text.includes(term));
+};
+
+const resolveExpectationGapFrame = (valuationCore) => {
+  const verdict = valuationCore?.topVerdict || {};
+  const businessQuality = String(verdict.businessQuality || '').toLowerCase();
+  const valuationState = String(verdict.valuationState || '').toLowerCase();
+  const baseCaseSupport = String(verdict.baseCaseSupport || '').toLowerCase();
+  const marginOfSafety = String(verdict.marginOfSafety || '').toLowerCase();
+  const why = String(verdict.why || '').toLowerCase();
+
+  const businessEvidence = includesAny(businessQuality, ['high', 'strong'])
+    || includesAny(why, ['executing well', 'strong free-cash-flow', 'revenue growth'])
+    ? 'supportive'
+    : includesAny(businessQuality, ['low', 'weak'])
+      ? 'weakening'
+      : 'not_verified';
+
+  const marketExpectation = includesAny(valuationState, ['priced for perfection', 'expensive', 'premium'])
+    || includesAny(why, ['already assumes', '16x', '55x', 'durable growth'])
+    ? 'demanding'
+    : includesAny(valuationState, ['cheap', 'undervalued'])
+      ? 'low'
+      : 'not_verified';
+
+  const expectationGap = marketExpectation === 'demanding'
+    ? (includesAny(baseCaseSupport, ['partial', 'not']) ? 'not_yet_proven_to_exceed' : 'meets_but_not_clearly_exceeds')
+    : 'not_verified';
+
+  const valuationTolerance = includesAny(marginOfSafety, ['none'])
+    || includesAny(valuationState, ['priced for perfection'])
+    ? 'low'
+    : includesAny(marginOfSafety, ['high'])
+      ? 'high'
+      : 'not_verified';
+
+  return {
+    businessEvidence,
+    marketExpectation,
+    expectationGap,
+    valuationTolerance
+  };
+};
+
+const expectationLabel = (value, language) => {
+  const labels = {
+    supportive: language === 'zh' ? 'supportive / 支持' : 'supportive',
+    weakening: language === 'zh' ? 'weakening / 轉弱' : 'weakening',
+    demanding: language === 'zh' ? 'demanding / 要求高' : 'demanding',
+    low: language === 'zh' ? 'low / 低' : 'low',
+    high: language === 'zh' ? 'high / 高' : 'high',
+    not_yet_proven_to_exceed: language === 'zh' ? 'not yet proven to exceed expectations / 尚未證明超越市場期待' : 'not yet proven to exceed expectations',
+    meets_but_not_clearly_exceeds: language === 'zh' ? 'meets but not clearly exceeds expectations / 符合但未明顯超越期待' : 'meets but not clearly exceeds expectations',
+    not_verified: language === 'zh' ? 'Not verified / 未驗證' : 'Not verified'
+  };
+  return labels[value] || labels.not_verified;
+};
+
+const metricById = (metrics, id) => (metrics || []).find((metric) => metric.id === id);
+
+const formatMetricValue = (metric) => {
+  const numeric = toFiniteNumber(metric?.value);
+  if (numeric === null) return null;
+  if (metric.format === 'percent') return formatPercent(numeric);
+  if (metric.format === 'multiple') return `${numeric.toFixed(numeric >= 10 ? 0 : 1)}x`;
+  if (metric.format === 'billion') return `$${numeric.toFixed(1)}B`;
+  return String(metric.value);
+};
+
+const buildExpectationEvidenceLine = (ticker, language, valuationCore) => {
+  const revenueGrowth = formatMetricValue(metricById(valuationCore?.coreMetrics, 'revenue_growth'));
+  const fcfMargin = formatMetricValue(metricById(valuationCore?.coreMetrics, 'fcf_margin'));
+  const evRevenue = formatMetricValue(metricById(valuationCore?.coreMetrics, 'ev_revenue'));
+  const evFcf = formatMetricValue(metricById(valuationCore?.coreMetrics, 'ev_fcf'));
+  const supportParts = [
+    revenueGrowth ? `revenue growth ${revenueGrowth}` : null,
+    fcfMargin ? `FCF margin ${fcfMargin}` : null
+  ].filter(Boolean);
+  const expectationParts = [
+    evRevenue ? `${evRevenue} FY2026 revenue` : null,
+    evFcf ? `${evFcf} FY2026 FCF` : null
+  ].filter(Boolean);
+
+  if (language === 'zh') {
+    return `${ticker} 的 business evidence 仍然有支持${supportParts.length ? `：${supportParts.join('、')}` : ''}；但市場估值${expectationParts.length ? `大約是 ${expectationParts.join(' / ')}` : '已經偏高'}，已經反映多年增長和高 cash margin 的期待。`;
+  }
+
+  return `${ticker}'s business evidence is still supportive${supportParts.length ? `: ${supportParts.join(', ')}` : ''}; but valuation${expectationParts.length ? ` is roughly ${expectationParts.join(' / ')}` : ' is already demanding'}, so the market is already pricing in years of growth and high cash-margin execution.`;
+};
+
 const getAvailableTickers = ({ payload, stockPerformancePayload, referencePeerMapPayload }) => new Set([
   ...Object.values(payload?.events_detail || {}).map((detail) => normalizeTicker(detail?.ticker)),
   ...(payload?.momentum_universe?.rankings || []).map((row) => normalizeTicker(row?.ticker)),
@@ -474,6 +566,7 @@ const buildValuationSnapshotAnswer = ({ ticker, language, stockPerformancePayloa
   const median = medianNumber(scenarioPrices);
   const rangeDisplay = low !== null && high !== null ? `${formatWholePrice(low)}-${formatWholePrice(high)}` : null;
   const medianDisplay = median !== null ? formatWholePrice(median) : null;
+  const expectationFrame = resolveExpectationGapFrame(valuationCore);
 
   return response({
     intent: 'valuation_snapshot',
@@ -489,30 +582,38 @@ const buildValuationSnapshotAnswer = ({ ticker, language, stockPerformancePayloa
       business_quality: valuationCore.topVerdict?.businessQuality,
       margin_of_safety: valuationCore.topVerdict?.marginOfSafety,
       model_implied_range: rangeDisplay,
-      median_implied_price: medianDisplay
+      median_implied_price: medianDisplay,
+      business_evidence: expectationFrame.businessEvidence,
+      market_expectation: expectationFrame.marketExpectation,
+      expectation_gap: expectationFrame.expectationGap,
+      valuation_tolerance: expectationFrame.valuationTolerance
     },
     factsList: [
-      { label: language === 'zh' ? '估值狀態' : 'Valuation state', value: valuationCore.topVerdict?.valuationState || 'Not verified' },
-      { label: language === 'zh' ? '安全邊際' : 'Margin of safety', value: valuationCore.topVerdict?.marginOfSafety || 'Not verified' },
+      { label: language === 'zh' ? 'Business Evidence' : 'Business Evidence', value: expectationLabel(expectationFrame.businessEvidence, language) },
+      { label: language === 'zh' ? 'Market Expectation' : 'Market Expectation', value: expectationLabel(expectationFrame.marketExpectation, language) },
+      { label: language === 'zh' ? 'Expectation Gap' : 'Expectation Gap', value: expectationLabel(expectationFrame.expectationGap, language) },
+      { label: language === 'zh' ? 'Valuation Tolerance' : 'Valuation Tolerance', value: expectationLabel(expectationFrame.valuationTolerance, language) },
       { label: language === 'zh' ? '估值區間' : 'Valuation range', value: rangeDisplay || 'Not verified' },
       { label: language === 'zh' ? '中位數' : 'Median implied price', value: medianDisplay || 'Not verified' }
     ],
     lines: language === 'zh'
       ? [
         `${ticker} 目前不是便宜股。CrowdRisk 的估值框架顯示，它屬於「高質素但高要求」的情況。`,
+        `Business evidence: ${expectationLabel(expectationFrame.businessEvidence, language)}。Market expectation: ${expectationLabel(expectationFrame.marketExpectation, language)}。Expectation gap: ${expectationLabel(expectationFrame.expectationGap, language)}。Valuation tolerance: ${expectationLabel(expectationFrame.valuationTolerance, language)}。`,
         rangeDisplay && medianDisplay
           ? `根據 CrowdRisk model，model-implied valuation range 是 ${rangeDisplay}，中位數 ${medianDisplay}。`
           : '目前 CrowdRisk model 未能產生完整 model-implied valuation range。',
-        valuationCore.topVerdict?.why || '目前缺少更完整估值解釋。',
-        '白話講，你不是用便宜價買增長，而是付出較高估值代價，去換取它未來繼續高增長的可能性。這不是 Buy / Sell / Hold，也不是最終買賣決定。'
+        buildExpectationEvidenceLine(ticker, language, valuationCore),
+        `白話講，問題不只是「${ticker} 好不好」，而是「${ticker} 是否好得超過市場已經相信的程度」。如果只是符合預期，估值未必有太多容錯；如果增長、NRR 或 FCF margin 放慢，重新定價風險會比較高。這不是最終買賣決定。`
       ]
       : [
         `${ticker} does not screen as cheap. CrowdRisk's valuation framework reads it as high quality, but high expectation.`,
+        `Business evidence: ${expectationLabel(expectationFrame.businessEvidence, language)}. Market expectation: ${expectationLabel(expectationFrame.marketExpectation, language)}. Expectation gap: ${expectationLabel(expectationFrame.expectationGap, language)}. Valuation tolerance: ${expectationLabel(expectationFrame.valuationTolerance, language)}.`,
         rangeDisplay && medianDisplay
           ? `Based on the CrowdRisk model, the model-implied valuation range is ${rangeDisplay}, with a median implied price of ${medianDisplay}.`
           : 'The current CrowdRisk model does not produce a complete model-implied valuation range.',
-        valuationCore.topVerdict?.why || 'A fuller valuation explanation is not available.',
-        'Plainly, you are not buying growth at a cheap price; you are paying a higher valuation cost for the possibility that growth keeps compounding. This is not Buy / Sell / Hold and not a final investment decision.'
+        buildExpectationEvidenceLine(ticker, language, valuationCore),
+        `Plainly, the question is not only whether ${ticker} is good. It is whether ${ticker} can be good enough to exceed what the market already believes. If it merely meets expectations, valuation tolerance may stay low; if growth, NRR, or FCF margin slows, repricing risk rises. This is not a final investment decision.`
       ],
     action: { type: 'open_dossier', label: language === 'zh' ? '打開股票檔案' : 'Open Dossier' }
   });
