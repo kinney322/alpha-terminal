@@ -44,6 +44,12 @@ const formatPercent = (value) => {
   return `${scaled > 0 ? '+' : ''}${scaled.toFixed(1)}%`;
 };
 
+const ratioToPercent = (value) => {
+  const numeric = toFiniteNumber(value);
+  if (numeric === null) return null;
+  return formatPercent(numeric);
+};
+
 const parseDollarValue = (value) => {
   if (typeof value === 'number') return Number.isFinite(value) ? value : null;
   const raw = String(value || '').replace(/[$,\s]/g, '').toUpperCase();
@@ -177,11 +183,19 @@ const detectIntent = (question) => {
   if (/\b(peer|peers|ecosystem|chain|competitor|competitors)\b/.test(text) || /同行|產業鏈|競爭|同業/.test(question)) return 'peer_ecosystem';
   if (/\b(active|coverage|candidate|dossier|universe)\b/.test(text) || /加入|覆蓋|候選|檔案|名單/.test(question)) return 'coverage_status';
   if (/\b(market\s*cap|capitalization|市值)\b/.test(text) || /市值/.test(question)) return 'market_cap';
-  if (/\bearnings\b|\br\+\d*\b/.test(text) || /財報/.test(question)) return 'earnings_reaction';
+  if (/\bearnings\b|\br\+\d*\b/.test(text) || /財報|業績/.test(question)) return 'earnings_reaction';
   if (/\b(performance|return|1m|1 month|one month|1w|week|today|ytd)\b/.test(text) || /回報|升咗|跌咗|表現|一個月|一星期|今日/.test(question)) return 'stock_performance';
   if (/\b(momentum|rank|ranking|relative strength|rs)\b/.test(text) || /動能|排名|相對強度/.test(question)) return 'momentum_rank';
   if (/\b(valuation|expensive|cheap|reasonable|price target|multiple)\b/.test(text) || /估值|貴|便宜|合理|目標價|倍數/.test(question)) return 'valuation_snapshot';
   return zh ? 'coverage_status' : 'coverage_status';
+};
+
+export const resolveAskCrowdRiskRequest = ({ question, locale = 'en', payload = null, stockPerformancePayload = null, referencePeerMapPayload = null }) => {
+  const language = resolveLanguage(question, locale);
+  const payloads = { payload, stockPerformancePayload, referencePeerMapPayload };
+  const ticker = extractTicker(question, payloads);
+  const intent = detectIntent(question);
+  return { language, ticker, intent };
 };
 
 const sourceMeta = (feedName, payload) => ({
@@ -619,11 +633,247 @@ const buildValuationSnapshotAnswer = ({ ticker, language, stockPerformancePayloa
   });
 };
 
-export const answerAskCrowdRiskQuestion = ({ question, locale = 'en', payload = null, stockPerformancePayload = null, referencePeerMapPayload = null }) => {
-  const language = resolveLanguage(question, locale);
-  const payloads = { payload, stockPerformancePayload, referencePeerMapPayload };
-  const ticker = extractTicker(question, payloads);
-  const intent = detectIntent(question);
+const parseChineseNumber = (value) => {
+  const map = { 一: 1, 二: 2, 三: 3, 四: 4, 五: 5, 六: 6, 七: 7, 八: 8, 九: 9, 十: 10 };
+  return map[value] || null;
+};
+
+const parseRequestedHorizon = (question) => {
+  const raw = String(question || '');
+  const text = raw.toLowerCase();
+  const explicit = text.match(/\br\s*\+\s*(\d{1,3})\b/);
+  if (explicit) return Number(explicit[1]);
+
+  const tradingDays = text.match(/(\d{1,3})\s*(?:trading\s*)?days?\b/);
+  if (tradingDays) return Number(tradingDays[1]);
+
+  const zhTradingDays = raw.match(/(\d{1,3})\s*(?:個)?(?:交易日|trading day)/i);
+  if (zhTradingDays) return Number(zhTradingDays[1]);
+
+  if (/一個星期|一星期|一週|一周|one week|1 week|\bweek\b/.test(text) || /一個星期|一星期|一週|一周/.test(raw)) {
+    return 5;
+  }
+  if (/一個月|one month|1 month|\bmonth\b/.test(text) || /一個月/.test(raw)) {
+    return 30;
+  }
+
+  return null;
+};
+
+const parseQuestionDateFilter = (question) => {
+  const raw = String(question || '');
+  const text = raw.toLowerCase();
+  const yearMatch = raw.match(/(20\d{2})/);
+  const year = yearMatch ? Number(yearMatch[1]) : null;
+  const monthMatch = raw.match(/(?:20\d{2})\s*年\s*(\d{1,2})\s*月/) || raw.match(/\b(1[0-2]|[1-9])\/20\d{2}\b/);
+  const month = monthMatch ? Number(monthMatch[1]) : null;
+  const quarterMatch = raw.match(/第([一二三四1234])季/) || text.match(/\bq([1-4])\b/);
+  const quarterRaw = quarterMatch ? quarterMatch[1] : null;
+  const quarter = quarterRaw ? (Number(quarterRaw) || parseChineseNumber(quarterRaw)) : null;
+  const latest = /latest|recent|最近|最新/.test(text) || /最近|最新/.test(raw);
+  return { year, month, quarter, latest };
+};
+
+const quarterForMonth = (month) => Math.floor((Number(month) - 1) / 3) + 1;
+
+const resolveEarningsEventRow = (question, earningsReactionPayload) => {
+  const rows = Array.isArray(earningsReactionPayload?.quarter_log) ? earningsReactionPayload.quarter_log : [];
+  if (!rows.length) return { status: 'missing_rows', row: null };
+
+  const sortedRows = [...rows].sort((a, b) => String(b.release_date || '').localeCompare(String(a.release_date || '')));
+  const filter = parseQuestionDateFilter(question);
+  let candidates = sortedRows;
+
+  if (filter.year) {
+    candidates = candidates.filter((row) => String(row.release_date || '').startsWith(`${filter.year}-`));
+  }
+  if (filter.month) {
+    candidates = candidates.filter((row) => {
+      const rowMonth = Number(String(row.release_date || '').slice(5, 7));
+      return rowMonth === filter.month;
+    });
+  }
+  if (filter.quarter) {
+    candidates = candidates.filter((row) => {
+      const rowMonth = Number(String(row.release_date || '').slice(5, 7));
+      return quarterForMonth(rowMonth) === filter.quarter;
+    });
+  }
+
+  if (!filter.year && !filter.month && !filter.quarter && !filter.latest) {
+    return { status: 'missing_event_filter', row: null };
+  }
+  if (!candidates.length) return { status: 'no_matching_event', row: null };
+  if (candidates.length > 1 && (filter.year || filter.quarter) && !filter.month && !filter.latest) {
+    return { status: 'ambiguous_event', row: null, candidates };
+  }
+
+  return { status: 'resolved', row: candidates[0] };
+};
+
+const inferReactionTiming = (row, language) => {
+  const releaseDate = String(row?.release_date || '');
+  const reactionDay = String(row?.reaction_day || '');
+  if (!releaseDate || !reactionDay) {
+    return {
+      status: 'unknown',
+      label: 'UNKNOWN',
+      description: language === 'zh' ? 'reaction_day 未驗證。' : 'The reaction day is not verified.'
+    };
+  }
+  if (releaseDate === reactionDay) {
+    return {
+      status: 'same_day',
+      label: 'BMO-compatible',
+      description: language === 'zh'
+        ? 'release_date 與 reaction_day 相同，符合 BMO / same-session reaction logic。'
+        : 'The release date and reaction day are the same, consistent with BMO / same-session reaction logic.'
+    };
+  }
+  return {
+    status: 'next_session',
+    label: 'AMC-compatible',
+    description: language === 'zh'
+      ? 'reaction_day 是 release_date 之後的下一個已驗證交易日，符合 AMC / next-session reaction logic。'
+      : 'The reaction day is the next verified trading session after the release date, consistent with AMC / next-session reaction logic.'
+  };
+};
+
+const buildEarningsReactionAnswer = ({ question, ticker, language, earningsReactionPayload }) => {
+  if (!earningsReactionPayload) {
+    return buildNotVerified({
+      intent: 'earnings_reaction',
+      language,
+      ticker,
+      reason: language === 'zh'
+        ? '目前沒有 earnings truth / reaction feature context pack，所以不能補估 R+N。'
+        : 'No earnings truth / reaction feature context pack is available, so R+N cannot be filled in by guessing.'
+    });
+  }
+
+  const horizon = parseRequestedHorizon(question);
+  if (!horizon) {
+    return buildNotVerified({
+      intent: 'earnings_reaction',
+      language,
+      ticker,
+      source: sourceMeta('earnings-gap-summary', earningsReactionPayload),
+      reason: language === 'zh'
+        ? '請指定 R+N 或清楚時間，例如 R+30、R+21、一個星期。'
+        : 'Please specify R+N or a clear horizon, such as R+30, R+21, or one week.'
+    });
+  }
+
+  const eventResolution = resolveEarningsEventRow(question, earningsReactionPayload);
+  if (eventResolution.status !== 'resolved') {
+    const reasonByStatus = {
+      missing_rows: language === 'zh' ? 'earnings-gap-summary 沒有 quarter_log rows。' : 'The earnings-gap-summary feed has no quarter_log rows.',
+      missing_event_filter: language === 'zh' ? '請指定要查哪一次財報，例如 2023 年 5 月、2023 年第二季，或 latest。' : 'Please specify which earnings event to use, such as May 2023, Q2 2023, or latest.',
+      no_matching_event: language === 'zh' ? '目前 CrowdRisk backend context 找不到符合日期條件的財報事件。' : 'The current CrowdRisk backend context has no earnings event matching that date filter.',
+      ambiguous_event: language === 'zh' ? '日期條件對應多於一次財報，請指定月份或 release date。' : 'The date filter matches more than one earnings event; please specify the month or release date.'
+    };
+    return buildNotVerified({
+      intent: 'earnings_reaction',
+      language,
+      ticker,
+      source: sourceMeta('earnings-gap-summary', earningsReactionPayload),
+      reason: reasonByStatus[eventResolution.status]
+    });
+  }
+
+  const row = eventResolution.row;
+  const field = `r_plus_${horizon}`;
+  const totalReturn = toFiniteNumber(row?.[field]);
+  const asksDrift = /post[-_ ]?reaction|drift|post earnings drift|漂移|延續/.test(String(question || '').toLowerCase())
+    || /漂移|延續/.test(String(question || ''));
+  const timing = inferReactionTiming(row, language);
+  const previousClose = toFiniteNumber(row?.previous_close);
+  const reactionClose = toFiniteNumber(row?.reaction_close);
+
+  if (totalReturn === null) {
+    return buildNotVerified({
+      intent: 'earnings_reaction',
+      language,
+      ticker,
+      source: sourceMeta('earnings-gap-summary', earningsReactionPayload),
+      reason: language === 'zh'
+        ? `目前 earnings-gap-summary 未驗證 ${ticker} 這次財報的 R+${horizon} return。`
+        : `The earnings-gap-summary feed does not verify ${ticker}'s R+${horizon} return for this event.`
+    });
+  }
+
+  const targetClose = previousClose !== null ? previousClose * (1 + totalReturn) : null;
+  const driftReturn = asksDrift && targetClose !== null && reactionClose !== null && reactionClose !== 0
+    ? (targetClose / reactionClose) - 1
+    : null;
+  const displayReturn = asksDrift ? ratioToPercent(driftReturn) : ratioToPercent(totalReturn);
+
+  if (!displayReturn) {
+    return buildNotVerified({
+      intent: 'earnings_reaction',
+      language,
+      ticker,
+      source: sourceMeta('earnings-gap-summary', earningsReactionPayload),
+      reason: language === 'zh'
+        ? `目前 context 不足以計算 ${ticker} 的 post-reaction drift to R+${horizon}。`
+        : `The current context is insufficient to compute ${ticker}'s post-reaction drift to R+${horizon}.`
+    });
+  }
+
+  const metricLabel = asksDrift ? `Post-reaction drift to R+${horizon}` : `R+${horizon} earnings return`;
+  const definition = asksDrift
+    ? 'R+N close / reaction_day close - 1'
+    : 'R+N close / previous_close - 1';
+
+  return response({
+    intent: 'earnings_reaction',
+    language,
+    ticker,
+    verifiedStatus: 'verified',
+    source: sourceMeta('earnings-gap-summary', earningsReactionPayload),
+    facts: {
+      release_date: row.release_date,
+      reaction_day: row.reaction_day,
+      timing_basis: timing.label,
+      horizon,
+      metric: asksDrift ? 'post_reaction_drift' : 'r_plus_n_earnings_return',
+      value: asksDrift ? driftReturn : totalReturn,
+      definition
+    },
+    definitions: {
+      r_plus_n_earnings_return: 'R+N close / previous_close - 1',
+      post_reaction_drift: 'R+N close / reaction_day close - 1',
+      reaction_day: 'AMC uses the next trading day; BMO uses the same trading day.'
+    },
+    factsList: [
+      { label: 'Release', value: row.release_date || 'Not verified' },
+      { label: 'Reaction day', value: row.reaction_day || 'Not verified' },
+      { label: 'Timing basis', value: timing.label },
+      { label: metricLabel, value: displayReturn }
+    ],
+    lines: language === 'zh'
+      ? [
+        `${ticker} ${row.release_date} 這次財報的 ${metricLabel} 是 ${displayReturn}。`,
+        `CrowdRisk 先用 release_date ${row.release_date} 和 reaction_day ${row.reaction_day} 對齊財報反應；${timing.description}`,
+        asksDrift
+          ? `這裡的 post-reaction drift 是 ${definition}，即由 reaction_day close 到 R+${horizon} close。`
+          : `這裡的 R+${horizon} earnings return 是 ${definition}，即由 previous_close 到 R+${horizon} close。`,
+        '這是 CrowdRisk earnings truth / reaction feature context，不是最終買賣決定。'
+      ]
+      : [
+        `${ticker}'s ${metricLabel} for the ${row.release_date} earnings event is ${displayReturn}.`,
+        `CrowdRisk first aligns the event using release_date ${row.release_date} and reaction_day ${row.reaction_day}; ${timing.description}`,
+        asksDrift
+          ? `This post-reaction drift uses ${definition}, from reaction-day close to R+${horizon} close.`
+          : `This R+${horizon} earnings return uses ${definition}, from previous_close to R+${horizon} close.`,
+        'This is CrowdRisk earnings truth / reaction feature context, not a final investment decision.'
+      ],
+    action: { type: 'open_event_study', label: language === 'zh' ? '打開事件研究' : 'Open Event Study' }
+  });
+};
+
+export const answerAskCrowdRiskQuestion = ({ question, locale = 'en', payload = null, stockPerformancePayload = null, referencePeerMapPayload = null, earningsReactionPayload = null }) => {
+  const { language, ticker, intent } = resolveAskCrowdRiskRequest({ question, locale, payload, stockPerformancePayload, referencePeerMapPayload });
 
   if (!ticker) {
     return buildNotVerified({
@@ -640,16 +890,7 @@ export const answerAskCrowdRiskQuestion = ({ question, locale = 'en', payload = 
   if (intent === 'stock_performance') return buildStockPerformanceAnswer({ ticker, language, stockPerformancePayload });
   if (intent === 'momentum_rank') return buildMomentumRankAnswer({ ticker, language, payload });
   if (intent === 'valuation_snapshot') return buildValuationSnapshotAnswer({ ticker, language, stockPerformancePayload });
-  if (intent === 'earnings_reaction') {
-    return buildNotVerified({
-      intent,
-      language,
-      ticker,
-      reason: language === 'zh'
-        ? 'Phase 1 frontend-only responder 尚未接入 earnings truth / reaction feature retriever。'
-        : 'The phase 1 frontend-only responder is not yet connected to an earnings truth / reaction feature retriever.'
-    });
-  }
+  if (intent === 'earnings_reaction') return buildEarningsReactionAnswer({ question, ticker, language, earningsReactionPayload });
 
   return buildCoverageStatusAnswer({ ticker, language, payload, stockPerformancePayload, referencePeerMapPayload });
 };

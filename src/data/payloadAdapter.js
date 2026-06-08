@@ -50,6 +50,13 @@ function isValidReferencePeerMapPayload(payload) {
   return true;
 }
 
+function isValidEarningsGapSummaryPayload(payload) {
+  if (!payload || typeof payload !== 'object' || Array.isArray(payload)) return false;
+  if (!payload.ticker) return false;
+  if (!Array.isArray(payload.quarter_log)) return false;
+  return true;
+}
+
 export async function fetchAndNormalizeRadarPayload() {
   let rawData = null;
 
@@ -146,6 +153,26 @@ export async function fetchReferencePeerMapPayload() {
   const data = await res.json();
   if (!isValidReferencePeerMapPayload(data)) {
     throw new Error('Reference peer map payload is not a valid schema');
+  }
+
+  return data;
+}
+
+export async function fetchEarningsGapSummaryPayload(ticker) {
+  const normalizedTicker = String(ticker || '').trim().toUpperCase();
+  if (!normalizedTicker) {
+    throw new Error('Ticker is required for earnings gap summary');
+  }
+
+  const url = `${API_BASE}/event-study/earnings-gap-summary?symbol=${encodeURIComponent(normalizedTicker)}`;
+  const res = await fetch(url, { headers: { Accept: 'application/json' } });
+  if (!res.ok) {
+    throw new Error(`Earnings gap summary unavailable for ${normalizedTicker} (${res.status})`);
+  }
+
+  const data = await res.json();
+  if (!isValidEarningsGapSummaryPayload(data)) {
+    throw new Error(`Earnings gap summary for ${normalizedTicker} is not a valid schema`);
   }
 
   return data;

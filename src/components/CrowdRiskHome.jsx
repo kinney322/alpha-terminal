@@ -2,7 +2,8 @@ import { useState } from 'react';
 import PublicLeaderboardPreview from './PublicLeaderboardPreview.jsx';
 import { getStockDossierProfile } from '../data/stockDossierProfiles.js';
 import { resolveReferencePeerEcosystemSnapshot } from '../data/referencePeerMapAdapter.js';
-import { answerAskCrowdRiskQuestion } from '../data/askCrowdRiskResponder.js';
+import { answerAskCrowdRiskQuestion, resolveAskCrowdRiskRequest } from '../data/askCrowdRiskResponder.js';
+import { fetchEarningsGapSummaryPayload } from '../data/payloadAdapter.js';
 
 const HOME_COPY = {
   en: {
@@ -261,6 +262,8 @@ function CrowdRiskHome({ payload, loading, error, stockPerformancePayload, refer
   const [selectedTicker, setSelectedTicker] = useState('');
   const [askQuery, setAskQuery] = useState('');
   const [askResponse, setAskResponse] = useState(null);
+  const [askLoading, setAskLoading] = useState(false);
+  const [earningsReactionPayloads, setEarningsReactionPayloads] = useState({});
 
   const confluence = buildConfluenceSummary(selectedTicker, payload, referencePeerMapPayload, copy);
   const hasAskResult = Boolean(askResponse || selectedTicker);
@@ -279,21 +282,51 @@ function CrowdRiskHome({ payload, loading, error, stockPerformancePayload, refer
       onNavigate('momentum-universe');
       return;
     }
+    if (askResponse?.action?.type === 'open_event_study') {
+      onNavigate('event-study');
+      return;
+    }
     openSummaryDossier();
   };
 
-  const handleAskSubmit = (event) => {
+  const handleAskSubmit = async (event) => {
     event.preventDefault();
     const resolvedTicker = resolveAvailableTicker(askQuery, payload, selectedTicker);
-    const response = answerAskCrowdRiskQuestion({
+    const request = resolveAskCrowdRiskRequest({
       question: askQuery,
       locale,
       payload,
       stockPerformancePayload,
       referencePeerMapPayload
     });
+    const askTicker = request.ticker || resolvedTicker;
+    let earningsReactionPayload = askTicker ? earningsReactionPayloads[askTicker] : null;
+
+    if (request.intent === 'earnings_reaction' && askTicker && !earningsReactionPayload) {
+      setAskLoading(true);
+      try {
+        earningsReactionPayload = await fetchEarningsGapSummaryPayload(askTicker);
+        setEarningsReactionPayloads((current) => ({
+          ...current,
+          [askTicker]: earningsReactionPayload
+        }));
+      } catch (err) {
+        console.warn(`Failed to load CrowdRisk earnings reaction context for ${askTicker}`, err);
+      } finally {
+        setAskLoading(false);
+      }
+    }
+
+    const response = answerAskCrowdRiskQuestion({
+      question: askQuery,
+      locale,
+      payload,
+      stockPerformancePayload,
+      referencePeerMapPayload,
+      earningsReactionPayload
+    });
     setAskResponse(response);
-    if (response?.ticker || resolvedTicker) setSelectedTicker(response?.ticker || resolvedTicker);
+    if (response?.ticker || askTicker) setSelectedTicker(response?.ticker || askTicker);
   };
 
   const lifecycleCards = [
@@ -378,7 +411,16 @@ function CrowdRiskHome({ payload, loading, error, stockPerformancePayload, refer
           </div>
         </header>
 
-        {hasAskResult && (
+        {askLoading && (
+          <section className="crowdrisk-inline-summary crowdrisk-inline-summary--answer" aria-label={copy.summaryKicker}>
+            <div className="crowdrisk-ask-answer-main">
+              <strong>{copy.summaryKicker}</strong>
+              <p>{locale === 'zh' ? '正在讀取 earnings truth context...' : 'Loading earnings truth context...'}</p>
+            </div>
+          </section>
+        )}
+
+        {!askLoading && hasAskResult && (
           askResponse ? (
             <section className="crowdrisk-inline-summary crowdrisk-inline-summary--answer" aria-label={copy.summaryKicker}>
               <div className="crowdrisk-ask-answer-main">
