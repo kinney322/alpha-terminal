@@ -8,7 +8,7 @@ const NOT_VERIFIED_ZH = 'CrowdRisk 目前未能用已驗證資料回答這個問
 const TICKER_STOPWORDS = new Set([
   'A', 'AN', 'AND', 'ARE', 'AS', 'CAP', 'CHEAP', 'CROWRISK', 'DAY', 'DAYS', 'DO', 'DOES',
   'EARNINGS', 'EXPENSIVE', 'FOR', 'FROM', 'HOW', 'IN', 'IS', 'MARKET', 'MONTH', 'MOMENTUM',
-  'OF', 'OR', 'RANK', 'REASONABLE', 'RETURN', 'THE', 'TO', 'VALUATION', 'WEEK', 'WHAT'
+  'OF', 'OR', 'PRICE', 'RANK', 'REASONABLE', 'RETURN', 'TARGET', 'THE', 'TO', 'VALUATION', 'WEEK', 'WHAT'
 ]);
 
 const normalizeTicker = (value) => String(value || '').trim().toUpperCase();
@@ -187,17 +187,35 @@ const resolveExpectationGapFrame = (valuationCore) => {
 
 const expectationLabel = (value, language) => {
   const labels = {
-    supportive: language === 'zh' ? 'supportive / 支持' : 'supportive',
-    weakening: language === 'zh' ? 'weakening / 轉弱' : 'weakening',
-    demanding: language === 'zh' ? 'demanding / 要求高' : 'demanding',
-    low: language === 'zh' ? 'low / 低' : 'low',
-    high: language === 'zh' ? 'high / 高' : 'high',
-    not_yet_proven_to_exceed: language === 'zh' ? 'not yet proven to exceed expectations / 尚未證明超越市場期待' : 'not yet proven to exceed expectations',
-    meets_but_not_clearly_exceeds: language === 'zh' ? 'meets but not clearly exceeds expectations / 符合但未明顯超越期待' : 'meets but not clearly exceeds expectations',
-    not_verified: language === 'zh' ? 'Not verified / 未驗證' : 'Not verified'
+    supportive: language === 'zh' ? '有支持' : 'supportive',
+    weakening: language === 'zh' ? '轉弱' : 'weakening',
+    demanding: language === 'zh' ? '要求高' : 'demanding',
+    low: language === 'zh' ? '低' : 'low',
+    high: language === 'zh' ? '高' : 'high',
+    not_yet_proven_to_exceed: language === 'zh' ? '尚未證明超越市場期待' : 'not yet proven to exceed expectations',
+    meets_but_not_clearly_exceeds: language === 'zh' ? '符合但未明顯超越期待' : 'meets but not clearly exceeds expectations',
+    not_verified: language === 'zh' ? '未驗證' : 'Not verified'
   };
   return labels[value] || labels.not_verified;
 };
+
+const expectationFactLabels = (language) => language === 'zh'
+  ? {
+    businessEvidence: '業務證據',
+    marketExpectation: '市場期待',
+    expectationGap: '期待差距',
+    valuationTolerance: '估值容錯',
+    valuationRange: '估值區間',
+    median: '中位數'
+  }
+  : {
+    businessEvidence: 'Business evidence',
+    marketExpectation: 'Market expectation',
+    expectationGap: 'Expectation gap',
+    valuationTolerance: 'Valuation tolerance',
+    valuationRange: 'Valuation range',
+    median: 'Median implied price'
+  };
 
 const metricById = (metrics, id) => (metrics || []).find((metric) => metric.id === id);
 
@@ -215,6 +233,19 @@ const buildExpectationEvidenceLine = (ticker, language, valuationCore) => {
   const fcfMargin = formatMetricValue(metricById(valuationCore?.coreMetrics, 'fcf_margin'));
   const evRevenue = formatMetricValue(metricById(valuationCore?.coreMetrics, 'ev_revenue'));
   const evFcf = formatMetricValue(metricById(valuationCore?.coreMetrics, 'ev_fcf'));
+
+  if (language === 'zh') {
+    const supportParts = [
+      revenueGrowth ? `收入增長 ${revenueGrowth}` : null,
+      fcfMargin ? `自由現金流利潤率 ${fcfMargin}` : null
+    ].filter(Boolean);
+    const expectationParts = [
+      evRevenue ? `${evRevenue} FY2026 收入` : null,
+      evFcf ? `${evFcf} FY2026 自由現金流` : null
+    ].filter(Boolean);
+    return `${ticker} 的業務證據仍然有支持${supportParts.length ? `：${supportParts.join('、')}` : ''}；但市場估值${expectationParts.length ? `大約是 ${expectationParts.join(' / ')}` : '已經偏高'}，已經反映多年增長和高現金利潤率的期待。`;
+  }
+
   const supportParts = [
     revenueGrowth ? `revenue growth ${revenueGrowth}` : null,
     fcfMargin ? `FCF margin ${fcfMargin}` : null
@@ -223,11 +254,6 @@ const buildExpectationEvidenceLine = (ticker, language, valuationCore) => {
     evRevenue ? `${evRevenue} FY2026 revenue` : null,
     evFcf ? `${evFcf} FY2026 FCF` : null
   ].filter(Boolean);
-
-  if (language === 'zh') {
-    return `${ticker} 的 business evidence 仍然有支持${supportParts.length ? `：${supportParts.join('、')}` : ''}；但市場估值${expectationParts.length ? `大約是 ${expectationParts.join(' / ')}` : '已經偏高'}，已經反映多年增長和高 cash margin 的期待。`;
-  }
-
   return `${ticker}'s business evidence is still supportive${supportParts.length ? `: ${supportParts.join(', ')}` : ''}; but valuation${expectationParts.length ? ` is roughly ${expectationParts.join(' / ')}` : ' is already demanding'}, so the market is already pricing in years of growth and high cash-margin execution.`;
 };
 
@@ -839,6 +865,13 @@ const buildValuationSnapshotAnswer = ({ ticker, language, stockPerformancePayloa
   const rangeDisplay = low !== null && high !== null ? `${formatWholePrice(low)}-${formatWholePrice(high)}` : null;
   const medianDisplay = median !== null ? formatWholePrice(median) : null;
   const expectationFrame = resolveExpectationGapFrame(valuationCore);
+  const labels = expectationFactLabels(language);
+  const rangeLineZh = rangeDisplay && medianDisplay
+    ? `如果你問的「目標價」是指 CrowdRisk 估值區間，根據 CrowdRisk model，目前 model-implied valuation range 是 ${rangeDisplay}，中位數 ${medianDisplay}。`
+    : '目前 CrowdRisk model 的資料不足以產生完整估值區間。';
+  const rangeLineEn = rangeDisplay && medianDisplay
+    ? `If by price target you mean CrowdRisk's valuation range, the CrowdRisk model currently implies ${rangeDisplay}, with a median implied price of ${medianDisplay}.`
+    : 'The current CrowdRisk model does not have enough verified inputs to produce a complete valuation range.';
 
   return response({
     intent: 'valuation_snapshot',
@@ -861,29 +894,25 @@ const buildValuationSnapshotAnswer = ({ ticker, language, stockPerformancePayloa
       valuation_tolerance: expectationFrame.valuationTolerance
     },
     factsList: [
-      { label: language === 'zh' ? 'Business Evidence' : 'Business Evidence', value: expectationLabel(expectationFrame.businessEvidence, language) },
-      { label: language === 'zh' ? 'Market Expectation' : 'Market Expectation', value: expectationLabel(expectationFrame.marketExpectation, language) },
-      { label: language === 'zh' ? 'Expectation Gap' : 'Expectation Gap', value: expectationLabel(expectationFrame.expectationGap, language) },
-      { label: language === 'zh' ? 'Valuation Tolerance' : 'Valuation Tolerance', value: expectationLabel(expectationFrame.valuationTolerance, language) },
-      { label: language === 'zh' ? '估值區間' : 'Valuation range', value: rangeDisplay || 'Not verified' },
-      { label: language === 'zh' ? '中位數' : 'Median implied price', value: medianDisplay || 'Not verified' }
+      { label: labels.businessEvidence, value: expectationLabel(expectationFrame.businessEvidence, language) },
+      { label: labels.marketExpectation, value: expectationLabel(expectationFrame.marketExpectation, language) },
+      { label: labels.expectationGap, value: expectationLabel(expectationFrame.expectationGap, language) },
+      { label: labels.valuationTolerance, value: expectationLabel(expectationFrame.valuationTolerance, language) },
+      { label: labels.valuationRange, value: rangeDisplay || 'Not verified' },
+      { label: labels.median, value: medianDisplay || 'Not verified' }
     ],
     lines: language === 'zh'
       ? [
         `${ticker} 目前不是便宜股。CrowdRisk 的估值框架顯示，它屬於「高質素但高要求」的情況。`,
-        `Business evidence: ${expectationLabel(expectationFrame.businessEvidence, language)}。Market expectation: ${expectationLabel(expectationFrame.marketExpectation, language)}。Expectation gap: ${expectationLabel(expectationFrame.expectationGap, language)}。Valuation tolerance: ${expectationLabel(expectationFrame.valuationTolerance, language)}。`,
-        rangeDisplay && medianDisplay
-          ? `根據 CrowdRisk model，model-implied valuation range 是 ${rangeDisplay}，中位數 ${medianDisplay}。`
-          : '目前 CrowdRisk model 未能產生完整 model-implied valuation range。',
+        `CrowdRisk 目前看到的是：業務證據${expectationLabel(expectationFrame.businessEvidence, language)}，市場期待${expectationLabel(expectationFrame.marketExpectation, language)}，期待差距${expectationLabel(expectationFrame.expectationGap, language)}，估值容錯${expectationLabel(expectationFrame.valuationTolerance, language)}。`,
+        rangeLineZh,
         buildExpectationEvidenceLine(ticker, language, valuationCore),
         `白話講，問題不只是「${ticker} 好不好」，而是「${ticker} 是否好得超過市場已經相信的程度」。如果只是符合預期，估值未必有太多容錯；如果增長、NRR 或 FCF margin 放慢，重新定價風險會比較高。這不是最終買賣決定。`
       ]
       : [
         `${ticker} does not screen as cheap. CrowdRisk's valuation framework reads it as high quality, but high expectation.`,
         `Business evidence: ${expectationLabel(expectationFrame.businessEvidence, language)}. Market expectation: ${expectationLabel(expectationFrame.marketExpectation, language)}. Expectation gap: ${expectationLabel(expectationFrame.expectationGap, language)}. Valuation tolerance: ${expectationLabel(expectationFrame.valuationTolerance, language)}.`,
-        rangeDisplay && medianDisplay
-          ? `Based on the CrowdRisk model, the model-implied valuation range is ${rangeDisplay}, with a median implied price of ${medianDisplay}.`
-          : 'The current CrowdRisk model does not produce a complete model-implied valuation range.',
+        rangeLineEn,
         buildExpectationEvidenceLine(ticker, language, valuationCore),
         `Plainly, the question is not only whether ${ticker} is good. It is whether ${ticker} can be good enough to exceed what the market already believes. If it merely meets expectations, valuation tolerance may stay low; if growth, NRR, or FCF margin slows, repricing risk rises. This is not a final investment decision.`
       ],
