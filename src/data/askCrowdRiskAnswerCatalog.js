@@ -120,8 +120,8 @@ export const ASK_CROWDRISK_ANSWER_CATALOG = [
     allowedJudgment: ['market-performance context'],
     bannedWording: ['company-quality conclusion from performance alone'],
     trigger: {
-      enPatterns: [/\b(performance|return|1m|1 month|one month|1w|week|today|ytd)\b/],
-      zhTerms: ['回報', '升咗', '跌咗', '表現', '一個月', '一星期', '今日']
+      enPatterns: [/\b(performance|price performance|return|1m|1 month|one month|1w|week|today|ytd)\b/],
+      zhTerms: ['回報', '升咗', '跌咗', '表現', '股價走勢', '一個月', '一星期', '今日']
     }
   },
   {

@@ -769,9 +769,16 @@ const buildStockPerformanceAnswer = ({ question, ticker, language, stockPerforma
   }
 
   const periodFacts = Object.fromEntries(periods.map((period) => [period.label, period.formattedValue]));
-  const periodFactsList = periods.map((period) => ({ label: period.label, value: period.formattedValue }));
+  const periodFactsList = periods.map((period) => ({ label: period.displayLabel, value: period.formattedValue }));
   const requestedDirectAnswer = requestedPeriods.length === 1 && periods.length === 1;
   const requestedPeriod = periods[0];
+  const asOfDate = stockPerformancePayload?.meta?.as_of_date;
+  const periodSummary = periods
+    .map((period) => `${period.displayLabel} ${period.formattedValue}`)
+    .join(language === 'zh' ? '，' : ', ');
+  const asOfLine = language === 'zh'
+    ? (asOfDate ? `資料日期是 ${asOfDate}。` : '資料日期目前未驗證。')
+    : (asOfDate ? `Data as of ${asOfDate}.` : 'The as-of date is not verified.');
 
   return response({
     intent: 'stock_performance',
@@ -784,21 +791,21 @@ const buildStockPerformanceAnswer = ({ question, ticker, language, stockPerforma
     lines: language === 'zh'
       ? (requestedDirectAnswer ? [
         `${ticker} 的${requestedPeriod.displayLabel}回報是 ${requestedPeriod.formattedValue}。`,
-        stockPerformancePayload?.meta?.as_of_date ? `資料 as of ${stockPerformancePayload.meta.as_of_date}。` : 'as-of date 目前未驗證。',
-        '這是股價表現資料，不是公司質素或最終買賣決定。'
+        asOfLine,
+        '白話講，這反映的是指定期間的股價走勢，不代表公司質素已被證明，也不是估值結論或最終買賣決定。'
       ] : [
-        `${ticker} 的 CrowdRisk stock-performance context：${periods.map((period) => `${period.label} ${period.formattedValue}`).join('，')}。`,
-        stockPerformancePayload?.meta?.as_of_date ? `資料 as of ${stockPerformancePayload.meta.as_of_date}。` : 'as-of date 目前未驗證。',
-        '這是股價表現資料，不是公司質素或最終買賣決定。'
+        `${ticker} 的 CrowdRisk 股價表現：${periodSummary}。`,
+        asOfLine,
+        '白話講，這是不同期間的股價走勢摘要，不代表公司質素已被證明，也不是估值結論或最終買賣決定。'
       ])
       : (requestedDirectAnswer ? [
         `${ticker}'s ${requestedPeriod.label} return is ${requestedPeriod.formattedValue}.`,
-        stockPerformancePayload?.meta?.as_of_date ? `Data as of ${stockPerformancePayload.meta.as_of_date}.` : 'The as-of date is not verified.',
-        'This is price-performance data, not a company-quality conclusion or final investment decision.'
+        asOfLine,
+        'Plainly, this reflects price action over the requested period. It is not proof of company quality, a valuation conclusion, or a final investment decision.'
       ] : [
-        `${ticker}'s CrowdRisk stock-performance context: ${periods.map((period) => `${period.label} ${period.formattedValue}`).join(', ')}.`,
-        stockPerformancePayload?.meta?.as_of_date ? `Data as of ${stockPerformancePayload.meta.as_of_date}.` : 'The as-of date is not verified.',
-        'This is price-performance data, not a company-quality conclusion or final investment decision.'
+        `${ticker}'s CrowdRisk price-performance summary: ${periodSummary}.`,
+        asOfLine,
+        'Plainly, this is a snapshot of price action across periods. It is not proof of company quality, a valuation conclusion, or a final investment decision.'
       ]),
     action: { type: 'open_dossier', label: language === 'zh' ? '打開股票檔案' : 'Open Dossier' }
   });
