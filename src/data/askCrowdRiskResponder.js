@@ -890,7 +890,7 @@ const buildDynamicEarningsReactionAnswer = ({ question, ticker, language, earnin
         asksDrift
           ? `換句話說，這個數字看的是首個反應日收市後，股價到第 ${horizon} 個交易日收市時有沒有繼續向上或回吐。`
           : `這個回報是由財報公布前一個收市價，計到財報後第 ${horizon} 個交易日收市價。`,
-        '這是市場反應資料，不是最終買賣決定。'
+        '這反映的是財報後股價走勢，不是最終買賣決定。'
       ]
       : [
         asksDrift
@@ -900,7 +900,7 @@ const buildDynamicEarningsReactionAnswer = ({ question, ticker, language, earnin
         asksDrift
           ? `In plain English, this measures whether the stock kept moving or gave back gains after the first reaction-session close, through the ${horizon}th trading-day close.`
           : `The return is measured from the pre-earnings close to the close of the ${horizon}th trading day after the release.`,
-        'This is market-reaction evidence, not a final investment decision.'
+        'This reflects how the stock traded after earnings, not a final investment decision.'
       ],
     action: { type: 'open_event_study', label: language === 'zh' ? '打開事件研究' : 'Open Event Study' }
   });
@@ -1033,7 +1033,7 @@ const buildEarningsReactionAnswer = ({ question, ticker, language, earningsReact
         asksDrift
           ? `換句話說，這個數字看的是首個反應日收市後，股價到第 ${horizon} 個交易日收市時有沒有繼續向上或回吐。`
           : `這個回報是由財報公布前一個收市價，計到財報後第 ${horizon} 個交易日收市價。`,
-        '這是市場反應資料，不是最終買賣決定。'
+        '這反映的是財報後股價走勢，不是最終買賣決定。'
       ]
       : [
         asksDrift
@@ -1043,7 +1043,7 @@ const buildEarningsReactionAnswer = ({ question, ticker, language, earningsReact
         asksDrift
           ? `In plain English, this measures whether the stock kept moving or gave back gains after the first reaction-session close, through the ${horizon}th trading-day close.`
           : `The return is measured from the pre-earnings close to the close of the ${horizon}th trading day after the release.`,
-        'This is market-reaction evidence, not a final investment decision.'
+        'This reflects how the stock traded after earnings, not a final investment decision.'
       ],
     action: { type: 'open_event_study', label: language === 'zh' ? '打開事件研究' : 'Open Event Study' }
   });
