@@ -6,6 +6,7 @@ const V1_1_URL = `${API_BASE}/event-opportunity/radar-v1.1-latest`;
 const PREOPEN_CATALYST_URL = `${API_BASE}/event-opportunity/preopen-catalyst-radar-latest`;
 const STOCK_PERFORMANCE_URL = `${API_BASE}/event-opportunity/stock-performance-latest`;
 const REFERENCE_PEER_MAP_URL = `${API_BASE}/event-opportunity/reference-peer-map-latest`;
+const EARNINGS_REACTION_RETURN_URL = `${API_BASE}/event-study/earnings-reaction-return`;
 const LOCAL_ENRICHED_PAYLOAD_URL = 'http://127.0.0.1:5055/radar-v1.2-enriched.module.preview.json';
 
 function shouldUseLocalEnrichedPayload() {
@@ -54,6 +55,14 @@ function isValidEarningsGapSummaryPayload(payload) {
   if (!payload || typeof payload !== 'object' || Array.isArray(payload)) return false;
   if (!payload.ticker) return false;
   if (!Array.isArray(payload.quarter_log)) return false;
+  return true;
+}
+
+function isValidEarningsReactionReturnPayload(payload) {
+  if (!payload || typeof payload !== 'object' || Array.isArray(payload)) return false;
+  if (payload.ok !== true || payload.status !== 'verified') return false;
+  if (!payload.event || typeof payload.event !== 'object') return false;
+  if (!payload.metrics || typeof payload.metrics !== 'object') return false;
   return true;
 }
 
@@ -173,6 +182,45 @@ export async function fetchEarningsGapSummaryPayload(ticker) {
   const data = await res.json();
   if (!isValidEarningsGapSummaryPayload(data)) {
     throw new Error(`Earnings gap summary for ${normalizedTicker} is not a valid schema`);
+  }
+
+  return data;
+}
+
+export async function fetchEarningsReactionReturnPayload(request) {
+  const normalizedTicker = String(request?.ticker || '').trim().toUpperCase();
+  const horizon = Number(request?.horizon);
+  if (!normalizedTicker) {
+    throw new Error('Ticker is required for earnings reaction return');
+  }
+  if (!Number.isInteger(horizon) || horizon < 1 || horizon > 252) {
+    throw new Error('A valid R+N horizon is required for earnings reaction return');
+  }
+
+  const params = new URLSearchParams({
+    symbol: normalizedTicker,
+    horizon: String(horizon),
+    metric: request?.metric || 'both'
+  });
+
+  if (request?.release_date) {
+    params.set('release_date', request.release_date);
+  } else if (request?.latest) {
+    params.set('latest', 'true');
+  } else {
+    if (request?.year) params.set('year', String(request.year));
+    if (request?.month) params.set('month', String(request.month));
+    if (request?.calendar_quarter) params.set('calendar_quarter', String(request.calendar_quarter));
+  }
+
+  const res = await fetch(`${EARNINGS_REACTION_RETURN_URL}?${params.toString()}`, { headers: { Accept: 'application/json' } });
+  const data = await res.json().catch(() => null);
+  if (!res.ok) {
+    const reason = data?.error || `Earnings reaction return unavailable for ${normalizedTicker} (${res.status})`;
+    throw new Error(reason);
+  }
+  if (!isValidEarningsReactionReturnPayload(data)) {
+    throw new Error(`Earnings reaction return for ${normalizedTicker} is not a valid verified schema`);
   }
 
   return data;

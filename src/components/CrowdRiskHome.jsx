@@ -2,8 +2,8 @@ import { useState } from 'react';
 import PublicLeaderboardPreview from './PublicLeaderboardPreview.jsx';
 import { getStockDossierProfile } from '../data/stockDossierProfiles.js';
 import { resolveReferencePeerEcosystemSnapshot } from '../data/referencePeerMapAdapter.js';
-import { answerAskCrowdRiskQuestion, resolveAskCrowdRiskRequest } from '../data/askCrowdRiskResponder.js';
-import { fetchEarningsGapSummaryPayload } from '../data/payloadAdapter.js';
+import { answerAskCrowdRiskQuestion, resolveAskCrowdRiskRequest, resolveEarningsReactionReturnRequest } from '../data/askCrowdRiskResponder.js';
+import { fetchEarningsGapSummaryPayload, fetchEarningsReactionReturnPayload } from '../data/payloadAdapter.js';
 
 const HOME_COPY = {
   en: {
@@ -264,6 +264,7 @@ function CrowdRiskHome({ payload, loading, error, stockPerformancePayload, refer
   const [askResponse, setAskResponse] = useState(null);
   const [askLoading, setAskLoading] = useState(false);
   const [earningsReactionPayloads, setEarningsReactionPayloads] = useState({});
+  const [earningsReactionReturnPayloads, setEarningsReactionReturnPayloads] = useState({});
 
   const confluence = buildConfluenceSummary(selectedTicker, payload, referencePeerMapPayload, copy);
   const hasAskResult = Boolean(askResponse || selectedTicker);
@@ -301,20 +302,39 @@ function CrowdRiskHome({ payload, loading, error, stockPerformancePayload, refer
     });
     const askTicker = request.ticker || resolvedTicker;
     let earningsReactionPayload = askTicker ? earningsReactionPayloads[askTicker] : null;
+    let earningsReactionReturnPayload = null;
 
-    if (request.intent === 'earnings_reaction' && askTicker && !earningsReactionPayload) {
+    if (request.intent === 'earnings_reaction' && askTicker) {
       setAskLoading(true);
       try {
-        earningsReactionPayload = await fetchEarningsGapSummaryPayload(askTicker);
-        setEarningsReactionPayloads((current) => ({
-          ...current,
-          [askTicker]: earningsReactionPayload
-        }));
+        const dynamicRequest = resolveEarningsReactionReturnRequest({ question: askQuery, ticker: askTicker });
+        const dynamicCacheKey = dynamicRequest ? JSON.stringify(dynamicRequest) : null;
+        if (dynamicCacheKey) {
+          earningsReactionReturnPayload = earningsReactionReturnPayloads[dynamicCacheKey] || null;
+          if (!earningsReactionReturnPayload) {
+            earningsReactionReturnPayload = await fetchEarningsReactionReturnPayload(dynamicRequest);
+            setEarningsReactionReturnPayloads((current) => ({
+              ...current,
+              [dynamicCacheKey]: earningsReactionReturnPayload
+            }));
+          }
+        }
       } catch (err) {
-        console.warn(`Failed to load CrowdRisk earnings reaction context for ${askTicker}`, err);
-      } finally {
-        setAskLoading(false);
+        console.warn(`Failed to load CrowdRisk dynamic earnings reaction return for ${askTicker}`, err);
       }
+
+      if (!earningsReactionReturnPayload && !earningsReactionPayload) {
+        try {
+          earningsReactionPayload = await fetchEarningsGapSummaryPayload(askTicker);
+          setEarningsReactionPayloads((current) => ({
+            ...current,
+            [askTicker]: earningsReactionPayload
+          }));
+        } catch (err) {
+          console.warn(`Failed to load CrowdRisk earnings reaction context for ${askTicker}`, err);
+        }
+      }
+      setAskLoading(false);
     }
 
     const response = answerAskCrowdRiskQuestion({
@@ -323,7 +343,8 @@ function CrowdRiskHome({ payload, loading, error, stockPerformancePayload, refer
       payload,
       stockPerformancePayload,
       referencePeerMapPayload,
-      earningsReactionPayload
+      earningsReactionPayload,
+      earningsReactionReturnPayload
     });
     setAskResponse(response);
     if (response?.ticker || askTicker) setSelectedTicker(response?.ticker || askTicker);

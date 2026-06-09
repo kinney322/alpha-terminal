@@ -660,6 +660,17 @@ const parseRequestedHorizon = (question) => {
   return null;
 };
 
+const parseExplicitReleaseDate = (question) => {
+  const raw = String(question || '');
+  const isoMatch = raw.match(/\b(20\d{2})-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])\b/);
+  if (isoMatch) return isoMatch[0];
+
+  const zhMatch = raw.match(/(20\d{2})\s*年\s*(1[0-2]|[1-9])\s*月\s*(3[01]|[12]\d|[1-9])\s*(?:日|號)/);
+  if (!zhMatch) return null;
+  const [, year, month, day] = zhMatch;
+  return `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+};
+
 const parseQuestionDateFilter = (question) => {
   const raw = String(question || '');
   const text = raw.toLowerCase();
@@ -675,6 +686,44 @@ const parseQuestionDateFilter = (question) => {
 };
 
 const quarterForMonth = (month) => Math.floor((Number(month) - 1) / 3) + 1;
+
+export const resolveEarningsReactionReturnRequest = ({ question, ticker }) => {
+  const normalizedTicker = normalizeTicker(ticker);
+  const horizon = parseRequestedHorizon(question);
+  if (!normalizedTicker || !horizon) return null;
+
+  const releaseDate = parseExplicitReleaseDate(question);
+  const filter = parseQuestionDateFilter(question);
+  const asksDrift = /post[-_ ]?reaction|drift|post earnings drift|漂移|延續/.test(String(question || '').toLowerCase())
+    || /漂移|延續/.test(String(question || ''));
+
+  const request = {
+    ticker: normalizedTicker,
+    horizon,
+    metric: asksDrift ? 'post_reaction_drift' : 'both'
+  };
+
+  if (releaseDate) {
+    request.release_date = releaseDate;
+    return request;
+  }
+  if (filter.latest) {
+    request.latest = true;
+    return request;
+  }
+  if (filter.year && filter.month) {
+    request.year = filter.year;
+    request.month = filter.month;
+    return request;
+  }
+  if (filter.year && filter.quarter) {
+    request.year = filter.year;
+    request.calendar_quarter = filter.quarter;
+    return request;
+  }
+
+  return null;
+};
 
 const resolveEarningsEventRow = (question, earningsReactionPayload) => {
   const rows = Array.isArray(earningsReactionPayload?.quarter_log) ? earningsReactionPayload.quarter_log : [];
@@ -739,7 +788,86 @@ const inferReactionTiming = (row, language) => {
   };
 };
 
-const buildEarningsReactionAnswer = ({ question, ticker, language, earningsReactionPayload }) => {
+const buildDynamicEarningsReactionAnswer = ({ question, ticker, language, earningsReactionReturnPayload }) => {
+  if (!earningsReactionReturnPayload || earningsReactionReturnPayload.status !== 'verified') return null;
+
+  const horizon = toFiniteNumber(earningsReactionReturnPayload?.metrics?.horizon) || parseRequestedHorizon(question);
+  const asksDrift = /post[-_ ]?reaction|drift|post earnings drift|漂移|延續/.test(String(question || '').toLowerCase())
+    || /漂移|延續/.test(String(question || ''));
+  const value = asksDrift
+    ? toFiniteNumber(earningsReactionReturnPayload?.metrics?.post_reaction_drift)
+    : toFiniteNumber(earningsReactionReturnPayload?.metrics?.earnings_return);
+  const displayReturn = ratioToPercent(value);
+  if (!horizon || !displayReturn) return null;
+
+  const event = earningsReactionReturnPayload.event || {};
+  const prices = earningsReactionReturnPayload.prices || {};
+  const definitions = earningsReactionReturnPayload.definitions || {};
+  const timingLabel = event.timing_basis || event.verified_timing || 'Not verified';
+  const metricLabel = asksDrift ? `Post-reaction drift to R+${horizon}` : `R+${horizon} earnings return`;
+  const definition = asksDrift
+    ? definitions.post_reaction_drift || 'R+N close / reaction_day close - 1'
+    : definitions.r_plus_n_earnings_return || 'R+N close / previous_close - 1';
+
+  return response({
+    intent: 'earnings_reaction',
+    language,
+    ticker,
+    verifiedStatus: 'verified',
+    source: {
+      feed: 'earnings-reaction-return',
+      generated_at: earningsReactionReturnPayload?.source?.generated_at || null,
+      as_of: event.release_date || null
+    },
+    facts: {
+      release_date: event.release_date || null,
+      reaction_day: event.reaction_day || null,
+      timing_basis: timingLabel,
+      horizon,
+      metric: asksDrift ? 'post_reaction_drift' : 'r_plus_n_earnings_return',
+      value,
+      target_date: prices.target_date || null,
+      previous_close: prices.previous_close ?? null,
+      reaction_day_close: prices.reaction_day_close ?? null,
+      target_close: prices.target_close ?? null,
+      definition
+    },
+    definitions: {
+      r_plus_n_earnings_return: definitions.r_plus_n_earnings_return || 'R+N close / previous_close - 1',
+      post_reaction_drift: definitions.post_reaction_drift || 'R+N close / reaction_day close - 1',
+      reaction_day: 'AMC uses the next trading day; BMO uses the same trading day.'
+    },
+    factsList: [
+      { label: 'Release', value: event.release_date || 'Not verified' },
+      { label: 'Reaction day', value: event.reaction_day || 'Not verified' },
+      { label: 'Timing basis', value: timingLabel },
+      { label: metricLabel, value: displayReturn }
+    ],
+    lines: language === 'zh'
+      ? [
+        `${ticker} ${event.release_date || ''} 這次財報的 ${metricLabel} 是 ${displayReturn}。`,
+        `CrowdRisk 先確認公布時段同 reaction_day：${timingLabel}，reaction_day 是 ${event.reaction_day || '未驗證'}。`,
+        asksDrift
+          ? `這裡的 post-reaction drift 是 ${definition}，即由 reaction_day close 到 R+${horizon} close。`
+          : `這裡的 R+${horizon} earnings return 是 ${definition}，即由 previous_close 到 R+${horizon} close。`,
+        '這是 CrowdRisk backend verified earnings truth / OHLCV calculation，不是最終買賣決定。'
+      ]
+      : [
+        `${ticker}'s ${metricLabel} for the ${event.release_date || 'selected'} earnings event is ${displayReturn}.`,
+        `CrowdRisk first verifies timing and reaction_day: ${timingLabel}; reaction_day is ${event.reaction_day || 'not verified'}.`,
+        asksDrift
+          ? `This post-reaction drift uses ${definition}, from reaction-day close to R+${horizon} close.`
+          : `This R+${horizon} earnings return uses ${definition}, from previous_close to R+${horizon} close.`,
+        'This is CrowdRisk backend verified earnings truth / OHLCV calculation, not a final investment decision.'
+      ],
+    action: { type: 'open_event_study', label: language === 'zh' ? '打開事件研究' : 'Open Event Study' }
+  });
+};
+
+const buildEarningsReactionAnswer = ({ question, ticker, language, earningsReactionPayload, earningsReactionReturnPayload }) => {
+  const dynamicAnswer = buildDynamicEarningsReactionAnswer({ question, ticker, language, earningsReactionReturnPayload });
+  if (dynamicAnswer) return dynamicAnswer;
+
   if (!earningsReactionPayload) {
     return buildNotVerified({
       intent: 'earnings_reaction',
@@ -872,7 +1000,7 @@ const buildEarningsReactionAnswer = ({ question, ticker, language, earningsReact
   });
 };
 
-export const answerAskCrowdRiskQuestion = ({ question, locale = 'en', payload = null, stockPerformancePayload = null, referencePeerMapPayload = null, earningsReactionPayload = null }) => {
+export const answerAskCrowdRiskQuestion = ({ question, locale = 'en', payload = null, stockPerformancePayload = null, referencePeerMapPayload = null, earningsReactionPayload = null, earningsReactionReturnPayload = null }) => {
   const { language, ticker, intent } = resolveAskCrowdRiskRequest({ question, locale, payload, stockPerformancePayload, referencePeerMapPayload });
 
   if (!ticker) {
@@ -890,7 +1018,7 @@ export const answerAskCrowdRiskQuestion = ({ question, locale = 'en', payload = 
   if (intent === 'stock_performance') return buildStockPerformanceAnswer({ ticker, language, stockPerformancePayload });
   if (intent === 'momentum_rank') return buildMomentumRankAnswer({ ticker, language, payload });
   if (intent === 'valuation_snapshot') return buildValuationSnapshotAnswer({ ticker, language, stockPerformancePayload });
-  if (intent === 'earnings_reaction') return buildEarningsReactionAnswer({ question, ticker, language, earningsReactionPayload });
+  if (intent === 'earnings_reaction') return buildEarningsReactionAnswer({ question, ticker, language, earningsReactionPayload, earningsReactionReturnPayload });
 
   return buildCoverageStatusAnswer({ ticker, language, payload, stockPerformancePayload, referencePeerMapPayload });
 };
