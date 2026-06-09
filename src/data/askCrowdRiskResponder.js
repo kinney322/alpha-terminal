@@ -3,8 +3,13 @@ import { resolveReferencePeerEcosystemSnapshot } from './referencePeerMapAdapter
 import { resolveAskCrowdRiskCatalogEntry } from './askCrowdRiskAnswerCatalog.js';
 
 const MACRO_TICKERS = new Set(['SPY', 'QQQ']);
-const NOT_VERIFIED_EN = 'Not verified in current CrowdRisk backend context.';
-const NOT_VERIFIED_ZH = '目前 CrowdRisk backend context 未驗證這個答案。';
+const NOT_VERIFIED_EN = 'CrowdRisk cannot answer this with verified data yet.';
+const NOT_VERIFIED_ZH = 'CrowdRisk 目前未能用已驗證資料回答這個問題。';
+const TICKER_STOPWORDS = new Set([
+  'A', 'AN', 'AND', 'ARE', 'AS', 'CAP', 'CHEAP', 'CROWRISK', 'DAY', 'DAYS', 'DO', 'DOES',
+  'EARNINGS', 'EXPENSIVE', 'FOR', 'FROM', 'HOW', 'IN', 'IS', 'MARKET', 'MONTH', 'MOMENTUM',
+  'OF', 'OR', 'RANK', 'REASONABLE', 'RETURN', 'THE', 'TO', 'VALUATION', 'WEEK', 'WHAT'
+]);
 
 const normalizeTicker = (value) => String(value || '').trim().toUpperCase();
 
@@ -236,7 +241,10 @@ const getAvailableTickers = ({ payload, stockPerformancePayload, referencePeerMa
 const extractTicker = (question, payloads) => {
   const tokens = String(question || '').toUpperCase().match(/\b[A-Z]{1,6}\b/g) || [];
   const available = getAvailableTickers(payloads);
-  return tokens.find((token) => available.has(token) || MACRO_TICKERS.has(token)) || tokens[0] || '';
+  return tokens.find((token) => available.has(token) || MACRO_TICKERS.has(token))
+    || tokens.find((token) => !TICKER_STOPWORDS.has(token))
+    || tokens[0]
+    || '';
 };
 
 const detectIntent = (question) => {
@@ -293,11 +301,11 @@ const buildNotVerified = ({ intent, language, ticker, source = null, reason }) =
   lines: language === 'zh'
     ? [
       `${ticker ? `${ticker}：` : ''}${notVerifiedText(language)}`,
-      reason || '目前沒有足夠 CrowdRisk context pack 支持這個回答，所以我不能補估。'
+      reason || '目前沒有足夠已驗證資料支持這個回答，所以不會用估算補上。'
     ]
     : [
       `${ticker ? `${ticker}: ` : ''}${notVerifiedText(language)}`,
-      reason || 'The current CrowdRisk context pack does not support this answer, so I cannot fill it in by guessing.'
+      reason || 'CrowdRisk does not have enough verified data for this answer yet, so it will not fill it in by guessing.'
     ]
 });
 
@@ -392,11 +400,11 @@ const buildCoverageStatusAnswer = ({ ticker, language, payload, stockPerformance
       facts: { relationships, is_momentum_universe: isMomentum, has_stock_performance: hasReturns },
       factsList: [
         { label: language === 'zh' ? '覆蓋狀態' : 'Coverage', value: 'Active CrowdRisk coverage' },
-        { label: language === 'zh' ? '回報 feed' : 'Return feed', value: hasReturns ? 'Available' : 'Not verified' }
+        { label: language === 'zh' ? '回報資料' : 'Return data', value: hasReturns ? 'Available' : 'Not verified' }
       ],
       lines: language === 'zh'
-        ? [`${ticker} 是 active CrowdRisk coverage。`, '如果相關 feed 有資料，它可以出現在 Stock Dossier、Momentum Universe 或 stock-performance context。']
-        : [`${ticker} is active CrowdRisk coverage.`, 'When the relevant feeds have data, it can appear in Stock Dossier, Momentum Universe, or stock-performance context.'],
+        ? [`${ticker} 是 active CrowdRisk coverage。`, '如果相關資料可用，它可以出現在 Stock Dossier、Momentum Universe 或股價表現 context。']
+        : [`${ticker} is active CrowdRisk coverage.`, 'When the relevant data is available, it can appear in Stock Dossier, Momentum Universe, or price-performance context.'],
       action: { type: 'open_dossier', label: language === 'zh' ? '打開股票檔案' : 'Open Dossier' }
     });
   }
@@ -449,8 +457,8 @@ const buildCoverageStatusAnswer = ({ ticker, language, payload, stockPerformance
     language,
     ticker,
     reason: language === 'zh'
-      ? '目前 CrowdRisk feeds 沒有這個 ticker 的 active / reference / candidate coverage 狀態。'
-      : 'Current CrowdRisk feeds do not contain active / reference / candidate coverage status for this ticker.'
+      ? 'CrowdRisk 目前沒有這個 ticker 的 active / reference / candidate coverage 狀態。'
+      : 'CrowdRisk does not currently have active / reference / candidate coverage status for this ticker.'
   });
 };
 
@@ -463,8 +471,8 @@ const buildMarketCapAnswer = ({ ticker, language, stockPerformancePayload }) => 
       ticker,
       source: sourceMeta('stock-performance-latest', stockPerformancePayload),
       reason: language === 'zh'
-        ? 'stock-performance feed 目前沒有 verified market cap。'
-        : 'The stock-performance feed does not currently expose a verified market cap.'
+        ? 'CrowdRisk 目前沒有這隻股票的已核實市值。'
+        : 'CrowdRisk does not currently have a verified market cap for this ticker.'
     });
   }
   const marketCap = formatCurrency(capitalization.market_cap);
@@ -578,7 +586,9 @@ const buildStockPerformanceAnswer = ({ question, ticker, language, stockPerforma
       language,
       ticker,
       source: sourceMeta('stock-performance-latest', stockPerformancePayload),
-      reason: language === 'zh' ? 'stock-performance feed 沒有這個 ticker。' : 'The stock-performance feed does not contain this ticker.'
+      reason: language === 'zh'
+        ? 'CrowdRisk 目前沒有這隻股票的已核實股價表現資料。'
+        : 'CrowdRisk does not currently have verified price-performance data for this ticker.'
     });
   }
   const requestedPeriods = parseRequestedPerformancePeriods(question);
@@ -600,8 +610,8 @@ const buildStockPerformanceAnswer = ({ question, ticker, language, stockPerforma
       ticker,
       source: sourceMeta('stock-performance-latest', stockPerformancePayload),
       reason: language === 'zh'
-        ? 'stock-performance feed 目前沒有這個指定時間段的 verified return。'
-        : 'The stock-performance feed does not currently expose a verified return for the requested period.'
+        ? 'CrowdRisk 目前沒有這個指定時間段的已核實回報。'
+        : 'CrowdRisk does not currently have a verified return for the requested period.'
     });
   }
 
@@ -649,7 +659,9 @@ const buildMomentumRankAnswer = ({ ticker, language, payload }) => {
       language,
       ticker,
       source: sourceMeta('radar-v1.2-latest', payload),
-      reason: language === 'zh' ? 'momentum_universe.rankings 沒有這個 ticker。' : 'momentum_universe.rankings does not contain this ticker.'
+      reason: language === 'zh'
+        ? 'CrowdRisk 目前沒有這隻股票的已核實動能排名。'
+        : 'CrowdRisk does not currently have a verified momentum rank for this ticker.'
     });
   }
   const rank = row.scanner_rank || row.rank || null;
@@ -692,7 +704,9 @@ const buildValuationSnapshotAnswer = ({ ticker, language, stockPerformancePayloa
       language,
       ticker,
       source: { feed: 'stockDossierProfiles.js' },
-      reason: language === 'zh' ? '目前沒有 verified CrowdRisk valuation model inputs。' : 'No verified CrowdRisk valuation model inputs are available.'
+      reason: language === 'zh'
+        ? 'CrowdRisk 目前沒有足夠已核實估值輸入。'
+        : 'CrowdRisk does not currently have enough verified valuation inputs.'
     });
   }
   const snapshot = {
@@ -1063,8 +1077,8 @@ const buildDynamicEarningsReactionNotVerifiedAnswer = ({ question, ticker, langu
       ? `目前 CrowdRisk 未能核實 ${ticker} 這次 ${eventDate} 財報後第 ${horizon} 個交易日的收市價，所以不能回答 R+${horizon} 回報。`
       : `CrowdRisk cannot verify the ${formatOrdinal(horizon)} trading-day close after ${ticker}'s ${eventDate} earnings release yet, so it should not state an R+${horizon} return.`)
     : (language === 'zh'
-      ? `目前 CrowdRisk dynamic earnings retriever 回傳 ${reason || 'not_verified'}，所以不能補估這個回報。`
-      : `CrowdRisk's dynamic earnings retriever returned ${reason || 'not_verified'}, so it should not fill in this return by guessing.`);
+      ? `CrowdRisk 目前未能核實這個回報，所以不會用估算補上。`
+      : `CrowdRisk cannot verify this return yet, so it will not fill it in by guessing.`);
 
   return response({
     intent: 'earnings_reaction',
