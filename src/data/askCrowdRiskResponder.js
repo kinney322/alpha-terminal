@@ -45,6 +45,49 @@ const formatPercent = (value) => {
   return `${scaled > 0 ? '+' : ''}${scaled.toFixed(1)}%`;
 };
 
+const formatEventDate = (value, language) => {
+  const raw = String(value || '');
+  const match = raw.match(/^(20\d{2})-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$/);
+  if (!match) return raw || (language === 'zh' ? '這次' : 'the selected');
+  const [, year, month, day] = match;
+  if (language === 'zh') return `${year}年${Number(month)}月${Number(day)}日`;
+  const date = new Date(`${raw}T00:00:00Z`);
+  return new Intl.DateTimeFormat('en-US', { month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC' }).format(date);
+};
+
+const returnVerb = (value, language) => {
+  const numeric = toFiniteNumber(value);
+  if (language === 'zh') {
+    if (numeric === null) return '變動';
+    if (numeric > 0) return '上升';
+    if (numeric < 0) return '下跌';
+    return '大致持平';
+  }
+  if (numeric === null) return 'moved';
+  if (numeric > 0) return 'rose';
+  if (numeric < 0) return 'fell';
+  return 'was roughly flat';
+};
+
+const formatMoveAmount = (value, displayReturn) => {
+  const numeric = toFiniteNumber(value);
+  if (numeric !== null && numeric < 0) return String(displayReturn || '').replace(/^-/, '');
+  return displayReturn;
+};
+
+const timingNarrative = ({ timingLabel, reactionDay, language }) => {
+  const reactionDate = formatEventDate(reactionDay, language);
+  const normalized = String(timingLabel || '').toLowerCase();
+  if (language === 'zh') {
+    if (normalized.includes('amc')) return `這次按盤後公布處理，下一個交易日 ${reactionDate} 是首個市場反應日。`;
+    if (normalized.includes('bmo')) return `這次按盤前公布處理，${reactionDate} 是首個市場反應日。`;
+    return reactionDay ? `首個市場反應日是 ${reactionDate}。` : '首個市場反應日目前未能核實。';
+  }
+  if (normalized.includes('amc')) return `The release is treated as after the close, so ${reactionDate} is the first market reaction session.`;
+  if (normalized.includes('bmo')) return `The release is treated as before the open, so ${reactionDate} is the first market reaction session.`;
+  return reactionDay ? `The first market reaction session is ${reactionDate}.` : 'The first market reaction session is not verified.';
+};
+
 const ratioToPercent = (value) => {
   const numeric = toFiniteNumber(value);
   if (numeric === null) return null;
@@ -796,10 +839,13 @@ const buildDynamicEarningsReactionAnswer = ({ question, ticker, language, earnin
   const prices = earningsReactionReturnPayload.prices || {};
   const definitions = earningsReactionReturnPayload.definitions || {};
   const timingLabel = event.timing_basis || event.verified_timing || 'Not verified';
-  const metricLabel = asksDrift ? `Post-reaction drift to R+${horizon}` : `R+${horizon} earnings return`;
   const definition = asksDrift
     ? definitions.post_reaction_drift || 'R+N close / reaction_day close - 1'
     : definitions.r_plus_n_earnings_return || 'R+N close / previous_close - 1';
+  const eventDate = formatEventDate(event.release_date, language);
+  const moveVerb = returnVerb(value, language);
+  const moveAmount = formatMoveAmount(value, displayReturn);
+  const timingText = timingNarrative({ timingLabel, reactionDay: event.reaction_day, language });
 
   return response({
     intent: 'earnings_reaction',
@@ -830,27 +876,31 @@ const buildDynamicEarningsReactionAnswer = ({ question, ticker, language, earnin
       reaction_day: 'AMC uses the next trading day; BMO uses the same trading day.'
     },
     factsList: [
-      { label: 'Release', value: event.release_date || 'Not verified' },
-      { label: 'Reaction day', value: event.reaction_day || 'Not verified' },
-      { label: 'Timing basis', value: timingLabel },
-      { label: metricLabel, value: displayReturn }
+      { label: language === 'zh' ? '財報日期' : 'Earnings date', value: event.release_date || 'Not verified' },
+      { label: language === 'zh' ? '首個市場反應日' : 'First reaction session', value: event.reaction_day || 'Not verified' },
+      { label: language === 'zh' ? '公布時段口徑' : 'Release timing', value: timingLabel },
+      { label: asksDrift ? (language === 'zh' ? `${horizon} 個交易日後續走勢` : `${horizon} trading-day follow-through`) : (language === 'zh' ? `${horizon} 個交易日回報` : `${horizon} trading-day return`), value: displayReturn }
     ],
     lines: language === 'zh'
       ? [
-        `${ticker} ${event.release_date || ''} 這次財報的 ${metricLabel} 是 ${displayReturn}。`,
-        `CrowdRisk 先確認公布時段同 reaction_day：${timingLabel}，reaction_day 是 ${event.reaction_day || '未驗證'}。`,
         asksDrift
-          ? `這裡的 post-reaction drift 是 ${definition}，即由 reaction_day close 到 R+${horizon} close。`
-          : `這裡的 R+${horizon} earnings return 是 ${definition}，即由 previous_close 到 R+${horizon} close。`,
-        '這是 CrowdRisk backend verified earnings truth / OHLCV calculation，不是最終買賣決定。'
+          ? `${ticker} 在 ${eventDate} 財報首個市場反應日之後，到第 ${horizon} 個交易日再${moveVerb} ${moveAmount}。`
+          : `${ticker} 在 ${eventDate} 財報後的 ${horizon} 個交易日內${moveVerb} ${moveAmount}。`,
+        timingText,
+        asksDrift
+          ? `換句話說，這個數字看的是首個反應日收市後，股價到第 ${horizon} 個交易日收市時有沒有繼續向上或回吐。`
+          : `這個回報是由財報公布前一個收市價，計到財報後第 ${horizon} 個交易日收市價。`,
+        '這是市場反應資料，不是最終買賣決定。'
       ]
       : [
-        `${ticker}'s ${metricLabel} for the ${event.release_date || 'selected'} earnings event is ${displayReturn}.`,
-        `CrowdRisk first verifies timing and reaction_day: ${timingLabel}; reaction_day is ${event.reaction_day || 'not verified'}.`,
         asksDrift
-          ? `This post-reaction drift uses ${definition}, from reaction-day close to R+${horizon} close.`
-          : `This R+${horizon} earnings return uses ${definition}, from previous_close to R+${horizon} close.`,
-        'This is CrowdRisk backend verified earnings truth / OHLCV calculation, not a final investment decision.'
+          ? `${ticker} ${moveVerb} ${moveAmount} from the first post-earnings reaction session to the ${horizon}th trading day after its ${eventDate} earnings release.`
+          : `${ticker} ${moveVerb} ${moveAmount} over the ${horizon} trading days after its ${eventDate} earnings release.`,
+        timingText,
+        asksDrift
+          ? `In plain English, this measures whether the stock kept moving or gave back gains after the first reaction-session close, through the ${horizon}th trading-day close.`
+          : `The return is measured from the pre-earnings close to the close of the ${horizon}th trading day after the release.`,
+        'This is market-reaction evidence, not a final investment decision.'
       ],
     action: { type: 'open_event_study', label: language === 'zh' ? '打開事件研究' : 'Open Event Study' }
   });
@@ -866,8 +916,8 @@ const buildEarningsReactionAnswer = ({ question, ticker, language, earningsReact
       language,
       ticker,
       reason: language === 'zh'
-        ? '目前沒有 earnings truth / reaction feature context pack，所以不能補估 R+N。'
-        : 'No earnings truth / reaction feature context pack is available, so R+N cannot be filled in by guessing.'
+        ? '目前 CrowdRisk 未有足夠財報反應資料，所以不能補估這個回報。'
+        : 'CrowdRisk does not currently have enough earnings-reaction data to answer this without guessing.'
     });
   }
 
@@ -879,17 +929,17 @@ const buildEarningsReactionAnswer = ({ question, ticker, language, earningsReact
       ticker,
       source: sourceMeta('earnings-gap-summary', earningsReactionPayload),
       reason: language === 'zh'
-        ? '請指定 R+N 或清楚時間，例如 R+30、R+21、一個星期。'
-        : 'Please specify R+N or a clear horizon, such as R+30, R+21, or one week.'
+        ? '請指定清楚時間，例如 21 個交易日、30 個交易日，或一個星期。'
+        : 'Please specify a clear time period, such as 21 trading days, 30 trading days, or one week.'
     });
   }
 
   const eventResolution = resolveEarningsEventRow(question, earningsReactionPayload);
   if (eventResolution.status !== 'resolved') {
     const reasonByStatus = {
-      missing_rows: language === 'zh' ? 'earnings-gap-summary 沒有 quarter_log rows。' : 'The earnings-gap-summary feed has no quarter_log rows.',
+      missing_rows: language === 'zh' ? '目前沒有這隻股票的財報反應紀錄。' : 'There is no earnings-reaction record for this stock yet.',
       missing_event_filter: language === 'zh' ? '請指定要查哪一次財報，例如 2023 年 5 月、2023 年第二季，或 latest。' : 'Please specify which earnings event to use, such as May 2023, Q2 2023, or latest.',
-      no_matching_event: language === 'zh' ? '目前 CrowdRisk backend context 找不到符合日期條件的財報事件。' : 'The current CrowdRisk backend context has no earnings event matching that date filter.',
+      no_matching_event: language === 'zh' ? '目前 CrowdRisk 找不到符合日期條件的財報事件。' : 'CrowdRisk does not currently have an earnings event matching that date filter.',
       ambiguous_event: language === 'zh' ? '日期條件對應多於一次財報，請指定月份或 release date。' : 'The date filter matches more than one earnings event; please specify the month or release date.'
     };
     return buildNotVerified({
@@ -917,8 +967,8 @@ const buildEarningsReactionAnswer = ({ question, ticker, language, earningsReact
       ticker,
       source: sourceMeta('earnings-gap-summary', earningsReactionPayload),
       reason: language === 'zh'
-        ? `目前 earnings-gap-summary 未驗證 ${ticker} 這次財報的 R+${horizon} return。`
-        : `The earnings-gap-summary feed does not verify ${ticker}'s R+${horizon} return for this event.`
+        ? `目前 CrowdRisk 未有 ${ticker} 這次財報後 ${horizon} 個交易日回報的核實數字。`
+        : `CrowdRisk does not currently have a verified ${horizon} trading-day return for this ${ticker} earnings event.`
     });
   }
 
@@ -935,15 +985,18 @@ const buildEarningsReactionAnswer = ({ question, ticker, language, earningsReact
       ticker,
       source: sourceMeta('earnings-gap-summary', earningsReactionPayload),
       reason: language === 'zh'
-        ? `目前 context 不足以計算 ${ticker} 的 post-reaction drift to R+${horizon}。`
-        : `The current context is insufficient to compute ${ticker}'s post-reaction drift to R+${horizon}.`
+        ? `目前資料不足以核實 ${ticker} 首個財報反應日後，到第 ${horizon} 個交易日的後續走勢。`
+        : `The current data is insufficient to verify ${ticker}'s follow-through from the first reaction session to the ${horizon}th trading day.`
     });
   }
 
-  const metricLabel = asksDrift ? `Post-reaction drift to R+${horizon}` : `R+${horizon} earnings return`;
   const definition = asksDrift
     ? 'R+N close / reaction_day close - 1'
     : 'R+N close / previous_close - 1';
+  const eventDate = formatEventDate(row.release_date, language);
+  const moveVerb = returnVerb(asksDrift ? driftReturn : totalReturn, language);
+  const moveAmount = formatMoveAmount(asksDrift ? driftReturn : totalReturn, displayReturn);
+  const timingText = timingNarrative({ timingLabel: timing.label, reactionDay: row.reaction_day, language });
 
   return response({
     intent: 'earnings_reaction',
@@ -966,27 +1019,31 @@ const buildEarningsReactionAnswer = ({ question, ticker, language, earningsReact
       reaction_day: 'AMC uses the next trading day; BMO uses the same trading day.'
     },
     factsList: [
-      { label: 'Release', value: row.release_date || 'Not verified' },
-      { label: 'Reaction day', value: row.reaction_day || 'Not verified' },
-      { label: 'Timing basis', value: timing.label },
-      { label: metricLabel, value: displayReturn }
+      { label: language === 'zh' ? '財報日期' : 'Earnings date', value: row.release_date || 'Not verified' },
+      { label: language === 'zh' ? '首個市場反應日' : 'First reaction session', value: row.reaction_day || 'Not verified' },
+      { label: language === 'zh' ? '公布時段口徑' : 'Release timing', value: timing.label },
+      { label: asksDrift ? (language === 'zh' ? `${horizon} 個交易日後續走勢` : `${horizon} trading-day follow-through`) : (language === 'zh' ? `${horizon} 個交易日回報` : `${horizon} trading-day return`), value: displayReturn }
     ],
     lines: language === 'zh'
       ? [
-        `${ticker} ${row.release_date} 這次財報的 ${metricLabel} 是 ${displayReturn}。`,
-        `CrowdRisk 先用 release_date ${row.release_date} 和 reaction_day ${row.reaction_day} 對齊財報反應；${timing.description}`,
         asksDrift
-          ? `這裡的 post-reaction drift 是 ${definition}，即由 reaction_day close 到 R+${horizon} close。`
-          : `這裡的 R+${horizon} earnings return 是 ${definition}，即由 previous_close 到 R+${horizon} close。`,
-        '這是 CrowdRisk earnings truth / reaction feature context，不是最終買賣決定。'
+          ? `${ticker} 在 ${eventDate} 財報首個市場反應日之後，到第 ${horizon} 個交易日再${moveVerb} ${moveAmount}。`
+          : `${ticker} 在 ${eventDate} 財報後的 ${horizon} 個交易日內${moveVerb} ${moveAmount}。`,
+        timingText,
+        asksDrift
+          ? `換句話說，這個數字看的是首個反應日收市後，股價到第 ${horizon} 個交易日收市時有沒有繼續向上或回吐。`
+          : `這個回報是由財報公布前一個收市價，計到財報後第 ${horizon} 個交易日收市價。`,
+        '這是市場反應資料，不是最終買賣決定。'
       ]
       : [
-        `${ticker}'s ${metricLabel} for the ${row.release_date} earnings event is ${displayReturn}.`,
-        `CrowdRisk first aligns the event using release_date ${row.release_date} and reaction_day ${row.reaction_day}; ${timing.description}`,
         asksDrift
-          ? `This post-reaction drift uses ${definition}, from reaction-day close to R+${horizon} close.`
-          : `This R+${horizon} earnings return uses ${definition}, from previous_close to R+${horizon} close.`,
-        'This is CrowdRisk earnings truth / reaction feature context, not a final investment decision.'
+          ? `${ticker} ${moveVerb} ${moveAmount} from the first post-earnings reaction session to the ${horizon}th trading day after its ${eventDate} earnings release.`
+          : `${ticker} ${moveVerb} ${moveAmount} over the ${horizon} trading days after its ${eventDate} earnings release.`,
+        timingText,
+        asksDrift
+          ? `In plain English, this measures whether the stock kept moving or gave back gains after the first reaction-session close, through the ${horizon}th trading-day close.`
+          : `The return is measured from the pre-earnings close to the close of the ${horizon}th trading day after the release.`,
+        'This is market-reaction evidence, not a final investment decision.'
       ],
     action: { type: 'open_event_study', label: language === 'zh' ? '打開事件研究' : 'Open Event Study' }
   });
