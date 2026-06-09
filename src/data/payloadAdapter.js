@@ -60,10 +60,16 @@ function isValidEarningsGapSummaryPayload(payload) {
 
 function isValidEarningsReactionReturnPayload(payload) {
   if (!payload || typeof payload !== 'object' || Array.isArray(payload)) return false;
-  if (payload.ok !== true || payload.status !== 'verified') return false;
-  if (!payload.event || typeof payload.event !== 'object') return false;
-  if (!payload.metrics || typeof payload.metrics !== 'object') return false;
-  return true;
+  if (payload.ok === true && payload.status === 'verified') {
+    if (!payload.event || typeof payload.event !== 'object') return false;
+    if (!payload.metrics || typeof payload.metrics !== 'object') return false;
+    return true;
+  }
+  if (payload.ok === false && payload.status === 'not_verified') {
+    if (!payload.reason) return false;
+    return true;
+  }
+  return false;
 }
 
 export async function fetchAndNormalizeRadarPayload() {

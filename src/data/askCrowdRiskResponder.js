@@ -55,6 +55,18 @@ const formatEventDate = (value, language) => {
   return new Intl.DateTimeFormat('en-US', { month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC' }).format(date);
 };
 
+const formatOrdinal = (value) => {
+  const number = Number(value);
+  if (!Number.isInteger(number)) return String(value);
+  const lastTwo = number % 100;
+  if (lastTwo >= 11 && lastTwo <= 13) return `${number}th`;
+  const last = number % 10;
+  if (last === 1) return `${number}st`;
+  if (last === 2) return `${number}nd`;
+  if (last === 3) return `${number}rd`;
+  return `${number}th`;
+};
+
 const returnVerb = (value, language) => {
   const numeric = toFiniteNumber(value);
   if (language === 'zh') {
@@ -673,6 +685,38 @@ const parseChineseNumber = (value) => {
   return map[value] || null;
 };
 
+const ENGLISH_MONTHS = {
+  jan: 1,
+  january: 1,
+  feb: 2,
+  february: 2,
+  mar: 3,
+  march: 3,
+  apr: 4,
+  april: 4,
+  may: 5,
+  jun: 6,
+  june: 6,
+  jul: 7,
+  july: 7,
+  aug: 8,
+  august: 8,
+  sep: 9,
+  sept: 9,
+  september: 9,
+  oct: 10,
+  october: 10,
+  nov: 11,
+  november: 11,
+  dec: 12,
+  december: 12
+};
+
+const parseEnglishMonth = (value) => {
+  const key = String(value || '').toLowerCase().replace(/\.$/, '');
+  return ENGLISH_MONTHS[key] || null;
+};
+
 const parseRequestedHorizon = (question) => {
   const raw = String(question || '');
   const text = raw.toLowerCase();
@@ -700,6 +744,13 @@ const parseExplicitReleaseDate = (question) => {
   const isoMatch = raw.match(/\b(20\d{2})-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])\b/);
   if (isoMatch) return isoMatch[0];
 
+  const enMatch = raw.match(/\b(jan(?:uary)?|feb(?:ruary)?|mar(?:ch)?|apr(?:il)?|may|jun(?:e)?|jul(?:y)?|aug(?:ust)?|sep(?:t)?(?:ember)?|oct(?:ober)?|nov(?:ember)?|dec(?:ember)?)\.?\s+(3[01]|[12]\d|[1-9])(?:st|nd|rd|th)?[,]?\s+(20\d{2})\b/i);
+  if (enMatch) {
+    const [, monthName, day, year] = enMatch;
+    const month = parseEnglishMonth(monthName);
+    if (month) return `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+  }
+
   const zhMatch = raw.match(/(20\d{2})\s*年\s*(1[0-2]|[1-9])\s*月\s*(3[01]|[12]\d|[1-9])\s*(?:日|號)/);
   if (!zhMatch) return null;
   const [, year, month, day] = zhMatch;
@@ -712,7 +763,8 @@ const parseQuestionDateFilter = (question) => {
   const yearMatch = raw.match(/(20\d{2})/);
   const year = yearMatch ? Number(yearMatch[1]) : null;
   const monthMatch = raw.match(/(?:20\d{2})\s*年\s*(\d{1,2})\s*月/) || raw.match(/\b(1[0-2]|[1-9])\/20\d{2}\b/);
-  const month = monthMatch ? Number(monthMatch[1]) : null;
+  const englishMonthMatch = raw.match(/\b(jan(?:uary)?|feb(?:ruary)?|mar(?:ch)?|apr(?:il)?|may|jun(?:e)?|jul(?:y)?|aug(?:ust)?|sep(?:t)?(?:ember)?|oct(?:ober)?|nov(?:ember)?|dec(?:ember)?)\.?\s+(?:20\d{2})\b/i);
+  const month = monthMatch ? Number(monthMatch[1]) : parseEnglishMonth(englishMonthMatch?.[1]);
   const quarterMatch = raw.match(/第([一二三四1234])季/) || text.match(/\bq([1-4])\b/);
   const quarterRaw = quarterMatch ? quarterMatch[1] : null;
   const quarter = quarterRaw ? (Number(quarterRaw) || parseChineseNumber(quarterRaw)) : null;
@@ -894,14 +946,67 @@ const buildDynamicEarningsReactionAnswer = ({ question, ticker, language, earnin
       ]
       : [
         asksDrift
-          ? `${ticker} ${moveVerb} ${moveAmount} from the first post-earnings reaction session to the ${horizon}th trading day after its ${eventDate} earnings release.`
+          ? `${ticker} ${moveVerb} ${moveAmount} from the first post-earnings reaction session to the ${formatOrdinal(horizon)} trading day after its ${eventDate} earnings release.`
           : `${ticker} ${moveVerb} ${moveAmount} over the ${horizon} trading days after its ${eventDate} earnings release.`,
         timingText,
         asksDrift
-          ? `In plain English, this measures whether the stock kept moving or gave back gains after the first reaction-session close, through the ${horizon}th trading-day close.`
-          : `The return is measured from the pre-earnings close to the close of the ${horizon}th trading day after the release.`,
+          ? `In plain English, this measures whether the stock kept moving or gave back gains after the first reaction-session close, through the ${formatOrdinal(horizon)} trading-day close.`
+          : `The return is measured from the pre-earnings close to the close of the ${formatOrdinal(horizon)} trading day after the release.`,
         'This reflects how the stock traded after earnings, not a final investment decision.'
       ],
+    action: { type: 'open_event_study', label: language === 'zh' ? '打開事件研究' : 'Open Event Study' }
+  });
+};
+
+const buildDynamicEarningsReactionNotVerifiedAnswer = ({ question, ticker, language, earningsReactionReturnPayload }) => {
+  if (!earningsReactionReturnPayload || earningsReactionReturnPayload.status !== 'not_verified') return null;
+
+  const horizon = toFiniteNumber(earningsReactionReturnPayload?.horizon) || parseRequestedHorizon(question);
+  const reason = String(earningsReactionReturnPayload?.reason || '');
+  const event = earningsReactionReturnPayload.event || {};
+  const eventDate = formatEventDate(event.release_date, language);
+  const reasonText = reason === 'missing_target_close'
+    ? (language === 'zh'
+      ? `目前 CrowdRisk 未能核實 ${ticker} 這次 ${eventDate} 財報後第 ${horizon} 個交易日的收市價，所以不能回答 R+${horizon} 回報。`
+      : `CrowdRisk cannot verify the ${formatOrdinal(horizon)} trading-day close after ${ticker}'s ${eventDate} earnings release yet, so it should not state an R+${horizon} return.`)
+    : (language === 'zh'
+      ? `目前 CrowdRisk dynamic earnings retriever 回傳 ${reason || 'not_verified'}，所以不能補估這個回報。`
+      : `CrowdRisk's dynamic earnings retriever returned ${reason || 'not_verified'}, so it should not fill in this return by guessing.`);
+
+  return response({
+    intent: 'earnings_reaction',
+    language,
+    ticker,
+    verifiedStatus: 'not_verified',
+    source: {
+      feed: 'earnings-reaction-return',
+      generated_at: null,
+      as_of: event.release_date || null
+    },
+    facts: {
+      release_date: event.release_date || null,
+      reaction_day: event.reaction_day || null,
+      timing_basis: event.verified_timing || null,
+      horizon,
+      reason
+    },
+    factsList: [
+      { label: language === 'zh' ? '財報日期' : 'Earnings date', value: event.release_date || 'Not verified' },
+      { label: language === 'zh' ? '首個市場反應日' : 'First reaction session', value: event.reaction_day || 'Not verified' },
+      { label: language === 'zh' ? '狀態' : 'Status', value: reason || 'not_verified' }
+    ],
+    lines: language === 'zh'
+      ? [
+        `${ticker}：${NOT_VERIFIED_ZH}`,
+        reasonText,
+        '這反映的是資料邊界，不是最終買賣決定。'
+      ]
+      : [
+        `${ticker}: ${NOT_VERIFIED_EN}`,
+        reasonText,
+        'This is a data-boundary answer, not a final investment decision.'
+      ],
+    notVerifiedReason: reasonText,
     action: { type: 'open_event_study', label: language === 'zh' ? '打開事件研究' : 'Open Event Study' }
   });
 };
@@ -909,6 +1014,9 @@ const buildDynamicEarningsReactionAnswer = ({ question, ticker, language, earnin
 const buildEarningsReactionAnswer = ({ question, ticker, language, earningsReactionPayload, earningsReactionReturnPayload }) => {
   const dynamicAnswer = buildDynamicEarningsReactionAnswer({ question, ticker, language, earningsReactionReturnPayload });
   if (dynamicAnswer) return dynamicAnswer;
+
+  const dynamicNotVerifiedAnswer = buildDynamicEarningsReactionNotVerifiedAnswer({ question, ticker, language, earningsReactionReturnPayload });
+  if (dynamicNotVerifiedAnswer) return dynamicNotVerifiedAnswer;
 
   if (!earningsReactionPayload) {
     return buildNotVerified({
@@ -986,7 +1094,7 @@ const buildEarningsReactionAnswer = ({ question, ticker, language, earningsReact
       source: sourceMeta('earnings-gap-summary', earningsReactionPayload),
       reason: language === 'zh'
         ? `目前資料不足以核實 ${ticker} 首個財報反應日後，到第 ${horizon} 個交易日的後續走勢。`
-        : `The current data is insufficient to verify ${ticker}'s follow-through from the first reaction session to the ${horizon}th trading day.`
+        : `The current data is insufficient to verify ${ticker}'s follow-through from the first reaction session to the ${formatOrdinal(horizon)} trading day.`
     });
   }
 
@@ -1037,12 +1145,12 @@ const buildEarningsReactionAnswer = ({ question, ticker, language, earningsReact
       ]
       : [
         asksDrift
-          ? `${ticker} ${moveVerb} ${moveAmount} from the first post-earnings reaction session to the ${horizon}th trading day after its ${eventDate} earnings release.`
+          ? `${ticker} ${moveVerb} ${moveAmount} from the first post-earnings reaction session to the ${formatOrdinal(horizon)} trading day after its ${eventDate} earnings release.`
           : `${ticker} ${moveVerb} ${moveAmount} over the ${horizon} trading days after its ${eventDate} earnings release.`,
         timingText,
         asksDrift
-          ? `In plain English, this measures whether the stock kept moving or gave back gains after the first reaction-session close, through the ${horizon}th trading-day close.`
-          : `The return is measured from the pre-earnings close to the close of the ${horizon}th trading day after the release.`,
+          ? `In plain English, this measures whether the stock kept moving or gave back gains after the first reaction-session close, through the ${formatOrdinal(horizon)} trading-day close.`
+          : `The return is measured from the pre-earnings close to the close of the ${formatOrdinal(horizon)} trading day after the release.`,
         'This reflects how the stock traded after earnings, not a final investment decision.'
       ],
     action: { type: 'open_event_study', label: language === 'zh' ? '打開事件研究' : 'Open Event Study' }
