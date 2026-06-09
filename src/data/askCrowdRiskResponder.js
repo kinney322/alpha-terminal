@@ -57,9 +57,10 @@ const formatPercent = (value) => {
   return `${scaled > 0 ? '+' : ''}${scaled.toFixed(1)}%`;
 };
 
-const formatPercentileRank = (value) => {
+const formatPercentileRank = (value, language = 'en') => {
   const numeric = toFiniteNumber(value);
   if (numeric === null) return null;
+  if (language === 'zh') return `第 ${numeric.toFixed(1)} 百分位`;
   return `${numeric.toFixed(1)} percentile rank`;
 };
 
@@ -455,8 +456,8 @@ const buildPeerEcosystemAnswer = ({ ticker, language, referencePeerMapPayload })
       ticker,
       source: sourceMeta('reference-peer-map-latest', referencePeerMapPayload),
       reason: language === 'zh'
-        ? '目前 reference peer map 沒有這個 ticker 的 ecosystem context。'
-        : 'The reference peer map does not contain ecosystem context for this ticker.'
+        ? 'CrowdRisk 目前沒有這個 ticker 的已核實產業鏈 / 同行資料。'
+        : 'CrowdRisk does not currently have verified ecosystem or peer context for this ticker.'
     });
   }
 
@@ -477,26 +478,26 @@ const buildPeerEcosystemAnswer = ({ ticker, language, referencePeerMapPayload })
       candidate_to_add: candidates
     },
     definitions: {
-      covered_ecosystem: 'Active CrowdRisk universe names.',
-      direct_reference_peers: 'Context-only peers, not active coverage.'
+      covered_ecosystem: 'Company names already covered by CrowdRisk.',
+      direct_reference_peers: 'Comparison names for peer and ecosystem context.'
     },
     factsList: [
       { label: language === 'zh' ? '產業鏈' : 'Ecosystem', value: ecosystem.ecosystemName },
-      { label: language === 'zh' ? '已覆蓋' : 'Covered', value: covered.length ? covered.join(', ') : 'None' },
-      { label: language === 'zh' ? '參考同行' : 'Reference peers', value: referenceOnly.length ? referenceOnly.join(', ') : 'None' }
+      { label: language === 'zh' ? 'Covered Ecosystem' : 'Covered Ecosystem', value: covered.length ? covered.join(', ') : 'None' },
+      { label: language === 'zh' ? 'Direct / Reference Peers' : 'Direct / Reference Peers', value: referenceOnly.length ? referenceOnly.join(', ') : 'None' }
     ],
     lines: language === 'zh'
       ? [
-        `${ticker} 在 CrowdRisk 的位置是 ${ecosystem.ecosystemName}。`,
-        covered.length ? `Covered Ecosystem 包括：${covered.join(', ')}。` : '目前沒有其他 covered ecosystem 名稱。',
-        referenceOnly.length ? `Direct / Reference Peers 包括：${referenceOnly.join(', ')}。這些是 context only，不是 active coverage。` : '目前沒有 direct/reference peer context。',
-        candidates.length ? `Candidate / not active：${candidates.join(', ')}。這些需要另行批准才可加入 universe。` : '目前沒有 candidate-to-add 名稱。'
+        `${ticker} 在 CrowdRisk 的產業鏈位置是：${ecosystem.ecosystemName}。`,
+        covered.length ? `Covered Ecosystem，即已納入 CrowdRisk 的相關公司，包括：${covered.join(', ')}。` : '目前沒有其他已納入 CrowdRisk 的相關公司。',
+        referenceOnly.length ? `Direct / Reference Peers，即用來比較的直接或參考同行，包括：${referenceOnly.join(', ')}。這些名字只作產業鏈對照，不代表已經有股票檔案、市值覆蓋或完整研究資料。` : '目前沒有已核實的直接或參考同行資料。',
+        candidates.length ? `候選但未納入的公司包括：${candidates.join(', ')}。要加入 CrowdRisk 名單，需要另行批准和資料覆蓋。` : '目前沒有候選但未納入的公司。'
       ]
       : [
-        `${ticker} sits in the ${ecosystem.ecosystemName} in CrowdRisk.`,
-        covered.length ? `Covered Ecosystem: ${covered.join(', ')}.` : 'No other covered ecosystem names are available.',
-        referenceOnly.length ? `Direct / Reference Peers: ${referenceOnly.join(', ')}. These are context only, not active coverage.` : 'No direct/reference peer context is available.',
-        candidates.length ? `Candidate / not active: ${candidates.join(', ')}. These require separate approval before universe promotion.` : 'No candidate-to-add names are listed.'
+        `${ticker} sits in CrowdRisk's ${ecosystem.ecosystemName}.`,
+        covered.length ? `Covered Ecosystem, meaning related names already covered by CrowdRisk: ${covered.join(', ')}.` : 'No other covered ecosystem names are available.',
+        referenceOnly.length ? `Direct / Reference Peers, meaning comparison names for peer and ecosystem context: ${referenceOnly.join(', ')}. These names do not automatically have Stock Dossiers, market-cap coverage, or full research coverage.` : 'No verified direct or reference peer context is available.',
+        candidates.length ? `Candidate names not yet included: ${candidates.join(', ')}. Adding them to CrowdRisk requires separate approval and data coverage.` : 'No candidate names are listed.'
       ],
     action: { type: 'open_dossier', label: language === 'zh' ? '打開股票檔案' : 'Open Dossier' }
   });
@@ -536,12 +537,12 @@ const buildCoverageStatusAnswer = ({ ticker, language, payload, stockPerformance
       },
       facts: { relationships, is_momentum_universe: isMomentum, has_stock_performance: hasReturns },
       factsList: [
-        { label: language === 'zh' ? '覆蓋狀態' : 'Coverage', value: 'Active CrowdRisk coverage' },
+        { label: language === 'zh' ? '覆蓋狀態' : 'Coverage', value: 'Covered by CrowdRisk' },
         { label: language === 'zh' ? '回報資料' : 'Return data', value: hasReturns ? 'Available' : 'Not verified' }
       ],
       lines: language === 'zh'
-        ? [`${ticker} 是 active CrowdRisk coverage。`, '如果相關資料可用，它可以出現在 Stock Dossier、Momentum Universe 或股價表現 context。']
-        : [`${ticker} is active CrowdRisk coverage.`, 'When the relevant data is available, it can appear in Stock Dossier, Momentum Universe, or price-performance context.'],
+        ? [`${ticker} 已納入 CrowdRisk 公司覆蓋。`, '如果相關資料可用，它可以出現在股票檔案、動能名單或股價走勢摘要。']
+        : [`${ticker} is covered by CrowdRisk.`, 'When the relevant data is available, it can appear in the Stock Dossier, momentum list, or price-action summary.'],
       action: { type: 'open_dossier', label: language === 'zh' ? '打開股票檔案' : 'Open Dossier' }
     });
   }
@@ -557,19 +558,19 @@ const buildCoverageStatusAnswer = ({ ticker, language, payload, stockPerformance
       source: sourceMeta('reference-peer-map-latest', referencePeerMapPayload),
       facts: { status: 'candidate_to_add', why_add: entry.why_add, risks: entry.risks || [] },
       factsList: [
-        { label: language === 'zh' ? '狀態' : 'Status', value: 'Candidate / not active' },
+        { label: language === 'zh' ? '狀態' : 'Status', value: language === 'zh' ? '候選，未納入' : 'Candidate, not yet included' },
         { label: language === 'zh' ? '產業鏈' : 'Ecosystem', value: ecosystemName || 'Not verified' }
       ],
       lines: language === 'zh'
         ? [
-          `${ticker} 目前是 Candidate / not active，不是 active CrowdRisk coverage。`,
-          entry.why_add || '它只是在 reference peer map 入面作為候選 context。',
-          '要正式加入，仍需要 BOSS 批准、universe promotion、shares / market-cap coverage、dry-run、publish 和 frontend verification。'
+          `${ticker} 目前是候選公司，尚未納入 CrowdRisk 公司覆蓋。`,
+          entry.why_add || '它目前只作產業鏈候選對照。',
+          '要正式加入，仍需要 BOSS 批准、納入名單、股數 / 市值資料覆蓋、資料驗證、發布和前端檢查。'
         ]
         : [
-          `${ticker} is Candidate / not active, not active CrowdRisk coverage.`,
-          entry.why_add || 'It is currently only candidate context in the reference peer map.',
-          'Promotion requires BOSS approval, universe promotion, shares / market-cap coverage, dry-run, publish, and frontend verification.'
+          `${ticker} is a candidate name, not yet covered by CrowdRisk.`,
+          entry.why_add || 'It is currently only candidate context for ecosystem comparison.',
+          'Adding it requires BOSS approval, list inclusion, shares / market-cap coverage, data verification, publication, and frontend checks.'
         ]
     });
   }
@@ -584,8 +585,8 @@ const buildCoverageStatusAnswer = ({ ticker, language, payload, stockPerformance
       facts: { status: 'reference_only' },
       factsList: [{ label: language === 'zh' ? '狀態' : 'Status', value: 'Reference only' }],
       lines: language === 'zh'
-        ? [`${ticker} 目前是 reference-only peer。`, '它可以幫助解釋產業鏈位置，但不是 active coverage，也不代表已有 Stock Dossier / market-cap coverage。']
-        : [`${ticker} is currently a reference-only peer.`, 'It helps explain ecosystem context, but it is not active coverage and does not imply Stock Dossier / market-cap coverage.']
+        ? [`${ticker} 目前只作參考同行。`, '它可以幫助解釋產業鏈位置，但不代表已經納入 CrowdRisk 公司覆蓋，也不代表已有股票檔案或市值覆蓋。']
+        : [`${ticker} is currently a reference peer only.`, 'It helps explain ecosystem context, but it is not covered by CrowdRisk and does not imply Stock Dossier or market-cap coverage.']
     });
   }
 
@@ -826,7 +827,7 @@ const buildMomentumRankAnswer = ({ ticker, language, payload }) => {
   }
   const rank = row.scanner_rank || row.rank || null;
   const rs = row.relative_strength_percentile;
-  const rsDisplay = formatPercentileRank(rs);
+  const rsDisplay = formatPercentileRank(rs, language);
   const themeRank = row.theme_rank || row.industry_theme_rank || null;
   return response({
     intent: 'momentum_rank',
@@ -836,20 +837,20 @@ const buildMomentumRankAnswer = ({ ticker, language, payload }) => {
     source: sourceMeta('radar-v1.2-latest', payload),
     facts: { scanner_rank: rank, theme_rank: themeRank, relative_strength_percentile: rs },
     factsList: [
-      { label: language === 'zh' ? 'Scanner Rank' : 'Scanner Rank', value: rank ? `#${rank}` : 'Not verified' },
-      { label: language === 'zh' ? 'Theme Rank' : 'Theme Rank', value: themeRank ? `#${themeRank}` : 'Not verified' },
-      { label: language === 'zh' ? 'Relative Strength' : 'Relative Strength', value: rsDisplay || 'Not verified' }
+      { label: language === 'zh' ? 'CrowdRisk 動能排名' : 'CrowdRisk momentum rank', value: rank ? `#${rank}` : 'Not verified' },
+      { label: language === 'zh' ? '同主題排名' : 'Theme rank', value: themeRank ? `#${themeRank}` : 'Not verified' },
+      { label: language === 'zh' ? '相對強度' : 'Relative strength', value: rsDisplay || 'Not verified' }
     ],
     lines: language === 'zh'
       ? [
-        `${ticker} 目前在 CrowdRisk Momentum Universe 的 scanner rank 是 ${rank ? `#${rank}` : '未驗證'}。`,
-        rsDisplay ? `Relative strength 是 ${rsDisplay}。` : 'relative strength percentile 目前未驗證。',
-        '白話講，這是動能 / 相對強度 routing signal，不是公司質素或估值結論。'
+        `${ticker} 目前在 CrowdRisk 動能名單中排第 ${rank || '未驗證'}。`,
+        rsDisplay ? `相對強度是 ${rsDisplay}。` : '相對強度目前未驗證。',
+        '白話講，這只是股價趨勢和相對強弱的研究線索，不代表公司質素已被證明，也不是估值結論或最終買賣決定。'
       ]
       : [
-        `${ticker}'s current CrowdRisk Momentum Universe scanner rank is ${rank ? `#${rank}` : 'not verified'}.`,
+        `${ticker}'s current CrowdRisk momentum rank is ${rank ? `#${rank}` : 'not verified'}.`,
         rsDisplay ? `Relative strength is ${rsDisplay}.` : 'The relative strength percentile is not verified.',
-        'Plainly, this is a momentum / relative-strength routing signal, not a company-quality or valuation conclusion.'
+        'Plainly, this is a research signal from price trend and relative strength. It is not proof of company quality, a valuation conclusion, or a final investment decision.'
       ],
     action: { type: 'open_momentum', label: language === 'zh' ? '打開動能宇宙' : 'Open Momentum Universe' }
   });
