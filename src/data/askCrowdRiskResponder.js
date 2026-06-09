@@ -45,6 +45,12 @@ const formatPercent = (value) => {
   return `${scaled > 0 ? '+' : ''}${scaled.toFixed(1)}%`;
 };
 
+const formatPercentileRank = (value) => {
+  const numeric = toFiniteNumber(value);
+  if (numeric === null) return null;
+  return `${numeric.toFixed(1)} percentile rank`;
+};
+
 const formatEventDate = (value, language) => {
   const raw = String(value || '');
   const match = raw.match(/^(20\d{2})-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$/);
@@ -397,6 +403,7 @@ const buildCoverageStatusAnswer = ({ ticker, language, payload, stockPerformance
 
   if (relationships.includes('candidate_to_add')) {
     const entry = entries.find((item) => item.relationship === 'candidate_to_add') || {};
+    const ecosystemName = entry.ecosystem_name || referencePeerMapPayload?.ecosystems?.[entry.ecosystem_id]?.ecosystem_name;
     return response({
       intent: 'coverage_status',
       language,
@@ -406,7 +413,7 @@ const buildCoverageStatusAnswer = ({ ticker, language, payload, stockPerformance
       facts: { status: 'candidate_to_add', why_add: entry.why_add, risks: entry.risks || [] },
       factsList: [
         { label: language === 'zh' ? '狀態' : 'Status', value: 'Candidate / not active' },
-        { label: language === 'zh' ? '產業鏈' : 'Ecosystem', value: entry.ecosystem_name || 'Not verified' }
+        { label: language === 'zh' ? '產業鏈' : 'Ecosystem', value: ecosystemName || 'Not verified' }
       ],
       lines: language === 'zh'
         ? [
@@ -481,18 +488,69 @@ const buildMarketCapAnswer = ({ ticker, language, stockPerformancePayload }) => 
     ],
     lines: language === 'zh'
       ? [
-        `${ticker} 的 CrowdRisk market cap 目前是 ${marketCap}。`,
-        capitalization.shares_outstanding_as_of ? `這個數字使用 shares outstanding as of ${capitalization.shares_outstanding_as_of}。` : 'shares outstanding as-of date 目前未驗證。',
-        '這是 CrowdRisk stock-performance feed 的 capitalization context，不是估值結論。'
+        `${ticker} 的 CrowdRisk 市值目前是 ${marketCap}。`,
+        capitalization.shares_outstanding_as_of ? `這個數字使用 ${capitalization.shares_outstanding_as_of} 的 shares outstanding。` : 'shares outstanding as-of date 目前未驗證。',
+        '這是市值資料，不是「便宜 / 昂貴」的估值結論。'
       ]
       : [
         `${ticker}'s CrowdRisk market cap is currently ${marketCap}.`,
         capitalization.shares_outstanding_as_of ? `This uses shares outstanding as of ${capitalization.shares_outstanding_as_of}.` : 'The shares outstanding as-of date is not verified.',
-        'This is capitalization context from the CrowdRisk stock-performance feed, not a valuation conclusion.'
+        'This is market-cap data, not a cheap-or-expensive valuation conclusion.'
       ],
     action: { type: 'open_dossier', label: language === 'zh' ? '打開股票檔案' : 'Open Dossier' }
   });
 };
+
+const PERFORMANCE_PERIODS = [
+  {
+    id: 'today',
+    label: 'Today',
+    zhLabel: '今日',
+    keys: ['today_return', 'return_today', 'today'],
+    enTriggers: ['today', 'daily'],
+    zhTriggers: ['今日', '今天', '即日']
+  },
+  {
+    id: '1w',
+    label: '1W',
+    zhLabel: '一星期',
+    keys: ['return_1w', 'one_week_return', 'week_1', 'one_week'],
+    enTriggers: ['1w', '1 week', 'one week', 'week'],
+    zhTriggers: ['一個星期', '一星期', '一週', '一周', '1週', '1周']
+  },
+  {
+    id: '1m',
+    label: '1M',
+    zhLabel: '一個月',
+    keys: ['return_1m', 'one_month_return', 'month_1', 'one_month'],
+    enTriggers: ['1m', '1 month', 'one month', 'month'],
+    zhTriggers: ['一個月', '1個月', '一月']
+  },
+  {
+    id: '3m',
+    label: '3M',
+    zhLabel: '三個月',
+    keys: ['return_3m', 'three_month_return', 'month_3', 'three_month'],
+    enTriggers: ['3m', '3 month', 'three month'],
+    zhTriggers: ['三個月', '3個月']
+  },
+  {
+    id: '6m',
+    label: '6M',
+    zhLabel: '六個月',
+    keys: ['return_6m', 'six_month_return', 'month_6', 'six_month'],
+    enTriggers: ['6m', '6 month', 'six month'],
+    zhTriggers: ['六個月', '6個月', '半年']
+  },
+  {
+    id: '1y',
+    label: '1Y',
+    zhLabel: '一年',
+    keys: ['return_1y', 'one_year_return', 'year_1', 'one_year'],
+    enTriggers: ['1y', '1 year', 'one year', 'year'],
+    zhTriggers: ['一年', '1年']
+  }
+];
 
 const performanceValue = (row, keys) => {
   for (const key of keys) {
@@ -502,7 +560,17 @@ const performanceValue = (row, keys) => {
   return null;
 };
 
-const buildStockPerformanceAnswer = ({ ticker, language, stockPerformancePayload }) => {
+const parseRequestedPerformancePeriods = (question) => {
+  const raw = String(question || '');
+  const text = raw.toLowerCase();
+  const matches = PERFORMANCE_PERIODS.filter((period) => (
+    period.enTriggers.some((trigger) => text.includes(trigger))
+    || period.zhTriggers.some((trigger) => raw.includes(trigger))
+  ));
+  return matches;
+};
+
+const buildStockPerformanceAnswer = ({ question, ticker, language, stockPerformancePayload }) => {
   const row = stockPerformancePayload?.returns?.[ticker];
   if (!row) {
     return buildNotVerified({
@@ -513,18 +581,34 @@ const buildStockPerformanceAnswer = ({ ticker, language, stockPerformancePayload
       reason: language === 'zh' ? 'stock-performance feed 沒有這個 ticker。' : 'The stock-performance feed does not contain this ticker.'
     });
   }
-  const periods = [
-    ['Today', performanceValue(row, ['today_return', 'return_today', 'today'])],
-    ['1W', performanceValue(row, ['return_1w', 'one_week_return', 'week_1', 'one_week'])],
-    ['1M', performanceValue(row, ['return_1m', 'one_month_return', 'month_1', 'one_month'])],
-    ['3M', performanceValue(row, ['return_3m', 'three_month_return', 'month_3', 'three_month'])],
-    ['6M', performanceValue(row, ['return_6m', 'six_month_return', 'month_6', 'six_month'])],
-    ['1Y', performanceValue(row, ['return_1y', 'one_year_return', 'year_1', 'one_year'])]
-  ].map(([label, value]) => [label, formatPercent(value)]).filter(([, value]) => value);
+  const requestedPeriods = parseRequestedPerformancePeriods(question);
+  const periodSource = requestedPeriods.length ? requestedPeriods : PERFORMANCE_PERIODS;
+  const periods = periodSource
+    .map((period) => ({
+      id: period.id,
+      label: period.label,
+      displayLabel: language === 'zh' ? period.zhLabel : period.label,
+      value: performanceValue(row, period.keys)
+    }))
+    .map((period) => ({ ...period, formattedValue: formatPercent(period.value) }))
+    .filter((period) => period.formattedValue);
 
   if (!periods.length) {
-    return buildNotVerified({ intent: 'stock_performance', language, ticker, source: sourceMeta('stock-performance-latest', stockPerformancePayload) });
+    return buildNotVerified({
+      intent: 'stock_performance',
+      language,
+      ticker,
+      source: sourceMeta('stock-performance-latest', stockPerformancePayload),
+      reason: language === 'zh'
+        ? 'stock-performance feed 目前沒有這個指定時間段的 verified return。'
+        : 'The stock-performance feed does not currently expose a verified return for the requested period.'
+    });
   }
+
+  const periodFacts = Object.fromEntries(periods.map((period) => [period.label, period.formattedValue]));
+  const periodFactsList = periods.map((period) => ({ label: period.label, value: period.formattedValue }));
+  const requestedDirectAnswer = requestedPeriods.length === 1 && periods.length === 1;
+  const requestedPeriod = periods[0];
 
   return response({
     intent: 'stock_performance',
@@ -532,19 +616,27 @@ const buildStockPerformanceAnswer = ({ ticker, language, stockPerformancePayload
     ticker,
     verifiedStatus: 'verified',
     source: sourceMeta('stock-performance-latest', stockPerformancePayload),
-    facts: Object.fromEntries(periods),
-    factsList: periods.map(([label, value]) => ({ label, value })),
+    facts: periodFacts,
+    factsList: periodFactsList,
     lines: language === 'zh'
-      ? [
-        `${ticker} 的 CrowdRisk stock-performance context：${periods.map(([label, value]) => `${label} ${value}`).join('，')}。`,
+      ? (requestedDirectAnswer ? [
+        `${ticker} 的${requestedPeriod.displayLabel}回報是 ${requestedPeriod.formattedValue}。`,
         stockPerformancePayload?.meta?.as_of_date ? `資料 as of ${stockPerformancePayload.meta.as_of_date}。` : 'as-of date 目前未驗證。',
-        '這是市場表現 context，不是最終買賣決定。'
-      ]
-      : [
-        `${ticker}'s CrowdRisk stock-performance context: ${periods.map(([label, value]) => `${label} ${value}`).join(', ')}.`,
+        '這是股價表現資料，不是公司質素或最終買賣決定。'
+      ] : [
+        `${ticker} 的 CrowdRisk stock-performance context：${periods.map((period) => `${period.label} ${period.formattedValue}`).join('，')}。`,
+        stockPerformancePayload?.meta?.as_of_date ? `資料 as of ${stockPerformancePayload.meta.as_of_date}。` : 'as-of date 目前未驗證。',
+        '這是股價表現資料，不是公司質素或最終買賣決定。'
+      ])
+      : (requestedDirectAnswer ? [
+        `${ticker}'s ${requestedPeriod.label} return is ${requestedPeriod.formattedValue}.`,
         stockPerformancePayload?.meta?.as_of_date ? `Data as of ${stockPerformancePayload.meta.as_of_date}.` : 'The as-of date is not verified.',
-        'This is market-performance context, not a final investment decision.'
-      ],
+        'This is price-performance data, not a company-quality conclusion or final investment decision.'
+      ] : [
+        `${ticker}'s CrowdRisk stock-performance context: ${periods.map((period) => `${period.label} ${period.formattedValue}`).join(', ')}.`,
+        stockPerformancePayload?.meta?.as_of_date ? `Data as of ${stockPerformancePayload.meta.as_of_date}.` : 'The as-of date is not verified.',
+        'This is price-performance data, not a company-quality conclusion or final investment decision.'
+      ]),
     action: { type: 'open_dossier', label: language === 'zh' ? '打開股票檔案' : 'Open Dossier' }
   });
 };
@@ -562,6 +654,7 @@ const buildMomentumRankAnswer = ({ ticker, language, payload }) => {
   }
   const rank = row.scanner_rank || row.rank || null;
   const rs = row.relative_strength_percentile;
+  const rsDisplay = formatPercentileRank(rs);
   const themeRank = row.theme_rank || row.industry_theme_rank || null;
   return response({
     intent: 'momentum_rank',
@@ -573,17 +666,17 @@ const buildMomentumRankAnswer = ({ ticker, language, payload }) => {
     factsList: [
       { label: language === 'zh' ? 'Scanner Rank' : 'Scanner Rank', value: rank ? `#${rank}` : 'Not verified' },
       { label: language === 'zh' ? 'Theme Rank' : 'Theme Rank', value: themeRank ? `#${themeRank}` : 'Not verified' },
-      { label: language === 'zh' ? 'Relative Strength' : 'Relative Strength', value: rs !== undefined ? `${rs}th percentile` : 'Not verified' }
+      { label: language === 'zh' ? 'Relative Strength' : 'Relative Strength', value: rsDisplay || 'Not verified' }
     ],
     lines: language === 'zh'
       ? [
         `${ticker} 目前在 CrowdRisk Momentum Universe 的 scanner rank 是 ${rank ? `#${rank}` : '未驗證'}。`,
-        rs !== undefined ? `Relative strength 是 ${rs}th percentile。` : 'relative strength percentile 目前未驗證。',
+        rsDisplay ? `Relative strength 是 ${rsDisplay}。` : 'relative strength percentile 目前未驗證。',
         '白話講，這是動能 / 相對強度 routing signal，不是公司質素或估值結論。'
       ]
       : [
         `${ticker}'s current CrowdRisk Momentum Universe scanner rank is ${rank ? `#${rank}` : 'not verified'}.`,
-        rs !== undefined ? `Relative strength is ${rs}th percentile.` : 'The relative strength percentile is not verified.',
+        rsDisplay ? `Relative strength is ${rsDisplay}.` : 'The relative strength percentile is not verified.',
         'Plainly, this is a momentum / relative-strength routing signal, not a company-quality or valuation conclusion.'
       ],
     action: { type: 'open_momentum', label: language === 'zh' ? '打開動能宇宙' : 'Open Momentum Universe' }
@@ -1172,7 +1265,7 @@ export const answerAskCrowdRiskQuestion = ({ question, locale = 'en', payload = 
   if (intent === 'peer_ecosystem') return buildPeerEcosystemAnswer({ ticker, language, referencePeerMapPayload });
   if (intent === 'coverage_status') return buildCoverageStatusAnswer({ ticker, language, payload, stockPerformancePayload, referencePeerMapPayload });
   if (intent === 'market_cap') return buildMarketCapAnswer({ ticker, language, stockPerformancePayload });
-  if (intent === 'stock_performance') return buildStockPerformanceAnswer({ ticker, language, stockPerformancePayload });
+  if (intent === 'stock_performance') return buildStockPerformanceAnswer({ question, ticker, language, stockPerformancePayload });
   if (intent === 'momentum_rank') return buildMomentumRankAnswer({ ticker, language, payload });
   if (intent === 'valuation_snapshot') return buildValuationSnapshotAnswer({ ticker, language, stockPerformancePayload });
   if (intent === 'earnings_reaction') return buildEarningsReactionAnswer({ question, ticker, language, earningsReactionPayload, earningsReactionReturnPayload });
