@@ -254,8 +254,8 @@ const detectIntent = (question) => {
 export const resolveAskCrowdRiskRequest = ({ question, locale = 'en', payload = null, stockPerformancePayload = null, referencePeerMapPayload = null }) => {
   const language = resolveLanguage(question, locale);
   const payloads = { payload, stockPerformancePayload, referencePeerMapPayload };
-  const ticker = extractTicker(question, payloads);
   const intent = detectIntent(question);
+  const ticker = intent === 'research_queue' ? '' : extractTicker(question, payloads);
   return { language, ticker, intent };
 };
 
@@ -308,6 +308,110 @@ const buildNotVerified = ({ intent, language, ticker, source = null, reason }) =
       reason || 'CrowdRisk does not have enough verified data for this answer yet, so it will not fill it in by guessing.'
     ]
 });
+
+const tickerFromEventKey = (value) => {
+  if (!value) return '';
+  if (typeof value === 'string') return normalizeTicker(value.split('-')[0]);
+  if (typeof value === 'object') return normalizeTicker(value.ticker || String(value.event_key || '').split('-')[0]);
+  return '';
+};
+
+const uniqueTickers = (values, limit = 5) => {
+  const seen = new Set();
+  const tickers = [];
+  values.forEach((value) => {
+    const ticker = tickerFromEventKey(value);
+    if (!ticker || seen.has(ticker)) return;
+    seen.add(ticker);
+    tickers.push(ticker);
+  });
+  return tickers.slice(0, limit);
+};
+
+const buildResearchQueueAnswer = ({ language, payload }) => {
+  const radarLists = payload?.radar_lists || {};
+  const preEarnings = radarLists.pre_earnings || {};
+  const eventDay = radarLists.event_day || {};
+  const postEarnings = radarLists.post_earnings || {};
+  const momentum = radarLists.momentum || {};
+  const rankings = payload?.momentum_universe?.rankings || [];
+
+  const preNames = uniqueTickers([
+    ...(preEarnings.top_opportunities || []),
+    ...(preEarnings.near_term_opportunities || []),
+    ...(preEarnings.deferred_upcoming || [])
+  ], 5);
+  const eventDayNames = uniqueTickers([
+    ...(eventDay.top_opportunities || []),
+    ...(eventDay.watchlist || []),
+    ...(eventDay.top_risk_alerts || [])
+  ], 5);
+  const postNames = uniqueTickers([
+    ...(postEarnings.pead_watch || []),
+    ...(postEarnings.top_risk_alerts || []),
+    ...(postEarnings.trend_pullbacks || [])
+  ], 5);
+  const momentumNames = uniqueTickers([
+    ...(momentum.watch || []),
+    ...rankings.map((row) => row?.ticker)
+  ], 5);
+
+  const hasAny = preNames.length || eventDayNames.length || postNames.length || momentumNames.length;
+  if (!hasAny) {
+    return buildNotVerified({
+      intent: 'research_queue',
+      language,
+      ticker: '',
+      source: sourceMeta('radar-v1.2-latest', payload),
+      reason: language === 'zh'
+        ? 'CrowdRisk 目前沒有已核實的研究隊列 payload。'
+        : 'CrowdRisk does not currently have a verified research-queue payload.'
+    });
+  }
+
+  const topLine = [
+    eventDayNames.length ? `${language === 'zh' ? '事件當日' : 'Event day'}: ${eventDayNames.join(', ')}` : null,
+    postNames.length ? `${language === 'zh' ? '財報後' : 'Post-earnings'}: ${postNames.join(', ')}` : null,
+    preNames.length ? `${language === 'zh' ? '財報前' : 'Pre-earnings'}: ${preNames.join(', ')}` : null,
+    momentumNames.length ? `${language === 'zh' ? '動能' : 'Momentum'}: ${momentumNames.join(', ')}` : null
+  ].filter(Boolean);
+
+  return response({
+    intent: 'research_queue',
+    language,
+    ticker: '',
+    verifiedStatus: 'verified',
+    source: sourceMeta('radar-v1.2-latest', payload),
+    facts: {
+      pre_earnings: preNames,
+      event_day: eventDayNames,
+      post_earnings: postNames,
+      momentum: momentumNames,
+      momentum_ranked_count: payload?.momentum_universe?.ranked_count || rankings.length || null
+    },
+    definitions: {
+      research_queue: 'Existing CrowdRisk routing context; not a final investment decision.'
+    },
+    factsList: [
+      { label: language === 'zh' ? '事件當日' : 'Event day', value: eventDayNames.length ? eventDayNames.join(', ') : 'None' },
+      { label: language === 'zh' ? '財報後' : 'Post-earnings', value: postNames.length ? postNames.join(', ') : 'None' },
+      { label: language === 'zh' ? '財報前' : 'Pre-earnings', value: preNames.length ? preNames.join(', ') : 'None' },
+      { label: language === 'zh' ? '動能排名' : 'Momentum ranks', value: String(payload?.momentum_universe?.ranked_count || rankings.length || 0) }
+    ],
+    lines: language === 'zh'
+      ? [
+        `今日 CrowdRisk 研究隊列可以先看：${topLine.join('；')}。`,
+        '白話講，這是用現有 radar / momentum feed 做研究路由，幫你決定先打開哪些股票檔案。',
+        '這不是最終買賣決定。'
+      ]
+      : [
+        `Today's CrowdRisk research queue starts with: ${topLine.join('; ')}.`,
+        'Plainly, this is research routing from the existing radar / momentum feeds, meant to decide what to inspect first.',
+        'This is not a final investment decision.'
+      ],
+    action: { type: 'open_momentum', label: language === 'zh' ? '打開動能宇宙' : 'Open Momentum Universe' }
+  });
+};
 
 const buildPeerEcosystemAnswer = ({ ticker, language, referencePeerMapPayload }) => {
   const ecosystem = resolveReferencePeerEcosystemSnapshot(referencePeerMapPayload, ticker);
@@ -1266,6 +1370,8 @@ const buildEarningsReactionAnswer = ({ question, ticker, language, earningsReact
 
 export const answerAskCrowdRiskQuestion = ({ question, locale = 'en', payload = null, stockPerformancePayload = null, referencePeerMapPayload = null, earningsReactionPayload = null, earningsReactionReturnPayload = null }) => {
   const { language, ticker, intent } = resolveAskCrowdRiskRequest({ question, locale, payload, stockPerformancePayload, referencePeerMapPayload });
+
+  if (intent === 'research_queue') return buildResearchQueueAnswer({ language, payload });
 
   if (!ticker) {
     return buildNotVerified({

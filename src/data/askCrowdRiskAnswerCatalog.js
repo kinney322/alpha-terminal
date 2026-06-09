@@ -6,6 +6,23 @@ export const DEFAULT_ASK_CROWDRISK_INTENT = 'coverage_status';
 
 export const ASK_CROWDRISK_ANSWER_CATALOG = [
   {
+    id: 'research_queue',
+    intent: 'research_queue',
+    label: 'Research queue',
+    deterministic: true,
+    sources: ['radar-v1.2-latest'],
+    requiredSlots: [],
+    requiredFacts: ['pre_earnings', 'post_earnings', 'momentum_universe'],
+    verifiedRule: 'Radar payload must expose radar_lists or momentum_universe.rankings.',
+    notVerifiedRule: 'Do not invent tickers when the active radar payload is missing.',
+    allowedJudgment: ['research routing', 'inspect-first prioritization'],
+    bannedWording: ['Buy', 'Sell', 'Hold', 'portfolio allocation'],
+    trigger: {
+      enPatterns: [/\bresearch queue\b/, /\binspect first\b/, /\bwatchlist\b/, /\bwhat should i (look at|inspect|research)\b/, /\bwhat to (look at|inspect|research)\b/],
+      zhTerms: ['研究隊列', '今日研究', '今天研究', '值得睇', '睇咩', '看什麼', '留意邊', '關注邊']
+    }
+  },
+  {
     id: 'peer_ecosystem',
     intent: 'peer_ecosystem',
     label: 'Peer ecosystem',
