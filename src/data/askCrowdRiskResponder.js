@@ -1,5 +1,6 @@
 import { getStockDossierProfile } from './stockDossierProfiles.js';
 import { resolveReferencePeerEcosystemSnapshot } from './referencePeerMapAdapter.js';
+import { resolveAskCrowdRiskCatalogEntry } from './askCrowdRiskAnswerCatalog.js';
 
 const MACRO_TICKERS = new Set(['SPY', 'QQQ']);
 const NOT_VERIFIED_EN = 'Not verified in current CrowdRisk backend context.';
@@ -178,16 +179,7 @@ const extractTicker = (question, payloads) => {
 };
 
 const detectIntent = (question) => {
-  const text = String(question || '').toLowerCase();
-  const zh = hasChinese(question);
-  if (/\b(peer|peers|ecosystem|chain|competitor|competitors)\b/.test(text) || /同行|產業鏈|競爭|同業/.test(question)) return 'peer_ecosystem';
-  if (/\b(active|coverage|candidate|dossier|universe)\b/.test(text) || /加入|覆蓋|候選|檔案|名單/.test(question)) return 'coverage_status';
-  if (/\b(market\s*cap|capitalization|市值)\b/.test(text) || /市值/.test(question)) return 'market_cap';
-  if (/\bearnings\b|\br\+\d*\b/.test(text) || /財報|業績/.test(question)) return 'earnings_reaction';
-  if (/\b(performance|return|1m|1 month|one month|1w|week|today|ytd)\b/.test(text) || /回報|升咗|跌咗|表現|一個月|一星期|今日/.test(question)) return 'stock_performance';
-  if (/\b(momentum|rank|ranking|relative strength|rs)\b/.test(text) || /動能|排名|相對強度/.test(question)) return 'momentum_rank';
-  if (/\b(valuation|expensive|cheap|reasonable|price target|multiple)\b/.test(text) || /估值|貴|便宜|合理|目標價|倍數/.test(question)) return 'valuation_snapshot';
-  return zh ? 'coverage_status' : 'coverage_status';
+  return resolveAskCrowdRiskCatalogEntry(question)?.intent || 'coverage_status';
 };
 
 export const resolveAskCrowdRiskRequest = ({ question, locale = 'en', payload = null, stockPerformancePayload = null, referencePeerMapPayload = null }) => {
