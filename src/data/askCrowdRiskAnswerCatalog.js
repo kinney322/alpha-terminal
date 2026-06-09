@@ -69,8 +69,8 @@ export const ASK_CROWDRISK_ANSWER_CATALOG = [
     allowedJudgment: ['capitalization context'],
     bannedWording: ['valuation conclusion from market cap alone'],
     trigger: {
-      enPatterns: [/\b(market\s*cap|capitalization)\b/],
-      zhTerms: ['市值']
+      enPatterns: [/\b(market\s*cap|capitalization)\b/, /\bshares outstanding\b/, /\bshares as of\b/, /\bshare count\b/],
+      zhTerms: ['市值', '股份日期', '股數', '流通股', '已發行股份', '股份數']
     }
   },
   {

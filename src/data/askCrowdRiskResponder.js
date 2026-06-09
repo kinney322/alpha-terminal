@@ -8,7 +8,8 @@ const NOT_VERIFIED_ZH = 'CrowdRisk 目前未能用已驗證資料回答這個問
 const TICKER_STOPWORDS = new Set([
   'A', 'AN', 'AND', 'ARE', 'AS', 'CAP', 'CHEAP', 'CROWRISK', 'DAY', 'DAYS', 'DO', 'DOES',
   'EARNINGS', 'EXPENSIVE', 'FOR', 'FROM', 'HOW', 'IN', 'IS', 'MARKET', 'MONTH', 'MOMENTUM',
-  'OF', 'OR', 'PRICE', 'RANK', 'REASONABLE', 'RETURN', 'TARGET', 'THE', 'TO', 'VALUATION', 'WEEK', 'WHAT'
+  'OF', 'OR', 'OUTSTANDING', 'PRICE', 'RANK', 'REASONABLE', 'RETURN', 'SHARE', 'SHARES',
+  'TARGET', 'THE', 'TO', 'VALUATION', 'WEEK', 'WHAT'
 ]);
 
 const normalizeTicker = (value) => String(value || '').trim().toUpperCase();
@@ -41,6 +42,12 @@ const formatPrice = (value) => {
   const numeric = toFiniteNumber(value);
   if (numeric === null) return null;
   return `$${numeric.toFixed(numeric >= 100 ? 0 : 2)}`;
+};
+
+const formatShareCount = (value) => {
+  const numeric = toFiniteNumber(value);
+  if (numeric === null) return null;
+  return Math.round(numeric).toLocaleString('en-US');
 };
 
 const formatPercent = (value) => {
@@ -593,7 +600,8 @@ const buildCoverageStatusAnswer = ({ ticker, language, payload, stockPerformance
 };
 
 const buildMarketCapAnswer = ({ ticker, language, stockPerformancePayload }) => {
-  const capitalization = stockPerformancePayload?.returns?.[ticker]?.capitalization;
+  const row = stockPerformancePayload?.returns?.[ticker];
+  const capitalization = row?.capitalization;
   if (!capitalization || capitalization.status !== 'available') {
     return buildNotVerified({
       intent: 'market_cap',
@@ -609,6 +617,10 @@ const buildMarketCapAnswer = ({ ticker, language, stockPerformancePayload }) => 
   if (!marketCap) {
     return buildNotVerified({ intent: 'market_cap', language, ticker, source: sourceMeta('stock-performance-latest', stockPerformancePayload) });
   }
+  const latestPriceValue = row?.latest_price ?? row?.price;
+  const latestPrice = formatPrice(latestPriceValue);
+  const sharesOutstanding = formatShareCount(capitalization.shares_outstanding);
+  const sharesAsOf = capitalization.shares_outstanding_as_of || 'Not verified';
   return response({
     intent: 'market_cap',
     language,
@@ -617,22 +629,33 @@ const buildMarketCapAnswer = ({ ticker, language, stockPerformancePayload }) => 
     source: sourceMeta('stock-performance-latest', stockPerformancePayload),
     facts: {
       market_cap: capitalization.market_cap,
+      latest_price: latestPriceValue,
       shares_outstanding: capitalization.shares_outstanding,
       shares_outstanding_as_of: capitalization.shares_outstanding_as_of
     },
     factsList: [
-      { label: language === 'zh' ? 'Market Cap' : 'Market Cap', value: marketCap },
-      { label: language === 'zh' ? '股份日期' : 'Shares as of', value: capitalization.shares_outstanding_as_of || 'Not verified' }
+      { label: language === 'zh' ? '市值' : 'Market cap', value: marketCap },
+      { label: language === 'zh' ? '最新價格' : 'Latest price', value: latestPrice || 'Not verified' },
+      { label: language === 'zh' ? '已發行股份' : 'Shares outstanding', value: sharesOutstanding || 'Not verified' },
+      { label: language === 'zh' ? '股份日期' : 'Shares as of', value: sharesAsOf }
     ],
     lines: language === 'zh'
       ? [
         `${ticker} 的 CrowdRisk 市值目前是 ${marketCap}。`,
-        capitalization.shares_outstanding_as_of ? `這個數字使用 ${capitalization.shares_outstanding_as_of} 的 shares outstanding。` : 'shares outstanding as-of date 目前未驗證。',
+        latestPrice && sharesOutstanding
+          ? `這個數字是用最新公布價格 ${latestPrice} 乘以已發行股份 ${sharesOutstanding} 股計算。`
+          : '最新價格或已發行股份其中一項目前未完整驗證。',
+        capitalization.shares_outstanding_as_of ? `已發行股份日期是 ${capitalization.shares_outstanding_as_of}。` : '已發行股份日期目前未驗證。',
+        '白話講，股價刷新後，市值會跟隨下一次 CrowdRisk 更新而改變；但已發行股份本身要等公司申報 / SEC 來源 refresh，並不是即時每秒更新。',
         '這是市值資料，不是「便宜 / 昂貴」的估值結論。'
       ]
       : [
         `${ticker}'s CrowdRisk market cap is currently ${marketCap}.`,
-        capitalization.shares_outstanding_as_of ? `This uses shares outstanding as of ${capitalization.shares_outstanding_as_of}.` : 'The shares outstanding as-of date is not verified.',
+        latestPrice && sharesOutstanding
+          ? `The figure is calculated from the latest published price of ${latestPrice} multiplied by ${sharesOutstanding} shares outstanding.`
+          : 'The latest price or shares outstanding input is not fully verified.',
+        capitalization.shares_outstanding_as_of ? `The share count is dated ${capitalization.shares_outstanding_as_of}.` : 'The shares outstanding as-of date is not verified.',
+        'Plainly, market cap will move with the next CrowdRisk refresh when price changes; the share count itself refreshes only when company filing / SEC-source data is updated, not second by second.',
         'This is market-cap data, not a cheap-or-expensive valuation conclusion.'
       ],
     action: { type: 'open_dossier', label: language === 'zh' ? '打開股票檔案' : 'Open Dossier' }
