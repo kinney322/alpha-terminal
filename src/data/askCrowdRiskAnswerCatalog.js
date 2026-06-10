@@ -57,6 +57,40 @@ export const ASK_CROWDRISK_ANSWER_CATALOG = [
     }
   },
   {
+    id: 'business_summary',
+    intent: 'business_summary',
+    label: 'Business summary',
+    deterministic: true,
+    sources: ['stockDossierProfiles.js'],
+    requiredSlots: ['ticker'],
+    requiredFacts: ['overview', 'business_model', 'value_driver', 'evidence_focus'],
+    verifiedRule: 'Ticker must have a curated Stock Dossier profile with overview or business-core FAQ.',
+    notVerifiedRule: 'Do not infer business description for tickers without a curated profile.',
+    allowedJudgment: ['business model explanation', 'evidence focus'],
+    bannedWording: ['invented revenue mix', 'unverified TAM', 'final investment decision'],
+    trigger: {
+      enPatterns: [/\bwhat does\b/, /\bdo\??\b/, /\bbusiness model\b/, /\bwhat is .* business\b/, /\bcompany do\b/],
+      zhTerms: ['做什麼', '做咩', '業務', '商業模式', '公司做', '生意模式']
+    }
+  },
+  {
+    id: 'thesis_risk',
+    intent: 'thesis_risk',
+    label: 'Thesis risk',
+    deterministic: true,
+    sources: ['stockDossierProfiles.js'],
+    requiredSlots: ['ticker'],
+    requiredFacts: ['thesis_break_trigger', 'evidence_needed', 'risk_map'],
+    verifiedRule: 'Ticker must have a curated Stock Dossier profile with thesis risk or evidence-needed fields.',
+    notVerifiedRule: 'Do not invent risk triggers for tickers without curated thesis-risk data.',
+    allowedJudgment: ['risk framing', 'evidence monitoring'],
+    bannedWording: ['Buy', 'Sell', 'Hold', 'portfolio allocation'],
+    trigger: {
+      enPatterns: [/\b(thesis|break|risk|monitor|missing evidence|evidence missing|what should i watch)\b/],
+      zhTerms: ['打破', '風險', '監察', '監控', '留意什麼', '要睇什麼', '缺少證據', '缺乏證據', 'thesis']
+    }
+  },
+  {
     id: 'market_cap',
     intent: 'market_cap',
     label: 'Market cap',

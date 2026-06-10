@@ -600,6 +600,168 @@ const buildCoverageStatusAnswer = ({ ticker, language, payload, stockPerformance
   });
 };
 
+const firstFaqAnswer = (profile, group, matcher) => {
+  const rows = profile?.visualPhaseOne?.faq?.[group] || [];
+  return rows.find((item) => matcher(String(item?.question || '').toLowerCase()))?.answer || null;
+};
+
+const sentenceAfterName = (name) => (String(name || '').trim().endsWith('.') ? '' : '.');
+
+const localizedBusinessOverview = ({ ticker, profile, overview, faqAnswer, language }) => {
+  if (language === 'zh' && ticker === 'DDOG') {
+    return `${ticker} 是 ${profile.companyName || ticker}。它是一個雲端 observability 和 security software platform，工程和營運團隊用它監察 infrastructure、applications、logs、user experience 和 cloud-security workflows。`;
+  }
+  if (language === 'zh') return `${ticker} 是 ${profile.companyName || ticker}。${overview || faqAnswer}`;
+  return `${ticker} is ${profile.companyName || ticker}${sentenceAfterName(profile.companyName)} ${overview || faqAnswer}`;
+};
+
+const localizedThesisBreakTrigger = ({ ticker, breakTrigger, language }) => {
+  if (language === 'zh' && ticker === 'DDOG') {
+    return 'NRR 轉差、大客戶增長放慢，或者 FCF margin 持續受壓。';
+  }
+  return breakTrigger;
+};
+
+const localizedRiskWatch = ({ ticker, item, language }) => {
+  if (language !== 'zh' || ticker !== 'DDOG') return `${item.label}：${item.watch}`;
+  const map = {
+    'Growth deceleration': '收入增長放慢：收入增長跌穿 25% 或 RPO 支撐變弱',
+    'Margin / efficiency': '利潤率 / 效率：FCF margin 跌穿 25% 或 SBC 持續偏高',
+    'Platform breadth': '平台廣度：大客戶擴張或多產品 adoption 放慢',
+    'AI / cloud spend sensitivity': 'AI / cloud spending 敏感度：雲端成本優化令 workload 擴張訊號轉弱'
+  };
+  return map[item.label] || `${item.label}：${item.watch}`;
+};
+
+const buildBusinessSummaryAnswer = ({ ticker, language }) => {
+  const profile = getStockDossierProfile(ticker);
+  const overview = profile?.overview;
+  const valueCore = profile?.valueCore || {};
+  const quickFacts = profile?.quickFacts || [];
+  const businessModel = quickFacts.find((item) => item.label === 'Business Model')?.value || null;
+  const customerBase = quickFacts.find((item) => item.label === 'Customer Base')?.value || null;
+  const largeCustomers = quickFacts.find((item) => item.label === '$100k+ ARR Customers')?.value || null;
+  const nrr = quickFacts.find((item) => item.label === 'Net Retention')?.value || null;
+  const faqAnswer = firstFaqAnswer(profile, 'overview', (question) => question.includes('what does'));
+
+  if (!profile || (!overview && !faqAnswer)) {
+    return buildNotVerified({
+      intent: 'business_summary',
+      language,
+      ticker,
+      source: { feed: 'stockDossierProfiles.js' },
+      reason: language === 'zh'
+        ? 'CrowdRisk 目前沒有這隻股票的已核實 business summary。'
+        : 'CrowdRisk does not currently have a verified business summary for this ticker.'
+    });
+  }
+
+  const evidenceFocus = (valueCore.evidence_needed || []).slice(0, 4);
+
+  return response({
+    intent: 'business_summary',
+    language,
+    ticker,
+    verifiedStatus: 'verified',
+    source: { feed: 'stockDossierProfiles.js', profile: ticker },
+    facts: {
+      company_name: profile.companyName,
+      overview,
+      business_model: businessModel,
+      company_stage: valueCore.company_stage_candidate || null,
+      primary_value_driver: valueCore.primary_value_driver || null,
+      customer_base: customerBase,
+      large_customers: largeCustomers,
+      net_retention: nrr,
+      evidence_focus: evidenceFocus
+    },
+    factsList: [
+      { label: language === 'zh' ? '公司' : 'Company', value: profile.companyName || ticker },
+      { label: language === 'zh' ? '商業模式' : 'Business model', value: businessModel || 'Not verified' },
+      { label: language === 'zh' ? '公司階段' : 'Company stage', value: valueCore.company_stage_candidate || 'Not verified' },
+      { label: language === 'zh' ? '主要價值驅動' : 'Primary value driver', value: valueCore.primary_value_driver || 'Not verified' },
+      { label: language === 'zh' ? '客戶基礎' : 'Customer base', value: customerBase || 'Not verified' }
+    ],
+    lines: language === 'zh'
+      ? [
+        localizedBusinessOverview({ ticker, profile, overview, faqAnswer, language }),
+        businessModel ? `CrowdRisk 目前把它看成 ${businessModel}，公司階段是 ${valueCore.company_stage_candidate || '未驗證'}。` : `CrowdRisk 目前的 business model 標籤未完整驗證。`,
+        valueCore.primary_value_driver ? `核心要看的是：${valueCore.primary_value_driver}${customerBase ? `；客戶基礎目前標記為 ${customerBase}` : ''}${largeCustomers ? `，$100k+ ARR 客戶資料是 ${largeCustomers}` : ''}${nrr ? `，net retention 是 ${nrr}` : ''}。` : '核心價值驅動目前未完整驗證。',
+        evidenceFocus.length ? `要繼續驗證這間公司的質素，應主要看：${evidenceFocus.join('、')}。` : '目前沒有足夠已整理證據清單。',
+        '這是業務證據整理，不是最終買賣決定。'
+      ]
+      : [
+        localizedBusinessOverview({ ticker, profile, overview, faqAnswer, language }),
+        businessModel ? `CrowdRisk currently frames it as ${businessModel}, with company stage marked as ${valueCore.company_stage_candidate || 'not verified'}.` : 'CrowdRisk does not yet have a complete verified business-model label.',
+        valueCore.primary_value_driver ? `The core value driver to monitor is ${valueCore.primary_value_driver}${customerBase ? `; customer base is marked as ${customerBase}` : ''}${largeCustomers ? `, $100k+ ARR customer data is ${largeCustomers}` : ''}${nrr ? `, and net retention is ${nrr}` : ''}.` : 'The primary value driver is not fully verified yet.',
+        evidenceFocus.length ? `To keep validating this business read, focus on: ${evidenceFocus.join(', ')}.` : 'CrowdRisk does not yet have a complete evidence checklist.',
+        'This is business evidence, not a final investment decision.'
+      ],
+    action: { type: 'open_dossier', label: language === 'zh' ? '打開股票檔案' : 'Open Dossier' }
+  });
+};
+
+const buildThesisRiskAnswer = ({ ticker, language }) => {
+  const profile = getStockDossierProfile(ticker);
+  const valueCore = profile?.valueCore || {};
+  const thesisRisk = profile?.visualPhaseOne?.phaseTwo?.thesisRisk || {};
+  const breakTrigger = valueCore.thesis_break_trigger || thesisRisk.lead || null;
+  const displayedBreakTrigger = localizedThesisBreakTrigger({ ticker, breakTrigger, language });
+  const evidenceNeeded = thesisRisk.evidenceNeeded || valueCore.evidence_needed || [];
+  const riskMap = thesisRisk.riskMap || [];
+  const faqAnswer = firstFaqAnswer(profile, 'thesisRisk', (question) => question.includes('risk') || question.includes('thesis'));
+
+  if (!profile || (!breakTrigger && !riskMap.length && !evidenceNeeded.length)) {
+    return buildNotVerified({
+      intent: 'thesis_risk',
+      language,
+      ticker,
+      source: { feed: 'stockDossierProfiles.js' },
+      reason: language === 'zh'
+        ? 'CrowdRisk 目前沒有這隻股票的已核實 thesis-risk 資料。'
+        : 'CrowdRisk does not currently have verified thesis-risk data for this ticker.'
+    });
+  }
+
+  const riskItems = riskMap.slice(0, 4);
+  const evidenceItems = evidenceNeeded.slice(0, 5);
+
+  return response({
+    intent: 'thesis_risk',
+    language,
+    ticker,
+    verifiedStatus: 'verified',
+    source: { feed: 'stockDossierProfiles.js', profile: ticker },
+    facts: {
+      company_name: profile.companyName,
+      thesis_break_trigger: breakTrigger,
+      evidence_needed: evidenceItems,
+      risk_map: riskItems
+    },
+    factsList: [
+      { label: language === 'zh' ? '打破 thesis 的條件' : 'Break trigger', value: displayedBreakTrigger || 'Not verified' },
+      { label: language === 'zh' ? '要監察的證據' : 'Evidence to monitor', value: evidenceItems.length ? evidenceItems.join(', ') : 'Not verified' },
+      { label: language === 'zh' ? '風險項目' : 'Risk items', value: riskItems.length ? riskItems.map((item) => item.label).join(', ') : 'Not verified' }
+    ],
+    lines: language === 'zh'
+      ? [
+        `${ticker} 的 thesis 主要不是看單日股價，而是看業務耐久度有沒有變差。`,
+        displayedBreakTrigger ? `CrowdRisk 目前看到的打破 thesis 條件是：${displayedBreakTrigger}` : (faqAnswer || '目前打破 thesis 的條件未完整驗證。'),
+        riskItems.length ? `主要風險監察包括：${riskItems.map((item) => localizedRiskWatch({ ticker, item, language })).join('；')}。` : '目前沒有已整理風險清單。',
+        evidenceItems.length ? `要降低這個判斷的風險，需要繼續驗證：${evidenceItems.join('、')}。` : '目前缺少已整理待驗證證據清單。',
+        '這是風險和證據框架，不是最終買賣決定。'
+      ]
+      : [
+        `${ticker}'s thesis is not mainly about one trading day. It depends on whether business durability weakens.`,
+        breakTrigger ? `CrowdRisk's current break trigger is: ${breakTrigger}.` : (faqAnswer || 'The break trigger is not fully verified yet.'),
+        riskItems.length ? `Main risk monitors include: ${riskItems.map((item) => `${item.label}: ${item.watch}`).join('; ')}.` : 'CrowdRisk does not yet have a structured risk map.',
+        evidenceItems.length ? `To reduce thesis risk, keep verifying: ${evidenceItems.join(', ')}.` : 'CrowdRisk does not yet have a structured missing-evidence checklist.',
+        'This is risk and evidence framing, not a final investment decision.'
+      ],
+    action: { type: 'open_dossier', label: language === 'zh' ? '打開股票檔案' : 'Open Dossier' }
+  });
+};
+
 const buildMarketCapAnswer = ({ ticker, language, stockPerformancePayload }) => {
   const row = stockPerformancePayload?.returns?.[ticker];
   const capitalization = row?.capitalization;
@@ -1444,6 +1606,8 @@ export const answerAskCrowdRiskQuestion = ({ question, locale = 'en', payload = 
 
   if (intent === 'peer_ecosystem') return buildPeerEcosystemAnswer({ ticker, language, referencePeerMapPayload });
   if (intent === 'coverage_status') return buildCoverageStatusAnswer({ ticker, language, payload, stockPerformancePayload, referencePeerMapPayload });
+  if (intent === 'business_summary') return buildBusinessSummaryAnswer({ ticker, language });
+  if (intent === 'thesis_risk') return buildThesisRiskAnswer({ ticker, language });
   if (intent === 'market_cap') return buildMarketCapAnswer({ ticker, language, stockPerformancePayload });
   if (intent === 'stock_performance') return buildStockPerformanceAnswer({ question, ticker, language, stockPerformancePayload });
   if (intent === 'momentum_rank') return buildMomentumRankAnswer({ ticker, language, payload });
