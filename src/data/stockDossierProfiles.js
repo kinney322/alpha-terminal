@@ -1415,6 +1415,7862 @@ const stockDossierProfiles = {
         }
       }
     }
+  },
+  AAPL: {
+    ticker: 'AAPL',
+    companyName: 'Apple Inc.',
+    exchange: 'NASDAQ',
+    logoUrl: buildStockLogoUrl('AAPL'),
+    overview: 'Apple sells iPhone, Mac, iPad, wearables, accessories, and services through a global hardware, software, and services ecosystem.',
+    category: 'Hardware / Services Ecosystem',
+    analysisDate: '2026-06-11',
+    latestFiscalPeriod: 'Latest SEC periodic filing report date 2026-03-28',
+    dossierVerdict: {
+      sourceType: 'curated',
+      asOf: '2026-06-11',
+      researchState: 'business_evidence_watch',
+      businessQuality: 'high',
+      valuationState: 'not_verified',
+      marketEvidence: 'not_verified',
+      finalRead: 'Hardware / Services Ecosystem where the thesis depends on Services revenue, installed base engagement, hardware upgrade cycles, and platform retention are central evidence points.',
+      keySupport: [
+        'SEC source pack identifies Apple Inc. as Hardware / Services Ecosystem.',
+        'Apple sells iPhone, Mac, iPad, wearables, accessories, and services through a global hardware, software, and services ecosystem.',
+        'Services revenue, installed base engagement, hardware upgrade cycles, and platform retention are central evidence points.',
+        'Latest primary-source filing reviewed: SEC 10-Q.'
+      ],
+      keyRisk: [
+        'Hardware replacement cycles can slow.',
+        'China demand, regulation, App Store economics, AI feature adoption, and gross margin mix can affect the thesis.'
+      ]
+    },
+    valueCore: {
+      ticker: 'AAPL',
+      value_core_type: 'Hardware / Services Ecosystem',
+      company_stage_candidate: 'Hardware / Services Ecosystem',
+      primary_value_driver: 'Services revenue, installed base engagement, hardware upgrade cycles, and platform retention are central evidence points.',
+      thesis_break_trigger: 'The thesis weakens if hardware replacement cycles can slow. China demand, regulation, App Store economics, AI feature adoption, and gross margin mix can affect the thesis.',
+      evidence_needed: [
+        'revenue growth',
+        'segment performance',
+        'customer demand',
+        'margin',
+        'cash flow',
+        'risk factor changes'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_3',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: [
+          {
+            question: 'What does AAPL do?',
+            answer: 'Apple sells iPhone, Mac, iPad, wearables, accessories, and services through a global hardware, software, and services ecosystem.'
+          }
+        ],
+        thesisRisk: [
+          {
+            question: 'What would break the AAPL thesis?',
+            answer: 'The thesis weakens if hardware replacement cycles can slow. China demand, regulation, App Store economics, AI feature adoption, and gross margin mix can affect the thesis.'
+          }
+        ]
+      },
+      phaseTwo: {
+        thesisRisk: {
+          lead: 'The main risk is whether Apple Inc. can keep hardware / services ecosystem evidence strong while the key risk factors stay contained.',
+          riskMap: [
+            {
+              label: 'Demand / growth',
+              severity: 'High',
+              watch: 'Hardware replacement cycles can slow.'
+            },
+            {
+              label: 'Margin / economics',
+              severity: 'High',
+              watch: 'China demand, regulation, App Store economics, AI feature adoption, and gross margin mix can affect the thesis.'
+            }
+          ],
+          evidenceNeeded: [
+            'revenue growth',
+            'segment performance',
+            'customer demand',
+            'margin',
+            'cash flow',
+            'risk factor changes'
+          ]
+        }
+      }
+    }
+  },
+  META: {
+    ticker: 'META',
+    companyName: 'Meta Platforms, Inc.',
+    exchange: 'NASDAQ',
+    logoUrl: buildStockLogoUrl('META'),
+    overview: 'Meta operates social, messaging, creator, advertising, and AI-driven discovery platforms across Family of Apps and Reality Labs.',
+    category: 'Social / Advertising / AI Platform',
+    analysisDate: '2026-06-11',
+    latestFiscalPeriod: 'Latest SEC periodic filing report date 2026-03-31',
+    dossierVerdict: {
+      sourceType: 'curated',
+      asOf: '2026-06-11',
+      researchState: 'business_evidence_watch',
+      businessQuality: 'high',
+      valuationState: 'not_verified',
+      marketEvidence: 'not_verified',
+      finalRead: 'Social / Advertising / AI Platform where the thesis depends on Advertising engagement, monetization, AI infrastructure, and Reality Labs investment discipline drive the research frame.',
+      keySupport: [
+        'SEC source pack identifies Meta Platforms, Inc. as Social / Advertising / AI Platform.',
+        'Meta operates social, messaging, creator, advertising, and AI-driven discovery platforms across Family of Apps and Reality Labs.',
+        'Advertising engagement, monetization, AI infrastructure, and Reality Labs investment discipline drive the research frame.',
+        'Latest primary-source filing reviewed: SEC 10-Q.'
+      ],
+      keyRisk: [
+        'Ad demand, privacy rules, regulation, AI capex, youth-safety issues, and Reality Labs losses can pressure the thesis.'
+      ]
+    },
+    valueCore: {
+      ticker: 'META',
+      value_core_type: 'Social / Advertising / AI Platform',
+      company_stage_candidate: 'Social / Advertising / AI Platform',
+      primary_value_driver: 'Advertising engagement, monetization, AI infrastructure, and Reality Labs investment discipline drive the research frame.',
+      thesis_break_trigger: 'The thesis weakens if ad demand, privacy rules, regulation, AI capex, youth-safety issues, and Reality Labs losses can pressure the thesis.',
+      evidence_needed: [
+        'revenue growth',
+        'customer demand',
+        'gross margin',
+        'inventory and backlog',
+        'capex or R&D execution',
+        'free cash flow'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_3',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: [
+          {
+            question: 'What does META do?',
+            answer: 'Meta operates social, messaging, creator, advertising, and AI-driven discovery platforms across Family of Apps and Reality Labs.'
+          }
+        ],
+        thesisRisk: [
+          {
+            question: 'What would break the META thesis?',
+            answer: 'The thesis weakens if ad demand, privacy rules, regulation, AI capex, youth-safety issues, and Reality Labs losses can pressure the thesis.'
+          }
+        ]
+      },
+      phaseTwo: {
+        thesisRisk: {
+          lead: 'The main risk is whether Meta Platforms, Inc. can keep social / advertising / ai platform evidence strong while the key risk factors stay contained.',
+          riskMap: [
+            {
+              label: 'Demand / growth',
+              severity: 'High',
+              watch: 'Ad demand, privacy rules, regulation, AI capex, youth-safety issues, and Reality Labs losses can pressure the thesis.'
+            }
+          ],
+          evidenceNeeded: [
+            'revenue growth',
+            'customer demand',
+            'gross margin',
+            'inventory and backlog',
+            'capex or R&D execution',
+            'free cash flow'
+          ]
+        }
+      }
+    }
+  },
+  TSLA: {
+    ticker: 'TSLA',
+    companyName: 'Tesla, Inc.',
+    exchange: 'NASDAQ',
+    logoUrl: buildStockLogoUrl('TSLA'),
+    overview: 'Tesla designs and sells electric vehicles, energy generation and storage products, software, services, and autonomous / AI-related capabilities.',
+    category: 'Electric Vehicles / Energy / AI Robotics',
+    analysisDate: '2026-06-11',
+    latestFiscalPeriod: 'Latest SEC periodic filing report date 2026-03-31',
+    dossierVerdict: {
+      sourceType: 'curated',
+      asOf: '2026-06-11',
+      researchState: 'business_evidence_watch',
+      businessQuality: 'high',
+      valuationState: 'not_verified',
+      marketEvidence: 'not_verified',
+      finalRead: 'Electric Vehicles / Energy / AI Robotics where the thesis depends on Vehicle volume, gross margin, energy storage growth, autonomy progress, and pricing power are central evidence points.',
+      keySupport: [
+        'SEC source pack identifies Tesla, Inc. as Electric Vehicles / Energy / AI Robotics.',
+        'Tesla designs and sells electric vehicles, energy generation and storage products, software, services, and autonomous / AI-related capabilities.',
+        'Vehicle volume, gross margin, energy storage growth, autonomy progress, and pricing power are central evidence points.',
+        'Latest primary-source filing reviewed: SEC 10-Q.'
+      ],
+      keyRisk: [
+        'EV demand, price competition, margins, autonomy execution, regulatory scrutiny, and management distraction can affect the thesis.'
+      ]
+    },
+    valueCore: {
+      ticker: 'TSLA',
+      value_core_type: 'Electric Vehicles / Energy / AI Robotics',
+      company_stage_candidate: 'Electric Vehicles / Energy / AI Robotics',
+      primary_value_driver: 'Vehicle volume, gross margin, energy storage growth, autonomy progress, and pricing power are central evidence points.',
+      thesis_break_trigger: 'The thesis weakens if eV demand, price competition, margins, autonomy execution, regulatory scrutiny, and management distraction can affect the thesis.',
+      evidence_needed: [
+        'revenue growth',
+        'customer demand',
+        'gross margin',
+        'inventory and backlog',
+        'capex or R&D execution',
+        'free cash flow'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_3',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: [
+          {
+            question: 'What does TSLA do?',
+            answer: 'Tesla designs and sells electric vehicles, energy generation and storage products, software, services, and autonomous / AI-related capabilities.'
+          }
+        ],
+        thesisRisk: [
+          {
+            question: 'What would break the TSLA thesis?',
+            answer: 'The thesis weakens if eV demand, price competition, margins, autonomy execution, regulatory scrutiny, and management distraction can affect the thesis.'
+          }
+        ]
+      },
+      phaseTwo: {
+        thesisRisk: {
+          lead: 'The main risk is whether Tesla, Inc. can keep electric vehicles / energy / ai robotics evidence strong while the key risk factors stay contained.',
+          riskMap: [
+            {
+              label: 'Demand / growth',
+              severity: 'High',
+              watch: 'EV demand, price competition, margins, autonomy execution, regulatory scrutiny, and management distraction can affect the thesis.'
+            }
+          ],
+          evidenceNeeded: [
+            'revenue growth',
+            'customer demand',
+            'gross margin',
+            'inventory and backlog',
+            'capex or R&D execution',
+            'free cash flow'
+          ]
+        }
+      }
+    }
+  },
+  ORCL: {
+    ticker: 'ORCL',
+    companyName: 'Oracle Corporation',
+    exchange: 'NYSE',
+    logoUrl: buildStockLogoUrl('ORCL'),
+    overview: 'Oracle sells cloud infrastructure, cloud applications, database, middleware, hardware, and related services.',
+    category: 'Enterprise Software / Cloud Infrastructure',
+    analysisDate: '2026-06-11',
+    latestFiscalPeriod: 'Latest SEC periodic filing report date 2026-02-28',
+    dossierVerdict: {
+      sourceType: 'curated',
+      asOf: '2026-06-11',
+      researchState: 'business_evidence_watch',
+      businessQuality: 'high',
+      valuationState: 'not_verified',
+      marketEvidence: 'not_verified',
+      finalRead: 'Enterprise Software / Cloud Infrastructure where the thesis depends on OCI growth, database franchise durability, applications growth, remaining performance obligations, and AI infrastructure demand are key evidence points.',
+      keySupport: [
+        'SEC source pack identifies Oracle Corporation as Enterprise Software / Cloud Infrastructure.',
+        'Oracle sells cloud infrastructure, cloud applications, database, middleware, hardware, and related services.',
+        'OCI growth, database franchise durability, applications growth, remaining performance obligations, and AI infrastructure demand are key evidence points.',
+        'Latest primary-source filing reviewed: SEC 10-Q.'
+      ],
+      keyRisk: [
+        'Large cloud capex, debt, execution risk, hyperscaler competition, and slower cloud bookings can weaken the thesis.'
+      ]
+    },
+    valueCore: {
+      ticker: 'ORCL',
+      value_core_type: 'Enterprise Software / Cloud Infrastructure',
+      company_stage_candidate: 'Enterprise Software / Cloud Infrastructure',
+      primary_value_driver: 'OCI growth, database franchise durability, applications growth, remaining performance obligations, and AI infrastructure demand are key evidence points.',
+      thesis_break_trigger: 'The thesis weakens if large cloud capex, debt, execution risk, hyperscaler competition, and slower cloud bookings can weaken the thesis.',
+      evidence_needed: [
+        'revenue growth',
+        'segment performance',
+        'customer demand',
+        'margin',
+        'cash flow',
+        'risk factor changes'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_3',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: [
+          {
+            question: 'What does ORCL do?',
+            answer: 'Oracle sells cloud infrastructure, cloud applications, database, middleware, hardware, and related services.'
+          }
+        ],
+        thesisRisk: [
+          {
+            question: 'What would break the ORCL thesis?',
+            answer: 'The thesis weakens if large cloud capex, debt, execution risk, hyperscaler competition, and slower cloud bookings can weaken the thesis.'
+          }
+        ]
+      },
+      phaseTwo: {
+        thesisRisk: {
+          lead: 'The main risk is whether Oracle Corporation can keep enterprise software / cloud infrastructure evidence strong while the key risk factors stay contained.',
+          riskMap: [
+            {
+              label: 'Demand / growth',
+              severity: 'High',
+              watch: 'Large cloud capex, debt, execution risk, hyperscaler competition, and slower cloud bookings can weaken the thesis.'
+            }
+          ],
+          evidenceNeeded: [
+            'revenue growth',
+            'segment performance',
+            'customer demand',
+            'margin',
+            'cash flow',
+            'risk factor changes'
+          ]
+        }
+      }
+    }
+  },
+  CRM: {
+    ticker: 'CRM',
+    companyName: 'Salesforce, Inc.',
+    exchange: 'NYSE',
+    logoUrl: buildStockLogoUrl('CRM'),
+    overview: 'Salesforce provides customer relationship management software across sales, service, marketing, commerce, data, integration, analytics, and AI workflows.',
+    category: 'Enterprise SaaS / CRM',
+    analysisDate: '2026-06-11',
+    latestFiscalPeriod: 'Latest SEC periodic filing report date 2026-04-30',
+    dossierVerdict: {
+      sourceType: 'curated',
+      asOf: '2026-06-11',
+      researchState: 'business_evidence_watch',
+      businessQuality: 'high',
+      valuationState: 'not_verified',
+      marketEvidence: 'not_verified',
+      finalRead: 'Enterprise SaaS / CRM where the thesis depends on Subscription growth, remaining performance obligations, margin discipline, Data Cloud, and Agentforce / AI adoption drive the frame.',
+      keySupport: [
+        'SEC source pack identifies Salesforce, Inc. as Enterprise SaaS / CRM.',
+        'Salesforce provides customer relationship management software across sales, service, marketing, commerce, data, integration, analytics, and AI workflows.',
+        'Subscription growth, remaining performance obligations, margin discipline, Data Cloud, and Agentforce / AI adoption drive the frame.',
+        'Latest primary-source filing reviewed: SEC 10-Q.'
+      ],
+      keyRisk: [
+        'Seat growth can slow, enterprise IT spending can soften, AI monetization can disappoint, and competition can pressure renewal or expansion.'
+      ]
+    },
+    valueCore: {
+      ticker: 'CRM',
+      value_core_type: 'Enterprise SaaS / CRM',
+      company_stage_candidate: 'Enterprise SaaS / CRM',
+      primary_value_driver: 'Subscription growth, remaining performance obligations, margin discipline, Data Cloud, and Agentforce / AI adoption drive the frame.',
+      thesis_break_trigger: 'The thesis weakens if seat growth can slow, enterprise IT spending can soften, AI monetization can disappoint, and competition can pressure renewal or expansion.',
+      evidence_needed: [
+        'revenue growth',
+        'segment performance',
+        'customer demand',
+        'margin',
+        'cash flow',
+        'risk factor changes'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_3',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: [
+          {
+            question: 'What does CRM do?',
+            answer: 'Salesforce provides customer relationship management software across sales, service, marketing, commerce, data, integration, analytics, and AI workflows.'
+          }
+        ],
+        thesisRisk: [
+          {
+            question: 'What would break the CRM thesis?',
+            answer: 'The thesis weakens if seat growth can slow, enterprise IT spending can soften, AI monetization can disappoint, and competition can pressure renewal or expansion.'
+          }
+        ]
+      },
+      phaseTwo: {
+        thesisRisk: {
+          lead: 'The main risk is whether Salesforce, Inc. can keep enterprise saas / crm evidence strong while the key risk factors stay contained.',
+          riskMap: [
+            {
+              label: 'Demand / growth',
+              severity: 'High',
+              watch: 'Seat growth can slow, enterprise IT spending can soften, AI monetization can disappoint, and competition can pressure renewal or expansion.'
+            }
+          ],
+          evidenceNeeded: [
+            'revenue growth',
+            'segment performance',
+            'customer demand',
+            'margin',
+            'cash flow',
+            'risk factor changes'
+          ]
+        }
+      }
+    }
+  },
+  SNOW: {
+    ticker: 'SNOW',
+    companyName: 'Snowflake Inc.',
+    exchange: 'NYSE',
+    logoUrl: buildStockLogoUrl('SNOW'),
+    overview: 'Snowflake provides a cloud data platform for data warehousing, data lakes, data engineering, analytics, collaboration, applications, and AI / ML workloads.',
+    category: 'Data Cloud / Analytics',
+    analysisDate: '2026-06-11',
+    latestFiscalPeriod: 'Latest SEC periodic filing report date 2026-04-30',
+    dossierVerdict: {
+      sourceType: 'curated',
+      asOf: '2026-06-11',
+      researchState: 'business_evidence_watch',
+      businessQuality: 'high',
+      valuationState: 'not_verified',
+      marketEvidence: 'not_verified',
+      finalRead: 'Data Cloud / Analytics where the thesis depends on Consumption growth, net revenue retention, large customer expansion, platform workload breadth, and AI data use cases drive the frame.',
+      keySupport: [
+        'SEC source pack identifies Snowflake Inc. as Data Cloud / Analytics.',
+        'Snowflake provides a cloud data platform for data warehousing, data lakes, data engineering, analytics, collaboration, applications, and AI / ML workloads.',
+        'Consumption growth, net revenue retention, large customer expansion, platform workload breadth, and AI data use cases drive the frame.',
+        'Latest primary-source filing reviewed: SEC 10-Q.'
+      ],
+      keyRisk: [
+        'Consumption can slow, optimization can pressure growth, competition from hyperscalers can intensify, and AI features need durable monetization.'
+      ]
+    },
+    valueCore: {
+      ticker: 'SNOW',
+      value_core_type: 'Data Cloud / Analytics',
+      company_stage_candidate: 'Data Cloud / Analytics',
+      primary_value_driver: 'Consumption growth, net revenue retention, large customer expansion, platform workload breadth, and AI data use cases drive the frame.',
+      thesis_break_trigger: 'The thesis weakens if consumption can slow, optimization can pressure growth, competition from hyperscalers can intensify, and AI features need durable monetization.',
+      evidence_needed: [
+        'revenue growth',
+        'segment performance',
+        'customer demand',
+        'margin',
+        'cash flow',
+        'risk factor changes'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_3',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: [
+          {
+            question: 'What does SNOW do?',
+            answer: 'Snowflake provides a cloud data platform for data warehousing, data lakes, data engineering, analytics, collaboration, applications, and AI / ML workloads.'
+          }
+        ],
+        thesisRisk: [
+          {
+            question: 'What would break the SNOW thesis?',
+            answer: 'The thesis weakens if consumption can slow, optimization can pressure growth, competition from hyperscalers can intensify, and AI features need durable monetization.'
+          }
+        ]
+      },
+      phaseTwo: {
+        thesisRisk: {
+          lead: 'The main risk is whether Snowflake Inc. can keep data cloud / analytics evidence strong while the key risk factors stay contained.',
+          riskMap: [
+            {
+              label: 'Demand / growth',
+              severity: 'High',
+              watch: 'Consumption can slow, optimization can pressure growth, competition from hyperscalers can intensify, and AI features need durable monetization.'
+            }
+          ],
+          evidenceNeeded: [
+            'revenue growth',
+            'segment performance',
+            'customer demand',
+            'margin',
+            'cash flow',
+            'risk factor changes'
+          ]
+        }
+      }
+    }
+  },
+  MU: {
+    ticker: 'MU',
+    companyName: 'Micron Technology, Inc.',
+    exchange: 'NASDAQ',
+    logoUrl: buildStockLogoUrl('MU'),
+    overview: 'Micron manufactures memory and storage products, including DRAM, NAND, HBM, and SSD-related solutions.',
+    category: 'Memory Semiconductor',
+    analysisDate: '2026-06-11',
+    latestFiscalPeriod: 'Latest SEC periodic filing report date 2026-02-26',
+    dossierVerdict: {
+      sourceType: 'curated',
+      asOf: '2026-06-11',
+      researchState: 'semiconductor_cycle_watch',
+      businessQuality: 'high',
+      valuationState: 'not_verified',
+      marketEvidence: 'not_verified',
+      finalRead: 'Memory Semiconductor where the thesis depends on HBM demand, DRAM/NAND pricing, bit supply discipline, gross margin, and AI data-center memory content are core evidence points.',
+      keySupport: [
+        'SEC source pack identifies Micron Technology, Inc. as Memory Semiconductor.',
+        'Micron manufactures memory and storage products, including DRAM, NAND, HBM, and SSD-related solutions.',
+        'HBM demand, DRAM/NAND pricing, bit supply discipline, gross margin, and AI data-center memory content are core evidence points.',
+        'Latest primary-source filing reviewed: SEC 10-Q.'
+      ],
+      keyRisk: [
+        'Memory is highly cyclical; pricing, inventory, capex, customer demand, and supply discipline can change quickly.'
+      ]
+    },
+    valueCore: {
+      ticker: 'MU',
+      value_core_type: 'Memory Semiconductor',
+      company_stage_candidate: 'Memory Semiconductor',
+      primary_value_driver: 'HBM demand, DRAM/NAND pricing, bit supply discipline, gross margin, and AI data-center memory content are core evidence points.',
+      thesis_break_trigger: 'The thesis weakens if memory is highly cyclical; pricing, inventory, capex, customer demand, and supply discipline can change quickly.',
+      evidence_needed: [
+        'revenue growth',
+        'customer demand',
+        'gross margin',
+        'inventory and backlog',
+        'capex or R&D execution',
+        'free cash flow'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_3',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: [
+          {
+            question: 'What does MU do?',
+            answer: 'Micron manufactures memory and storage products, including DRAM, NAND, HBM, and SSD-related solutions.'
+          }
+        ],
+        thesisRisk: [
+          {
+            question: 'What would break the MU thesis?',
+            answer: 'The thesis weakens if memory is highly cyclical; pricing, inventory, capex, customer demand, and supply discipline can change quickly.'
+          }
+        ]
+      },
+      phaseTwo: {
+        thesisRisk: {
+          lead: 'The main risk is whether Micron Technology, Inc. can keep memory semiconductor evidence strong while the key risk factors stay contained.',
+          riskMap: [
+            {
+              label: 'Demand / growth',
+              severity: 'High',
+              watch: 'Memory is highly cyclical; pricing, inventory, capex, customer demand, and supply discipline can change quickly.'
+            }
+          ],
+          evidenceNeeded: [
+            'revenue growth',
+            'customer demand',
+            'gross margin',
+            'inventory and backlog',
+            'capex or R&D execution',
+            'free cash flow'
+          ]
+        }
+      }
+    }
+  },
+  INTC: {
+    ticker: 'INTC',
+    companyName: 'Intel Corporation',
+    exchange: 'NASDAQ',
+    logoUrl: buildStockLogoUrl('INTC'),
+    overview: 'Intel operates across client computing, data center and AI, network and edge, and foundry / manufacturing ambitions.',
+    category: 'Semiconductors / Foundry / Client and Data Center',
+    analysisDate: '2026-06-11',
+    latestFiscalPeriod: 'Latest SEC periodic filing report date 2026-03-28',
+    dossierVerdict: {
+      sourceType: 'curated',
+      asOf: '2026-06-11',
+      researchState: 'semiconductor_cycle_watch',
+      businessQuality: 'high',
+      valuationState: 'not_verified',
+      marketEvidence: 'not_verified',
+      finalRead: 'Semiconductors / Foundry / Client and Data Center where the thesis depends on The thesis depends on process execution, product competitiveness, foundry traction, margin recovery, and AI / data-center relevance.',
+      keySupport: [
+        'SEC source pack identifies Intel Corporation as Semiconductors / Foundry / Client and Data Center.',
+        'Intel operates across client computing, data center and AI, network and edge, and foundry / manufacturing ambitions.',
+        'The thesis depends on process execution, product competitiveness, foundry traction, margin recovery, and AI / data-center relevance.',
+        'Latest primary-source filing reviewed: SEC 10-Q.'
+      ],
+      keyRisk: [
+        'Foundry losses, product delays, competitive pressure, weak margins, capex burden, and share loss can weaken the thesis.'
+      ]
+    },
+    valueCore: {
+      ticker: 'INTC',
+      value_core_type: 'Semiconductors / Foundry / Client and Data Center',
+      company_stage_candidate: 'Semiconductors / Foundry / Client and Data Center',
+      primary_value_driver: 'The thesis depends on process execution, product competitiveness, foundry traction, margin recovery, and AI / data-center relevance.',
+      thesis_break_trigger: 'The thesis weakens if foundry losses, product delays, competitive pressure, weak margins, capex burden, and share loss can weaken the thesis.',
+      evidence_needed: [
+        'revenue growth',
+        'customer demand',
+        'gross margin',
+        'inventory and backlog',
+        'capex or R&D execution',
+        'free cash flow'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_3',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: [
+          {
+            question: 'What does INTC do?',
+            answer: 'Intel operates across client computing, data center and AI, network and edge, and foundry / manufacturing ambitions.'
+          }
+        ],
+        thesisRisk: [
+          {
+            question: 'What would break the INTC thesis?',
+            answer: 'The thesis weakens if foundry losses, product delays, competitive pressure, weak margins, capex burden, and share loss can weaken the thesis.'
+          }
+        ]
+      },
+      phaseTwo: {
+        thesisRisk: {
+          lead: 'The main risk is whether Intel Corporation can keep semiconductors / foundry / client and data center evidence strong while the key risk factors stay contained.',
+          riskMap: [
+            {
+              label: 'Demand / growth',
+              severity: 'High',
+              watch: 'Foundry losses, product delays, competitive pressure, weak margins, capex burden, and share loss can weaken the thesis.'
+            }
+          ],
+          evidenceNeeded: [
+            'revenue growth',
+            'customer demand',
+            'gross margin',
+            'inventory and backlog',
+            'capex or R&D execution',
+            'free cash flow'
+          ]
+        }
+      }
+    }
+  },
+  ASML: {
+    ticker: 'ASML',
+    companyName: 'ASML Holding N.V.',
+    exchange: 'NASDAQ',
+    logoUrl: buildStockLogoUrl('ASML'),
+    overview: 'ASML supplies lithography systems and related services for semiconductor manufacturing, including EUV and DUV systems.',
+    category: 'Semiconductor Equipment / Lithography',
+    analysisDate: '2026-06-11',
+    latestFiscalPeriod: 'Latest SEC periodic filing report date 2025-12-31',
+    dossierVerdict: {
+      sourceType: 'curated',
+      asOf: '2026-06-11',
+      researchState: 'semiconductor_cycle_watch',
+      businessQuality: 'high',
+      valuationState: 'not_verified',
+      marketEvidence: 'not_verified',
+      finalRead: 'Semiconductor Equipment / Lithography where the thesis depends on Semiconductor node transitions, EUV demand, installed base service, China/export restrictions, and customer capex drive the frame.',
+      keySupport: [
+        'SEC source pack identifies ASML Holding N.V. as Semiconductor Equipment / Lithography.',
+        'ASML supplies lithography systems and related services for semiconductor manufacturing, including EUV and DUV systems.',
+        'Semiconductor node transitions, EUV demand, installed base service, China/export restrictions, and customer capex drive the frame.',
+        'Latest primary-source filing reviewed: SEC 20-F.'
+      ],
+      keyRisk: [
+        'Semiconductor capex cycles, export controls, customer concentration, supply chain complexity, and lithography demand timing can affect the thesis.'
+      ]
+    },
+    valueCore: {
+      ticker: 'ASML',
+      value_core_type: 'Semiconductor Equipment / Lithography',
+      company_stage_candidate: 'Semiconductor Equipment / Lithography',
+      primary_value_driver: 'Semiconductor node transitions, EUV demand, installed base service, China/export restrictions, and customer capex drive the frame.',
+      thesis_break_trigger: 'The thesis weakens if semiconductor capex cycles, export controls, customer concentration, supply chain complexity, and lithography demand timing can affect the thesis.',
+      evidence_needed: [
+        'revenue growth',
+        'customer demand',
+        'gross margin',
+        'inventory and backlog',
+        'capex or R&D execution',
+        'free cash flow'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_3',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: [
+          {
+            question: 'What does ASML do?',
+            answer: 'ASML supplies lithography systems and related services for semiconductor manufacturing, including EUV and DUV systems.'
+          }
+        ],
+        thesisRisk: [
+          {
+            question: 'What would break the ASML thesis?',
+            answer: 'The thesis weakens if semiconductor capex cycles, export controls, customer concentration, supply chain complexity, and lithography demand timing can affect the thesis.'
+          }
+        ]
+      },
+      phaseTwo: {
+        thesisRisk: {
+          lead: 'The main risk is whether ASML Holding N.V. can keep semiconductor equipment / lithography evidence strong while the key risk factors stay contained.',
+          riskMap: [
+            {
+              label: 'Demand / growth',
+              severity: 'High',
+              watch: 'Semiconductor capex cycles, export controls, customer concentration, supply chain complexity, and lithography demand timing can affect the thesis.'
+            }
+          ],
+          evidenceNeeded: [
+            'revenue growth',
+            'customer demand',
+            'gross margin',
+            'inventory and backlog',
+            'capex or R&D execution',
+            'free cash flow'
+          ]
+        }
+      }
+    }
+  },
+  AMAT: {
+    ticker: 'AMAT',
+    companyName: 'Applied Materials, Inc.',
+    exchange: 'NASDAQ',
+    logoUrl: buildStockLogoUrl('AMAT'),
+    overview: 'Applied Materials provides semiconductor manufacturing equipment, services, and display / adjacent equipment across materials engineering, deposition, etch, inspection, and process control.',
+    category: 'Semiconductor Equipment / Materials Engineering',
+    analysisDate: '2026-06-11',
+    latestFiscalPeriod: 'Latest SEC periodic filing report date 2026-04-26',
+    dossierVerdict: {
+      sourceType: 'curated',
+      asOf: '2026-06-11',
+      researchState: 'semiconductor_cycle_watch',
+      businessQuality: 'high',
+      valuationState: 'not_verified',
+      marketEvidence: 'not_verified',
+      finalRead: 'Semiconductor Equipment / Materials Engineering where the thesis depends on WFE demand, memory and foundry/logic capex, advanced packaging, services, and China/export restrictions drive the frame.',
+      keySupport: [
+        'SEC source pack identifies Applied Materials, Inc. as Semiconductor Equipment / Materials Engineering.',
+        'Applied Materials provides semiconductor manufacturing equipment, services, and display / adjacent equipment across materials engineering, deposition, etch, inspection, and process control.',
+        'WFE demand, memory and foundry/logic capex, advanced packaging, services, and China/export restrictions drive the frame.',
+        'Latest primary-source filing reviewed: SEC 10-Q.'
+      ],
+      keyRisk: [
+        'Wafer-fab equipment cycles, memory capex swings, customer concentration, export controls, and order timing can affect growth and margins.'
+      ]
+    },
+    valueCore: {
+      ticker: 'AMAT',
+      value_core_type: 'Semiconductor Equipment / Materials Engineering',
+      company_stage_candidate: 'Semiconductor Equipment / Materials Engineering',
+      primary_value_driver: 'WFE demand, memory and foundry/logic capex, advanced packaging, services, and China/export restrictions drive the frame.',
+      thesis_break_trigger: 'The thesis weakens if wafer-fab equipment cycles, memory capex swings, customer concentration, export controls, and order timing can affect growth and margins.',
+      evidence_needed: [
+        'revenue growth',
+        'customer demand',
+        'gross margin',
+        'inventory and backlog',
+        'capex or R&D execution',
+        'free cash flow'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_3',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: [
+          {
+            question: 'What does AMAT do?',
+            answer: 'Applied Materials provides semiconductor manufacturing equipment, services, and display / adjacent equipment across materials engineering, deposition, etch, inspection, and process control.'
+          }
+        ],
+        thesisRisk: [
+          {
+            question: 'What would break the AMAT thesis?',
+            answer: 'The thesis weakens if wafer-fab equipment cycles, memory capex swings, customer concentration, export controls, and order timing can affect growth and margins.'
+          }
+        ]
+      },
+      phaseTwo: {
+        thesisRisk: {
+          lead: 'The main risk is whether Applied Materials, Inc. can keep semiconductor equipment / materials engineering evidence strong while the key risk factors stay contained.',
+          riskMap: [
+            {
+              label: 'Demand / growth',
+              severity: 'High',
+              watch: 'Wafer-fab equipment cycles, memory capex swings, customer concentration, export controls, and order timing can affect growth and margins.'
+            }
+          ],
+          evidenceNeeded: [
+            'revenue growth',
+            'customer demand',
+            'gross margin',
+            'inventory and backlog',
+            'capex or R&D execution',
+            'free cash flow'
+          ]
+        }
+      }
+    }
+  },
+  LRCX: {
+    ticker: 'LRCX',
+    companyName: 'Lam Research Corporation',
+    exchange: 'NASDAQ',
+    logoUrl: buildStockLogoUrl('LRCX'),
+    overview: 'Lam Research Corporation operates in Semiconductor Equipment / Etch and Deposition.',
+    category: 'Semiconductor Equipment / Etch and Deposition',
+    analysisDate: '2026-06-11',
+    latestFiscalPeriod: 'Q3 FY2026 ended 2026-03-29',
+    dossierVerdict: {
+      sourceType: 'curated',
+      asOf: '2026-06-11',
+      researchState: 'semiconductor_cycle_watch',
+      businessQuality: 'high',
+      valuationState: 'not_verified',
+      marketEvidence: 'not_verified',
+      finalRead: 'Semiconductor Equipment / Etch and Deposition where the thesis depends on Semiconductor Equipment / Etch and Deposition execution, customer demand, margin, and cash flow.',
+      keySupport: [
+        'SEC source pack identifies Lam Research Corporation as Semiconductor Equipment / Etch and Deposition.',
+        'Latest primary-source filing reviewed: SEC latest periodic filing.'
+      ],
+      keyRisk: [
+        'Semiconductor Equipment / Etch and Deposition demand can slow.',
+        'Margins can compress if cost, competition, or execution pressure rises.',
+        'The business thesis can weaken if cash flow evidence deteriorates.'
+      ]
+    },
+    valueCore: {
+      ticker: 'LRCX',
+      value_core_type: 'Semiconductor Equipment / Etch and Deposition',
+      company_stage_candidate: 'Semiconductor Equipment / Etch and Deposition',
+      primary_value_driver: 'Semiconductor Equipment / Etch and Deposition execution, customer demand, margin, and cash flow',
+      thesis_break_trigger: 'The thesis weakens if semiconductor equipment / etch and deposition demand slows, margins compress, execution disappoints, or cash flow weakens.',
+      evidence_needed: [
+        'revenue growth',
+        'customer demand',
+        'gross margin',
+        'inventory and backlog',
+        'capex or R&D execution',
+        'free cash flow'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_4',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: [
+          {
+            question: 'What does LRCX do?',
+            answer: 'Lam Research Corporation operates in Semiconductor Equipment / Etch and Deposition.'
+          }
+        ],
+        thesisRisk: [
+          {
+            question: 'What would break the LRCX thesis?',
+            answer: 'The thesis weakens if semiconductor equipment / etch and deposition demand slows, margins compress, execution disappoints, or cash flow weakens.'
+          }
+        ]
+      },
+      phaseTwo: {
+        thesisRisk: {
+          lead: 'The main risk is whether Lam Research Corporation can keep semiconductor equipment / etch and deposition evidence strong while the key risk factors stay contained.',
+          riskMap: [
+            {
+              label: 'Demand / growth',
+              severity: 'High',
+              watch: 'Semiconductor Equipment / Etch and Deposition demand can slow.'
+            },
+            {
+              label: 'Margin / economics',
+              severity: 'High',
+              watch: 'Margin can compress.'
+            },
+            {
+              label: 'Execution',
+              severity: 'Medium',
+              watch: 'Execution can disappoint.'
+            },
+            {
+              label: 'Cash flow / risk',
+              severity: 'Medium',
+              watch: 'Cash flow can weaken.'
+            }
+          ],
+          evidenceNeeded: [
+            'revenue growth',
+            'customer demand',
+            'gross margin',
+            'inventory and backlog',
+            'capex or R&D execution',
+            'free cash flow'
+          ]
+        }
+      }
+    }
+  },
+  KLAC: {
+    ticker: 'KLAC',
+    companyName: 'KLA Corporation',
+    exchange: 'NASDAQ',
+    logoUrl: buildStockLogoUrl('KLAC'),
+    overview: 'KLA Corporation operates in Semiconductor Process Control / Inspection.',
+    category: 'Semiconductor Process Control / Inspection',
+    analysisDate: '2026-06-11',
+    latestFiscalPeriod: 'Q3 FY2026 ended 2026-03-31',
+    dossierVerdict: {
+      sourceType: 'curated',
+      asOf: '2026-06-11',
+      researchState: 'semiconductor_cycle_watch',
+      businessQuality: 'high',
+      valuationState: 'not_verified',
+      marketEvidence: 'not_verified',
+      finalRead: 'Semiconductor Process Control / Inspection where the thesis depends on Semiconductor Process Control / Inspection execution, customer demand, margin, and cash flow.',
+      keySupport: [
+        'SEC source pack identifies KLA Corporation as Semiconductor Process Control / Inspection.',
+        'Latest primary-source filing reviewed: SEC latest periodic filing.'
+      ],
+      keyRisk: [
+        'Semiconductor Process Control / Inspection demand can slow.',
+        'Margins can compress if cost, competition, or execution pressure rises.',
+        'The business thesis can weaken if cash flow evidence deteriorates.'
+      ]
+    },
+    valueCore: {
+      ticker: 'KLAC',
+      value_core_type: 'Semiconductor Process Control / Inspection',
+      company_stage_candidate: 'Semiconductor Process Control / Inspection',
+      primary_value_driver: 'Semiconductor Process Control / Inspection execution, customer demand, margin, and cash flow',
+      thesis_break_trigger: 'The thesis weakens if semiconductor process control / inspection demand slows, margins compress, execution disappoints, or cash flow weakens.',
+      evidence_needed: [
+        'revenue growth',
+        'customer demand',
+        'gross margin',
+        'inventory and backlog',
+        'capex or R&D execution',
+        'free cash flow'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_4',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: [
+          {
+            question: 'What does KLAC do?',
+            answer: 'KLA Corporation operates in Semiconductor Process Control / Inspection.'
+          }
+        ],
+        thesisRisk: [
+          {
+            question: 'What would break the KLAC thesis?',
+            answer: 'The thesis weakens if semiconductor process control / inspection demand slows, margins compress, execution disappoints, or cash flow weakens.'
+          }
+        ]
+      },
+      phaseTwo: {
+        thesisRisk: {
+          lead: 'The main risk is whether KLA Corporation can keep semiconductor process control / inspection evidence strong while the key risk factors stay contained.',
+          riskMap: [
+            {
+              label: 'Demand / growth',
+              severity: 'High',
+              watch: 'Semiconductor Process Control / Inspection demand can slow.'
+            },
+            {
+              label: 'Margin / economics',
+              severity: 'High',
+              watch: 'Margin can compress.'
+            },
+            {
+              label: 'Execution',
+              severity: 'Medium',
+              watch: 'Execution can disappoint.'
+            },
+            {
+              label: 'Cash flow / risk',
+              severity: 'Medium',
+              watch: 'Cash flow can weaken.'
+            }
+          ],
+          evidenceNeeded: [
+            'revenue growth',
+            'customer demand',
+            'gross margin',
+            'inventory and backlog',
+            'capex or R&D execution',
+            'free cash flow'
+          ]
+        }
+      }
+    }
+  },
+  QCOM: {
+    ticker: 'QCOM',
+    companyName: 'QUALCOMM Incorporated',
+    exchange: 'NASDAQ',
+    logoUrl: buildStockLogoUrl('QCOM'),
+    overview: 'QUALCOMM Incorporated operates in Mobile / Edge AI Semiconductor Platform.',
+    category: 'Mobile / Edge AI Semiconductor Platform',
+    analysisDate: '2026-06-11',
+    latestFiscalPeriod: 'Q2 FY2026 ended 2026-03-29',
+    dossierVerdict: {
+      sourceType: 'curated',
+      asOf: '2026-06-11',
+      researchState: 'semiconductor_cycle_watch',
+      businessQuality: 'high',
+      valuationState: 'not_verified',
+      marketEvidence: 'not_verified',
+      finalRead: 'Mobile / Edge AI Semiconductor Platform where the thesis depends on Mobile / Edge AI Semiconductor Platform execution, customer demand, margin, and cash flow.',
+      keySupport: [
+        'SEC source pack identifies QUALCOMM Incorporated as Mobile / Edge AI Semiconductor Platform.',
+        'Latest primary-source filing reviewed: SEC latest periodic filing.'
+      ],
+      keyRisk: [
+        'Mobile / Edge AI Semiconductor Platform demand can slow.',
+        'Margins can compress if cost, competition, or execution pressure rises.',
+        'The business thesis can weaken if cash flow evidence deteriorates.'
+      ]
+    },
+    valueCore: {
+      ticker: 'QCOM',
+      value_core_type: 'Mobile / Edge AI Semiconductor Platform',
+      company_stage_candidate: 'Mobile / Edge AI Semiconductor Platform',
+      primary_value_driver: 'Mobile / Edge AI Semiconductor Platform execution, customer demand, margin, and cash flow',
+      thesis_break_trigger: 'The thesis weakens if mobile / edge ai semiconductor platform demand slows, margins compress, execution disappoints, or cash flow weakens.',
+      evidence_needed: [
+        'revenue growth',
+        'customer demand',
+        'gross margin',
+        'inventory and backlog',
+        'capex or R&D execution',
+        'free cash flow'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_4',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: [
+          {
+            question: 'What does QCOM do?',
+            answer: 'QUALCOMM Incorporated operates in Mobile / Edge AI Semiconductor Platform.'
+          }
+        ],
+        thesisRisk: [
+          {
+            question: 'What would break the QCOM thesis?',
+            answer: 'The thesis weakens if mobile / edge ai semiconductor platform demand slows, margins compress, execution disappoints, or cash flow weakens.'
+          }
+        ]
+      },
+      phaseTwo: {
+        thesisRisk: {
+          lead: 'The main risk is whether QUALCOMM Incorporated can keep mobile / edge ai semiconductor platform evidence strong while the key risk factors stay contained.',
+          riskMap: [
+            {
+              label: 'Demand / growth',
+              severity: 'High',
+              watch: 'Mobile / Edge AI Semiconductor Platform demand can slow.'
+            },
+            {
+              label: 'Margin / economics',
+              severity: 'High',
+              watch: 'Margin can compress.'
+            },
+            {
+              label: 'Execution',
+              severity: 'Medium',
+              watch: 'Execution can disappoint.'
+            },
+            {
+              label: 'Cash flow / risk',
+              severity: 'Medium',
+              watch: 'Cash flow can weaken.'
+            }
+          ],
+          evidenceNeeded: [
+            'revenue growth',
+            'customer demand',
+            'gross margin',
+            'inventory and backlog',
+            'capex or R&D execution',
+            'free cash flow'
+          ]
+        }
+      }
+    }
+  },
+  TXN: {
+    ticker: 'TXN',
+    companyName: 'Texas Instruments Incorporated',
+    exchange: 'NASDAQ',
+    logoUrl: buildStockLogoUrl('TXN'),
+    overview: 'Texas Instruments Incorporated operates in Analog / Embedded Semiconductor.',
+    category: 'Analog / Embedded Semiconductor',
+    analysisDate: '2026-06-11',
+    latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
+    dossierVerdict: {
+      sourceType: 'curated',
+      asOf: '2026-06-11',
+      researchState: 'semiconductor_cycle_watch',
+      businessQuality: 'high',
+      valuationState: 'not_verified',
+      marketEvidence: 'not_verified',
+      finalRead: 'Analog / Embedded Semiconductor where the thesis depends on Analog / Embedded Semiconductor execution, customer demand, margin, and cash flow.',
+      keySupport: [
+        'SEC source pack identifies Texas Instruments Incorporated as Analog / Embedded Semiconductor.',
+        'Latest primary-source filing reviewed: SEC latest periodic filing.'
+      ],
+      keyRisk: [
+        'Analog / Embedded Semiconductor demand can slow.',
+        'Margins can compress if cost, competition, or execution pressure rises.',
+        'The business thesis can weaken if cash flow evidence deteriorates.'
+      ]
+    },
+    valueCore: {
+      ticker: 'TXN',
+      value_core_type: 'Analog / Embedded Semiconductor',
+      company_stage_candidate: 'Analog / Embedded Semiconductor',
+      primary_value_driver: 'Analog / Embedded Semiconductor execution, customer demand, margin, and cash flow',
+      thesis_break_trigger: 'The thesis weakens if analog / embedded semiconductor demand slows, margins compress, execution disappoints, or cash flow weakens.',
+      evidence_needed: [
+        'revenue growth',
+        'customer demand',
+        'gross margin',
+        'inventory and backlog',
+        'capex or R&D execution',
+        'free cash flow'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_4',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: [
+          {
+            question: 'What does TXN do?',
+            answer: 'Texas Instruments Incorporated operates in Analog / Embedded Semiconductor.'
+          }
+        ],
+        thesisRisk: [
+          {
+            question: 'What would break the TXN thesis?',
+            answer: 'The thesis weakens if analog / embedded semiconductor demand slows, margins compress, execution disappoints, or cash flow weakens.'
+          }
+        ]
+      },
+      phaseTwo: {
+        thesisRisk: {
+          lead: 'The main risk is whether Texas Instruments Incorporated can keep analog / embedded semiconductor evidence strong while the key risk factors stay contained.',
+          riskMap: [
+            {
+              label: 'Demand / growth',
+              severity: 'High',
+              watch: 'Analog / Embedded Semiconductor demand can slow.'
+            },
+            {
+              label: 'Margin / economics',
+              severity: 'High',
+              watch: 'Margin can compress.'
+            },
+            {
+              label: 'Execution',
+              severity: 'Medium',
+              watch: 'Execution can disappoint.'
+            },
+            {
+              label: 'Cash flow / risk',
+              severity: 'Medium',
+              watch: 'Cash flow can weaken.'
+            }
+          ],
+          evidenceNeeded: [
+            'revenue growth',
+            'customer demand',
+            'gross margin',
+            'inventory and backlog',
+            'capex or R&D execution',
+            'free cash flow'
+          ]
+        }
+      }
+    }
+  },
+  CSCO: {
+    ticker: 'CSCO',
+    companyName: 'Cisco Systems, Inc.',
+    exchange: 'NASDAQ',
+    logoUrl: buildStockLogoUrl('CSCO'),
+    overview: 'Cisco Systems, Inc. operates in Networking / Security / Observability Platform.',
+    category: 'Networking / Security / Observability Platform',
+    analysisDate: '2026-06-11',
+    latestFiscalPeriod: 'Q3 FY2026 ended 2026-04-25',
+    dossierVerdict: {
+      sourceType: 'curated',
+      asOf: '2026-06-11',
+      researchState: 'business_evidence_watch',
+      businessQuality: 'high',
+      valuationState: 'not_verified',
+      marketEvidence: 'not_verified',
+      finalRead: 'Networking / Security / Observability Platform where the thesis depends on Networking / Security / Observability Platform execution, customer demand, margin, and cash flow.',
+      keySupport: [
+        'SEC source pack identifies Cisco Systems, Inc. as Networking / Security / Observability Platform.',
+        'Latest primary-source filing reviewed: SEC latest periodic filing.'
+      ],
+      keyRisk: [
+        'Networking / Security / Observability Platform demand can slow.',
+        'Margins can compress if cost, competition, or execution pressure rises.',
+        'The business thesis can weaken if cash flow evidence deteriorates.'
+      ]
+    },
+    valueCore: {
+      ticker: 'CSCO',
+      value_core_type: 'Networking / Security / Observability Platform',
+      company_stage_candidate: 'Networking / Security / Observability Platform',
+      primary_value_driver: 'Networking / Security / Observability Platform execution, customer demand, margin, and cash flow',
+      thesis_break_trigger: 'The thesis weakens if networking / security / observability platform demand slows, margins compress, execution disappoints, or cash flow weakens.',
+      evidence_needed: [
+        'revenue growth',
+        'customer demand',
+        'gross margin',
+        'inventory and backlog',
+        'capex or R&D execution',
+        'free cash flow'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_4',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: [
+          {
+            question: 'What does CSCO do?',
+            answer: 'Cisco Systems, Inc. operates in Networking / Security / Observability Platform.'
+          }
+        ],
+        thesisRisk: [
+          {
+            question: 'What would break the CSCO thesis?',
+            answer: 'The thesis weakens if networking / security / observability platform demand slows, margins compress, execution disappoints, or cash flow weakens.'
+          }
+        ]
+      },
+      phaseTwo: {
+        thesisRisk: {
+          lead: 'The main risk is whether Cisco Systems, Inc. can keep networking / security / observability platform evidence strong while the key risk factors stay contained.',
+          riskMap: [
+            {
+              label: 'Demand / growth',
+              severity: 'High',
+              watch: 'Networking / Security / Observability Platform demand can slow.'
+            },
+            {
+              label: 'Margin / economics',
+              severity: 'High',
+              watch: 'Margin can compress.'
+            },
+            {
+              label: 'Execution',
+              severity: 'Medium',
+              watch: 'Execution can disappoint.'
+            },
+            {
+              label: 'Cash flow / risk',
+              severity: 'Medium',
+              watch: 'Cash flow can weaken.'
+            }
+          ],
+          evidenceNeeded: [
+            'revenue growth',
+            'customer demand',
+            'gross margin',
+            'inventory and backlog',
+            'capex or R&D execution',
+            'free cash flow'
+          ]
+        }
+      }
+    }
+  },
+  IBM: {
+    ticker: 'IBM',
+    companyName: 'International Business Machines Corporation',
+    exchange: 'NYSE',
+    logoUrl: buildStockLogoUrl('IBM'),
+    overview: 'International Business Machines Corporation operates in Hybrid Cloud / AI / Consulting Platform.',
+    category: 'Hybrid Cloud / AI / Consulting Platform',
+    analysisDate: '2026-06-11',
+    latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
+    dossierVerdict: {
+      sourceType: 'curated',
+      asOf: '2026-06-11',
+      researchState: 'business_evidence_watch',
+      businessQuality: 'high',
+      valuationState: 'not_verified',
+      marketEvidence: 'not_verified',
+      finalRead: 'Hybrid Cloud / AI / Consulting Platform where the thesis depends on Hybrid Cloud / AI / Consulting Platform execution, customer demand, margin, and cash flow.',
+      keySupport: [
+        'SEC source pack identifies International Business Machines Corporation as Hybrid Cloud / AI / Consulting Platform.',
+        'Latest primary-source filing reviewed: SEC latest periodic filing.'
+      ],
+      keyRisk: [
+        'Hybrid Cloud / AI / Consulting Platform demand can slow.',
+        'Margins can compress if cost, competition, or execution pressure rises.',
+        'The business thesis can weaken if cash flow evidence deteriorates.'
+      ]
+    },
+    valueCore: {
+      ticker: 'IBM',
+      value_core_type: 'Hybrid Cloud / AI / Consulting Platform',
+      company_stage_candidate: 'Hybrid Cloud / AI / Consulting Platform',
+      primary_value_driver: 'Hybrid Cloud / AI / Consulting Platform execution, customer demand, margin, and cash flow',
+      thesis_break_trigger: 'The thesis weakens if hybrid cloud / ai / consulting platform demand slows, margins compress, execution disappoints, or cash flow weakens.',
+      evidence_needed: [
+        'revenue growth',
+        'customer demand',
+        'gross margin',
+        'inventory and backlog',
+        'capex or R&D execution',
+        'free cash flow'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_4',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: [
+          {
+            question: 'What does IBM do?',
+            answer: 'International Business Machines Corporation operates in Hybrid Cloud / AI / Consulting Platform.'
+          }
+        ],
+        thesisRisk: [
+          {
+            question: 'What would break the IBM thesis?',
+            answer: 'The thesis weakens if hybrid cloud / ai / consulting platform demand slows, margins compress, execution disappoints, or cash flow weakens.'
+          }
+        ]
+      },
+      phaseTwo: {
+        thesisRisk: {
+          lead: 'The main risk is whether International Business Machines Corporation can keep hybrid cloud / ai / consulting platform evidence strong while the key risk factors stay contained.',
+          riskMap: [
+            {
+              label: 'Demand / growth',
+              severity: 'High',
+              watch: 'Hybrid Cloud / AI / Consulting Platform demand can slow.'
+            },
+            {
+              label: 'Margin / economics',
+              severity: 'High',
+              watch: 'Margin can compress.'
+            },
+            {
+              label: 'Execution',
+              severity: 'Medium',
+              watch: 'Execution can disappoint.'
+            },
+            {
+              label: 'Cash flow / risk',
+              severity: 'Medium',
+              watch: 'Cash flow can weaken.'
+            }
+          ],
+          evidenceNeeded: [
+            'revenue growth',
+            'customer demand',
+            'gross margin',
+            'inventory and backlog',
+            'capex or R&D execution',
+            'free cash flow'
+          ]
+        }
+      }
+    }
+  },
+  JPM: {
+    ticker: 'JPM',
+    companyName: 'JPMorgan Chase & Co.',
+    exchange: 'NYSE',
+    logoUrl: buildStockLogoUrl('JPM'),
+    overview: 'JPMorgan Chase & Co. operates in Diversified Bank / Financial Services.',
+    category: 'Diversified Bank / Financial Services',
+    analysisDate: '2026-06-11',
+    latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
+    dossierVerdict: {
+      sourceType: 'curated',
+      asOf: '2026-06-11',
+      researchState: 'financial_cycle_watch',
+      businessQuality: 'medium',
+      valuationState: 'not_verified',
+      marketEvidence: 'not_verified',
+      finalRead: 'Diversified Bank / Financial Services where the thesis depends on Diversified Bank / Financial Services execution, customer demand, margin, and cash flow.',
+      keySupport: [
+        'SEC source pack identifies JPMorgan Chase & Co. as Diversified Bank / Financial Services.',
+        'Latest primary-source filing reviewed: SEC latest periodic filing.'
+      ],
+      keyRisk: [
+        'Diversified Bank / Financial Services demand can slow.',
+        'Margins can compress if cost, competition, or execution pressure rises.',
+        'The business thesis can weaken if cash flow evidence deteriorates.'
+      ]
+    },
+    valueCore: {
+      ticker: 'JPM',
+      value_core_type: 'Diversified Bank / Financial Services',
+      company_stage_candidate: 'Diversified Bank / Financial Services',
+      primary_value_driver: 'Diversified Bank / Financial Services execution, customer demand, margin, and cash flow',
+      thesis_break_trigger: 'The thesis weakens if diversified bank / financial services demand slows, margins compress, execution disappoints, or cash flow weakens.',
+      evidence_needed: [
+        'revenue and net interest income',
+        'credit quality',
+        'fee income',
+        'capital and liquidity',
+        'operating leverage',
+        'cash flow'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_4',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: [
+          {
+            question: 'What does JPM do?',
+            answer: 'JPMorgan Chase & Co. operates in Diversified Bank / Financial Services.'
+          }
+        ],
+        thesisRisk: [
+          {
+            question: 'What would break the JPM thesis?',
+            answer: 'The thesis weakens if diversified bank / financial services demand slows, margins compress, execution disappoints, or cash flow weakens.'
+          }
+        ]
+      },
+      phaseTwo: {
+        thesisRisk: {
+          lead: 'The main risk is whether JPMorgan Chase & Co. can keep diversified bank / financial services evidence strong while the key risk factors stay contained.',
+          riskMap: [
+            {
+              label: 'Demand / growth',
+              severity: 'High',
+              watch: 'Diversified Bank / Financial Services demand can slow.'
+            },
+            {
+              label: 'Margin / economics',
+              severity: 'High',
+              watch: 'Margin can compress.'
+            },
+            {
+              label: 'Execution',
+              severity: 'Medium',
+              watch: 'Execution can disappoint.'
+            },
+            {
+              label: 'Cash flow / risk',
+              severity: 'Medium',
+              watch: 'Cash flow can weaken.'
+            }
+          ],
+          evidenceNeeded: [
+            'revenue and net interest income',
+            'credit quality',
+            'fee income',
+            'capital and liquidity',
+            'operating leverage',
+            'cash flow'
+          ]
+        }
+      }
+    }
+  },
+  V: {
+    ticker: 'V',
+    companyName: 'Visa Inc.',
+    exchange: 'NYSE',
+    logoUrl: buildStockLogoUrl('V'),
+    overview: 'Visa Inc. operates in Global Payments Network.',
+    category: 'Global Payments Network',
+    analysisDate: '2026-06-11',
+    latestFiscalPeriod: 'Q2 FY2026 ended 2026-03-31',
+    dossierVerdict: {
+      sourceType: 'curated',
+      asOf: '2026-06-11',
+      researchState: 'business_evidence_watch',
+      businessQuality: 'high',
+      valuationState: 'not_verified',
+      marketEvidence: 'not_verified',
+      finalRead: 'Global Payments Network where the thesis depends on Global Payments Network execution, customer demand, margin, and cash flow.',
+      keySupport: [
+        'SEC source pack identifies Visa Inc. as Global Payments Network.',
+        'Latest primary-source filing reviewed: SEC latest periodic filing.'
+      ],
+      keyRisk: [
+        'Global Payments Network demand can slow.',
+        'Margins can compress if cost, competition, or execution pressure rises.',
+        'The business thesis can weaken if cash flow evidence deteriorates.'
+      ]
+    },
+    valueCore: {
+      ticker: 'V',
+      value_core_type: 'Global Payments Network',
+      company_stage_candidate: 'Global Payments Network',
+      primary_value_driver: 'Global Payments Network execution, customer demand, margin, and cash flow',
+      thesis_break_trigger: 'The thesis weakens if global payments network demand slows, margins compress, execution disappoints, or cash flow weakens.',
+      evidence_needed: [
+        'revenue and net interest income',
+        'credit quality',
+        'fee income',
+        'capital and liquidity',
+        'operating leverage',
+        'cash flow'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_4',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: [
+          {
+            question: 'What does V do?',
+            answer: 'Visa Inc. operates in Global Payments Network.'
+          }
+        ],
+        thesisRisk: [
+          {
+            question: 'What would break the V thesis?',
+            answer: 'The thesis weakens if global payments network demand slows, margins compress, execution disappoints, or cash flow weakens.'
+          }
+        ]
+      },
+      phaseTwo: {
+        thesisRisk: {
+          lead: 'The main risk is whether Visa Inc. can keep global payments network evidence strong while the key risk factors stay contained.',
+          riskMap: [
+            {
+              label: 'Demand / growth',
+              severity: 'High',
+              watch: 'Global Payments Network demand can slow.'
+            },
+            {
+              label: 'Margin / economics',
+              severity: 'High',
+              watch: 'Margin can compress.'
+            },
+            {
+              label: 'Execution',
+              severity: 'Medium',
+              watch: 'Execution can disappoint.'
+            },
+            {
+              label: 'Cash flow / risk',
+              severity: 'Medium',
+              watch: 'Cash flow can weaken.'
+            }
+          ],
+          evidenceNeeded: [
+            'revenue and net interest income',
+            'credit quality',
+            'fee income',
+            'capital and liquidity',
+            'operating leverage',
+            'cash flow'
+          ]
+        }
+      }
+    }
+  },
+  COST: {
+    ticker: 'COST',
+    companyName: 'Costco Wholesale Corporation',
+    exchange: 'NASDAQ',
+    logoUrl: buildStockLogoUrl('COST'),
+    overview: 'Costco Wholesale Corporation operates in Membership Warehouse Retail.',
+    category: 'Membership Warehouse Retail',
+    analysisDate: '2026-06-11',
+    latestFiscalPeriod: 'Q3 FY2026 ended 2026-05-10',
+    dossierVerdict: {
+      sourceType: 'curated',
+      asOf: '2026-06-11',
+      researchState: 'consumer_demand_watch',
+      businessQuality: 'high',
+      valuationState: 'not_verified',
+      marketEvidence: 'not_verified',
+      finalRead: 'Membership Warehouse Retail where the thesis depends on Membership Warehouse Retail execution, customer demand, margin, and cash flow.',
+      keySupport: [
+        'SEC source pack identifies Costco Wholesale Corporation as Membership Warehouse Retail.',
+        'Latest primary-source filing reviewed: SEC latest periodic filing.'
+      ],
+      keyRisk: [
+        'Membership Warehouse Retail demand can slow.',
+        'Margins can compress if cost, competition, or execution pressure rises.',
+        'The business thesis can weaken if cash flow evidence deteriorates.'
+      ]
+    },
+    valueCore: {
+      ticker: 'COST',
+      value_core_type: 'Membership Warehouse Retail',
+      company_stage_candidate: 'Membership Warehouse Retail',
+      primary_value_driver: 'Membership Warehouse Retail execution, customer demand, margin, and cash flow',
+      thesis_break_trigger: 'The thesis weakens if membership warehouse retail demand slows, margins compress, execution disappoints, or cash flow weakens.',
+      evidence_needed: [
+        'revenue growth',
+        'customer demand',
+        'gross margin',
+        'inventory and backlog',
+        'capex or R&D execution',
+        'free cash flow'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_4',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: [
+          {
+            question: 'What does COST do?',
+            answer: 'Costco Wholesale Corporation operates in Membership Warehouse Retail.'
+          }
+        ],
+        thesisRisk: [
+          {
+            question: 'What would break the COST thesis?',
+            answer: 'The thesis weakens if membership warehouse retail demand slows, margins compress, execution disappoints, or cash flow weakens.'
+          }
+        ]
+      },
+      phaseTwo: {
+        thesisRisk: {
+          lead: 'The main risk is whether Costco Wholesale Corporation can keep membership warehouse retail evidence strong while the key risk factors stay contained.',
+          riskMap: [
+            {
+              label: 'Demand / growth',
+              severity: 'High',
+              watch: 'Membership Warehouse Retail demand can slow.'
+            },
+            {
+              label: 'Margin / economics',
+              severity: 'High',
+              watch: 'Margin can compress.'
+            },
+            {
+              label: 'Execution',
+              severity: 'Medium',
+              watch: 'Execution can disappoint.'
+            },
+            {
+              label: 'Cash flow / risk',
+              severity: 'Medium',
+              watch: 'Cash flow can weaken.'
+            }
+          ],
+          evidenceNeeded: [
+            'revenue growth',
+            'customer demand',
+            'gross margin',
+            'inventory and backlog',
+            'capex or R&D execution',
+            'free cash flow'
+          ]
+        }
+      }
+    }
+  },
+  HD: {
+    ticker: 'HD',
+    companyName: 'The Home Depot, Inc.',
+    exchange: 'NYSE',
+    logoUrl: buildStockLogoUrl('HD'),
+    overview: 'The Home Depot, Inc. operates in Home Improvement Retail.',
+    category: 'Home Improvement Retail',
+    analysisDate: '2026-06-11',
+    latestFiscalPeriod: 'Q1 FY2026 ended 2026-05-03',
+    dossierVerdict: {
+      sourceType: 'curated',
+      asOf: '2026-06-11',
+      researchState: 'consumer_demand_watch',
+      businessQuality: 'high',
+      valuationState: 'not_verified',
+      marketEvidence: 'not_verified',
+      finalRead: 'Home Improvement Retail where the thesis depends on Home Improvement Retail execution, customer demand, margin, and cash flow.',
+      keySupport: [
+        'SEC source pack identifies The Home Depot, Inc. as Home Improvement Retail.',
+        'Latest primary-source filing reviewed: SEC latest periodic filing.'
+      ],
+      keyRisk: [
+        'Home Improvement Retail demand can slow.',
+        'Margins can compress if cost, competition, or execution pressure rises.',
+        'The business thesis can weaken if cash flow evidence deteriorates.'
+      ]
+    },
+    valueCore: {
+      ticker: 'HD',
+      value_core_type: 'Home Improvement Retail',
+      company_stage_candidate: 'Home Improvement Retail',
+      primary_value_driver: 'Home Improvement Retail execution, customer demand, margin, and cash flow',
+      thesis_break_trigger: 'The thesis weakens if home improvement retail demand slows, margins compress, execution disappoints, or cash flow weakens.',
+      evidence_needed: [
+        'revenue growth',
+        'customer demand',
+        'gross margin',
+        'inventory and backlog',
+        'capex or R&D execution',
+        'free cash flow'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_4',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: [
+          {
+            question: 'What does HD do?',
+            answer: 'The Home Depot, Inc. operates in Home Improvement Retail.'
+          }
+        ],
+        thesisRisk: [
+          {
+            question: 'What would break the HD thesis?',
+            answer: 'The thesis weakens if home improvement retail demand slows, margins compress, execution disappoints, or cash flow weakens.'
+          }
+        ]
+      },
+      phaseTwo: {
+        thesisRisk: {
+          lead: 'The main risk is whether The Home Depot, Inc. can keep home improvement retail evidence strong while the key risk factors stay contained.',
+          riskMap: [
+            {
+              label: 'Demand / growth',
+              severity: 'High',
+              watch: 'Home Improvement Retail demand can slow.'
+            },
+            {
+              label: 'Margin / economics',
+              severity: 'High',
+              watch: 'Margin can compress.'
+            },
+            {
+              label: 'Execution',
+              severity: 'Medium',
+              watch: 'Execution can disappoint.'
+            },
+            {
+              label: 'Cash flow / risk',
+              severity: 'Medium',
+              watch: 'Cash flow can weaken.'
+            }
+          ],
+          evidenceNeeded: [
+            'revenue growth',
+            'customer demand',
+            'gross margin',
+            'inventory and backlog',
+            'capex or R&D execution',
+            'free cash flow'
+          ]
+        }
+      }
+    }
+  },
+  UNH: {
+    ticker: 'UNH',
+    companyName: 'UnitedHealth Group Incorporated',
+    exchange: 'NYSE',
+    logoUrl: buildStockLogoUrl('UNH'),
+    overview: 'UnitedHealth Group Incorporated operates in Managed Care / Health Services.',
+    category: 'Managed Care / Health Services',
+    analysisDate: '2026-06-11',
+    latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
+    dossierVerdict: {
+      sourceType: 'curated',
+      asOf: '2026-06-11',
+      researchState: 'healthcare_evidence_watch',
+      businessQuality: 'high',
+      valuationState: 'not_verified',
+      marketEvidence: 'not_verified',
+      finalRead: 'Managed Care / Health Services where the thesis depends on Managed Care / Health Services execution, customer demand, margin, and cash flow.',
+      keySupport: [
+        'SEC source pack identifies UnitedHealth Group Incorporated as Managed Care / Health Services.',
+        'Latest primary-source filing reviewed: SEC latest periodic filing.'
+      ],
+      keyRisk: [
+        'Managed Care / Health Services demand can slow.',
+        'Margins can compress if cost, competition, or execution pressure rises.',
+        'The business thesis can weaken if cash flow evidence deteriorates.'
+      ]
+    },
+    valueCore: {
+      ticker: 'UNH',
+      value_core_type: 'Managed Care / Health Services',
+      company_stage_candidate: 'Managed Care / Health Services',
+      primary_value_driver: 'Managed Care / Health Services execution, customer demand, margin, and cash flow',
+      thesis_break_trigger: 'The thesis weakens if managed care / health services demand slows, margins compress, execution disappoints, or cash flow weakens.',
+      evidence_needed: [
+        'revenue growth',
+        'pipeline or product adoption',
+        'regulatory progress',
+        'margin',
+        'cash flow',
+        'safety or reimbursement evidence'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_5',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: [
+          {
+            question: 'What does UNH do?',
+            answer: 'UnitedHealth Group Incorporated operates in Managed Care / Health Services.'
+          }
+        ],
+        thesisRisk: [
+          {
+            question: 'What would break the UNH thesis?',
+            answer: 'The thesis weakens if managed care / health services demand slows, margins compress, execution disappoints, or cash flow weakens.'
+          }
+        ]
+      },
+      phaseTwo: {
+        thesisRisk: {
+          lead: 'The main risk is whether UnitedHealth Group Incorporated can keep managed care / health services evidence strong while the key risk factors stay contained.',
+          riskMap: [
+            {
+              label: 'Demand / growth',
+              severity: 'High',
+              watch: 'Managed Care / Health Services demand can slow.'
+            },
+            {
+              label: 'Margin / economics',
+              severity: 'High',
+              watch: 'Margin can compress.'
+            },
+            {
+              label: 'Execution',
+              severity: 'Medium',
+              watch: 'Execution can disappoint.'
+            },
+            {
+              label: 'Cash flow / risk',
+              severity: 'Medium',
+              watch: 'Cash flow can weaken.'
+            }
+          ],
+          evidenceNeeded: [
+            'revenue growth',
+            'pipeline or product adoption',
+            'regulatory progress',
+            'margin',
+            'cash flow',
+            'safety or reimbursement evidence'
+          ]
+        }
+      }
+    }
+  },
+  LLY: {
+    ticker: 'LLY',
+    companyName: 'Eli Lilly and Company',
+    exchange: 'NYSE',
+    logoUrl: buildStockLogoUrl('LLY'),
+    overview: 'Eli Lilly and Company operates in Pharmaceuticals / GLP-1 / Diabetes / Obesity.',
+    category: 'Pharmaceuticals / GLP-1 / Diabetes / Obesity',
+    analysisDate: '2026-06-11',
+    latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
+    dossierVerdict: {
+      sourceType: 'curated',
+      asOf: '2026-06-11',
+      researchState: 'healthcare_evidence_watch',
+      businessQuality: 'high',
+      valuationState: 'not_verified',
+      marketEvidence: 'not_verified',
+      finalRead: 'Pharmaceuticals / GLP-1 / Diabetes / Obesity where the thesis depends on Pharmaceuticals / GLP-1 / Diabetes / Obesity execution, customer demand, margin, and cash flow.',
+      keySupport: [
+        'SEC source pack identifies Eli Lilly and Company as Pharmaceuticals / GLP-1 / Diabetes / Obesity.',
+        'Latest primary-source filing reviewed: SEC latest periodic filing.'
+      ],
+      keyRisk: [
+        'Pharmaceuticals / GLP-1 / Diabetes / Obesity demand can slow.',
+        'Margins can compress if cost, competition, or execution pressure rises.',
+        'The business thesis can weaken if cash flow evidence deteriorates.'
+      ]
+    },
+    valueCore: {
+      ticker: 'LLY',
+      value_core_type: 'Pharmaceuticals / GLP-1 / Diabetes / Obesity',
+      company_stage_candidate: 'Pharmaceuticals / GLP-1 / Diabetes / Obesity',
+      primary_value_driver: 'Pharmaceuticals / GLP-1 / Diabetes / Obesity execution, customer demand, margin, and cash flow',
+      thesis_break_trigger: 'The thesis weakens if pharmaceuticals / glp-1 / diabetes / obesity demand slows, margins compress, execution disappoints, or cash flow weakens.',
+      evidence_needed: [
+        'revenue growth',
+        'pipeline or product adoption',
+        'regulatory progress',
+        'margin',
+        'cash flow',
+        'safety or reimbursement evidence'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_5',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: [
+          {
+            question: 'What does LLY do?',
+            answer: 'Eli Lilly and Company operates in Pharmaceuticals / GLP-1 / Diabetes / Obesity.'
+          }
+        ],
+        thesisRisk: [
+          {
+            question: 'What would break the LLY thesis?',
+            answer: 'The thesis weakens if pharmaceuticals / glp-1 / diabetes / obesity demand slows, margins compress, execution disappoints, or cash flow weakens.'
+          }
+        ]
+      },
+      phaseTwo: {
+        thesisRisk: {
+          lead: 'The main risk is whether Eli Lilly and Company can keep pharmaceuticals / glp-1 / diabetes / obesity evidence strong while the key risk factors stay contained.',
+          riskMap: [
+            {
+              label: 'Demand / growth',
+              severity: 'High',
+              watch: 'Pharmaceuticals / GLP-1 / Diabetes / Obesity demand can slow.'
+            },
+            {
+              label: 'Margin / economics',
+              severity: 'High',
+              watch: 'Margin can compress.'
+            },
+            {
+              label: 'Execution',
+              severity: 'Medium',
+              watch: 'Execution can disappoint.'
+            },
+            {
+              label: 'Cash flow / risk',
+              severity: 'Medium',
+              watch: 'Cash flow can weaken.'
+            }
+          ],
+          evidenceNeeded: [
+            'revenue growth',
+            'pipeline or product adoption',
+            'regulatory progress',
+            'margin',
+            'cash flow',
+            'safety or reimbursement evidence'
+          ]
+        }
+      }
+    }
+  },
+  JNJ: {
+    ticker: 'JNJ',
+    companyName: 'Johnson & Johnson',
+    exchange: 'NYSE',
+    logoUrl: buildStockLogoUrl('JNJ'),
+    overview: 'Johnson & Johnson operates in Pharmaceuticals / MedTech.',
+    category: 'Pharmaceuticals / MedTech',
+    analysisDate: '2026-06-11',
+    latestFiscalPeriod: 'Q1 2026 ended 2026-03-29',
+    dossierVerdict: {
+      sourceType: 'curated',
+      asOf: '2026-06-11',
+      researchState: 'healthcare_evidence_watch',
+      businessQuality: 'high',
+      valuationState: 'not_verified',
+      marketEvidence: 'not_verified',
+      finalRead: 'Pharmaceuticals / MedTech where the thesis depends on Pharmaceuticals / MedTech execution, customer demand, margin, and cash flow.',
+      keySupport: [
+        'SEC source pack identifies Johnson & Johnson as Pharmaceuticals / MedTech.',
+        'Latest primary-source filing reviewed: SEC latest periodic filing.'
+      ],
+      keyRisk: [
+        'Pharmaceuticals / MedTech demand can slow.',
+        'Margins can compress if cost, competition, or execution pressure rises.',
+        'The business thesis can weaken if cash flow evidence deteriorates.'
+      ]
+    },
+    valueCore: {
+      ticker: 'JNJ',
+      value_core_type: 'Pharmaceuticals / MedTech',
+      company_stage_candidate: 'Pharmaceuticals / MedTech',
+      primary_value_driver: 'Pharmaceuticals / MedTech execution, customer demand, margin, and cash flow',
+      thesis_break_trigger: 'The thesis weakens if pharmaceuticals / medtech demand slows, margins compress, execution disappoints, or cash flow weakens.',
+      evidence_needed: [
+        'revenue growth',
+        'pipeline or product adoption',
+        'regulatory progress',
+        'margin',
+        'cash flow',
+        'safety or reimbursement evidence'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_5',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: [
+          {
+            question: 'What does JNJ do?',
+            answer: 'Johnson & Johnson operates in Pharmaceuticals / MedTech.'
+          }
+        ],
+        thesisRisk: [
+          {
+            question: 'What would break the JNJ thesis?',
+            answer: 'The thesis weakens if pharmaceuticals / medtech demand slows, margins compress, execution disappoints, or cash flow weakens.'
+          }
+        ]
+      },
+      phaseTwo: {
+        thesisRisk: {
+          lead: 'The main risk is whether Johnson & Johnson can keep pharmaceuticals / medtech evidence strong while the key risk factors stay contained.',
+          riskMap: [
+            {
+              label: 'Demand / growth',
+              severity: 'High',
+              watch: 'Pharmaceuticals / MedTech demand can slow.'
+            },
+            {
+              label: 'Margin / economics',
+              severity: 'High',
+              watch: 'Margin can compress.'
+            },
+            {
+              label: 'Execution',
+              severity: 'Medium',
+              watch: 'Execution can disappoint.'
+            },
+            {
+              label: 'Cash flow / risk',
+              severity: 'Medium',
+              watch: 'Cash flow can weaken.'
+            }
+          ],
+          evidenceNeeded: [
+            'revenue growth',
+            'pipeline or product adoption',
+            'regulatory progress',
+            'margin',
+            'cash flow',
+            'safety or reimbursement evidence'
+          ]
+        }
+      }
+    }
+  },
+  MRK: {
+    ticker: 'MRK',
+    companyName: 'Merck & Co., Inc.',
+    exchange: 'NYSE',
+    logoUrl: buildStockLogoUrl('MRK'),
+    overview: 'Merck & Co., Inc. operates in Pharmaceuticals / Oncology / Vaccines.',
+    category: 'Pharmaceuticals / Oncology / Vaccines',
+    analysisDate: '2026-06-11',
+    latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
+    dossierVerdict: {
+      sourceType: 'curated',
+      asOf: '2026-06-11',
+      researchState: 'healthcare_evidence_watch',
+      businessQuality: 'high',
+      valuationState: 'not_verified',
+      marketEvidence: 'not_verified',
+      finalRead: 'Pharmaceuticals / Oncology / Vaccines where the thesis depends on Pharmaceuticals / Oncology / Vaccines execution, customer demand, margin, and cash flow.',
+      keySupport: [
+        'SEC source pack identifies Merck & Co., Inc. as Pharmaceuticals / Oncology / Vaccines.',
+        'Latest primary-source filing reviewed: SEC latest periodic filing.'
+      ],
+      keyRisk: [
+        'Pharmaceuticals / Oncology / Vaccines demand can slow.',
+        'Margins can compress if cost, competition, or execution pressure rises.',
+        'The business thesis can weaken if cash flow evidence deteriorates.'
+      ]
+    },
+    valueCore: {
+      ticker: 'MRK',
+      value_core_type: 'Pharmaceuticals / Oncology / Vaccines',
+      company_stage_candidate: 'Pharmaceuticals / Oncology / Vaccines',
+      primary_value_driver: 'Pharmaceuticals / Oncology / Vaccines execution, customer demand, margin, and cash flow',
+      thesis_break_trigger: 'The thesis weakens if pharmaceuticals / oncology / vaccines demand slows, margins compress, execution disappoints, or cash flow weakens.',
+      evidence_needed: [
+        'revenue growth',
+        'pipeline or product adoption',
+        'regulatory progress',
+        'margin',
+        'cash flow',
+        'safety or reimbursement evidence'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_5',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: [
+          {
+            question: 'What does MRK do?',
+            answer: 'Merck & Co., Inc. operates in Pharmaceuticals / Oncology / Vaccines.'
+          }
+        ],
+        thesisRisk: [
+          {
+            question: 'What would break the MRK thesis?',
+            answer: 'The thesis weakens if pharmaceuticals / oncology / vaccines demand slows, margins compress, execution disappoints, or cash flow weakens.'
+          }
+        ]
+      },
+      phaseTwo: {
+        thesisRisk: {
+          lead: 'The main risk is whether Merck & Co., Inc. can keep pharmaceuticals / oncology / vaccines evidence strong while the key risk factors stay contained.',
+          riskMap: [
+            {
+              label: 'Demand / growth',
+              severity: 'High',
+              watch: 'Pharmaceuticals / Oncology / Vaccines demand can slow.'
+            },
+            {
+              label: 'Margin / economics',
+              severity: 'High',
+              watch: 'Margin can compress.'
+            },
+            {
+              label: 'Execution',
+              severity: 'Medium',
+              watch: 'Execution can disappoint.'
+            },
+            {
+              label: 'Cash flow / risk',
+              severity: 'Medium',
+              watch: 'Cash flow can weaken.'
+            }
+          ],
+          evidenceNeeded: [
+            'revenue growth',
+            'pipeline or product adoption',
+            'regulatory progress',
+            'margin',
+            'cash flow',
+            'safety or reimbursement evidence'
+          ]
+        }
+      }
+    }
+  },
+  ABBV: {
+    ticker: 'ABBV',
+    companyName: 'AbbVie Inc.',
+    exchange: 'NYSE',
+    logoUrl: buildStockLogoUrl('ABBV'),
+    overview: 'AbbVie Inc. operates in Biopharma / Immunology / Neuroscience / Aesthetics.',
+    category: 'Biopharma / Immunology / Neuroscience / Aesthetics',
+    analysisDate: '2026-06-11',
+    latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
+    dossierVerdict: {
+      sourceType: 'curated',
+      asOf: '2026-06-11',
+      researchState: 'healthcare_evidence_watch',
+      businessQuality: 'high',
+      valuationState: 'not_verified',
+      marketEvidence: 'not_verified',
+      finalRead: 'Biopharma / Immunology / Neuroscience / Aesthetics where the thesis depends on Biopharma / Immunology / Neuroscience / Aesthetics execution, customer demand, margin, and cash flow.',
+      keySupport: [
+        'SEC source pack identifies AbbVie Inc. as Biopharma / Immunology / Neuroscience / Aesthetics.',
+        'Latest primary-source filing reviewed: SEC latest periodic filing.'
+      ],
+      keyRisk: [
+        'Biopharma / Immunology / Neuroscience / Aesthetics demand can slow.',
+        'Margins can compress if cost, competition, or execution pressure rises.',
+        'The business thesis can weaken if cash flow evidence deteriorates.'
+      ]
+    },
+    valueCore: {
+      ticker: 'ABBV',
+      value_core_type: 'Biopharma / Immunology / Neuroscience / Aesthetics',
+      company_stage_candidate: 'Biopharma / Immunology / Neuroscience / Aesthetics',
+      primary_value_driver: 'Biopharma / Immunology / Neuroscience / Aesthetics execution, customer demand, margin, and cash flow',
+      thesis_break_trigger: 'The thesis weakens if biopharma / immunology / neuroscience / aesthetics demand slows, margins compress, execution disappoints, or cash flow weakens.',
+      evidence_needed: [
+        'revenue growth',
+        'pipeline or product adoption',
+        'regulatory progress',
+        'margin',
+        'cash flow',
+        'safety or reimbursement evidence'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_5',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: [
+          {
+            question: 'What does ABBV do?',
+            answer: 'AbbVie Inc. operates in Biopharma / Immunology / Neuroscience / Aesthetics.'
+          }
+        ],
+        thesisRisk: [
+          {
+            question: 'What would break the ABBV thesis?',
+            answer: 'The thesis weakens if biopharma / immunology / neuroscience / aesthetics demand slows, margins compress, execution disappoints, or cash flow weakens.'
+          }
+        ]
+      },
+      phaseTwo: {
+        thesisRisk: {
+          lead: 'The main risk is whether AbbVie Inc. can keep biopharma / immunology / neuroscience / aesthetics evidence strong while the key risk factors stay contained.',
+          riskMap: [
+            {
+              label: 'Demand / growth',
+              severity: 'High',
+              watch: 'Biopharma / Immunology / Neuroscience / Aesthetics demand can slow.'
+            },
+            {
+              label: 'Margin / economics',
+              severity: 'High',
+              watch: 'Margin can compress.'
+            },
+            {
+              label: 'Execution',
+              severity: 'Medium',
+              watch: 'Execution can disappoint.'
+            },
+            {
+              label: 'Cash flow / risk',
+              severity: 'Medium',
+              watch: 'Cash flow can weaken.'
+            }
+          ],
+          evidenceNeeded: [
+            'revenue growth',
+            'pipeline or product adoption',
+            'regulatory progress',
+            'margin',
+            'cash flow',
+            'safety or reimbursement evidence'
+          ]
+        }
+      }
+    }
+  },
+  PFE: {
+    ticker: 'PFE',
+    companyName: 'Pfizer Inc.',
+    exchange: 'NYSE',
+    logoUrl: buildStockLogoUrl('PFE'),
+    overview: 'Pfizer Inc. operates in Pharmaceuticals / Vaccines / Oncology.',
+    category: 'Pharmaceuticals / Vaccines / Oncology',
+    analysisDate: '2026-06-11',
+    latestFiscalPeriod: 'Q1 2026 ended 2026-03-29',
+    dossierVerdict: {
+      sourceType: 'curated',
+      asOf: '2026-06-11',
+      researchState: 'healthcare_evidence_watch',
+      businessQuality: 'high',
+      valuationState: 'not_verified',
+      marketEvidence: 'not_verified',
+      finalRead: 'Pharmaceuticals / Vaccines / Oncology where the thesis depends on Pharmaceuticals / Vaccines / Oncology execution, customer demand, margin, and cash flow.',
+      keySupport: [
+        'SEC source pack identifies Pfizer Inc. as Pharmaceuticals / Vaccines / Oncology.',
+        'Latest primary-source filing reviewed: SEC latest periodic filing.'
+      ],
+      keyRisk: [
+        'Pharmaceuticals / Vaccines / Oncology demand can slow.',
+        'Margins can compress if cost, competition, or execution pressure rises.',
+        'The business thesis can weaken if cash flow evidence deteriorates.'
+      ]
+    },
+    valueCore: {
+      ticker: 'PFE',
+      value_core_type: 'Pharmaceuticals / Vaccines / Oncology',
+      company_stage_candidate: 'Pharmaceuticals / Vaccines / Oncology',
+      primary_value_driver: 'Pharmaceuticals / Vaccines / Oncology execution, customer demand, margin, and cash flow',
+      thesis_break_trigger: 'The thesis weakens if pharmaceuticals / vaccines / oncology demand slows, margins compress, execution disappoints, or cash flow weakens.',
+      evidence_needed: [
+        'revenue growth',
+        'pipeline or product adoption',
+        'regulatory progress',
+        'margin',
+        'cash flow',
+        'safety or reimbursement evidence'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_5',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: [
+          {
+            question: 'What does PFE do?',
+            answer: 'Pfizer Inc. operates in Pharmaceuticals / Vaccines / Oncology.'
+          }
+        ],
+        thesisRisk: [
+          {
+            question: 'What would break the PFE thesis?',
+            answer: 'The thesis weakens if pharmaceuticals / vaccines / oncology demand slows, margins compress, execution disappoints, or cash flow weakens.'
+          }
+        ]
+      },
+      phaseTwo: {
+        thesisRisk: {
+          lead: 'The main risk is whether Pfizer Inc. can keep pharmaceuticals / vaccines / oncology evidence strong while the key risk factors stay contained.',
+          riskMap: [
+            {
+              label: 'Demand / growth',
+              severity: 'High',
+              watch: 'Pharmaceuticals / Vaccines / Oncology demand can slow.'
+            },
+            {
+              label: 'Margin / economics',
+              severity: 'High',
+              watch: 'Margin can compress.'
+            },
+            {
+              label: 'Execution',
+              severity: 'Medium',
+              watch: 'Execution can disappoint.'
+            },
+            {
+              label: 'Cash flow / risk',
+              severity: 'Medium',
+              watch: 'Cash flow can weaken.'
+            }
+          ],
+          evidenceNeeded: [
+            'revenue growth',
+            'pipeline or product adoption',
+            'regulatory progress',
+            'margin',
+            'cash flow',
+            'safety or reimbursement evidence'
+          ]
+        }
+      }
+    }
+  },
+  AMGN: {
+    ticker: 'AMGN',
+    companyName: 'Amgen Inc.',
+    exchange: 'NASDAQ',
+    logoUrl: buildStockLogoUrl('AMGN'),
+    overview: 'Amgen Inc. operates in Biotechnology / Therapeutics.',
+    category: 'Biotechnology / Therapeutics',
+    analysisDate: '2026-06-11',
+    latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
+    dossierVerdict: {
+      sourceType: 'curated',
+      asOf: '2026-06-11',
+      researchState: 'healthcare_evidence_watch',
+      businessQuality: 'medium',
+      valuationState: 'not_verified',
+      marketEvidence: 'not_verified',
+      finalRead: 'Biotechnology / Therapeutics where the thesis depends on Biotechnology / Therapeutics execution, customer demand, margin, and cash flow.',
+      keySupport: [
+        'SEC source pack identifies Amgen Inc. as Biotechnology / Therapeutics.',
+        'Latest primary-source filing reviewed: SEC latest periodic filing.'
+      ],
+      keyRisk: [
+        'Biotechnology / Therapeutics demand can slow.',
+        'Margins can compress if cost, competition, or execution pressure rises.',
+        'The business thesis can weaken if cash flow evidence deteriorates.'
+      ]
+    },
+    valueCore: {
+      ticker: 'AMGN',
+      value_core_type: 'Biotechnology / Therapeutics',
+      company_stage_candidate: 'Biotechnology / Therapeutics',
+      primary_value_driver: 'Biotechnology / Therapeutics execution, customer demand, margin, and cash flow',
+      thesis_break_trigger: 'The thesis weakens if biotechnology / therapeutics demand slows, margins compress, execution disappoints, or cash flow weakens.',
+      evidence_needed: [
+        'revenue growth',
+        'pipeline or product adoption',
+        'regulatory progress',
+        'margin',
+        'cash flow',
+        'safety or reimbursement evidence'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_5',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: [
+          {
+            question: 'What does AMGN do?',
+            answer: 'Amgen Inc. operates in Biotechnology / Therapeutics.'
+          }
+        ],
+        thesisRisk: [
+          {
+            question: 'What would break the AMGN thesis?',
+            answer: 'The thesis weakens if biotechnology / therapeutics demand slows, margins compress, execution disappoints, or cash flow weakens.'
+          }
+        ]
+      },
+      phaseTwo: {
+        thesisRisk: {
+          lead: 'The main risk is whether Amgen Inc. can keep biotechnology / therapeutics evidence strong while the key risk factors stay contained.',
+          riskMap: [
+            {
+              label: 'Demand / growth',
+              severity: 'High',
+              watch: 'Biotechnology / Therapeutics demand can slow.'
+            },
+            {
+              label: 'Margin / economics',
+              severity: 'High',
+              watch: 'Margin can compress.'
+            },
+            {
+              label: 'Execution',
+              severity: 'Medium',
+              watch: 'Execution can disappoint.'
+            },
+            {
+              label: 'Cash flow / risk',
+              severity: 'Medium',
+              watch: 'Cash flow can weaken.'
+            }
+          ],
+          evidenceNeeded: [
+            'revenue growth',
+            'pipeline or product adoption',
+            'regulatory progress',
+            'margin',
+            'cash flow',
+            'safety or reimbursement evidence'
+          ]
+        }
+      }
+    }
+  },
+  MDT: {
+    ticker: 'MDT',
+    companyName: 'Medtronic plc',
+    exchange: 'NYSE',
+    logoUrl: buildStockLogoUrl('MDT'),
+    overview: 'Medtronic plc operates in Medical Devices.',
+    category: 'Medical Devices',
+    analysisDate: '2026-06-11',
+    latestFiscalPeriod: 'Q3 FY2026 ended 2026-01-23',
+    dossierVerdict: {
+      sourceType: 'curated',
+      asOf: '2026-06-11',
+      researchState: 'business_evidence_watch',
+      businessQuality: 'high',
+      valuationState: 'not_verified',
+      marketEvidence: 'not_verified',
+      finalRead: 'Medical Devices where the thesis depends on Medical Devices execution, customer demand, margin, and cash flow.',
+      keySupport: [
+        'SEC source pack identifies Medtronic plc as Medical Devices.',
+        'Latest primary-source filing reviewed: SEC latest periodic filing.'
+      ],
+      keyRisk: [
+        'Medical Devices demand can slow.',
+        'Margins can compress if cost, competition, or execution pressure rises.',
+        'The business thesis can weaken if cash flow evidence deteriorates.'
+      ]
+    },
+    valueCore: {
+      ticker: 'MDT',
+      value_core_type: 'Medical Devices',
+      company_stage_candidate: 'Medical Devices',
+      primary_value_driver: 'Medical Devices execution, customer demand, margin, and cash flow',
+      thesis_break_trigger: 'The thesis weakens if medical devices demand slows, margins compress, execution disappoints, or cash flow weakens.',
+      evidence_needed: [
+        'revenue growth',
+        'pipeline or product adoption',
+        'regulatory progress',
+        'margin',
+        'cash flow',
+        'safety or reimbursement evidence'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_5',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: [
+          {
+            question: 'What does MDT do?',
+            answer: 'Medtronic plc operates in Medical Devices.'
+          }
+        ],
+        thesisRisk: [
+          {
+            question: 'What would break the MDT thesis?',
+            answer: 'The thesis weakens if medical devices demand slows, margins compress, execution disappoints, or cash flow weakens.'
+          }
+        ]
+      },
+      phaseTwo: {
+        thesisRisk: {
+          lead: 'The main risk is whether Medtronic plc can keep medical devices evidence strong while the key risk factors stay contained.',
+          riskMap: [
+            {
+              label: 'Demand / growth',
+              severity: 'High',
+              watch: 'Medical Devices demand can slow.'
+            },
+            {
+              label: 'Margin / economics',
+              severity: 'High',
+              watch: 'Margin can compress.'
+            },
+            {
+              label: 'Execution',
+              severity: 'Medium',
+              watch: 'Execution can disappoint.'
+            },
+            {
+              label: 'Cash flow / risk',
+              severity: 'Medium',
+              watch: 'Cash flow can weaken.'
+            }
+          ],
+          evidenceNeeded: [
+            'revenue growth',
+            'pipeline or product adoption',
+            'regulatory progress',
+            'margin',
+            'cash flow',
+            'safety or reimbursement evidence'
+          ]
+        }
+      }
+    }
+  },
+  ISRG: {
+    ticker: 'ISRG',
+    companyName: 'Intuitive Surgical, Inc.',
+    exchange: 'NASDAQ',
+    logoUrl: buildStockLogoUrl('ISRG'),
+    overview: 'Intuitive Surgical, Inc. operates in Robotic Surgery / MedTech.',
+    category: 'Robotic Surgery / MedTech',
+    analysisDate: '2026-06-11',
+    latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
+    dossierVerdict: {
+      sourceType: 'curated',
+      asOf: '2026-06-11',
+      researchState: 'business_evidence_watch',
+      businessQuality: 'high',
+      valuationState: 'not_verified',
+      marketEvidence: 'not_verified',
+      finalRead: 'Robotic Surgery / MedTech where the thesis depends on Robotic Surgery / MedTech execution, customer demand, margin, and cash flow.',
+      keySupport: [
+        'SEC source pack identifies Intuitive Surgical, Inc. as Robotic Surgery / MedTech.',
+        'Latest primary-source filing reviewed: SEC latest periodic filing.'
+      ],
+      keyRisk: [
+        'Robotic Surgery / MedTech demand can slow.',
+        'Margins can compress if cost, competition, or execution pressure rises.',
+        'The business thesis can weaken if cash flow evidence deteriorates.'
+      ]
+    },
+    valueCore: {
+      ticker: 'ISRG',
+      value_core_type: 'Robotic Surgery / MedTech',
+      company_stage_candidate: 'Robotic Surgery / MedTech',
+      primary_value_driver: 'Robotic Surgery / MedTech execution, customer demand, margin, and cash flow',
+      thesis_break_trigger: 'The thesis weakens if robotic surgery / medtech demand slows, margins compress, execution disappoints, or cash flow weakens.',
+      evidence_needed: [
+        'revenue growth',
+        'segment performance',
+        'customer demand',
+        'margin',
+        'cash flow',
+        'risk factor changes'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_5',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: [
+          {
+            question: 'What does ISRG do?',
+            answer: 'Intuitive Surgical, Inc. operates in Robotic Surgery / MedTech.'
+          }
+        ],
+        thesisRisk: [
+          {
+            question: 'What would break the ISRG thesis?',
+            answer: 'The thesis weakens if robotic surgery / medtech demand slows, margins compress, execution disappoints, or cash flow weakens.'
+          }
+        ]
+      },
+      phaseTwo: {
+        thesisRisk: {
+          lead: 'The main risk is whether Intuitive Surgical, Inc. can keep robotic surgery / medtech evidence strong while the key risk factors stay contained.',
+          riskMap: [
+            {
+              label: 'Demand / growth',
+              severity: 'High',
+              watch: 'Robotic Surgery / MedTech demand can slow.'
+            },
+            {
+              label: 'Margin / economics',
+              severity: 'High',
+              watch: 'Margin can compress.'
+            },
+            {
+              label: 'Execution',
+              severity: 'Medium',
+              watch: 'Execution can disappoint.'
+            },
+            {
+              label: 'Cash flow / risk',
+              severity: 'Medium',
+              watch: 'Cash flow can weaken.'
+            }
+          ],
+          evidenceNeeded: [
+            'revenue growth',
+            'segment performance',
+            'customer demand',
+            'margin',
+            'cash flow',
+            'risk factor changes'
+          ]
+        }
+      }
+    }
+  },
+  DHR: {
+    ticker: 'DHR',
+    companyName: 'Danaher Corporation',
+    exchange: 'NYSE',
+    logoUrl: buildStockLogoUrl('DHR'),
+    overview: 'Danaher Corporation operates in Life Sciences / Diagnostics / Bioprocessing.',
+    category: 'Life Sciences / Diagnostics / Bioprocessing',
+    analysisDate: '2026-06-11',
+    latestFiscalPeriod: 'Q1 2026 ended 2026-03-27',
+    dossierVerdict: {
+      sourceType: 'curated',
+      asOf: '2026-06-11',
+      researchState: 'business_evidence_watch',
+      businessQuality: 'high',
+      valuationState: 'not_verified',
+      marketEvidence: 'not_verified',
+      finalRead: 'Life Sciences / Diagnostics / Bioprocessing where the thesis depends on Life Sciences / Diagnostics / Bioprocessing execution, customer demand, margin, and cash flow.',
+      keySupport: [
+        'SEC source pack identifies Danaher Corporation as Life Sciences / Diagnostics / Bioprocessing.',
+        'Latest primary-source filing reviewed: SEC latest periodic filing.'
+      ],
+      keyRisk: [
+        'Life Sciences / Diagnostics / Bioprocessing demand can slow.',
+        'Margins can compress if cost, competition, or execution pressure rises.',
+        'The business thesis can weaken if cash flow evidence deteriorates.'
+      ]
+    },
+    valueCore: {
+      ticker: 'DHR',
+      value_core_type: 'Life Sciences / Diagnostics / Bioprocessing',
+      company_stage_candidate: 'Life Sciences / Diagnostics / Bioprocessing',
+      primary_value_driver: 'Life Sciences / Diagnostics / Bioprocessing execution, customer demand, margin, and cash flow',
+      thesis_break_trigger: 'The thesis weakens if life sciences / diagnostics / bioprocessing demand slows, margins compress, execution disappoints, or cash flow weakens.',
+      evidence_needed: [
+        'revenue growth',
+        'segment performance',
+        'customer demand',
+        'margin',
+        'cash flow',
+        'risk factor changes'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_5',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: [
+          {
+            question: 'What does DHR do?',
+            answer: 'Danaher Corporation operates in Life Sciences / Diagnostics / Bioprocessing.'
+          }
+        ],
+        thesisRisk: [
+          {
+            question: 'What would break the DHR thesis?',
+            answer: 'The thesis weakens if life sciences / diagnostics / bioprocessing demand slows, margins compress, execution disappoints, or cash flow weakens.'
+          }
+        ]
+      },
+      phaseTwo: {
+        thesisRisk: {
+          lead: 'The main risk is whether Danaher Corporation can keep life sciences / diagnostics / bioprocessing evidence strong while the key risk factors stay contained.',
+          riskMap: [
+            {
+              label: 'Demand / growth',
+              severity: 'High',
+              watch: 'Life Sciences / Diagnostics / Bioprocessing demand can slow.'
+            },
+            {
+              label: 'Margin / economics',
+              severity: 'High',
+              watch: 'Margin can compress.'
+            },
+            {
+              label: 'Execution',
+              severity: 'Medium',
+              watch: 'Execution can disappoint.'
+            },
+            {
+              label: 'Cash flow / risk',
+              severity: 'Medium',
+              watch: 'Cash flow can weaken.'
+            }
+          ],
+          evidenceNeeded: [
+            'revenue growth',
+            'segment performance',
+            'customer demand',
+            'margin',
+            'cash flow',
+            'risk factor changes'
+          ]
+        }
+      }
+    }
+  },
+  BAC: {
+    ticker: 'BAC',
+    companyName: 'Bank of America Corporation',
+    exchange: 'NYSE',
+    logoUrl: buildStockLogoUrl('BAC'),
+    overview: 'Bank of America Corporation operates in Diversified Bank / Consumer and Commercial Banking.',
+    category: 'Diversified Bank / Consumer and Commercial Banking',
+    analysisDate: '2026-06-11',
+    latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
+    dossierVerdict: {
+      sourceType: 'curated',
+      asOf: '2026-06-11',
+      researchState: 'financial_cycle_watch',
+      businessQuality: 'medium',
+      valuationState: 'not_verified',
+      marketEvidence: 'not_verified',
+      finalRead: 'Diversified Bank / Consumer and Commercial Banking where the thesis depends on Diversified Bank / Consumer and Commercial Banking execution, customer demand, margin, and cash flow.',
+      keySupport: [
+        'SEC source pack identifies Bank of America Corporation as Diversified Bank / Consumer and Commercial Banking.',
+        'Latest primary-source filing reviewed: SEC latest periodic filing.'
+      ],
+      keyRisk: [
+        'Diversified Bank / Consumer and Commercial Banking demand can slow.',
+        'Margins can compress if cost, competition, or execution pressure rises.',
+        'The business thesis can weaken if cash flow evidence deteriorates.'
+      ]
+    },
+    valueCore: {
+      ticker: 'BAC',
+      value_core_type: 'Diversified Bank / Consumer and Commercial Banking',
+      company_stage_candidate: 'Diversified Bank / Consumer and Commercial Banking',
+      primary_value_driver: 'Diversified Bank / Consumer and Commercial Banking execution, customer demand, margin, and cash flow',
+      thesis_break_trigger: 'The thesis weakens if diversified bank / consumer and commercial banking demand slows, margins compress, execution disappoints, or cash flow weakens.',
+      evidence_needed: [
+        'revenue and net interest income',
+        'credit quality',
+        'fee income',
+        'capital and liquidity',
+        'operating leverage',
+        'cash flow'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_6',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: [
+          {
+            question: 'What does BAC do?',
+            answer: 'Bank of America Corporation operates in Diversified Bank / Consumer and Commercial Banking.'
+          }
+        ],
+        thesisRisk: [
+          {
+            question: 'What would break the BAC thesis?',
+            answer: 'The thesis weakens if diversified bank / consumer and commercial banking demand slows, margins compress, execution disappoints, or cash flow weakens.'
+          }
+        ]
+      },
+      phaseTwo: {
+        thesisRisk: {
+          lead: 'The main risk is whether Bank of America Corporation can keep diversified bank / consumer and commercial banking evidence strong while the key risk factors stay contained.',
+          riskMap: [
+            {
+              label: 'Demand / growth',
+              severity: 'High',
+              watch: 'Diversified Bank / Consumer and Commercial Banking demand can slow.'
+            },
+            {
+              label: 'Margin / economics',
+              severity: 'High',
+              watch: 'Margin can compress.'
+            },
+            {
+              label: 'Execution',
+              severity: 'Medium',
+              watch: 'Execution can disappoint.'
+            },
+            {
+              label: 'Cash flow / risk',
+              severity: 'Medium',
+              watch: 'Cash flow can weaken.'
+            }
+          ],
+          evidenceNeeded: [
+            'revenue and net interest income',
+            'credit quality',
+            'fee income',
+            'capital and liquidity',
+            'operating leverage',
+            'cash flow'
+          ]
+        }
+      }
+    }
+  },
+  GS: {
+    ticker: 'GS',
+    companyName: 'The Goldman Sachs Group, Inc.',
+    exchange: 'NYSE',
+    logoUrl: buildStockLogoUrl('GS'),
+    overview: 'The Goldman Sachs Group, Inc. operates in Investment Banking / Global Markets / Asset Management.',
+    category: 'Investment Banking / Global Markets / Asset Management',
+    analysisDate: '2026-06-11',
+    latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
+    dossierVerdict: {
+      sourceType: 'curated',
+      asOf: '2026-06-11',
+      researchState: 'financial_cycle_watch',
+      businessQuality: 'medium',
+      valuationState: 'not_verified',
+      marketEvidence: 'not_verified',
+      finalRead: 'Investment Banking / Global Markets / Asset Management where the thesis depends on Investment Banking / Global Markets / Asset Management execution, customer demand, margin, and cash flow.',
+      keySupport: [
+        'SEC source pack identifies The Goldman Sachs Group, Inc. as Investment Banking / Global Markets / Asset Management.',
+        'Latest primary-source filing reviewed: SEC latest periodic filing.'
+      ],
+      keyRisk: [
+        'Investment Banking / Global Markets / Asset Management demand can slow.',
+        'Margins can compress if cost, competition, or execution pressure rises.',
+        'The business thesis can weaken if cash flow evidence deteriorates.'
+      ]
+    },
+    valueCore: {
+      ticker: 'GS',
+      value_core_type: 'Investment Banking / Global Markets / Asset Management',
+      company_stage_candidate: 'Investment Banking / Global Markets / Asset Management',
+      primary_value_driver: 'Investment Banking / Global Markets / Asset Management execution, customer demand, margin, and cash flow',
+      thesis_break_trigger: 'The thesis weakens if investment banking / global markets / asset management demand slows, margins compress, execution disappoints, or cash flow weakens.',
+      evidence_needed: [
+        'revenue and net interest income',
+        'credit quality',
+        'fee income',
+        'capital and liquidity',
+        'operating leverage',
+        'cash flow'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_6',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: [
+          {
+            question: 'What does GS do?',
+            answer: 'The Goldman Sachs Group, Inc. operates in Investment Banking / Global Markets / Asset Management.'
+          }
+        ],
+        thesisRisk: [
+          {
+            question: 'What would break the GS thesis?',
+            answer: 'The thesis weakens if investment banking / global markets / asset management demand slows, margins compress, execution disappoints, or cash flow weakens.'
+          }
+        ]
+      },
+      phaseTwo: {
+        thesisRisk: {
+          lead: 'The main risk is whether The Goldman Sachs Group, Inc. can keep investment banking / global markets / asset management evidence strong while the key risk factors stay contained.',
+          riskMap: [
+            {
+              label: 'Demand / growth',
+              severity: 'High',
+              watch: 'Investment Banking / Global Markets / Asset Management demand can slow.'
+            },
+            {
+              label: 'Margin / economics',
+              severity: 'High',
+              watch: 'Margin can compress.'
+            },
+            {
+              label: 'Execution',
+              severity: 'Medium',
+              watch: 'Execution can disappoint.'
+            },
+            {
+              label: 'Cash flow / risk',
+              severity: 'Medium',
+              watch: 'Cash flow can weaken.'
+            }
+          ],
+          evidenceNeeded: [
+            'revenue and net interest income',
+            'credit quality',
+            'fee income',
+            'capital and liquidity',
+            'operating leverage',
+            'cash flow'
+          ]
+        }
+      }
+    }
+  },
+  MS: {
+    ticker: 'MS',
+    companyName: 'Morgan Stanley',
+    exchange: 'NYSE',
+    logoUrl: buildStockLogoUrl('MS'),
+    overview: 'Morgan Stanley operates in Wealth Management / Investment Banking / Markets.',
+    category: 'Wealth Management / Investment Banking / Markets',
+    analysisDate: '2026-06-11',
+    latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
+    dossierVerdict: {
+      sourceType: 'curated',
+      asOf: '2026-06-11',
+      researchState: 'financial_cycle_watch',
+      businessQuality: 'medium',
+      valuationState: 'not_verified',
+      marketEvidence: 'not_verified',
+      finalRead: 'Wealth Management / Investment Banking / Markets where the thesis depends on Wealth Management / Investment Banking / Markets execution, customer demand, margin, and cash flow.',
+      keySupport: [
+        'SEC source pack identifies Morgan Stanley as Wealth Management / Investment Banking / Markets.',
+        'Latest primary-source filing reviewed: SEC latest periodic filing.'
+      ],
+      keyRisk: [
+        'Wealth Management / Investment Banking / Markets demand can slow.',
+        'Margins can compress if cost, competition, or execution pressure rises.',
+        'The business thesis can weaken if cash flow evidence deteriorates.'
+      ]
+    },
+    valueCore: {
+      ticker: 'MS',
+      value_core_type: 'Wealth Management / Investment Banking / Markets',
+      company_stage_candidate: 'Wealth Management / Investment Banking / Markets',
+      primary_value_driver: 'Wealth Management / Investment Banking / Markets execution, customer demand, margin, and cash flow',
+      thesis_break_trigger: 'The thesis weakens if wealth management / investment banking / markets demand slows, margins compress, execution disappoints, or cash flow weakens.',
+      evidence_needed: [
+        'revenue and net interest income',
+        'credit quality',
+        'fee income',
+        'capital and liquidity',
+        'operating leverage',
+        'cash flow'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_6',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: [
+          {
+            question: 'What does MS do?',
+            answer: 'Morgan Stanley operates in Wealth Management / Investment Banking / Markets.'
+          }
+        ],
+        thesisRisk: [
+          {
+            question: 'What would break the MS thesis?',
+            answer: 'The thesis weakens if wealth management / investment banking / markets demand slows, margins compress, execution disappoints, or cash flow weakens.'
+          }
+        ]
+      },
+      phaseTwo: {
+        thesisRisk: {
+          lead: 'The main risk is whether Morgan Stanley can keep wealth management / investment banking / markets evidence strong while the key risk factors stay contained.',
+          riskMap: [
+            {
+              label: 'Demand / growth',
+              severity: 'High',
+              watch: 'Wealth Management / Investment Banking / Markets demand can slow.'
+            },
+            {
+              label: 'Margin / economics',
+              severity: 'High',
+              watch: 'Margin can compress.'
+            },
+            {
+              label: 'Execution',
+              severity: 'Medium',
+              watch: 'Execution can disappoint.'
+            },
+            {
+              label: 'Cash flow / risk',
+              severity: 'Medium',
+              watch: 'Cash flow can weaken.'
+            }
+          ],
+          evidenceNeeded: [
+            'revenue and net interest income',
+            'credit quality',
+            'fee income',
+            'capital and liquidity',
+            'operating leverage',
+            'cash flow'
+          ]
+        }
+      }
+    }
+  },
+  AXP: {
+    ticker: 'AXP',
+    companyName: 'American Express Company',
+    exchange: 'NYSE',
+    logoUrl: buildStockLogoUrl('AXP'),
+    overview: 'American Express Company operates in Payments / Card Issuer / Closed-Loop Network.',
+    category: 'Payments / Card Issuer / Closed-Loop Network',
+    analysisDate: '2026-06-11',
+    latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
+    dossierVerdict: {
+      sourceType: 'curated',
+      asOf: '2026-06-11',
+      researchState: 'business_evidence_watch',
+      businessQuality: 'high',
+      valuationState: 'not_verified',
+      marketEvidence: 'not_verified',
+      finalRead: 'Payments / Card Issuer / Closed-Loop Network where the thesis depends on Payments / Card Issuer / Closed-Loop Network execution, customer demand, margin, and cash flow.',
+      keySupport: [
+        'SEC source pack identifies American Express Company as Payments / Card Issuer / Closed-Loop Network.',
+        'Latest primary-source filing reviewed: SEC latest periodic filing.'
+      ],
+      keyRisk: [
+        'Payments / Card Issuer / Closed-Loop Network demand can slow.',
+        'Margins can compress if cost, competition, or execution pressure rises.',
+        'The business thesis can weaken if cash flow evidence deteriorates.'
+      ]
+    },
+    valueCore: {
+      ticker: 'AXP',
+      value_core_type: 'Payments / Card Issuer / Closed-Loop Network',
+      company_stage_candidate: 'Payments / Card Issuer / Closed-Loop Network',
+      primary_value_driver: 'Payments / Card Issuer / Closed-Loop Network execution, customer demand, margin, and cash flow',
+      thesis_break_trigger: 'The thesis weakens if payments / card issuer / closed-loop network demand slows, margins compress, execution disappoints, or cash flow weakens.',
+      evidence_needed: [
+        'revenue and net interest income',
+        'credit quality',
+        'fee income',
+        'capital and liquidity',
+        'operating leverage',
+        'cash flow'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_6',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: [
+          {
+            question: 'What does AXP do?',
+            answer: 'American Express Company operates in Payments / Card Issuer / Closed-Loop Network.'
+          }
+        ],
+        thesisRisk: [
+          {
+            question: 'What would break the AXP thesis?',
+            answer: 'The thesis weakens if payments / card issuer / closed-loop network demand slows, margins compress, execution disappoints, or cash flow weakens.'
+          }
+        ]
+      },
+      phaseTwo: {
+        thesisRisk: {
+          lead: 'The main risk is whether American Express Company can keep payments / card issuer / closed-loop network evidence strong while the key risk factors stay contained.',
+          riskMap: [
+            {
+              label: 'Demand / growth',
+              severity: 'High',
+              watch: 'Payments / Card Issuer / Closed-Loop Network demand can slow.'
+            },
+            {
+              label: 'Margin / economics',
+              severity: 'High',
+              watch: 'Margin can compress.'
+            },
+            {
+              label: 'Execution',
+              severity: 'Medium',
+              watch: 'Execution can disappoint.'
+            },
+            {
+              label: 'Cash flow / risk',
+              severity: 'Medium',
+              watch: 'Cash flow can weaken.'
+            }
+          ],
+          evidenceNeeded: [
+            'revenue and net interest income',
+            'credit quality',
+            'fee income',
+            'capital and liquidity',
+            'operating leverage',
+            'cash flow'
+          ]
+        }
+      }
+    }
+  },
+  MA: {
+    ticker: 'MA',
+    companyName: 'Mastercard Incorporated',
+    exchange: 'NYSE',
+    logoUrl: buildStockLogoUrl('MA'),
+    overview: 'Mastercard Incorporated operates in Global Payments Network.',
+    category: 'Global Payments Network',
+    analysisDate: '2026-06-11',
+    latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
+    dossierVerdict: {
+      sourceType: 'curated',
+      asOf: '2026-06-11',
+      researchState: 'business_evidence_watch',
+      businessQuality: 'high',
+      valuationState: 'not_verified',
+      marketEvidence: 'not_verified',
+      finalRead: 'Global Payments Network where the thesis depends on Global Payments Network execution, customer demand, margin, and cash flow.',
+      keySupport: [
+        'SEC source pack identifies Mastercard Incorporated as Global Payments Network.',
+        'Latest primary-source filing reviewed: SEC latest periodic filing.'
+      ],
+      keyRisk: [
+        'Global Payments Network demand can slow.',
+        'Margins can compress if cost, competition, or execution pressure rises.',
+        'The business thesis can weaken if cash flow evidence deteriorates.'
+      ]
+    },
+    valueCore: {
+      ticker: 'MA',
+      value_core_type: 'Global Payments Network',
+      company_stage_candidate: 'Global Payments Network',
+      primary_value_driver: 'Global Payments Network execution, customer demand, margin, and cash flow',
+      thesis_break_trigger: 'The thesis weakens if global payments network demand slows, margins compress, execution disappoints, or cash flow weakens.',
+      evidence_needed: [
+        'revenue and net interest income',
+        'credit quality',
+        'fee income',
+        'capital and liquidity',
+        'operating leverage',
+        'cash flow'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_6',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: [
+          {
+            question: 'What does MA do?',
+            answer: 'Mastercard Incorporated operates in Global Payments Network.'
+          }
+        ],
+        thesisRisk: [
+          {
+            question: 'What would break the MA thesis?',
+            answer: 'The thesis weakens if global payments network demand slows, margins compress, execution disappoints, or cash flow weakens.'
+          }
+        ]
+      },
+      phaseTwo: {
+        thesisRisk: {
+          lead: 'The main risk is whether Mastercard Incorporated can keep global payments network evidence strong while the key risk factors stay contained.',
+          riskMap: [
+            {
+              label: 'Demand / growth',
+              severity: 'High',
+              watch: 'Global Payments Network demand can slow.'
+            },
+            {
+              label: 'Margin / economics',
+              severity: 'High',
+              watch: 'Margin can compress.'
+            },
+            {
+              label: 'Execution',
+              severity: 'Medium',
+              watch: 'Execution can disappoint.'
+            },
+            {
+              label: 'Cash flow / risk',
+              severity: 'Medium',
+              watch: 'Cash flow can weaken.'
+            }
+          ],
+          evidenceNeeded: [
+            'revenue and net interest income',
+            'credit quality',
+            'fee income',
+            'capital and liquidity',
+            'operating leverage',
+            'cash flow'
+          ]
+        }
+      }
+    }
+  },
+  CVX: {
+    ticker: 'CVX',
+    companyName: 'Chevron Corporation',
+    exchange: 'NYSE',
+    logoUrl: buildStockLogoUrl('CVX'),
+    overview: 'Chevron Corporation operates in Integrated Energy.',
+    category: 'Integrated Energy',
+    analysisDate: '2026-06-11',
+    latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
+    dossierVerdict: {
+      sourceType: 'curated',
+      asOf: '2026-06-11',
+      researchState: 'business_evidence_watch',
+      businessQuality: 'high',
+      valuationState: 'not_verified',
+      marketEvidence: 'not_verified',
+      finalRead: 'Integrated Energy where the thesis depends on Integrated Energy execution, customer demand, margin, and cash flow.',
+      keySupport: [
+        'SEC source pack identifies Chevron Corporation as Integrated Energy.',
+        'Latest primary-source filing reviewed: SEC latest periodic filing.'
+      ],
+      keyRisk: [
+        'Integrated Energy demand can slow.',
+        'Margins can compress if cost, competition, or execution pressure rises.',
+        'The business thesis can weaken if cash flow evidence deteriorates.'
+      ]
+    },
+    valueCore: {
+      ticker: 'CVX',
+      value_core_type: 'Integrated Energy',
+      company_stage_candidate: 'Integrated Energy',
+      primary_value_driver: 'Integrated Energy execution, customer demand, margin, and cash flow',
+      thesis_break_trigger: 'The thesis weakens if integrated energy demand slows, margins compress, execution disappoints, or cash flow weakens.',
+      evidence_needed: [
+        'revenue growth',
+        'segment performance',
+        'customer demand',
+        'margin',
+        'cash flow',
+        'risk factor changes'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_6',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: [
+          {
+            question: 'What does CVX do?',
+            answer: 'Chevron Corporation operates in Integrated Energy.'
+          }
+        ],
+        thesisRisk: [
+          {
+            question: 'What would break the CVX thesis?',
+            answer: 'The thesis weakens if integrated energy demand slows, margins compress, execution disappoints, or cash flow weakens.'
+          }
+        ]
+      },
+      phaseTwo: {
+        thesisRisk: {
+          lead: 'The main risk is whether Chevron Corporation can keep integrated energy evidence strong while the key risk factors stay contained.',
+          riskMap: [
+            {
+              label: 'Demand / growth',
+              severity: 'High',
+              watch: 'Integrated Energy demand can slow.'
+            },
+            {
+              label: 'Margin / economics',
+              severity: 'High',
+              watch: 'Margin can compress.'
+            },
+            {
+              label: 'Execution',
+              severity: 'Medium',
+              watch: 'Execution can disappoint.'
+            },
+            {
+              label: 'Cash flow / risk',
+              severity: 'Medium',
+              watch: 'Cash flow can weaken.'
+            }
+          ],
+          evidenceNeeded: [
+            'revenue growth',
+            'segment performance',
+            'customer demand',
+            'margin',
+            'cash flow',
+            'risk factor changes'
+          ]
+        }
+      }
+    }
+  },
+  COP: {
+    ticker: 'COP',
+    companyName: 'ConocoPhillips',
+    exchange: 'NYSE',
+    logoUrl: buildStockLogoUrl('COP'),
+    overview: 'ConocoPhillips operates in Exploration and Production / Upstream Energy.',
+    category: 'Exploration and Production / Upstream Energy',
+    analysisDate: '2026-06-11',
+    latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
+    dossierVerdict: {
+      sourceType: 'curated',
+      asOf: '2026-06-11',
+      researchState: 'business_evidence_watch',
+      businessQuality: 'high',
+      valuationState: 'not_verified',
+      marketEvidence: 'not_verified',
+      finalRead: 'Exploration and Production / Upstream Energy where the thesis depends on Exploration and Production / Upstream Energy execution, customer demand, margin, and cash flow.',
+      keySupport: [
+        'SEC source pack identifies ConocoPhillips as Exploration and Production / Upstream Energy.',
+        'Latest primary-source filing reviewed: SEC latest periodic filing.'
+      ],
+      keyRisk: [
+        'Exploration and Production / Upstream Energy demand can slow.',
+        'Margins can compress if cost, competition, or execution pressure rises.',
+        'The business thesis can weaken if cash flow evidence deteriorates.'
+      ]
+    },
+    valueCore: {
+      ticker: 'COP',
+      value_core_type: 'Exploration and Production / Upstream Energy',
+      company_stage_candidate: 'Exploration and Production / Upstream Energy',
+      primary_value_driver: 'Exploration and Production / Upstream Energy execution, customer demand, margin, and cash flow',
+      thesis_break_trigger: 'The thesis weakens if exploration and production / upstream energy demand slows, margins compress, execution disappoints, or cash flow weakens.',
+      evidence_needed: [
+        'revenue growth',
+        'segment performance',
+        'customer demand',
+        'margin',
+        'cash flow',
+        'risk factor changes'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_6',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: [
+          {
+            question: 'What does COP do?',
+            answer: 'ConocoPhillips operates in Exploration and Production / Upstream Energy.'
+          }
+        ],
+        thesisRisk: [
+          {
+            question: 'What would break the COP thesis?',
+            answer: 'The thesis weakens if exploration and production / upstream energy demand slows, margins compress, execution disappoints, or cash flow weakens.'
+          }
+        ]
+      },
+      phaseTwo: {
+        thesisRisk: {
+          lead: 'The main risk is whether ConocoPhillips can keep exploration and production / upstream energy evidence strong while the key risk factors stay contained.',
+          riskMap: [
+            {
+              label: 'Demand / growth',
+              severity: 'High',
+              watch: 'Exploration and Production / Upstream Energy demand can slow.'
+            },
+            {
+              label: 'Margin / economics',
+              severity: 'High',
+              watch: 'Margin can compress.'
+            },
+            {
+              label: 'Execution',
+              severity: 'Medium',
+              watch: 'Execution can disappoint.'
+            },
+            {
+              label: 'Cash flow / risk',
+              severity: 'Medium',
+              watch: 'Cash flow can weaken.'
+            }
+          ],
+          evidenceNeeded: [
+            'revenue growth',
+            'segment performance',
+            'customer demand',
+            'margin',
+            'cash flow',
+            'risk factor changes'
+          ]
+        }
+      }
+    }
+  },
+  CAT: {
+    ticker: 'CAT',
+    companyName: 'Caterpillar Inc.',
+    exchange: 'NYSE',
+    logoUrl: buildStockLogoUrl('CAT'),
+    overview: 'Caterpillar Inc. operates in Construction / Mining / Energy Equipment.',
+    category: 'Construction / Mining / Energy Equipment',
+    analysisDate: '2026-06-11',
+    latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
+    dossierVerdict: {
+      sourceType: 'curated',
+      asOf: '2026-06-11',
+      researchState: 'business_evidence_watch',
+      businessQuality: 'high',
+      valuationState: 'not_verified',
+      marketEvidence: 'not_verified',
+      finalRead: 'Construction / Mining / Energy Equipment where the thesis depends on Construction / Mining / Energy Equipment execution, customer demand, margin, and cash flow.',
+      keySupport: [
+        'SEC source pack identifies Caterpillar Inc. as Construction / Mining / Energy Equipment.',
+        'Latest primary-source filing reviewed: SEC latest periodic filing.'
+      ],
+      keyRisk: [
+        'Construction / Mining / Energy Equipment demand can slow.',
+        'Margins can compress if cost, competition, or execution pressure rises.',
+        'The business thesis can weaken if cash flow evidence deteriorates.'
+      ]
+    },
+    valueCore: {
+      ticker: 'CAT',
+      value_core_type: 'Construction / Mining / Energy Equipment',
+      company_stage_candidate: 'Construction / Mining / Energy Equipment',
+      primary_value_driver: 'Construction / Mining / Energy Equipment execution, customer demand, margin, and cash flow',
+      thesis_break_trigger: 'The thesis weakens if construction / mining / energy equipment demand slows, margins compress, execution disappoints, or cash flow weakens.',
+      evidence_needed: [
+        'revenue growth',
+        'segment performance',
+        'customer demand',
+        'margin',
+        'cash flow',
+        'risk factor changes'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_6',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: [
+          {
+            question: 'What does CAT do?',
+            answer: 'Caterpillar Inc. operates in Construction / Mining / Energy Equipment.'
+          }
+        ],
+        thesisRisk: [
+          {
+            question: 'What would break the CAT thesis?',
+            answer: 'The thesis weakens if construction / mining / energy equipment demand slows, margins compress, execution disappoints, or cash flow weakens.'
+          }
+        ]
+      },
+      phaseTwo: {
+        thesisRisk: {
+          lead: 'The main risk is whether Caterpillar Inc. can keep construction / mining / energy equipment evidence strong while the key risk factors stay contained.',
+          riskMap: [
+            {
+              label: 'Demand / growth',
+              severity: 'High',
+              watch: 'Construction / Mining / Energy Equipment demand can slow.'
+            },
+            {
+              label: 'Margin / economics',
+              severity: 'High',
+              watch: 'Margin can compress.'
+            },
+            {
+              label: 'Execution',
+              severity: 'Medium',
+              watch: 'Execution can disappoint.'
+            },
+            {
+              label: 'Cash flow / risk',
+              severity: 'Medium',
+              watch: 'Cash flow can weaken.'
+            }
+          ],
+          evidenceNeeded: [
+            'revenue growth',
+            'segment performance',
+            'customer demand',
+            'margin',
+            'cash flow',
+            'risk factor changes'
+          ]
+        }
+      }
+    }
+  },
+  DE: {
+    ticker: 'DE',
+    companyName: 'Deere & Company',
+    exchange: 'NYSE',
+    logoUrl: buildStockLogoUrl('DE'),
+    overview: 'Deere & Company operates in Agriculture / Construction Equipment.',
+    category: 'Agriculture / Construction Equipment',
+    analysisDate: '2026-06-11',
+    latestFiscalPeriod: 'Q2 FY2026 ended 2026-05-03',
+    dossierVerdict: {
+      sourceType: 'curated',
+      asOf: '2026-06-11',
+      researchState: 'business_evidence_watch',
+      businessQuality: 'high',
+      valuationState: 'not_verified',
+      marketEvidence: 'not_verified',
+      finalRead: 'Agriculture / Construction Equipment where the thesis depends on Agriculture / Construction Equipment execution, customer demand, margin, and cash flow.',
+      keySupport: [
+        'SEC source pack identifies Deere & Company as Agriculture / Construction Equipment.',
+        'Latest primary-source filing reviewed: SEC latest periodic filing.'
+      ],
+      keyRisk: [
+        'Agriculture / Construction Equipment demand can slow.',
+        'Margins can compress if cost, competition, or execution pressure rises.',
+        'The business thesis can weaken if cash flow evidence deteriorates.'
+      ]
+    },
+    valueCore: {
+      ticker: 'DE',
+      value_core_type: 'Agriculture / Construction Equipment',
+      company_stage_candidate: 'Agriculture / Construction Equipment',
+      primary_value_driver: 'Agriculture / Construction Equipment execution, customer demand, margin, and cash flow',
+      thesis_break_trigger: 'The thesis weakens if agriculture / construction equipment demand slows, margins compress, execution disappoints, or cash flow weakens.',
+      evidence_needed: [
+        'revenue growth',
+        'segment performance',
+        'customer demand',
+        'margin',
+        'cash flow',
+        'risk factor changes'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_6',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: [
+          {
+            question: 'What does DE do?',
+            answer: 'Deere & Company operates in Agriculture / Construction Equipment.'
+          }
+        ],
+        thesisRisk: [
+          {
+            question: 'What would break the DE thesis?',
+            answer: 'The thesis weakens if agriculture / construction equipment demand slows, margins compress, execution disappoints, or cash flow weakens.'
+          }
+        ]
+      },
+      phaseTwo: {
+        thesisRisk: {
+          lead: 'The main risk is whether Deere & Company can keep agriculture / construction equipment evidence strong while the key risk factors stay contained.',
+          riskMap: [
+            {
+              label: 'Demand / growth',
+              severity: 'High',
+              watch: 'Agriculture / Construction Equipment demand can slow.'
+            },
+            {
+              label: 'Margin / economics',
+              severity: 'High',
+              watch: 'Margin can compress.'
+            },
+            {
+              label: 'Execution',
+              severity: 'Medium',
+              watch: 'Execution can disappoint.'
+            },
+            {
+              label: 'Cash flow / risk',
+              severity: 'Medium',
+              watch: 'Cash flow can weaken.'
+            }
+          ],
+          evidenceNeeded: [
+            'revenue growth',
+            'segment performance',
+            'customer demand',
+            'margin',
+            'cash flow',
+            'risk factor changes'
+          ]
+        }
+      }
+    }
+  },
+  UNP: {
+    ticker: 'UNP',
+    companyName: 'Union Pacific Corporation',
+    exchange: 'NYSE',
+    logoUrl: buildStockLogoUrl('UNP'),
+    overview: 'Union Pacific Corporation operates in Railroad / Freight Transportation.',
+    category: 'Railroad / Freight Transportation',
+    analysisDate: '2026-06-11',
+    latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
+    dossierVerdict: {
+      sourceType: 'curated',
+      asOf: '2026-06-11',
+      researchState: 'business_evidence_watch',
+      businessQuality: 'high',
+      valuationState: 'not_verified',
+      marketEvidence: 'not_verified',
+      finalRead: 'Railroad / Freight Transportation where the thesis depends on Railroad / Freight Transportation execution, customer demand, margin, and cash flow.',
+      keySupport: [
+        'SEC source pack identifies Union Pacific Corporation as Railroad / Freight Transportation.',
+        'Latest primary-source filing reviewed: SEC latest periodic filing.'
+      ],
+      keyRisk: [
+        'Railroad / Freight Transportation demand can slow.',
+        'Margins can compress if cost, competition, or execution pressure rises.',
+        'The business thesis can weaken if cash flow evidence deteriorates.'
+      ]
+    },
+    valueCore: {
+      ticker: 'UNP',
+      value_core_type: 'Railroad / Freight Transportation',
+      company_stage_candidate: 'Railroad / Freight Transportation',
+      primary_value_driver: 'Railroad / Freight Transportation execution, customer demand, margin, and cash flow',
+      thesis_break_trigger: 'The thesis weakens if railroad / freight transportation demand slows, margins compress, execution disappoints, or cash flow weakens.',
+      evidence_needed: [
+        'revenue growth',
+        'customer demand',
+        'gross margin',
+        'inventory and backlog',
+        'capex or R&D execution',
+        'free cash flow'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_6',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: [
+          {
+            question: 'What does UNP do?',
+            answer: 'Union Pacific Corporation operates in Railroad / Freight Transportation.'
+          }
+        ],
+        thesisRisk: [
+          {
+            question: 'What would break the UNP thesis?',
+            answer: 'The thesis weakens if railroad / freight transportation demand slows, margins compress, execution disappoints, or cash flow weakens.'
+          }
+        ]
+      },
+      phaseTwo: {
+        thesisRisk: {
+          lead: 'The main risk is whether Union Pacific Corporation can keep railroad / freight transportation evidence strong while the key risk factors stay contained.',
+          riskMap: [
+            {
+              label: 'Demand / growth',
+              severity: 'High',
+              watch: 'Railroad / Freight Transportation demand can slow.'
+            },
+            {
+              label: 'Margin / economics',
+              severity: 'High',
+              watch: 'Margin can compress.'
+            },
+            {
+              label: 'Execution',
+              severity: 'Medium',
+              watch: 'Execution can disappoint.'
+            },
+            {
+              label: 'Cash flow / risk',
+              severity: 'Medium',
+              watch: 'Cash flow can weaken.'
+            }
+          ],
+          evidenceNeeded: [
+            'revenue growth',
+            'customer demand',
+            'gross margin',
+            'inventory and backlog',
+            'capex or R&D execution',
+            'free cash flow'
+          ]
+        }
+      }
+    }
+  },
+  NFLX: {
+    ticker: 'NFLX',
+    companyName: 'Netflix, Inc.',
+    exchange: 'NASDAQ',
+    logoUrl: buildStockLogoUrl('NFLX'),
+    overview: 'Netflix, Inc. operates in Streaming Entertainment / Advertising.',
+    category: 'Streaming Entertainment / Advertising',
+    analysisDate: '2026-06-11',
+    latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
+    dossierVerdict: {
+      sourceType: 'curated',
+      asOf: '2026-06-11',
+      researchState: 'business_evidence_watch',
+      businessQuality: 'high',
+      valuationState: 'not_verified',
+      marketEvidence: 'not_verified',
+      finalRead: 'Streaming Entertainment / Advertising where the thesis depends on Streaming Entertainment / Advertising execution, customer demand, margin, and cash flow.',
+      keySupport: [
+        'SEC source pack identifies Netflix, Inc. as Streaming Entertainment / Advertising.',
+        'Latest primary-source filing reviewed: SEC latest periodic filing.'
+      ],
+      keyRisk: [
+        'Streaming Entertainment / Advertising demand can slow.',
+        'Margins can compress if cost, competition, or execution pressure rises.',
+        'The business thesis can weaken if cash flow evidence deteriorates.'
+      ]
+    },
+    valueCore: {
+      ticker: 'NFLX',
+      value_core_type: 'Streaming Entertainment / Advertising',
+      company_stage_candidate: 'Streaming Entertainment / Advertising',
+      primary_value_driver: 'Streaming Entertainment / Advertising execution, customer demand, margin, and cash flow',
+      thesis_break_trigger: 'The thesis weakens if streaming entertainment / advertising demand slows, margins compress, execution disappoints, or cash flow weakens.',
+      evidence_needed: [
+        'revenue growth',
+        'customer demand',
+        'gross margin',
+        'inventory and backlog',
+        'capex or R&D execution',
+        'free cash flow'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_7',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: [
+          {
+            question: 'What does NFLX do?',
+            answer: 'Netflix, Inc. operates in Streaming Entertainment / Advertising.'
+          }
+        ],
+        thesisRisk: [
+          {
+            question: 'What would break the NFLX thesis?',
+            answer: 'The thesis weakens if streaming entertainment / advertising demand slows, margins compress, execution disappoints, or cash flow weakens.'
+          }
+        ]
+      },
+      phaseTwo: {
+        thesisRisk: {
+          lead: 'The main risk is whether Netflix, Inc. can keep streaming entertainment / advertising evidence strong while the key risk factors stay contained.',
+          riskMap: [
+            {
+              label: 'Demand / growth',
+              severity: 'High',
+              watch: 'Streaming Entertainment / Advertising demand can slow.'
+            },
+            {
+              label: 'Margin / economics',
+              severity: 'High',
+              watch: 'Margin can compress.'
+            },
+            {
+              label: 'Execution',
+              severity: 'Medium',
+              watch: 'Execution can disappoint.'
+            },
+            {
+              label: 'Cash flow / risk',
+              severity: 'Medium',
+              watch: 'Cash flow can weaken.'
+            }
+          ],
+          evidenceNeeded: [
+            'revenue growth',
+            'customer demand',
+            'gross margin',
+            'inventory and backlog',
+            'capex or R&D execution',
+            'free cash flow'
+          ]
+        }
+      }
+    }
+  },
+  DIS: {
+    ticker: 'DIS',
+    companyName: 'The Walt Disney Company',
+    exchange: 'NYSE',
+    logoUrl: buildStockLogoUrl('DIS'),
+    overview: 'The Walt Disney Company operates in Media / Parks / Streaming Entertainment.',
+    category: 'Media / Parks / Streaming Entertainment',
+    analysisDate: '2026-06-11',
+    latestFiscalPeriod: 'Q2 FY2026 ended 2026-03-28',
+    dossierVerdict: {
+      sourceType: 'curated',
+      asOf: '2026-06-11',
+      researchState: 'business_evidence_watch',
+      businessQuality: 'high',
+      valuationState: 'not_verified',
+      marketEvidence: 'not_verified',
+      finalRead: 'Media / Parks / Streaming Entertainment where the thesis depends on Media / Parks / Streaming Entertainment execution, customer demand, margin, and cash flow.',
+      keySupport: [
+        'SEC source pack identifies The Walt Disney Company as Media / Parks / Streaming Entertainment.',
+        'Latest primary-source filing reviewed: SEC latest periodic filing.'
+      ],
+      keyRisk: [
+        'Media / Parks / Streaming Entertainment demand can slow.',
+        'Margins can compress if cost, competition, or execution pressure rises.',
+        'The business thesis can weaken if cash flow evidence deteriorates.'
+      ]
+    },
+    valueCore: {
+      ticker: 'DIS',
+      value_core_type: 'Media / Parks / Streaming Entertainment',
+      company_stage_candidate: 'Media / Parks / Streaming Entertainment',
+      primary_value_driver: 'Media / Parks / Streaming Entertainment execution, customer demand, margin, and cash flow',
+      thesis_break_trigger: 'The thesis weakens if media / parks / streaming entertainment demand slows, margins compress, execution disappoints, or cash flow weakens.',
+      evidence_needed: [
+        'revenue growth',
+        'customer demand',
+        'gross margin',
+        'inventory and backlog',
+        'capex or R&D execution',
+        'free cash flow'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_7',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: [
+          {
+            question: 'What does DIS do?',
+            answer: 'The Walt Disney Company operates in Media / Parks / Streaming Entertainment.'
+          }
+        ],
+        thesisRisk: [
+          {
+            question: 'What would break the DIS thesis?',
+            answer: 'The thesis weakens if media / parks / streaming entertainment demand slows, margins compress, execution disappoints, or cash flow weakens.'
+          }
+        ]
+      },
+      phaseTwo: {
+        thesisRisk: {
+          lead: 'The main risk is whether The Walt Disney Company can keep media / parks / streaming entertainment evidence strong while the key risk factors stay contained.',
+          riskMap: [
+            {
+              label: 'Demand / growth',
+              severity: 'High',
+              watch: 'Media / Parks / Streaming Entertainment demand can slow.'
+            },
+            {
+              label: 'Margin / economics',
+              severity: 'High',
+              watch: 'Margin can compress.'
+            },
+            {
+              label: 'Execution',
+              severity: 'Medium',
+              watch: 'Execution can disappoint.'
+            },
+            {
+              label: 'Cash flow / risk',
+              severity: 'Medium',
+              watch: 'Cash flow can weaken.'
+            }
+          ],
+          evidenceNeeded: [
+            'revenue growth',
+            'customer demand',
+            'gross margin',
+            'inventory and backlog',
+            'capex or R&D execution',
+            'free cash flow'
+          ]
+        }
+      }
+    }
+  },
+  BKNG: {
+    ticker: 'BKNG',
+    companyName: 'Booking Holdings Inc.',
+    exchange: 'NASDAQ',
+    logoUrl: buildStockLogoUrl('BKNG'),
+    overview: 'Booking Holdings Inc. operates in Online Travel / Marketplace.',
+    category: 'Online Travel / Marketplace',
+    analysisDate: '2026-06-11',
+    latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
+    dossierVerdict: {
+      sourceType: 'curated',
+      asOf: '2026-06-11',
+      researchState: 'business_evidence_watch',
+      businessQuality: 'high',
+      valuationState: 'not_verified',
+      marketEvidence: 'not_verified',
+      finalRead: 'Online Travel / Marketplace where the thesis depends on Online Travel / Marketplace execution, customer demand, margin, and cash flow.',
+      keySupport: [
+        'SEC source pack identifies Booking Holdings Inc. as Online Travel / Marketplace.',
+        'Latest primary-source filing reviewed: SEC latest periodic filing.'
+      ],
+      keyRisk: [
+        'Online Travel / Marketplace demand can slow.',
+        'Margins can compress if cost, competition, or execution pressure rises.',
+        'The business thesis can weaken if cash flow evidence deteriorates.'
+      ]
+    },
+    valueCore: {
+      ticker: 'BKNG',
+      value_core_type: 'Online Travel / Marketplace',
+      company_stage_candidate: 'Online Travel / Marketplace',
+      primary_value_driver: 'Online Travel / Marketplace execution, customer demand, margin, and cash flow',
+      thesis_break_trigger: 'The thesis weakens if online travel / marketplace demand slows, margins compress, execution disappoints, or cash flow weakens.',
+      evidence_needed: [
+        'revenue growth',
+        'traffic or volume',
+        'pricing and demand',
+        'margin',
+        'customer retention',
+        'free cash flow'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_7',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: [
+          {
+            question: 'What does BKNG do?',
+            answer: 'Booking Holdings Inc. operates in Online Travel / Marketplace.'
+          }
+        ],
+        thesisRisk: [
+          {
+            question: 'What would break the BKNG thesis?',
+            answer: 'The thesis weakens if online travel / marketplace demand slows, margins compress, execution disappoints, or cash flow weakens.'
+          }
+        ]
+      },
+      phaseTwo: {
+        thesisRisk: {
+          lead: 'The main risk is whether Booking Holdings Inc. can keep online travel / marketplace evidence strong while the key risk factors stay contained.',
+          riskMap: [
+            {
+              label: 'Demand / growth',
+              severity: 'High',
+              watch: 'Online Travel / Marketplace demand can slow.'
+            },
+            {
+              label: 'Margin / economics',
+              severity: 'High',
+              watch: 'Margin can compress.'
+            },
+            {
+              label: 'Execution',
+              severity: 'Medium',
+              watch: 'Execution can disappoint.'
+            },
+            {
+              label: 'Cash flow / risk',
+              severity: 'Medium',
+              watch: 'Cash flow can weaken.'
+            }
+          ],
+          evidenceNeeded: [
+            'revenue growth',
+            'traffic or volume',
+            'pricing and demand',
+            'margin',
+            'customer retention',
+            'free cash flow'
+          ]
+        }
+      }
+    }
+  },
+  UBER: {
+    ticker: 'UBER',
+    companyName: 'Uber Technologies, Inc.',
+    exchange: 'NYSE',
+    logoUrl: buildStockLogoUrl('UBER'),
+    overview: 'Uber Technologies, Inc. operates in Mobility / Delivery / Logistics Platform.',
+    category: 'Mobility / Delivery / Logistics Platform',
+    analysisDate: '2026-06-11',
+    latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
+    dossierVerdict: {
+      sourceType: 'curated',
+      asOf: '2026-06-11',
+      researchState: 'business_evidence_watch',
+      businessQuality: 'medium',
+      valuationState: 'not_verified',
+      marketEvidence: 'not_verified',
+      finalRead: 'Mobility / Delivery / Logistics Platform where the thesis depends on Mobility / Delivery / Logistics Platform execution, customer demand, margin, and cash flow.',
+      keySupport: [
+        'SEC source pack identifies Uber Technologies, Inc. as Mobility / Delivery / Logistics Platform.',
+        'Latest primary-source filing reviewed: SEC latest periodic filing.'
+      ],
+      keyRisk: [
+        'Mobility / Delivery / Logistics Platform demand can slow.',
+        'Margins can compress if cost, competition, or execution pressure rises.',
+        'The business thesis can weaken if cash flow evidence deteriorates.'
+      ]
+    },
+    valueCore: {
+      ticker: 'UBER',
+      value_core_type: 'Mobility / Delivery / Logistics Platform',
+      company_stage_candidate: 'Mobility / Delivery / Logistics Platform',
+      primary_value_driver: 'Mobility / Delivery / Logistics Platform execution, customer demand, margin, and cash flow',
+      thesis_break_trigger: 'The thesis weakens if mobility / delivery / logistics platform demand slows, margins compress, execution disappoints, or cash flow weakens.',
+      evidence_needed: [
+        'revenue growth',
+        'segment performance',
+        'customer demand',
+        'margin',
+        'cash flow',
+        'risk factor changes'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_7',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: [
+          {
+            question: 'What does UBER do?',
+            answer: 'Uber Technologies, Inc. operates in Mobility / Delivery / Logistics Platform.'
+          }
+        ],
+        thesisRisk: [
+          {
+            question: 'What would break the UBER thesis?',
+            answer: 'The thesis weakens if mobility / delivery / logistics platform demand slows, margins compress, execution disappoints, or cash flow weakens.'
+          }
+        ]
+      },
+      phaseTwo: {
+        thesisRisk: {
+          lead: 'The main risk is whether Uber Technologies, Inc. can keep mobility / delivery / logistics platform evidence strong while the key risk factors stay contained.',
+          riskMap: [
+            {
+              label: 'Demand / growth',
+              severity: 'High',
+              watch: 'Mobility / Delivery / Logistics Platform demand can slow.'
+            },
+            {
+              label: 'Margin / economics',
+              severity: 'High',
+              watch: 'Margin can compress.'
+            },
+            {
+              label: 'Execution',
+              severity: 'Medium',
+              watch: 'Execution can disappoint.'
+            },
+            {
+              label: 'Cash flow / risk',
+              severity: 'Medium',
+              watch: 'Cash flow can weaken.'
+            }
+          ],
+          evidenceNeeded: [
+            'revenue growth',
+            'segment performance',
+            'customer demand',
+            'margin',
+            'cash flow',
+            'risk factor changes'
+          ]
+        }
+      }
+    }
+  },
+  SHOP: {
+    ticker: 'SHOP',
+    companyName: 'Shopify Inc.',
+    exchange: 'NYSE',
+    logoUrl: buildStockLogoUrl('SHOP'),
+    overview: 'Shopify Inc. operates in Commerce Infrastructure / Merchant Platform.',
+    category: 'Commerce Infrastructure / Merchant Platform',
+    analysisDate: '2026-06-11',
+    latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
+    dossierVerdict: {
+      sourceType: 'curated',
+      asOf: '2026-06-11',
+      researchState: 'business_evidence_watch',
+      businessQuality: 'high',
+      valuationState: 'not_verified',
+      marketEvidence: 'not_verified',
+      finalRead: 'Commerce Infrastructure / Merchant Platform where the thesis depends on Commerce Infrastructure / Merchant Platform execution, customer demand, margin, and cash flow.',
+      keySupport: [
+        'SEC source pack identifies Shopify Inc. as Commerce Infrastructure / Merchant Platform.',
+        'Latest primary-source filing reviewed: SEC latest periodic filing.'
+      ],
+      keyRisk: [
+        'Commerce Infrastructure / Merchant Platform demand can slow.',
+        'Margins can compress if cost, competition, or execution pressure rises.',
+        'The business thesis can weaken if cash flow evidence deteriorates.'
+      ]
+    },
+    valueCore: {
+      ticker: 'SHOP',
+      value_core_type: 'Commerce Infrastructure / Merchant Platform',
+      company_stage_candidate: 'Commerce Infrastructure / Merchant Platform',
+      primary_value_driver: 'Commerce Infrastructure / Merchant Platform execution, customer demand, margin, and cash flow',
+      thesis_break_trigger: 'The thesis weakens if commerce infrastructure / merchant platform demand slows, margins compress, execution disappoints, or cash flow weakens.',
+      evidence_needed: [
+        'revenue growth',
+        'segment performance',
+        'customer demand',
+        'margin',
+        'cash flow',
+        'risk factor changes'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_7',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: [
+          {
+            question: 'What does SHOP do?',
+            answer: 'Shopify Inc. operates in Commerce Infrastructure / Merchant Platform.'
+          }
+        ],
+        thesisRisk: [
+          {
+            question: 'What would break the SHOP thesis?',
+            answer: 'The thesis weakens if commerce infrastructure / merchant platform demand slows, margins compress, execution disappoints, or cash flow weakens.'
+          }
+        ]
+      },
+      phaseTwo: {
+        thesisRisk: {
+          lead: 'The main risk is whether Shopify Inc. can keep commerce infrastructure / merchant platform evidence strong while the key risk factors stay contained.',
+          riskMap: [
+            {
+              label: 'Demand / growth',
+              severity: 'High',
+              watch: 'Commerce Infrastructure / Merchant Platform demand can slow.'
+            },
+            {
+              label: 'Margin / economics',
+              severity: 'High',
+              watch: 'Margin can compress.'
+            },
+            {
+              label: 'Execution',
+              severity: 'Medium',
+              watch: 'Execution can disappoint.'
+            },
+            {
+              label: 'Cash flow / risk',
+              severity: 'Medium',
+              watch: 'Cash flow can weaken.'
+            }
+          ],
+          evidenceNeeded: [
+            'revenue growth',
+            'segment performance',
+            'customer demand',
+            'margin',
+            'cash flow',
+            'risk factor changes'
+          ]
+        }
+      }
+    }
+  },
+  COIN: {
+    ticker: 'COIN',
+    companyName: 'Coinbase Global, Inc.',
+    exchange: 'NASDAQ',
+    logoUrl: buildStockLogoUrl('COIN'),
+    overview: 'Coinbase Global, Inc. operates in Crypto Exchange / Digital Asset Infrastructure.',
+    category: 'Crypto Exchange / Digital Asset Infrastructure',
+    analysisDate: '2026-06-11',
+    latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
+    dossierVerdict: {
+      sourceType: 'curated',
+      asOf: '2026-06-11',
+      researchState: 'business_evidence_watch',
+      businessQuality: 'medium',
+      valuationState: 'not_verified',
+      marketEvidence: 'not_verified',
+      finalRead: 'Crypto Exchange / Digital Asset Infrastructure where the thesis depends on Crypto Exchange / Digital Asset Infrastructure execution, customer demand, margin, and cash flow.',
+      keySupport: [
+        'SEC source pack identifies Coinbase Global, Inc. as Crypto Exchange / Digital Asset Infrastructure.',
+        'Latest primary-source filing reviewed: SEC latest periodic filing.'
+      ],
+      keyRisk: [
+        'Crypto Exchange / Digital Asset Infrastructure demand can slow.',
+        'Margins can compress if cost, competition, or execution pressure rises.',
+        'The business thesis can weaken if cash flow evidence deteriorates.'
+      ]
+    },
+    valueCore: {
+      ticker: 'COIN',
+      value_core_type: 'Crypto Exchange / Digital Asset Infrastructure',
+      company_stage_candidate: 'Crypto Exchange / Digital Asset Infrastructure',
+      primary_value_driver: 'Crypto Exchange / Digital Asset Infrastructure execution, customer demand, margin, and cash flow',
+      thesis_break_trigger: 'The thesis weakens if crypto exchange / digital asset infrastructure demand slows, margins compress, execution disappoints, or cash flow weakens.',
+      evidence_needed: [
+        'revenue growth',
+        'segment performance',
+        'customer demand',
+        'margin',
+        'cash flow',
+        'risk factor changes'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_7',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: [
+          {
+            question: 'What does COIN do?',
+            answer: 'Coinbase Global, Inc. operates in Crypto Exchange / Digital Asset Infrastructure.'
+          }
+        ],
+        thesisRisk: [
+          {
+            question: 'What would break the COIN thesis?',
+            answer: 'The thesis weakens if crypto exchange / digital asset infrastructure demand slows, margins compress, execution disappoints, or cash flow weakens.'
+          }
+        ]
+      },
+      phaseTwo: {
+        thesisRisk: {
+          lead: 'The main risk is whether Coinbase Global, Inc. can keep crypto exchange / digital asset infrastructure evidence strong while the key risk factors stay contained.',
+          riskMap: [
+            {
+              label: 'Demand / growth',
+              severity: 'High',
+              watch: 'Crypto Exchange / Digital Asset Infrastructure demand can slow.'
+            },
+            {
+              label: 'Margin / economics',
+              severity: 'High',
+              watch: 'Margin can compress.'
+            },
+            {
+              label: 'Execution',
+              severity: 'Medium',
+              watch: 'Execution can disappoint.'
+            },
+            {
+              label: 'Cash flow / risk',
+              severity: 'Medium',
+              watch: 'Cash flow can weaken.'
+            }
+          ],
+          evidenceNeeded: [
+            'revenue growth',
+            'segment performance',
+            'customer demand',
+            'margin',
+            'cash flow',
+            'risk factor changes'
+          ]
+        }
+      }
+    }
+  },
+  INTU: {
+    ticker: 'INTU',
+    companyName: 'Intuit Inc.',
+    exchange: 'NASDAQ',
+    logoUrl: buildStockLogoUrl('INTU'),
+    overview: 'Intuit Inc. operates in Financial Software / Tax / SMB Platform.',
+    category: 'Financial Software / Tax / SMB Platform',
+    analysisDate: '2026-06-11',
+    latestFiscalPeriod: 'Q3 FY2026 ended 2026-04-30',
+    dossierVerdict: {
+      sourceType: 'curated',
+      asOf: '2026-06-11',
+      researchState: 'financial_cycle_watch',
+      businessQuality: 'high',
+      valuationState: 'not_verified',
+      marketEvidence: 'not_verified',
+      finalRead: 'Financial Software / Tax / SMB Platform where the thesis depends on Financial Software / Tax / SMB Platform execution, customer demand, margin, and cash flow.',
+      keySupport: [
+        'SEC source pack identifies Intuit Inc. as Financial Software / Tax / SMB Platform.',
+        'Latest primary-source filing reviewed: SEC latest periodic filing.'
+      ],
+      keyRisk: [
+        'Financial Software / Tax / SMB Platform demand can slow.',
+        'Margins can compress if cost, competition, or execution pressure rises.',
+        'The business thesis can weaken if cash flow evidence deteriorates.'
+      ]
+    },
+    valueCore: {
+      ticker: 'INTU',
+      value_core_type: 'Financial Software / Tax / SMB Platform',
+      company_stage_candidate: 'Financial Software / Tax / SMB Platform',
+      primary_value_driver: 'Financial Software / Tax / SMB Platform execution, customer demand, margin, and cash flow',
+      thesis_break_trigger: 'The thesis weakens if financial software / tax / smb platform demand slows, margins compress, execution disappoints, or cash flow weakens.',
+      evidence_needed: [
+        'revenue and net interest income',
+        'credit quality',
+        'fee income',
+        'capital and liquidity',
+        'operating leverage',
+        'cash flow'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_7',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: [
+          {
+            question: 'What does INTU do?',
+            answer: 'Intuit Inc. operates in Financial Software / Tax / SMB Platform.'
+          }
+        ],
+        thesisRisk: [
+          {
+            question: 'What would break the INTU thesis?',
+            answer: 'The thesis weakens if financial software / tax / smb platform demand slows, margins compress, execution disappoints, or cash flow weakens.'
+          }
+        ]
+      },
+      phaseTwo: {
+        thesisRisk: {
+          lead: 'The main risk is whether Intuit Inc. can keep financial software / tax / smb platform evidence strong while the key risk factors stay contained.',
+          riskMap: [
+            {
+              label: 'Demand / growth',
+              severity: 'High',
+              watch: 'Financial Software / Tax / SMB Platform demand can slow.'
+            },
+            {
+              label: 'Margin / economics',
+              severity: 'High',
+              watch: 'Margin can compress.'
+            },
+            {
+              label: 'Execution',
+              severity: 'Medium',
+              watch: 'Execution can disappoint.'
+            },
+            {
+              label: 'Cash flow / risk',
+              severity: 'Medium',
+              watch: 'Cash flow can weaken.'
+            }
+          ],
+          evidenceNeeded: [
+            'revenue and net interest income',
+            'credit quality',
+            'fee income',
+            'capital and liquidity',
+            'operating leverage',
+            'cash flow'
+          ]
+        }
+      }
+    }
+  },
+  ADBE: {
+    ticker: 'ADBE',
+    companyName: 'Adobe Inc.',
+    exchange: 'NASDAQ',
+    logoUrl: buildStockLogoUrl('ADBE'),
+    overview: 'Adobe Inc. operates in Creative / Document / Digital Experience Software.',
+    category: 'Creative / Document / Digital Experience Software',
+    analysisDate: '2026-06-11',
+    latestFiscalPeriod: 'Q1 FY2026 ended 2026-02-27',
+    dossierVerdict: {
+      sourceType: 'curated',
+      asOf: '2026-06-11',
+      researchState: 'business_evidence_watch',
+      businessQuality: 'high',
+      valuationState: 'not_verified',
+      marketEvidence: 'not_verified',
+      finalRead: 'Creative / Document / Digital Experience Software where the thesis depends on Creative / Document / Digital Experience Software execution, customer demand, margin, and cash flow.',
+      keySupport: [
+        'SEC source pack identifies Adobe Inc. as Creative / Document / Digital Experience Software.',
+        'Latest primary-source filing reviewed: SEC latest periodic filing.'
+      ],
+      keyRisk: [
+        'Creative / Document / Digital Experience Software demand can slow.',
+        'Margins can compress if cost, competition, or execution pressure rises.',
+        'The business thesis can weaken if cash flow evidence deteriorates.'
+      ]
+    },
+    valueCore: {
+      ticker: 'ADBE',
+      value_core_type: 'Creative / Document / Digital Experience Software',
+      company_stage_candidate: 'Creative / Document / Digital Experience Software',
+      primary_value_driver: 'Creative / Document / Digital Experience Software execution, customer demand, margin, and cash flow',
+      thesis_break_trigger: 'The thesis weakens if creative / document / digital experience software demand slows, margins compress, execution disappoints, or cash flow weakens.',
+      evidence_needed: [
+        'revenue growth',
+        'segment performance',
+        'customer demand',
+        'margin',
+        'cash flow',
+        'risk factor changes'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_7',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: [
+          {
+            question: 'What does ADBE do?',
+            answer: 'Adobe Inc. operates in Creative / Document / Digital Experience Software.'
+          }
+        ],
+        thesisRisk: [
+          {
+            question: 'What would break the ADBE thesis?',
+            answer: 'The thesis weakens if creative / document / digital experience software demand slows, margins compress, execution disappoints, or cash flow weakens.'
+          }
+        ]
+      },
+      phaseTwo: {
+        thesisRisk: {
+          lead: 'The main risk is whether Adobe Inc. can keep creative / document / digital experience software evidence strong while the key risk factors stay contained.',
+          riskMap: [
+            {
+              label: 'Demand / growth',
+              severity: 'High',
+              watch: 'Creative / Document / Digital Experience Software demand can slow.'
+            },
+            {
+              label: 'Margin / economics',
+              severity: 'High',
+              watch: 'Margin can compress.'
+            },
+            {
+              label: 'Execution',
+              severity: 'Medium',
+              watch: 'Execution can disappoint.'
+            },
+            {
+              label: 'Cash flow / risk',
+              severity: 'Medium',
+              watch: 'Cash flow can weaken.'
+            }
+          ],
+          evidenceNeeded: [
+            'revenue growth',
+            'segment performance',
+            'customer demand',
+            'margin',
+            'cash flow',
+            'risk factor changes'
+          ]
+        }
+      }
+    }
+  },
+  ADSK: {
+    ticker: 'ADSK',
+    companyName: 'Autodesk, Inc.',
+    exchange: 'NASDAQ',
+    logoUrl: buildStockLogoUrl('ADSK'),
+    overview: 'Autodesk, Inc. operates in Design / Engineering Software.',
+    category: 'Design / Engineering Software',
+    analysisDate: '2026-06-11',
+    latestFiscalPeriod: 'Q1 FY2027 ended 2026-04-30',
+    dossierVerdict: {
+      sourceType: 'curated',
+      asOf: '2026-06-11',
+      researchState: 'business_evidence_watch',
+      businessQuality: 'high',
+      valuationState: 'not_verified',
+      marketEvidence: 'not_verified',
+      finalRead: 'Design / Engineering Software where the thesis depends on Design / Engineering Software execution, customer demand, margin, and cash flow.',
+      keySupport: [
+        'SEC source pack identifies Autodesk, Inc. as Design / Engineering Software.',
+        'Latest primary-source filing reviewed: SEC latest periodic filing.'
+      ],
+      keyRisk: [
+        'Design / Engineering Software demand can slow.',
+        'Margins can compress if cost, competition, or execution pressure rises.',
+        'The business thesis can weaken if cash flow evidence deteriorates.'
+      ]
+    },
+    valueCore: {
+      ticker: 'ADSK',
+      value_core_type: 'Design / Engineering Software',
+      company_stage_candidate: 'Design / Engineering Software',
+      primary_value_driver: 'Design / Engineering Software execution, customer demand, margin, and cash flow',
+      thesis_break_trigger: 'The thesis weakens if design / engineering software demand slows, margins compress, execution disappoints, or cash flow weakens.',
+      evidence_needed: [
+        'revenue growth',
+        'segment performance',
+        'customer demand',
+        'margin',
+        'cash flow',
+        'risk factor changes'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_7',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: [
+          {
+            question: 'What does ADSK do?',
+            answer: 'Autodesk, Inc. operates in Design / Engineering Software.'
+          }
+        ],
+        thesisRisk: [
+          {
+            question: 'What would break the ADSK thesis?',
+            answer: 'The thesis weakens if design / engineering software demand slows, margins compress, execution disappoints, or cash flow weakens.'
+          }
+        ]
+      },
+      phaseTwo: {
+        thesisRisk: {
+          lead: 'The main risk is whether Autodesk, Inc. can keep design / engineering software evidence strong while the key risk factors stay contained.',
+          riskMap: [
+            {
+              label: 'Demand / growth',
+              severity: 'High',
+              watch: 'Design / Engineering Software demand can slow.'
+            },
+            {
+              label: 'Margin / economics',
+              severity: 'High',
+              watch: 'Margin can compress.'
+            },
+            {
+              label: 'Execution',
+              severity: 'Medium',
+              watch: 'Execution can disappoint.'
+            },
+            {
+              label: 'Cash flow / risk',
+              severity: 'Medium',
+              watch: 'Cash flow can weaken.'
+            }
+          ],
+          evidenceNeeded: [
+            'revenue growth',
+            'segment performance',
+            'customer demand',
+            'margin',
+            'cash flow',
+            'risk factor changes'
+          ]
+        }
+      }
+    }
+  },
+  WDAY: {
+    ticker: 'WDAY',
+    companyName: 'Workday, Inc.',
+    exchange: 'NASDAQ',
+    logoUrl: buildStockLogoUrl('WDAY'),
+    overview: 'Workday, Inc. operates in Human Capital / Finance Enterprise SaaS.',
+    category: 'Human Capital / Finance Enterprise SaaS',
+    analysisDate: '2026-06-11',
+    latestFiscalPeriod: 'Q1 FY2027 ended 2026-04-30',
+    dossierVerdict: {
+      sourceType: 'curated',
+      asOf: '2026-06-11',
+      researchState: 'business_evidence_watch',
+      businessQuality: 'high',
+      valuationState: 'not_verified',
+      marketEvidence: 'not_verified',
+      finalRead: 'Human Capital / Finance Enterprise SaaS where the thesis depends on Human Capital / Finance Enterprise SaaS execution, customer demand, margin, and cash flow.',
+      keySupport: [
+        'SEC source pack identifies Workday, Inc. as Human Capital / Finance Enterprise SaaS.',
+        'Latest primary-source filing reviewed: SEC latest periodic filing.'
+      ],
+      keyRisk: [
+        'Human Capital / Finance Enterprise SaaS demand can slow.',
+        'Margins can compress if cost, competition, or execution pressure rises.',
+        'The business thesis can weaken if cash flow evidence deteriorates.'
+      ]
+    },
+    valueCore: {
+      ticker: 'WDAY',
+      value_core_type: 'Human Capital / Finance Enterprise SaaS',
+      company_stage_candidate: 'Human Capital / Finance Enterprise SaaS',
+      primary_value_driver: 'Human Capital / Finance Enterprise SaaS execution, customer demand, margin, and cash flow',
+      thesis_break_trigger: 'The thesis weakens if human capital / finance enterprise saas demand slows, margins compress, execution disappoints, or cash flow weakens.',
+      evidence_needed: [
+        'revenue growth',
+        'segment performance',
+        'customer demand',
+        'margin',
+        'cash flow',
+        'risk factor changes'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_7',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: [
+          {
+            question: 'What does WDAY do?',
+            answer: 'Workday, Inc. operates in Human Capital / Finance Enterprise SaaS.'
+          }
+        ],
+        thesisRisk: [
+          {
+            question: 'What would break the WDAY thesis?',
+            answer: 'The thesis weakens if human capital / finance enterprise saas demand slows, margins compress, execution disappoints, or cash flow weakens.'
+          }
+        ]
+      },
+      phaseTwo: {
+        thesisRisk: {
+          lead: 'The main risk is whether Workday, Inc. can keep human capital / finance enterprise saas evidence strong while the key risk factors stay contained.',
+          riskMap: [
+            {
+              label: 'Demand / growth',
+              severity: 'High',
+              watch: 'Human Capital / Finance Enterprise SaaS demand can slow.'
+            },
+            {
+              label: 'Margin / economics',
+              severity: 'High',
+              watch: 'Margin can compress.'
+            },
+            {
+              label: 'Execution',
+              severity: 'Medium',
+              watch: 'Execution can disappoint.'
+            },
+            {
+              label: 'Cash flow / risk',
+              severity: 'Medium',
+              watch: 'Cash flow can weaken.'
+            }
+          ],
+          evidenceNeeded: [
+            'revenue growth',
+            'segment performance',
+            'customer demand',
+            'margin',
+            'cash flow',
+            'risk factor changes'
+          ]
+        }
+      }
+    }
+  },
+  WMT: {
+    ticker: 'WMT',
+    companyName: 'Walmart Inc.',
+    exchange: 'NYSE',
+    logoUrl: buildStockLogoUrl('WMT'),
+    overview: 'Walmart operates a global omnichannel retail business centered on stores, grocery, e-commerce, marketplace, membership, advertising, and supply-chain scale.',
+    category: 'Retail / Consumer Staples',
+    analysisDate: '2026-06-11',
+    latestFiscalPeriod: 'Q1 FY2027 ended 2026-04-30',
+    dossierVerdict: {
+      sourceType: 'curated',
+      asOf: '2026-06-11',
+      researchState: 'consumer_demand_watch',
+      businessQuality: 'high',
+      valuationState: 'not_verified',
+      marketEvidence: 'not_verified',
+      finalRead: 'Retail / Consumer Staples where the thesis depends on Walmart operates a global omnichannel retail business centered on stores, grocery, e-commerce, marketplace, membership, advertising, and supply-chain scale.',
+      keySupport: [
+        'SEC source pack identifies Walmart Inc. as Retail / Consumer Staples.',
+        'Walmart operates a global omnichannel retail business centered on stores, grocery, e-commerce, marketplace, membership, advertising, and supply-chain scale.',
+        'Latest primary-source filing reviewed: SEC latest periodic filing.'
+      ],
+      keyRisk: [
+        'Comparable sales.',
+        'margin.',
+        'inventory.',
+        'wage and freight cost.'
+      ]
+    },
+    valueCore: {
+      ticker: 'WMT',
+      value_core_type: 'Retail / Consumer Staples',
+      company_stage_candidate: 'Retail / Consumer Staples',
+      primary_value_driver: 'Walmart operates a global omnichannel retail business centered on stores, grocery, e-commerce, marketplace, membership, advertising, and supply-chain scale.',
+      thesis_break_trigger: 'The thesis weakens if comparable sales. margin. inventory. wage and freight cost.',
+      evidence_needed: [
+        'revenue growth',
+        'customer demand',
+        'gross margin',
+        'inventory and backlog',
+        'capex or R&D execution',
+        'free cash flow'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_8',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: [
+          {
+            question: 'What does WMT do?',
+            answer: 'Walmart operates a global omnichannel retail business centered on stores, grocery, e-commerce, marketplace, membership, advertising, and supply-chain scale.'
+          }
+        ],
+        thesisRisk: [
+          {
+            question: 'What would break the WMT thesis?',
+            answer: 'The thesis weakens if comparable sales. margin. inventory. wage and freight cost.'
+          }
+        ]
+      },
+      phaseTwo: {
+        thesisRisk: {
+          lead: 'The main risk is whether Walmart Inc. can keep retail / consumer staples evidence strong while the key risk factors stay contained.',
+          riskMap: [
+            {
+              label: 'Demand / growth',
+              severity: 'High',
+              watch: 'Comparable sales.'
+            },
+            {
+              label: 'Margin / economics',
+              severity: 'High',
+              watch: 'margin.'
+            },
+            {
+              label: 'Execution',
+              severity: 'Medium',
+              watch: 'inventory.'
+            },
+            {
+              label: 'Cash flow / risk',
+              severity: 'Medium',
+              watch: 'wage and freight cost.'
+            }
+          ],
+          evidenceNeeded: [
+            'revenue growth',
+            'customer demand',
+            'gross margin',
+            'inventory and backlog',
+            'capex or R&D execution',
+            'free cash flow'
+          ]
+        }
+      }
+    }
+  },
+  MCD: {
+    ticker: 'MCD',
+    companyName: 'McDonald\'s Corporation',
+    exchange: 'NYSE',
+    logoUrl: buildStockLogoUrl('MCD'),
+    overview: 'McDonald\'s operates a global franchised restaurant system driven by brand scale, comparable sales, unit economics, franchise economics, and menu value.',
+    category: 'Restaurants / Franchised Consumer',
+    analysisDate: '2026-06-11',
+    latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
+    dossierVerdict: {
+      sourceType: 'curated',
+      asOf: '2026-06-11',
+      researchState: 'consumer_demand_watch',
+      businessQuality: 'high',
+      valuationState: 'not_verified',
+      marketEvidence: 'not_verified',
+      finalRead: 'Restaurants / Franchised Consumer where the thesis depends on McDonald\'s operates a global franchised restaurant system driven by brand scale, comparable sales, unit economics, franchise economics, and menu value.',
+      keySupport: [
+        'SEC source pack identifies McDonald\'s Corporation as Restaurants / Franchised Consumer.',
+        'McDonald\'s operates a global franchised restaurant system driven by brand scale, comparable sales, unit economics, franchise economics, and menu value.',
+        'Latest primary-source filing reviewed: SEC latest periodic filing.'
+      ],
+      keyRisk: [
+        'Traffic.',
+        'value perception.',
+        'restaurant-level margins.',
+        'franchisee economics.'
+      ]
+    },
+    valueCore: {
+      ticker: 'MCD',
+      value_core_type: 'Restaurants / Franchised Consumer',
+      company_stage_candidate: 'Restaurants / Franchised Consumer',
+      primary_value_driver: 'McDonald\'s operates a global franchised restaurant system driven by brand scale, comparable sales, unit economics, franchise economics, and menu value.',
+      thesis_break_trigger: 'The thesis weakens if traffic. value perception. restaurant-level margins. franchisee economics.',
+      evidence_needed: [
+        'revenue growth',
+        'traffic or volume',
+        'pricing and demand',
+        'margin',
+        'customer retention',
+        'free cash flow'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_8',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: [
+          {
+            question: 'What does MCD do?',
+            answer: 'McDonald\'s operates a global franchised restaurant system driven by brand scale, comparable sales, unit economics, franchise economics, and menu value.'
+          }
+        ],
+        thesisRisk: [
+          {
+            question: 'What would break the MCD thesis?',
+            answer: 'The thesis weakens if traffic. value perception. restaurant-level margins. franchisee economics.'
+          }
+        ]
+      },
+      phaseTwo: {
+        thesisRisk: {
+          lead: 'The main risk is whether McDonald\'s Corporation can keep restaurants / franchised consumer evidence strong while the key risk factors stay contained.',
+          riskMap: [
+            {
+              label: 'Demand / growth',
+              severity: 'High',
+              watch: 'Traffic.'
+            },
+            {
+              label: 'Margin / economics',
+              severity: 'High',
+              watch: 'value perception.'
+            },
+            {
+              label: 'Execution',
+              severity: 'Medium',
+              watch: 'restaurant-level margins.'
+            },
+            {
+              label: 'Cash flow / risk',
+              severity: 'Medium',
+              watch: 'franchisee economics.'
+            }
+          ],
+          evidenceNeeded: [
+            'revenue growth',
+            'traffic or volume',
+            'pricing and demand',
+            'margin',
+            'customer retention',
+            'free cash flow'
+          ]
+        }
+      }
+    }
+  },
+  KO: {
+    ticker: 'KO',
+    companyName: 'The Coca-Cola Company',
+    exchange: 'NYSE',
+    logoUrl: buildStockLogoUrl('KO'),
+    overview: 'Coca-Cola is a global nonalcoholic beverage company with a concentrate and franchise bottling model across sparkling, water, sports, coffee, tea, juice, and other beverage categories.',
+    category: 'Beverages / Consumer Staples',
+    analysisDate: '2026-06-11',
+    latestFiscalPeriod: 'Q1 2026 ended 2026-04-03',
+    dossierVerdict: {
+      sourceType: 'curated',
+      asOf: '2026-06-11',
+      researchState: 'consumer_demand_watch',
+      businessQuality: 'high',
+      valuationState: 'not_verified',
+      marketEvidence: 'not_verified',
+      finalRead: 'Beverages / Consumer Staples where the thesis depends on Coca-Cola is a global nonalcoholic beverage company with a concentrate and franchise bottling model across sparkling, water, sports, coffee, tea, juice, and other beverage categories.',
+      keySupport: [
+        'SEC source pack identifies The Coca-Cola Company as Beverages / Consumer Staples.',
+        'Coca-Cola is a global nonalcoholic beverage company with a concentrate and franchise bottling model across sparkling, water, sports, coffee, tea, juice, and other beverage categories.',
+        'Latest primary-source filing reviewed: SEC latest periodic filing.'
+      ],
+      keyRisk: [
+        'Volume.',
+        'price elasticity.',
+        'bottler execution.',
+        'foreign exchange.'
+      ]
+    },
+    valueCore: {
+      ticker: 'KO',
+      value_core_type: 'Beverages / Consumer Staples',
+      company_stage_candidate: 'Beverages / Consumer Staples',
+      primary_value_driver: 'Coca-Cola is a global nonalcoholic beverage company with a concentrate and franchise bottling model across sparkling, water, sports, coffee, tea, juice, and other beverage categories.',
+      thesis_break_trigger: 'The thesis weakens if volume. price elasticity. bottler execution. foreign exchange.',
+      evidence_needed: [
+        'revenue growth',
+        'traffic or volume',
+        'pricing and demand',
+        'margin',
+        'customer retention',
+        'free cash flow'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_8',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: [
+          {
+            question: 'What does KO do?',
+            answer: 'Coca-Cola is a global nonalcoholic beverage company with a concentrate and franchise bottling model across sparkling, water, sports, coffee, tea, juice, and other beverage categories.'
+          }
+        ],
+        thesisRisk: [
+          {
+            question: 'What would break the KO thesis?',
+            answer: 'The thesis weakens if volume. price elasticity. bottler execution. foreign exchange.'
+          }
+        ]
+      },
+      phaseTwo: {
+        thesisRisk: {
+          lead: 'The main risk is whether The Coca-Cola Company can keep beverages / consumer staples evidence strong while the key risk factors stay contained.',
+          riskMap: [
+            {
+              label: 'Demand / growth',
+              severity: 'High',
+              watch: 'Volume.'
+            },
+            {
+              label: 'Margin / economics',
+              severity: 'High',
+              watch: 'price elasticity.'
+            },
+            {
+              label: 'Execution',
+              severity: 'Medium',
+              watch: 'bottler execution.'
+            },
+            {
+              label: 'Cash flow / risk',
+              severity: 'Medium',
+              watch: 'foreign exchange.'
+            }
+          ],
+          evidenceNeeded: [
+            'revenue growth',
+            'traffic or volume',
+            'pricing and demand',
+            'margin',
+            'customer retention',
+            'free cash flow'
+          ]
+        }
+      }
+    }
+  },
+  PEP: {
+    ticker: 'PEP',
+    companyName: 'PepsiCo, Inc.',
+    exchange: 'NASDAQ',
+    logoUrl: buildStockLogoUrl('PEP'),
+    overview: 'PepsiCo combines global snacks and beverages, with Frito-Lay, international expansion, pricing, volume, productivity, and brand portfolio execution as central evidence.',
+    category: 'Snacks & Beverages / Consumer Staples',
+    analysisDate: '2026-06-11',
+    latestFiscalPeriod: 'Q1 2026 ended 2026-03-21',
+    dossierVerdict: {
+      sourceType: 'curated',
+      asOf: '2026-06-11',
+      researchState: 'consumer_demand_watch',
+      businessQuality: 'high',
+      valuationState: 'not_verified',
+      marketEvidence: 'not_verified',
+      finalRead: 'Snacks & Beverages / Consumer Staples where the thesis depends on PepsiCo combines global snacks and beverages, with Frito-Lay, international expansion, pricing, volume, productivity, and brand portfolio execution as central evidence.',
+      keySupport: [
+        'SEC source pack identifies PepsiCo, Inc. as Snacks & Beverages / Consumer Staples.',
+        'PepsiCo combines global snacks and beverages, with Frito-Lay, international expansion, pricing, volume, productivity, and brand portfolio execution as central evidence.',
+        'Latest primary-source filing reviewed: SEC latest periodic filing.'
+      ],
+      keyRisk: [
+        'Volume pressure.',
+        'pricing elasticity.',
+        'commodity costs.',
+        'foreign exchange.'
+      ]
+    },
+    valueCore: {
+      ticker: 'PEP',
+      value_core_type: 'Snacks & Beverages / Consumer Staples',
+      company_stage_candidate: 'Snacks & Beverages / Consumer Staples',
+      primary_value_driver: 'PepsiCo combines global snacks and beverages, with Frito-Lay, international expansion, pricing, volume, productivity, and brand portfolio execution as central evidence.',
+      thesis_break_trigger: 'The thesis weakens if volume pressure. pricing elasticity. commodity costs. foreign exchange.',
+      evidence_needed: [
+        'revenue growth',
+        'traffic or volume',
+        'pricing and demand',
+        'margin',
+        'customer retention',
+        'free cash flow'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_8',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: [
+          {
+            question: 'What does PEP do?',
+            answer: 'PepsiCo combines global snacks and beverages, with Frito-Lay, international expansion, pricing, volume, productivity, and brand portfolio execution as central evidence.'
+          }
+        ],
+        thesisRisk: [
+          {
+            question: 'What would break the PEP thesis?',
+            answer: 'The thesis weakens if volume pressure. pricing elasticity. commodity costs. foreign exchange.'
+          }
+        ]
+      },
+      phaseTwo: {
+        thesisRisk: {
+          lead: 'The main risk is whether PepsiCo, Inc. can keep snacks & beverages / consumer staples evidence strong while the key risk factors stay contained.',
+          riskMap: [
+            {
+              label: 'Demand / growth',
+              severity: 'High',
+              watch: 'Volume pressure.'
+            },
+            {
+              label: 'Margin / economics',
+              severity: 'High',
+              watch: 'pricing elasticity.'
+            },
+            {
+              label: 'Execution',
+              severity: 'Medium',
+              watch: 'commodity costs.'
+            },
+            {
+              label: 'Cash flow / risk',
+              severity: 'Medium',
+              watch: 'foreign exchange.'
+            }
+          ],
+          evidenceNeeded: [
+            'revenue growth',
+            'traffic or volume',
+            'pricing and demand',
+            'margin',
+            'customer retention',
+            'free cash flow'
+          ]
+        }
+      }
+    }
+  },
+  PG: {
+    ticker: 'PG',
+    companyName: 'The Procter & Gamble Company',
+    exchange: 'NYSE',
+    logoUrl: buildStockLogoUrl('PG'),
+    overview: 'Procter & Gamble is a global branded consumer products company across beauty, grooming, health care, fabric and home care, baby, feminine, and family care.',
+    category: 'Consumer Staples / Household Products',
+    analysisDate: '2026-06-11',
+    latestFiscalPeriod: 'Q3 FY2026 ended 2026-03-31',
+    dossierVerdict: {
+      sourceType: 'curated',
+      asOf: '2026-06-11',
+      researchState: 'consumer_demand_watch',
+      businessQuality: 'high',
+      valuationState: 'not_verified',
+      marketEvidence: 'not_verified',
+      finalRead: 'Consumer Staples / Household Products where the thesis depends on Procter & Gamble is a global branded consumer products company across beauty, grooming, health care, fabric and home care, baby, feminine, and family care.',
+      keySupport: [
+        'SEC source pack identifies The Procter & Gamble Company as Consumer Staples / Household Products.',
+        'Procter & Gamble is a global branded consumer products company across beauty, grooming, health care, fabric and home care, baby, feminine, and family care.',
+        'Latest primary-source filing reviewed: SEC latest periodic filing.'
+      ],
+      keyRisk: [
+        'Organic volume.',
+        'pricing elasticity.',
+        'private label pressure.',
+        'commodity and freight costs.'
+      ]
+    },
+    valueCore: {
+      ticker: 'PG',
+      value_core_type: 'Consumer Staples / Household Products',
+      company_stage_candidate: 'Consumer Staples / Household Products',
+      primary_value_driver: 'Procter & Gamble is a global branded consumer products company across beauty, grooming, health care, fabric and home care, baby, feminine, and family care.',
+      thesis_break_trigger: 'The thesis weakens if organic volume. pricing elasticity. private label pressure. commodity and freight costs.',
+      evidence_needed: [
+        'revenue growth',
+        'traffic or volume',
+        'pricing and demand',
+        'margin',
+        'customer retention',
+        'free cash flow'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_8',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: [
+          {
+            question: 'What does PG do?',
+            answer: 'Procter & Gamble is a global branded consumer products company across beauty, grooming, health care, fabric and home care, baby, feminine, and family care.'
+          }
+        ],
+        thesisRisk: [
+          {
+            question: 'What would break the PG thesis?',
+            answer: 'The thesis weakens if organic volume. pricing elasticity. private label pressure. commodity and freight costs.'
+          }
+        ]
+      },
+      phaseTwo: {
+        thesisRisk: {
+          lead: 'The main risk is whether The Procter & Gamble Company can keep consumer staples / household products evidence strong while the key risk factors stay contained.',
+          riskMap: [
+            {
+              label: 'Demand / growth',
+              severity: 'High',
+              watch: 'Organic volume.'
+            },
+            {
+              label: 'Margin / economics',
+              severity: 'High',
+              watch: 'pricing elasticity.'
+            },
+            {
+              label: 'Execution',
+              severity: 'Medium',
+              watch: 'private label pressure.'
+            },
+            {
+              label: 'Cash flow / risk',
+              severity: 'Medium',
+              watch: 'commodity and freight costs.'
+            }
+          ],
+          evidenceNeeded: [
+            'revenue growth',
+            'traffic or volume',
+            'pricing and demand',
+            'margin',
+            'customer retention',
+            'free cash flow'
+          ]
+        }
+      }
+    }
+  },
+  NKE: {
+    ticker: 'NKE',
+    companyName: 'NIKE, Inc.',
+    exchange: 'NYSE',
+    logoUrl: buildStockLogoUrl('NKE'),
+    overview: 'Nike designs and sells athletic footwear, apparel, equipment, and accessories through wholesale, direct-to-consumer, digital, and global brand channels.',
+    category: 'Athletic Apparel / Consumer Discretionary',
+    analysisDate: '2026-06-11',
+    latestFiscalPeriod: 'Q3 FY2026 ended 2026-02-28',
+    dossierVerdict: {
+      sourceType: 'curated',
+      asOf: '2026-06-11',
+      researchState: 'consumer_demand_watch',
+      businessQuality: 'high',
+      valuationState: 'not_verified',
+      marketEvidence: 'not_verified',
+      finalRead: 'Athletic Apparel / Consumer Discretionary where the thesis depends on Nike designs and sells athletic footwear, apparel, equipment, and accessories through wholesale, direct-to-consumer, digital, and global brand channels.',
+      keySupport: [
+        'SEC source pack identifies NIKE, Inc. as Athletic Apparel / Consumer Discretionary.',
+        'Nike designs and sells athletic footwear, apparel, equipment, and accessories through wholesale, direct-to-consumer, digital, and global brand channels.',
+        'Latest primary-source filing reviewed: SEC latest periodic filing.'
+      ],
+      keyRisk: [
+        'Brand heat.',
+        'product innovation.',
+        'inventory.',
+        'China demand.'
+      ]
+    },
+    valueCore: {
+      ticker: 'NKE',
+      value_core_type: 'Athletic Apparel / Consumer Discretionary',
+      company_stage_candidate: 'Athletic Apparel / Consumer Discretionary',
+      primary_value_driver: 'Nike designs and sells athletic footwear, apparel, equipment, and accessories through wholesale, direct-to-consumer, digital, and global brand channels.',
+      thesis_break_trigger: 'The thesis weakens if brand heat. product innovation. inventory. China demand.',
+      evidence_needed: [
+        'revenue growth',
+        'traffic or volume',
+        'pricing and demand',
+        'margin',
+        'customer retention',
+        'free cash flow'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_8',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: [
+          {
+            question: 'What does NKE do?',
+            answer: 'Nike designs and sells athletic footwear, apparel, equipment, and accessories through wholesale, direct-to-consumer, digital, and global brand channels.'
+          }
+        ],
+        thesisRisk: [
+          {
+            question: 'What would break the NKE thesis?',
+            answer: 'The thesis weakens if brand heat. product innovation. inventory. China demand.'
+          }
+        ]
+      },
+      phaseTwo: {
+        thesisRisk: {
+          lead: 'The main risk is whether NIKE, Inc. can keep athletic apparel / consumer discretionary evidence strong while the key risk factors stay contained.',
+          riskMap: [
+            {
+              label: 'Demand / growth',
+              severity: 'High',
+              watch: 'Brand heat.'
+            },
+            {
+              label: 'Margin / economics',
+              severity: 'High',
+              watch: 'product innovation.'
+            },
+            {
+              label: 'Execution',
+              severity: 'Medium',
+              watch: 'inventory.'
+            },
+            {
+              label: 'Cash flow / risk',
+              severity: 'Medium',
+              watch: 'China demand.'
+            }
+          ],
+          evidenceNeeded: [
+            'revenue growth',
+            'traffic or volume',
+            'pricing and demand',
+            'margin',
+            'customer retention',
+            'free cash flow'
+          ]
+        }
+      }
+    }
+  },
+  LOW: {
+    ticker: 'LOW',
+    companyName: 'Lowe\'s Companies, Inc.',
+    exchange: 'NYSE',
+    logoUrl: buildStockLogoUrl('LOW'),
+    overview: 'Lowe\'s is a home improvement retailer serving DIY and Pro customers through stores, digital channels, merchandising, and supply-chain execution.',
+    category: 'Home Improvement Retail',
+    analysisDate: '2026-06-11',
+    latestFiscalPeriod: 'Q1 FY2026 ended 2026-05-01',
+    dossierVerdict: {
+      sourceType: 'curated',
+      asOf: '2026-06-11',
+      researchState: 'consumer_demand_watch',
+      businessQuality: 'high',
+      valuationState: 'not_verified',
+      marketEvidence: 'not_verified',
+      finalRead: 'Home Improvement Retail where the thesis depends on Lowe\'s is a home improvement retailer serving DIY and Pro customers through stores, digital channels, merchandising, and supply-chain execution.',
+      keySupport: [
+        'SEC source pack identifies Lowe\'s Companies, Inc. as Home Improvement Retail.',
+        'Lowe\'s is a home improvement retailer serving DIY and Pro customers through stores, digital channels, merchandising, and supply-chain execution.',
+        'Latest primary-source filing reviewed: SEC latest periodic filing.'
+      ],
+      keyRisk: [
+        'Comparable sales.',
+        'Pro customer growth.',
+        'housing turnover.',
+        'repair and remodel demand.'
+      ]
+    },
+    valueCore: {
+      ticker: 'LOW',
+      value_core_type: 'Home Improvement Retail',
+      company_stage_candidate: 'Home Improvement Retail',
+      primary_value_driver: 'Lowe\'s is a home improvement retailer serving DIY and Pro customers through stores, digital channels, merchandising, and supply-chain execution.',
+      thesis_break_trigger: 'The thesis weakens if comparable sales. Pro customer growth. housing turnover. repair and remodel demand.',
+      evidence_needed: [
+        'revenue growth',
+        'customer demand',
+        'gross margin',
+        'inventory and backlog',
+        'capex or R&D execution',
+        'free cash flow'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_8',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: [
+          {
+            question: 'What does LOW do?',
+            answer: 'Lowe\'s is a home improvement retailer serving DIY and Pro customers through stores, digital channels, merchandising, and supply-chain execution.'
+          }
+        ],
+        thesisRisk: [
+          {
+            question: 'What would break the LOW thesis?',
+            answer: 'The thesis weakens if comparable sales. Pro customer growth. housing turnover. repair and remodel demand.'
+          }
+        ]
+      },
+      phaseTwo: {
+        thesisRisk: {
+          lead: 'The main risk is whether Lowe\'s Companies, Inc. can keep home improvement retail evidence strong while the key risk factors stay contained.',
+          riskMap: [
+            {
+              label: 'Demand / growth',
+              severity: 'High',
+              watch: 'Comparable sales.'
+            },
+            {
+              label: 'Margin / economics',
+              severity: 'High',
+              watch: 'Pro customer growth.'
+            },
+            {
+              label: 'Execution',
+              severity: 'Medium',
+              watch: 'housing turnover.'
+            },
+            {
+              label: 'Cash flow / risk',
+              severity: 'Medium',
+              watch: 'repair and remodel demand.'
+            }
+          ],
+          evidenceNeeded: [
+            'revenue growth',
+            'customer demand',
+            'gross margin',
+            'inventory and backlog',
+            'capex or R&D execution',
+            'free cash flow'
+          ]
+        }
+      }
+    }
+  },
+  MDLZ: {
+    ticker: 'MDLZ',
+    companyName: 'Mondelez International, Inc.',
+    exchange: 'NASDAQ',
+    logoUrl: buildStockLogoUrl('MDLZ'),
+    overview: 'Mondelez is a global snacks company focused on biscuits, chocolate, gum, candy, cheese, grocery, and related packaged food brands.',
+    category: 'Snacks / Consumer Staples',
+    analysisDate: '2026-06-11',
+    latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
+    dossierVerdict: {
+      sourceType: 'curated',
+      asOf: '2026-06-11',
+      researchState: 'consumer_demand_watch',
+      businessQuality: 'high',
+      valuationState: 'not_verified',
+      marketEvidence: 'not_verified',
+      finalRead: 'Snacks / Consumer Staples where the thesis depends on Mondelez is a global snacks company focused on biscuits, chocolate, gum, candy, cheese, grocery, and related packaged food brands.',
+      keySupport: [
+        'SEC source pack identifies Mondelez International, Inc. as Snacks / Consumer Staples.',
+        'Mondelez is a global snacks company focused on biscuits, chocolate, gum, candy, cheese, grocery, and related packaged food brands.',
+        'Latest primary-source filing reviewed: SEC latest periodic filing.'
+      ],
+      keyRisk: [
+        'Volume elasticity.',
+        'cocoa and other input costs.',
+        'pricing.',
+        'foreign exchange.'
+      ]
+    },
+    valueCore: {
+      ticker: 'MDLZ',
+      value_core_type: 'Snacks / Consumer Staples',
+      company_stage_candidate: 'Snacks / Consumer Staples',
+      primary_value_driver: 'Mondelez is a global snacks company focused on biscuits, chocolate, gum, candy, cheese, grocery, and related packaged food brands.',
+      thesis_break_trigger: 'The thesis weakens if volume elasticity. cocoa and other input costs. pricing. foreign exchange.',
+      evidence_needed: [
+        'revenue growth',
+        'traffic or volume',
+        'pricing and demand',
+        'margin',
+        'customer retention',
+        'free cash flow'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_8',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: [
+          {
+            question: 'What does MDLZ do?',
+            answer: 'Mondelez is a global snacks company focused on biscuits, chocolate, gum, candy, cheese, grocery, and related packaged food brands.'
+          }
+        ],
+        thesisRisk: [
+          {
+            question: 'What would break the MDLZ thesis?',
+            answer: 'The thesis weakens if volume elasticity. cocoa and other input costs. pricing. foreign exchange.'
+          }
+        ]
+      },
+      phaseTwo: {
+        thesisRisk: {
+          lead: 'The main risk is whether Mondelez International, Inc. can keep snacks / consumer staples evidence strong while the key risk factors stay contained.',
+          riskMap: [
+            {
+              label: 'Demand / growth',
+              severity: 'High',
+              watch: 'Volume elasticity.'
+            },
+            {
+              label: 'Margin / economics',
+              severity: 'High',
+              watch: 'cocoa and other input costs.'
+            },
+            {
+              label: 'Execution',
+              severity: 'Medium',
+              watch: 'pricing.'
+            },
+            {
+              label: 'Cash flow / risk',
+              severity: 'Medium',
+              watch: 'foreign exchange.'
+            }
+          ],
+          evidenceNeeded: [
+            'revenue growth',
+            'traffic or volume',
+            'pricing and demand',
+            'margin',
+            'customer retention',
+            'free cash flow'
+          ]
+        }
+      }
+    }
+  },
+  PM: {
+    ticker: 'PM',
+    companyName: 'Philip Morris International Inc.',
+    exchange: 'NYSE',
+    logoUrl: buildStockLogoUrl('PM'),
+    overview: 'Philip Morris International is a global tobacco and smoke-free products company where the thesis centers on combustible transition, smoke-free adoption, and nicotine portfolio execution.',
+    category: 'Tobacco / Smoke-Free Nicotine',
+    analysisDate: '2026-06-11',
+    latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
+    dossierVerdict: {
+      sourceType: 'curated',
+      asOf: '2026-06-11',
+      researchState: 'business_evidence_watch',
+      businessQuality: 'medium',
+      valuationState: 'not_verified',
+      marketEvidence: 'not_verified',
+      finalRead: 'Tobacco / Smoke-Free Nicotine where the thesis depends on Philip Morris International is a global tobacco and smoke-free products company where the thesis centers on combustible transition, smoke-free adoption, and nicotine portfolio execution.',
+      keySupport: [
+        'SEC source pack identifies Philip Morris International Inc. as Tobacco / Smoke-Free Nicotine.',
+        'Philip Morris International is a global tobacco and smoke-free products company where the thesis centers on combustible transition, smoke-free adoption, and nicotine portfolio execution.',
+        'Latest primary-source filing reviewed: SEC latest periodic filing.'
+      ],
+      keyRisk: [
+        'Regulation.',
+        'excise taxes.',
+        'litigation.',
+        'combustible volume decline.'
+      ]
+    },
+    valueCore: {
+      ticker: 'PM',
+      value_core_type: 'Tobacco / Smoke-Free Nicotine',
+      company_stage_candidate: 'Tobacco / Smoke-Free Nicotine',
+      primary_value_driver: 'Philip Morris International is a global tobacco and smoke-free products company where the thesis centers on combustible transition, smoke-free adoption, and nicotine portfolio execution.',
+      thesis_break_trigger: 'The thesis weakens if regulation. excise taxes. litigation. combustible volume decline.',
+      evidence_needed: [
+        'revenue growth',
+        'segment performance',
+        'customer demand',
+        'margin',
+        'cash flow',
+        'risk factor changes'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_8',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: [
+          {
+            question: 'What does PM do?',
+            answer: 'Philip Morris International is a global tobacco and smoke-free products company where the thesis centers on combustible transition, smoke-free adoption, and nicotine portfolio execution.'
+          }
+        ],
+        thesisRisk: [
+          {
+            question: 'What would break the PM thesis?',
+            answer: 'The thesis weakens if regulation. excise taxes. litigation. combustible volume decline.'
+          }
+        ]
+      },
+      phaseTwo: {
+        thesisRisk: {
+          lead: 'The main risk is whether Philip Morris International Inc. can keep tobacco / smoke-free nicotine evidence strong while the key risk factors stay contained.',
+          riskMap: [
+            {
+              label: 'Demand / growth',
+              severity: 'High',
+              watch: 'Regulation.'
+            },
+            {
+              label: 'Margin / economics',
+              severity: 'High',
+              watch: 'excise taxes.'
+            },
+            {
+              label: 'Execution',
+              severity: 'Medium',
+              watch: 'litigation.'
+            },
+            {
+              label: 'Cash flow / risk',
+              severity: 'Medium',
+              watch: 'combustible volume decline.'
+            }
+          ],
+          evidenceNeeded: [
+            'revenue growth',
+            'segment performance',
+            'customer demand',
+            'margin',
+            'cash flow',
+            'risk factor changes'
+          ]
+        }
+      }
+    }
+  },
+  MO: {
+    ticker: 'MO',
+    companyName: 'Altria Group, Inc.',
+    exchange: 'NYSE',
+    logoUrl: buildStockLogoUrl('MO'),
+    overview: 'Altria is a U.S.-focused tobacco company across smokeable products, oral tobacco, and nicotine categories, with pricing, regulation, and volume decline as core evidence.',
+    category: 'Tobacco / U.S. Nicotine',
+    analysisDate: '2026-06-11',
+    latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
+    dossierVerdict: {
+      sourceType: 'curated',
+      asOf: '2026-06-11',
+      researchState: 'business_evidence_watch',
+      businessQuality: 'medium',
+      valuationState: 'not_verified',
+      marketEvidence: 'not_verified',
+      finalRead: 'Tobacco / U.S. Nicotine where the thesis depends on Altria is a U.S.-focused tobacco company across smokeable products, oral tobacco, and nicotine categories, with pricing, regulation, and volume decline as core evidence.',
+      keySupport: [
+        'SEC source pack identifies Altria Group, Inc. as Tobacco / U.S. Nicotine.',
+        'Altria is a U.S.-focused tobacco company across smokeable products, oral tobacco, and nicotine categories, with pricing, regulation, and volume decline as core evidence.',
+        'Latest primary-source filing reviewed: SEC latest periodic filing.'
+      ],
+      keyRisk: [
+        'Cigarette volume decline.',
+        'regulation.',
+        'litigation.',
+        'excise taxes.'
+      ]
+    },
+    valueCore: {
+      ticker: 'MO',
+      value_core_type: 'Tobacco / U.S. Nicotine',
+      company_stage_candidate: 'Tobacco / U.S. Nicotine',
+      primary_value_driver: 'Altria is a U.S.-focused tobacco company across smokeable products, oral tobacco, and nicotine categories, with pricing, regulation, and volume decline as core evidence.',
+      thesis_break_trigger: 'The thesis weakens if cigarette volume decline. regulation. litigation. excise taxes.',
+      evidence_needed: [
+        'revenue growth',
+        'segment performance',
+        'customer demand',
+        'margin',
+        'cash flow',
+        'risk factor changes'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_8',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: [
+          {
+            question: 'What does MO do?',
+            answer: 'Altria is a U.S.-focused tobacco company across smokeable products, oral tobacco, and nicotine categories, with pricing, regulation, and volume decline as core evidence.'
+          }
+        ],
+        thesisRisk: [
+          {
+            question: 'What would break the MO thesis?',
+            answer: 'The thesis weakens if cigarette volume decline. regulation. litigation. excise taxes.'
+          }
+        ]
+      },
+      phaseTwo: {
+        thesisRisk: {
+          lead: 'The main risk is whether Altria Group, Inc. can keep tobacco / u.s. nicotine evidence strong while the key risk factors stay contained.',
+          riskMap: [
+            {
+              label: 'Demand / growth',
+              severity: 'High',
+              watch: 'Cigarette volume decline.'
+            },
+            {
+              label: 'Margin / economics',
+              severity: 'High',
+              watch: 'regulation.'
+            },
+            {
+              label: 'Execution',
+              severity: 'Medium',
+              watch: 'litigation.'
+            },
+            {
+              label: 'Cash flow / risk',
+              severity: 'Medium',
+              watch: 'excise taxes.'
+            }
+          ],
+          evidenceNeeded: [
+            'revenue growth',
+            'segment performance',
+            'customer demand',
+            'margin',
+            'cash flow',
+            'risk factor changes'
+          ]
+        }
+      }
+    }
+  },
+  TMUS: {
+    ticker: 'TMUS',
+    companyName: 'T-Mobile US, Inc.',
+    exchange: 'NASDAQ',
+    logoUrl: buildStockLogoUrl('TMUS'),
+    overview: 'T-Mobile US is a wireless communications provider where postpaid phone growth, churn, ARPU, 5G network quality, and fixed wireless broadband are central evidence.',
+    category: 'Telecom / Wireless',
+    analysisDate: '2026-06-11',
+    latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
+    dossierVerdict: {
+      sourceType: 'curated',
+      asOf: '2026-06-11',
+      researchState: 'communications_cashflow_watch',
+      businessQuality: 'medium',
+      valuationState: 'not_verified',
+      marketEvidence: 'not_verified',
+      finalRead: 'Telecom / Wireless where the thesis depends on T-Mobile US is a wireless communications provider where postpaid phone growth, churn, ARPU, 5G network quality, and fixed wireless broadband are central evidence.',
+      keySupport: [
+        'SEC source pack identifies T-Mobile US, Inc. as Telecom / Wireless.',
+        'T-Mobile US is a wireless communications provider where postpaid phone growth, churn, ARPU, 5G network quality, and fixed wireless broadband are central evidence.',
+        'Latest primary-source filing reviewed: SEC latest periodic filing.'
+      ],
+      keyRisk: [
+        'Wireless competition.',
+        'churn.',
+        'ARPU.',
+        'network spending.'
+      ]
+    },
+    valueCore: {
+      ticker: 'TMUS',
+      value_core_type: 'Telecom / Wireless',
+      company_stage_candidate: 'Telecom / Wireless',
+      primary_value_driver: 'T-Mobile US is a wireless communications provider where postpaid phone growth, churn, ARPU, 5G network quality, and fixed wireless broadband are central evidence.',
+      thesis_break_trigger: 'The thesis weakens if wireless competition. churn. ARPU. network spending.',
+      evidence_needed: [
+        'revenue growth',
+        'segment performance',
+        'customer demand',
+        'margin',
+        'cash flow',
+        'risk factor changes'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_9',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: [
+          {
+            question: 'What does TMUS do?',
+            answer: 'T-Mobile US is a wireless communications provider where postpaid phone growth, churn, ARPU, 5G network quality, and fixed wireless broadband are central evidence.'
+          }
+        ],
+        thesisRisk: [
+          {
+            question: 'What would break the TMUS thesis?',
+            answer: 'The thesis weakens if wireless competition. churn. ARPU. network spending.'
+          }
+        ]
+      },
+      phaseTwo: {
+        thesisRisk: {
+          lead: 'The main risk is whether T-Mobile US, Inc. can keep telecom / wireless evidence strong while the key risk factors stay contained.',
+          riskMap: [
+            {
+              label: 'Demand / growth',
+              severity: 'High',
+              watch: 'Wireless competition.'
+            },
+            {
+              label: 'Margin / economics',
+              severity: 'High',
+              watch: 'churn.'
+            },
+            {
+              label: 'Execution',
+              severity: 'Medium',
+              watch: 'ARPU.'
+            },
+            {
+              label: 'Cash flow / risk',
+              severity: 'Medium',
+              watch: 'network spending.'
+            }
+          ],
+          evidenceNeeded: [
+            'revenue growth',
+            'segment performance',
+            'customer demand',
+            'margin',
+            'cash flow',
+            'risk factor changes'
+          ]
+        }
+      }
+    }
+  },
+  VZ: {
+    ticker: 'VZ',
+    companyName: 'Verizon Communications Inc.',
+    exchange: 'NYSE',
+    logoUrl: buildStockLogoUrl('VZ'),
+    overview: 'Verizon provides wireless, broadband, and business communications services, with postpaid trends, churn, network quality, fixed wireless, debt, and capex as key evidence.',
+    category: 'Telecom / Wireless & Broadband',
+    analysisDate: '2026-06-11',
+    latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
+    dossierVerdict: {
+      sourceType: 'curated',
+      asOf: '2026-06-11',
+      researchState: 'communications_cashflow_watch',
+      businessQuality: 'medium',
+      valuationState: 'not_verified',
+      marketEvidence: 'not_verified',
+      finalRead: 'Telecom / Wireless & Broadband where the thesis depends on Verizon provides wireless, broadband, and business communications services, with postpaid trends, churn, network quality, fixed wireless, debt, and capex as key evidence.',
+      keySupport: [
+        'SEC source pack identifies Verizon Communications Inc. as Telecom / Wireless & Broadband.',
+        'Verizon provides wireless, broadband, and business communications services, with postpaid trends, churn, network quality, fixed wireless, debt, and capex as key evidence.',
+        'Latest primary-source filing reviewed: SEC latest periodic filing.'
+      ],
+      keyRisk: [
+        'Wireless competition.',
+        'churn.',
+        'ARPU.',
+        'consumer and business demand.'
+      ]
+    },
+    valueCore: {
+      ticker: 'VZ',
+      value_core_type: 'Telecom / Wireless & Broadband',
+      company_stage_candidate: 'Telecom / Wireless & Broadband',
+      primary_value_driver: 'Verizon provides wireless, broadband, and business communications services, with postpaid trends, churn, network quality, fixed wireless, debt, and capex as key evidence.',
+      thesis_break_trigger: 'The thesis weakens if wireless competition. churn. ARPU. consumer and business demand.',
+      evidence_needed: [
+        'revenue growth',
+        'segment performance',
+        'customer demand',
+        'margin',
+        'cash flow',
+        'risk factor changes'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_9',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: [
+          {
+            question: 'What does VZ do?',
+            answer: 'Verizon provides wireless, broadband, and business communications services, with postpaid trends, churn, network quality, fixed wireless, debt, and capex as key evidence.'
+          }
+        ],
+        thesisRisk: [
+          {
+            question: 'What would break the VZ thesis?',
+            answer: 'The thesis weakens if wireless competition. churn. ARPU. consumer and business demand.'
+          }
+        ]
+      },
+      phaseTwo: {
+        thesisRisk: {
+          lead: 'The main risk is whether Verizon Communications Inc. can keep telecom / wireless & broadband evidence strong while the key risk factors stay contained.',
+          riskMap: [
+            {
+              label: 'Demand / growth',
+              severity: 'High',
+              watch: 'Wireless competition.'
+            },
+            {
+              label: 'Margin / economics',
+              severity: 'High',
+              watch: 'churn.'
+            },
+            {
+              label: 'Execution',
+              severity: 'Medium',
+              watch: 'ARPU.'
+            },
+            {
+              label: 'Cash flow / risk',
+              severity: 'Medium',
+              watch: 'consumer and business demand.'
+            }
+          ],
+          evidenceNeeded: [
+            'revenue growth',
+            'segment performance',
+            'customer demand',
+            'margin',
+            'cash flow',
+            'risk factor changes'
+          ]
+        }
+      }
+    }
+  },
+  CMCSA: {
+    ticker: 'CMCSA',
+    companyName: 'Comcast Corporation',
+    exchange: 'NASDAQ',
+    logoUrl: buildStockLogoUrl('CMCSA'),
+    overview: 'Comcast combines broadband, cable, media, streaming, film, theme parks, and connectivity assets, with broadband trends and media profitability as central evidence.',
+    category: 'Connectivity / Media',
+    analysisDate: '2026-06-11',
+    latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
+    dossierVerdict: {
+      sourceType: 'curated',
+      asOf: '2026-06-11',
+      researchState: 'business_evidence_watch',
+      businessQuality: 'high',
+      valuationState: 'not_verified',
+      marketEvidence: 'not_verified',
+      finalRead: 'Connectivity / Media where the thesis depends on Comcast combines broadband, cable, media, streaming, film, theme parks, and connectivity assets, with broadband trends and media profitability as central evidence.',
+      keySupport: [
+        'SEC source pack identifies Comcast Corporation as Connectivity / Media.',
+        'Comcast combines broadband, cable, media, streaming, film, theme parks, and connectivity assets, with broadband trends and media profitability as central evidence.',
+        'Latest primary-source filing reviewed: SEC latest periodic filing.'
+      ],
+      keyRisk: [
+        'Broadband subscriber losses.',
+        'cord-cutting.',
+        'streaming economics.',
+        'advertising.'
+      ]
+    },
+    valueCore: {
+      ticker: 'CMCSA',
+      value_core_type: 'Connectivity / Media',
+      company_stage_candidate: 'Connectivity / Media',
+      primary_value_driver: 'Comcast combines broadband, cable, media, streaming, film, theme parks, and connectivity assets, with broadband trends and media profitability as central evidence.',
+      thesis_break_trigger: 'The thesis weakens if broadband subscriber losses. cord-cutting. streaming economics. advertising.',
+      evidence_needed: [
+        'revenue growth',
+        'segment performance',
+        'customer demand',
+        'margin',
+        'cash flow',
+        'risk factor changes'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_9',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: [
+          {
+            question: 'What does CMCSA do?',
+            answer: 'Comcast combines broadband, cable, media, streaming, film, theme parks, and connectivity assets, with broadband trends and media profitability as central evidence.'
+          }
+        ],
+        thesisRisk: [
+          {
+            question: 'What would break the CMCSA thesis?',
+            answer: 'The thesis weakens if broadband subscriber losses. cord-cutting. streaming economics. advertising.'
+          }
+        ]
+      },
+      phaseTwo: {
+        thesisRisk: {
+          lead: 'The main risk is whether Comcast Corporation can keep connectivity / media evidence strong while the key risk factors stay contained.',
+          riskMap: [
+            {
+              label: 'Demand / growth',
+              severity: 'High',
+              watch: 'Broadband subscriber losses.'
+            },
+            {
+              label: 'Margin / economics',
+              severity: 'High',
+              watch: 'cord-cutting.'
+            },
+            {
+              label: 'Execution',
+              severity: 'Medium',
+              watch: 'streaming economics.'
+            },
+            {
+              label: 'Cash flow / risk',
+              severity: 'Medium',
+              watch: 'advertising.'
+            }
+          ],
+          evidenceNeeded: [
+            'revenue growth',
+            'segment performance',
+            'customer demand',
+            'margin',
+            'cash flow',
+            'risk factor changes'
+          ]
+        }
+      }
+    }
+  },
+  NEE: {
+    ticker: 'NEE',
+    companyName: 'NextEra Energy, Inc.',
+    exchange: 'NYSE',
+    logoUrl: buildStockLogoUrl('NEE'),
+    overview: 'NextEra Energy combines regulated utility operations at Florida Power & Light with renewable energy and infrastructure development through NextEra Energy Resources.',
+    category: 'Utility / Renewable Power',
+    analysisDate: '2026-06-11',
+    latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
+    dossierVerdict: {
+      sourceType: 'curated',
+      asOf: '2026-06-11',
+      researchState: 'regulated_utility_watch',
+      businessQuality: 'high',
+      valuationState: 'not_verified',
+      marketEvidence: 'not_verified',
+      finalRead: 'Utility / Renewable Power where the thesis depends on NextEra Energy combines regulated utility operations at Florida Power & Light with renewable energy and infrastructure development through NextEra Energy Resources.',
+      keySupport: [
+        'SEC source pack identifies NextEra Energy, Inc. as Utility / Renewable Power.',
+        'NextEra Energy combines regulated utility operations at Florida Power & Light with renewable energy and infrastructure development through NextEra Energy Resources.',
+        'Latest primary-source filing reviewed: SEC latest periodic filing.'
+      ],
+      keyRisk: [
+        'Rate cases.',
+        'renewables execution.',
+        'power demand.',
+        'financing cost.'
+      ]
+    },
+    valueCore: {
+      ticker: 'NEE',
+      value_core_type: 'Utility / Renewable Power',
+      company_stage_candidate: 'Utility / Renewable Power',
+      primary_value_driver: 'NextEra Energy combines regulated utility operations at Florida Power & Light with renewable energy and infrastructure development through NextEra Energy Resources.',
+      thesis_break_trigger: 'The thesis weakens if rate cases. renewables execution. power demand. financing cost.',
+      evidence_needed: [
+        'revenue growth',
+        'segment performance',
+        'customer demand',
+        'margin',
+        'cash flow',
+        'risk factor changes'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_9',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: [
+          {
+            question: 'What does NEE do?',
+            answer: 'NextEra Energy combines regulated utility operations at Florida Power & Light with renewable energy and infrastructure development through NextEra Energy Resources.'
+          }
+        ],
+        thesisRisk: [
+          {
+            question: 'What would break the NEE thesis?',
+            answer: 'The thesis weakens if rate cases. renewables execution. power demand. financing cost.'
+          }
+        ]
+      },
+      phaseTwo: {
+        thesisRisk: {
+          lead: 'The main risk is whether NextEra Energy, Inc. can keep utility / renewable power evidence strong while the key risk factors stay contained.',
+          riskMap: [
+            {
+              label: 'Demand / growth',
+              severity: 'High',
+              watch: 'Rate cases.'
+            },
+            {
+              label: 'Margin / economics',
+              severity: 'High',
+              watch: 'renewables execution.'
+            },
+            {
+              label: 'Execution',
+              severity: 'Medium',
+              watch: 'power demand.'
+            },
+            {
+              label: 'Cash flow / risk',
+              severity: 'Medium',
+              watch: 'financing cost.'
+            }
+          ],
+          evidenceNeeded: [
+            'revenue growth',
+            'segment performance',
+            'customer demand',
+            'margin',
+            'cash flow',
+            'risk factor changes'
+          ]
+        }
+      }
+    }
+  },
+  AEP: {
+    ticker: 'AEP',
+    companyName: 'American Electric Power Company, Inc.',
+    exchange: 'NASDAQ',
+    logoUrl: buildStockLogoUrl('AEP'),
+    overview: 'American Electric Power is a regulated electric utility holding company focused on transmission, distribution, generation, load growth, rate base, and reliability.',
+    category: 'Regulated Electric Utility',
+    analysisDate: '2026-06-11',
+    latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
+    dossierVerdict: {
+      sourceType: 'curated',
+      asOf: '2026-06-11',
+      researchState: 'regulated_utility_watch',
+      businessQuality: 'high',
+      valuationState: 'not_verified',
+      marketEvidence: 'not_verified',
+      finalRead: 'Regulated Electric Utility where the thesis depends on American Electric Power is a regulated electric utility holding company focused on transmission, distribution, generation, load growth, rate base, and reliability.',
+      keySupport: [
+        'SEC source pack identifies American Electric Power Company, Inc. as Regulated Electric Utility.',
+        'American Electric Power is a regulated electric utility holding company focused on transmission, distribution, generation, load growth, rate base, and reliability.',
+        'Latest primary-source filing reviewed: SEC latest periodic filing.'
+      ],
+      keyRisk: [
+        'Rate cases.',
+        'regulatory outcomes.',
+        'capex execution.',
+        'interest rates.'
+      ]
+    },
+    valueCore: {
+      ticker: 'AEP',
+      value_core_type: 'Regulated Electric Utility',
+      company_stage_candidate: 'Regulated Electric Utility',
+      primary_value_driver: 'American Electric Power is a regulated electric utility holding company focused on transmission, distribution, generation, load growth, rate base, and reliability.',
+      thesis_break_trigger: 'The thesis weakens if rate cases. regulatory outcomes. capex execution. interest rates.',
+      evidence_needed: [
+        'revenue growth',
+        'segment performance',
+        'customer demand',
+        'margin',
+        'cash flow',
+        'risk factor changes'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_9',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: [
+          {
+            question: 'What does AEP do?',
+            answer: 'American Electric Power is a regulated electric utility holding company focused on transmission, distribution, generation, load growth, rate base, and reliability.'
+          }
+        ],
+        thesisRisk: [
+          {
+            question: 'What would break the AEP thesis?',
+            answer: 'The thesis weakens if rate cases. regulatory outcomes. capex execution. interest rates.'
+          }
+        ]
+      },
+      phaseTwo: {
+        thesisRisk: {
+          lead: 'The main risk is whether American Electric Power Company, Inc. can keep regulated electric utility evidence strong while the key risk factors stay contained.',
+          riskMap: [
+            {
+              label: 'Demand / growth',
+              severity: 'High',
+              watch: 'Rate cases.'
+            },
+            {
+              label: 'Margin / economics',
+              severity: 'High',
+              watch: 'regulatory outcomes.'
+            },
+            {
+              label: 'Execution',
+              severity: 'Medium',
+              watch: 'capex execution.'
+            },
+            {
+              label: 'Cash flow / risk',
+              severity: 'Medium',
+              watch: 'interest rates.'
+            }
+          ],
+          evidenceNeeded: [
+            'revenue growth',
+            'segment performance',
+            'customer demand',
+            'margin',
+            'cash flow',
+            'risk factor changes'
+          ]
+        }
+      }
+    }
+  },
+  AMT: {
+    ticker: 'AMT',
+    companyName: 'American Tower Corporation',
+    exchange: 'NYSE',
+    logoUrl: buildStockLogoUrl('AMT'),
+    overview: 'American Tower is a communications real estate company whose tower leases depend on carrier network investment, tenant demand, contract escalators, and international execution.',
+    category: 'Communications Real Estate',
+    analysisDate: '2026-06-11',
+    latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
+    dossierVerdict: {
+      sourceType: 'curated',
+      asOf: '2026-06-11',
+      researchState: 'communications_cashflow_watch',
+      businessQuality: 'high',
+      valuationState: 'not_verified',
+      marketEvidence: 'not_verified',
+      finalRead: 'Communications Real Estate where the thesis depends on American Tower is a communications real estate company whose tower leases depend on carrier network investment, tenant demand, contract escalators, and international execution.',
+      keySupport: [
+        'SEC source pack identifies American Tower Corporation as Communications Real Estate.',
+        'American Tower is a communications real estate company whose tower leases depend on carrier network investment, tenant demand, contract escalators, and international execution.',
+        'Latest primary-source filing reviewed: SEC latest periodic filing.'
+      ],
+      keyRisk: [
+        'Carrier capex.',
+        'tenant churn.',
+        'interest rates.',
+        'leverage.'
+      ]
+    },
+    valueCore: {
+      ticker: 'AMT',
+      value_core_type: 'Communications Real Estate',
+      company_stage_candidate: 'Communications Real Estate',
+      primary_value_driver: 'American Tower is a communications real estate company whose tower leases depend on carrier network investment, tenant demand, contract escalators, and international execution.',
+      thesis_break_trigger: 'The thesis weakens if carrier capex. tenant churn. interest rates. leverage.',
+      evidence_needed: [
+        'revenue growth',
+        'segment performance',
+        'customer demand',
+        'margin',
+        'cash flow',
+        'risk factor changes'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_9',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: [
+          {
+            question: 'What does AMT do?',
+            answer: 'American Tower is a communications real estate company whose tower leases depend on carrier network investment, tenant demand, contract escalators, and international execution.'
+          }
+        ],
+        thesisRisk: [
+          {
+            question: 'What would break the AMT thesis?',
+            answer: 'The thesis weakens if carrier capex. tenant churn. interest rates. leverage.'
+          }
+        ]
+      },
+      phaseTwo: {
+        thesisRisk: {
+          lead: 'The main risk is whether American Tower Corporation can keep communications real estate evidence strong while the key risk factors stay contained.',
+          riskMap: [
+            {
+              label: 'Demand / growth',
+              severity: 'High',
+              watch: 'Carrier capex.'
+            },
+            {
+              label: 'Margin / economics',
+              severity: 'High',
+              watch: 'tenant churn.'
+            },
+            {
+              label: 'Execution',
+              severity: 'Medium',
+              watch: 'interest rates.'
+            },
+            {
+              label: 'Cash flow / risk',
+              severity: 'Medium',
+              watch: 'leverage.'
+            }
+          ],
+          evidenceNeeded: [
+            'revenue growth',
+            'segment performance',
+            'customer demand',
+            'margin',
+            'cash flow',
+            'risk factor changes'
+          ]
+        }
+      }
+    }
+  },
+  LIN: {
+    ticker: 'LIN',
+    companyName: 'Linde plc',
+    exchange: 'NASDAQ',
+    logoUrl: buildStockLogoUrl('LIN'),
+    overview: 'Linde is a global industrial gases company serving chemicals, manufacturing, metals, healthcare, electronics, energy, and other end markets through long-term supply models.',
+    category: 'Industrial Gases',
+    analysisDate: '2026-06-11',
+    latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
+    dossierVerdict: {
+      sourceType: 'curated',
+      asOf: '2026-06-11',
+      researchState: 'business_evidence_watch',
+      businessQuality: 'high',
+      valuationState: 'not_verified',
+      marketEvidence: 'not_verified',
+      finalRead: 'Industrial Gases where the thesis depends on Linde is a global industrial gases company serving chemicals, manufacturing, metals, healthcare, electronics, energy, and other end markets through long-term supply models.',
+      keySupport: [
+        'SEC source pack identifies Linde plc as Industrial Gases.',
+        'Linde is a global industrial gases company serving chemicals, manufacturing, metals, healthcare, electronics, energy, and other end markets through long-term supply models.',
+        'Latest primary-source filing reviewed: SEC latest periodic filing.'
+      ],
+      keyRisk: [
+        'Industrial demand.',
+        'energy costs.',
+        'project execution.',
+        'pricing.'
+      ]
+    },
+    valueCore: {
+      ticker: 'LIN',
+      value_core_type: 'Industrial Gases',
+      company_stage_candidate: 'Industrial Gases',
+      primary_value_driver: 'Linde is a global industrial gases company serving chemicals, manufacturing, metals, healthcare, electronics, energy, and other end markets through long-term supply models.',
+      thesis_break_trigger: 'The thesis weakens if industrial demand. energy costs. project execution. pricing.',
+      evidence_needed: [
+        'revenue growth',
+        'segment performance',
+        'customer demand',
+        'margin',
+        'cash flow',
+        'risk factor changes'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_9',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: [
+          {
+            question: 'What does LIN do?',
+            answer: 'Linde is a global industrial gases company serving chemicals, manufacturing, metals, healthcare, electronics, energy, and other end markets through long-term supply models.'
+          }
+        ],
+        thesisRisk: [
+          {
+            question: 'What would break the LIN thesis?',
+            answer: 'The thesis weakens if industrial demand. energy costs. project execution. pricing.'
+          }
+        ]
+      },
+      phaseTwo: {
+        thesisRisk: {
+          lead: 'The main risk is whether Linde plc can keep industrial gases evidence strong while the key risk factors stay contained.',
+          riskMap: [
+            {
+              label: 'Demand / growth',
+              severity: 'High',
+              watch: 'Industrial demand.'
+            },
+            {
+              label: 'Margin / economics',
+              severity: 'High',
+              watch: 'energy costs.'
+            },
+            {
+              label: 'Execution',
+              severity: 'Medium',
+              watch: 'project execution.'
+            },
+            {
+              label: 'Cash flow / risk',
+              severity: 'Medium',
+              watch: 'pricing.'
+            }
+          ],
+          evidenceNeeded: [
+            'revenue growth',
+            'segment performance',
+            'customer demand',
+            'margin',
+            'cash flow',
+            'risk factor changes'
+          ]
+        }
+      }
+    }
+  },
+  UPS: {
+    ticker: 'UPS',
+    companyName: 'United Parcel Service, Inc.',
+    exchange: 'NYSE',
+    logoUrl: buildStockLogoUrl('UPS'),
+    overview: 'United Parcel Service is a global package delivery and logistics company where volume, yield, labor cost, network efficiency, and e-commerce mix drive evidence.',
+    category: 'Logistics / Parcel Delivery',
+    analysisDate: '2026-06-11',
+    latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
+    dossierVerdict: {
+      sourceType: 'curated',
+      asOf: '2026-06-11',
+      researchState: 'business_evidence_watch',
+      businessQuality: 'medium',
+      valuationState: 'not_verified',
+      marketEvidence: 'not_verified',
+      finalRead: 'Logistics / Parcel Delivery where the thesis depends on United Parcel Service is a global package delivery and logistics company where volume, yield, labor cost, network efficiency, and e-commerce mix drive evidence.',
+      keySupport: [
+        'SEC source pack identifies United Parcel Service, Inc. as Logistics / Parcel Delivery.',
+        'United Parcel Service is a global package delivery and logistics company where volume, yield, labor cost, network efficiency, and e-commerce mix drive evidence.',
+        'Latest primary-source filing reviewed: SEC latest periodic filing.'
+      ],
+      keyRisk: [
+        'Package volume.',
+        'pricing.',
+        'labor costs.',
+        'fuel.'
+      ]
+    },
+    valueCore: {
+      ticker: 'UPS',
+      value_core_type: 'Logistics / Parcel Delivery',
+      company_stage_candidate: 'Logistics / Parcel Delivery',
+      primary_value_driver: 'United Parcel Service is a global package delivery and logistics company where volume, yield, labor cost, network efficiency, and e-commerce mix drive evidence.',
+      thesis_break_trigger: 'The thesis weakens if package volume. pricing. labor costs. fuel.',
+      evidence_needed: [
+        'revenue growth',
+        'segment performance',
+        'customer demand',
+        'margin',
+        'cash flow',
+        'risk factor changes'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_9',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: [
+          {
+            question: 'What does UPS do?',
+            answer: 'United Parcel Service is a global package delivery and logistics company where volume, yield, labor cost, network efficiency, and e-commerce mix drive evidence.'
+          }
+        ],
+        thesisRisk: [
+          {
+            question: 'What would break the UPS thesis?',
+            answer: 'The thesis weakens if package volume. pricing. labor costs. fuel.'
+          }
+        ]
+      },
+      phaseTwo: {
+        thesisRisk: {
+          lead: 'The main risk is whether United Parcel Service, Inc. can keep logistics / parcel delivery evidence strong while the key risk factors stay contained.',
+          riskMap: [
+            {
+              label: 'Demand / growth',
+              severity: 'High',
+              watch: 'Package volume.'
+            },
+            {
+              label: 'Margin / economics',
+              severity: 'High',
+              watch: 'pricing.'
+            },
+            {
+              label: 'Execution',
+              severity: 'Medium',
+              watch: 'labor costs.'
+            },
+            {
+              label: 'Cash flow / risk',
+              severity: 'Medium',
+              watch: 'fuel.'
+            }
+          ],
+          evidenceNeeded: [
+            'revenue growth',
+            'segment performance',
+            'customer demand',
+            'margin',
+            'cash flow',
+            'risk factor changes'
+          ]
+        }
+      }
+    }
+  },
+  SBUX: {
+    ticker: 'SBUX',
+    companyName: 'Starbucks Corporation',
+    exchange: 'NASDAQ',
+    logoUrl: buildStockLogoUrl('SBUX'),
+    overview: 'Starbucks operates company-operated and licensed coffee stores globally, with comparable sales, transactions, ticket, store economics, China, and brand strength as key evidence.',
+    category: 'Restaurants / Coffee Retail',
+    analysisDate: '2026-06-11',
+    latestFiscalPeriod: 'Q2 FY2026 ended 2026-03-29',
+    dossierVerdict: {
+      sourceType: 'curated',
+      asOf: '2026-06-11',
+      researchState: 'consumer_demand_watch',
+      businessQuality: 'high',
+      valuationState: 'not_verified',
+      marketEvidence: 'not_verified',
+      finalRead: 'Restaurants / Coffee Retail where the thesis depends on Starbucks operates company-operated and licensed coffee stores globally, with comparable sales, transactions, ticket, store economics, China, and brand strength as key evidence.',
+      keySupport: [
+        'SEC source pack identifies Starbucks Corporation as Restaurants / Coffee Retail.',
+        'Starbucks operates company-operated and licensed coffee stores globally, with comparable sales, transactions, ticket, store economics, China, and brand strength as key evidence.',
+        'Latest primary-source filing reviewed: SEC latest periodic filing.'
+      ],
+      keyRisk: [
+        'Traffic.',
+        'value perception.',
+        'China demand.',
+        'labor and store operations.'
+      ]
+    },
+    valueCore: {
+      ticker: 'SBUX',
+      value_core_type: 'Restaurants / Coffee Retail',
+      company_stage_candidate: 'Restaurants / Coffee Retail',
+      primary_value_driver: 'Starbucks operates company-operated and licensed coffee stores globally, with comparable sales, transactions, ticket, store economics, China, and brand strength as key evidence.',
+      thesis_break_trigger: 'The thesis weakens if traffic. value perception. China demand. labor and store operations.',
+      evidence_needed: [
+        'revenue growth',
+        'customer demand',
+        'gross margin',
+        'inventory and backlog',
+        'capex or R&D execution',
+        'free cash flow'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_9',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: [
+          {
+            question: 'What does SBUX do?',
+            answer: 'Starbucks operates company-operated and licensed coffee stores globally, with comparable sales, transactions, ticket, store economics, China, and brand strength as key evidence.'
+          }
+        ],
+        thesisRisk: [
+          {
+            question: 'What would break the SBUX thesis?',
+            answer: 'The thesis weakens if traffic. value perception. China demand. labor and store operations.'
+          }
+        ]
+      },
+      phaseTwo: {
+        thesisRisk: {
+          lead: 'The main risk is whether Starbucks Corporation can keep restaurants / coffee retail evidence strong while the key risk factors stay contained.',
+          riskMap: [
+            {
+              label: 'Demand / growth',
+              severity: 'High',
+              watch: 'Traffic.'
+            },
+            {
+              label: 'Margin / economics',
+              severity: 'High',
+              watch: 'value perception.'
+            },
+            {
+              label: 'Execution',
+              severity: 'Medium',
+              watch: 'China demand.'
+            },
+            {
+              label: 'Cash flow / risk',
+              severity: 'Medium',
+              watch: 'labor and store operations.'
+            }
+          ],
+          evidenceNeeded: [
+            'revenue growth',
+            'customer demand',
+            'gross margin',
+            'inventory and backlog',
+            'capex or R&D execution',
+            'free cash flow'
+          ]
+        }
+      }
+    }
+  },
+  TMO: {
+    ticker: 'TMO',
+    companyName: 'Thermo Fisher Scientific Inc.',
+    exchange: 'NYSE',
+    logoUrl: buildStockLogoUrl('TMO'),
+    overview: 'Thermo Fisher Scientific provides life sciences tools, analytical instruments, diagnostics, specialty diagnostics, laboratory products, and biopharma services.',
+    category: 'Life Sciences Tools',
+    analysisDate: '2026-06-11',
+    latestFiscalPeriod: 'Q1 2026 ended 2026-03-28',
+    dossierVerdict: {
+      sourceType: 'curated',
+      asOf: '2026-06-11',
+      researchState: 'business_evidence_watch',
+      businessQuality: 'high',
+      valuationState: 'not_verified',
+      marketEvidence: 'not_verified',
+      finalRead: 'Life Sciences Tools where the thesis depends on Thermo Fisher Scientific provides life sciences tools, analytical instruments, diagnostics, specialty diagnostics, laboratory products, and biopharma services.',
+      keySupport: [
+        'SEC source pack identifies Thermo Fisher Scientific Inc. as Life Sciences Tools.',
+        'Thermo Fisher Scientific provides life sciences tools, analytical instruments, diagnostics, specialty diagnostics, laboratory products, and biopharma services.',
+        'Latest primary-source filing reviewed: SEC latest periodic filing.'
+      ],
+      keyRisk: [
+        'Biopharma funding.',
+        'customer destocking.',
+        'diagnostics normalization.',
+        'China demand.'
+      ]
+    },
+    valueCore: {
+      ticker: 'TMO',
+      value_core_type: 'Life Sciences Tools',
+      company_stage_candidate: 'Life Sciences Tools',
+      primary_value_driver: 'Thermo Fisher Scientific provides life sciences tools, analytical instruments, diagnostics, specialty diagnostics, laboratory products, and biopharma services.',
+      thesis_break_trigger: 'The thesis weakens if biopharma funding. customer destocking. diagnostics normalization. China demand.',
+      evidence_needed: [
+        'revenue growth',
+        'segment performance',
+        'customer demand',
+        'margin',
+        'cash flow',
+        'risk factor changes'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_9',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: [
+          {
+            question: 'What does TMO do?',
+            answer: 'Thermo Fisher Scientific provides life sciences tools, analytical instruments, diagnostics, specialty diagnostics, laboratory products, and biopharma services.'
+          }
+        ],
+        thesisRisk: [
+          {
+            question: 'What would break the TMO thesis?',
+            answer: 'The thesis weakens if biopharma funding. customer destocking. diagnostics normalization. China demand.'
+          }
+        ]
+      },
+      phaseTwo: {
+        thesisRisk: {
+          lead: 'The main risk is whether Thermo Fisher Scientific Inc. can keep life sciences tools evidence strong while the key risk factors stay contained.',
+          riskMap: [
+            {
+              label: 'Demand / growth',
+              severity: 'High',
+              watch: 'Biopharma funding.'
+            },
+            {
+              label: 'Margin / economics',
+              severity: 'High',
+              watch: 'customer destocking.'
+            },
+            {
+              label: 'Execution',
+              severity: 'Medium',
+              watch: 'diagnostics normalization.'
+            },
+            {
+              label: 'Cash flow / risk',
+              severity: 'Medium',
+              watch: 'China demand.'
+            }
+          ],
+          evidenceNeeded: [
+            'revenue growth',
+            'segment performance',
+            'customer demand',
+            'margin',
+            'cash flow',
+            'risk factor changes'
+          ]
+        }
+      }
+    }
+  },
+  ABNB: {
+    ticker: 'ABNB',
+    companyName: 'Airbnb, Inc.',
+    exchange: 'NASDAQ',
+    logoUrl: buildStockLogoUrl('ABNB'),
+    overview: 'Airbnb operates a global travel marketplace that connects hosts and guests for lodging and experiences.',
+    category: 'Travel & Lodging Platform',
+    analysisDate: '2026-06-11',
+    latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
+    dossierVerdict: {
+      sourceType: 'curated',
+      asOf: '2026-06-11',
+      researchState: 'platform_watch',
+      businessQuality: 'high',
+      valuationState: 'not_verified',
+      marketEvidence: 'not_verified',
+      finalRead: 'Travel booking marketplace where the thesis depends on nights booked growth, GBV, take rate stability, supply expansion, and regulatory limits.',
+      keySupport: [
+        'SEC filings describe Airbnb as a global marketplace for travel lodging and experiences.',
+        'The company earns revenue through transaction service fees charged to hosts and guests on bookings.',
+        'Growth in nights booked and Gross Booking Value are primary drivers of financial health.'
+      ],
+      keyRisk: [
+        'Local regulations and restrictions on short-term rentals can limit supply growth in key cities.',
+        'Macroeconomic factors or slower travel demand can compress booking volumes.',
+        'Competition from traditional lodging and alternative online travel platforms can pressure take rates.'
+      ]
+    },
+    valueCore: {
+      ticker: 'ABNB',
+      value_core_type: 'Travel booking marketplace',
+      company_stage_candidate: 'Established marketplace',
+      primary_value_driver: 'Nights booked expansion, Gross Booking Value (GBV), take rate stability, and host supply growth',
+      thesis_break_trigger: 'Nights booked growth slows materially, GBV growth stalls, local regulations severely restrict short-term rental supply, or take rate compresses',
+      evidence_needed: [
+        'Nights and experiences booked growth',
+        'Gross Booking Value',
+        'average daily rate trends',
+        'take rate sustainability',
+        'host supply and retention metrics',
+        'local regulatory changes'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_10',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: [
+          {
+            question: 'What does ABNB do?',
+            answer: 'Airbnb runs a global online travel marketplace connecting hosts and guests for lodging and experiences. It operates as a transaction fee business.'
+          }
+        ],
+        thesisRisk: [
+          {
+            question: 'What would break the ABNB thesis?',
+            answer: 'The thesis weakens if nights booked and GBV growth decelerate, local short-term rental regulations impair host supply, or ADR / take rates drop.'
+          }
+        ]
+      },
+      phaseTwo: {
+        thesisRisk: {
+          lead: 'The primary risk centers on regulatory restrictions limiting hosting supply and travel demand cyclicality.',
+          riskMap: [
+            {
+              label: 'Regulatory constraints',
+              severity: 'High',
+              watch: 'New short-term rental regulations in key municipal markets.'
+            },
+            {
+              label: 'Booking growth deceleration',
+              severity: 'High',
+              watch: 'Nights booked growth drops below double digits.'
+            },
+            {
+              label: 'ADR & take rate compression',
+              severity: 'Medium',
+              watch: 'Average daily rate decreases or competitive fee pressures limit take rate.'
+            }
+          ],
+          evidenceNeeded: [
+            'Nights and experiences booked growth',
+            'Gross Booking Value',
+            'average daily rate trends',
+            'take rate sustainability',
+            'host supply and retention metrics',
+            'local regulatory changes'
+          ]
+        }
+      }
+    }
+  },
+  ABT: {
+    ticker: 'ABT',
+    companyName: 'Abbott Laboratories',
+    exchange: 'NYSE',
+    logoUrl: buildStockLogoUrl('ABT'),
+    overview: 'Abbott Laboratories is a diversified global healthcare company operating across medical devices, diagnostics, nutrition, and established pharmaceuticals.',
+    category: 'Diversified Healthcare',
+    analysisDate: '2026-06-11',
+    latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
+    dossierVerdict: {
+      sourceType: 'curated',
+      asOf: '2026-06-11',
+      researchState: 'healthcare_watch',
+      businessQuality: 'high',
+      valuationState: 'not_verified',
+      marketEvidence: 'not_verified',
+      finalRead: 'Diversified healthcare platform where the thesis depends on medical device adoption, diagnostic sales normalization, and nutritional margin improvement.',
+      keySupport: [
+        'SEC filings structure Abbott across Medical Devices, Diagnostics, Nutritional, and Established Pharmaceutical segments.',
+        'Medical Devices growth is heavily supported by the FreeStyle Libre continuous glucose monitoring system.',
+        'The segment mix provides defensive healthcare cash flows and multiple product drivers.'
+      ],
+      keyRisk: [
+        'Slowing medical device adoption or unfavorable structural heart market trends can impact growth.',
+        'Nutritional product supply chain risks or recalls can damage brand reputation and margins.',
+        'Diagnostics demand normalization post-pandemic and FX headwinds can create short-term volatility.'
+      ]
+    },
+    valueCore: {
+      ticker: 'ABT',
+      value_core_type: 'Diversified healthcare platform',
+      company_stage_candidate: 'Established compounder',
+      primary_value_driver: 'Medical device growth (FreeStyle Libre), diagnostic sales stability, nutritional margins, and geographic expansion',
+      thesis_break_trigger: 'Medical device adoption slows, nutritional margin recovery fails, product liability or recalls occur, or FX impacts offset segment growth',
+      evidence_needed: [
+        'Medical Devices segment organic sales growth',
+        'FreeStyle Libre sales volume',
+        'Diagnostics segment sales stability',
+        'Nutritional segment gross margin',
+        'FX currency impact disclosures',
+        'Acquisition integration progress (Exact Sciences)'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_10',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: [
+          {
+            question: 'What does ABT do?',
+            answer: 'Abbott Laboratories operates a diversified healthcare business. It sells medical devices, diagnostics, nutritional products, and branded generic pharmaceuticals globally.'
+          }
+        ],
+        thesisRisk: [
+          {
+            question: 'What would break the ABT thesis?',
+            answer: 'The thesis weakens if core medical devices like FreeStyle Libre experience growth slowdown, nutritional margins fail to recover, or product safety issues emerge.'
+          }
+        ]
+      },
+      phaseTwo: {
+        thesisRisk: {
+          lead: 'The main risk relates to device pipeline adoption, diagnostic sales normalization, and product quality controls.',
+          riskMap: [
+            {
+              label: 'Device adoption slowdown',
+              severity: 'High',
+              watch: 'Organic Medical Devices segment growth falls below expectations.'
+            },
+            {
+              label: 'Nutritional recalls / brand damage',
+              severity: 'Medium',
+              watch: 'Quality control issues or regulatory audits of manufacturing facilities.'
+            },
+            {
+              label: 'Diagnostics normalization / debt integration',
+              severity: 'Medium',
+              watch: 'Diagnostics revenue decline or leverage pressure from financing the Exact Sciences acquisition.'
+            }
+          ],
+          evidenceNeeded: [
+            'Medical Devices segment organic sales growth',
+            'FreeStyle Libre sales volume',
+            'Diagnostics segment sales stability',
+            'Nutritional segment gross margin',
+            'FX currency impact disclosures',
+            'Acquisition integration progress (Exact Sciences)'
+          ]
+        }
+      }
+    }
+  },
+  ACN: {
+    ticker: 'ACN',
+    companyName: 'Accenture plc',
+    exchange: 'NYSE',
+    logoUrl: buildStockLogoUrl('ACN'),
+    overview: 'Accenture is a global professional services company providing consulting, technology, and managed services.',
+    category: 'Technology Consulting / Services',
+    analysisDate: '2026-06-11',
+    latestFiscalPeriod: 'Q2 FY2026 ended 2026-02-28',
+    dossierVerdict: {
+      sourceType: 'curated',
+      asOf: '2026-06-11',
+      researchState: 'enterprise_spend_watch',
+      businessQuality: 'high',
+      valuationState: 'not_verified',
+      marketEvidence: 'not_verified',
+      finalRead: 'Enterprise consulting platform where the thesis depends on bookings momentum, client discretionary spend, and utilization rates.',
+      keySupport: [
+        'SEC filings group Accenture by geographic markets and client industry groups.',
+        'Managed services provide recurring revenue streams beside project-based consulting.',
+        'The company is positioned as a primary integration partner for enterprise cloud, security, and GenAI transformation.'
+      ],
+      keyRisk: [
+        'Slowing corporate IT budgets or deferral of discretionary consulting projects can impact bookings.',
+        'Inability to monetize GenAI consulting rapidly enough to offset legacy IT consulting slowdown.',
+        'Wage inflation and employee utilization volatility can pressure operating margins.'
+      ]
+    },
+    valueCore: {
+      ticker: 'ACN',
+      value_core_type: 'IT consulting & managed services',
+      company_stage_candidate: 'Established global platform',
+      primary_value_driver: 'Consulting new bookings, billing rates, managed services backlog, and utilization rates',
+      thesis_break_trigger: 'New bookings decelerate, client discretionary project spending cuts, utilization rates drop, or wage inflation compresses margins',
+      evidence_needed: [
+        'New bookings by segment (Consulting vs Managed Services)',
+        'enterprise IT discretionary spending sentiment',
+        'GenAI pipeline and booking conversion',
+        'employee utilization rates',
+        'consulting billing rates',
+        'operating margin trends'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_10',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: [
+          {
+            question: 'What does ACN do?',
+            answer: 'Accenture provides professional services across consulting, strategy, digital, technology, and operations. It helps large organizations transform their operations and IT systems.'
+          }
+        ],
+        thesisRisk: [
+          {
+            question: 'What would break the ACN thesis?',
+            answer: 'The thesis weakens if corporate clients pull back on discretionary IT and digital transformation projects, or if labor costs increase faster than billing rates.'
+          }
+        ]
+      },
+      phaseTwo: {
+        thesisRisk: {
+          lead: 'The core risk is cyclicality in enterprise IT discretionary budgets and tech bookings conversion.',
+          riskMap: [
+            {
+              label: 'IT spend slowdown',
+              severity: 'High',
+              watch: 'Consulting segment bookings deceleration or deal delay.'
+            },
+            {
+              label: 'Margin pressure',
+              severity: 'Medium',
+              watch: 'Operating margin declines due to employee utilization drops or labor inflation.'
+            },
+            {
+              label: 'GenAI monetization lag',
+              severity: 'Medium',
+              watch: 'GenAI-related bookings fail to translate into substantial revenue growth.'
+            }
+          ],
+          evidenceNeeded: [
+            'New bookings by segment (Consulting vs Managed Services)',
+            'enterprise IT discretionary spending sentiment',
+            'GenAI pipeline and booking conversion',
+            'employee utilization rates',
+            'consulting billing rates',
+            'operating margin trends'
+          ]
+        }
+      }
+    }
+  },
+  ADI: {
+    ticker: 'ADI',
+    companyName: 'Analog Devices, Inc.',
+    exchange: 'NASDAQ',
+    logoUrl: buildStockLogoUrl('ADI'),
+    overview: 'Analog Devices designs, manufactures, and markets high-performance analog, mixed-signal, and digital signal processing integrated circuits.',
+    category: 'Analog Semiconductors',
+    analysisDate: '2026-06-11',
+    latestFiscalPeriod: 'Q2 FY2026 ended 2026-05-02',
+    dossierVerdict: {
+      sourceType: 'curated',
+      asOf: '2026-06-11',
+      researchState: 'semiconductor_cycle_watch',
+      businessQuality: 'high',
+      valuationState: 'not_verified',
+      marketEvidence: 'not_verified',
+      finalRead: 'Analog semiconductor provider where the thesis depends on industrial & automotive demand cycles, fab utilization, and gross margin durability.',
+      keySupport: [
+        'SEC filings describe ADI as a high-performance analog semiconductor provider with long product life cycles.',
+        'Industrial and automotive applications represent the company\'s highest-margin segments.',
+        'Custom design wins create high switching costs and customer integration.'
+      ],
+      keyRisk: [
+        'Cyclical inventory corrections in industrial and automotive channels can depress volume.',
+        'Fab capacity underutilization can quickly lead to gross margin contraction.',
+        'Pricing pressure from competitors or design-win leakage can limit long-term profitability.'
+      ]
+    },
+    valueCore: {
+      ticker: 'ADI',
+      value_core_type: 'Analog semiconductor provider',
+      company_stage_candidate: 'Cyclical compounder',
+      primary_value_driver: 'Industrial & automotive design wins, pricing stability, and gross margin durability',
+      thesis_break_trigger: 'Industrial / automotive demand cyclical downturn, capacity underutilization compresses gross margin, or competitor pricing pressures ASPs',
+      evidence_needed: [
+        'Industrial segment revenue trends',
+        'Automotive segment revenue trends',
+        'gross margin and fab utilization rates',
+        'channel inventory levels',
+        'average selling prices (ASPs)',
+        'design-win pipeline details'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_10',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: [
+          {
+            question: 'What does ADI do?',
+            answer: 'Analog Devices designs and builds analog, mixed-signal, and DSP chips that convert real-world signals (like temperature, pressure, sound, speed) into electrical signals.'
+          }
+        ],
+        thesisRisk: [
+          {
+            question: 'What would break the ADI thesis?',
+            answer: 'The thesis weakens if the industrial or automotive sectors undergo prolonged inventory corrections, causing lower fab utilization and compressing gross margins.'
+          }
+        ]
+      },
+      phaseTwo: {
+        thesisRisk: {
+          lead: 'The primary risk centers on macroeconomic semiconductor cycles and factory utilization operating leverage.',
+          riskMap: [
+            {
+              label: 'Cyclical demand correction',
+              severity: 'High',
+              watch: 'Industrial and automotive segment revenue declines.'
+            },
+            {
+              label: 'Gross margin compression',
+              severity: 'High',
+              watch: 'Gross margin falls below historic ranges due to capacity underutilization.'
+            },
+            {
+              label: 'Competitor pricing / ASP pressure',
+              severity: 'Medium',
+              watch: 'Deterioration in ASPs or competitive displacement in major design wins.'
+            }
+          ],
+          evidenceNeeded: [
+            'Industrial segment revenue trends',
+            'Automotive segment revenue trends',
+            'gross margin and fab utilization rates',
+            'channel inventory levels',
+            'average selling prices (ASPs)',
+            'design-win pipeline details'
+          ]
+        }
+      }
+    }
+  },
+  ADP: {
+    ticker: 'ADP',
+    companyName: 'Automatic Data Processing, Inc.',
+    exchange: 'NASDAQ',
+    logoUrl: buildStockLogoUrl('ADP'),
+    overview: 'ADP provides cloud-based human capital management solutions, encompassing payroll, HR, and benefits administration.',
+    category: 'HCM Solutions / Business Services',
+    analysisDate: '2026-06-11',
+    latestFiscalPeriod: 'Q3 FY2026 ended 2026-03-31',
+    dossierVerdict: {
+      sourceType: 'curated',
+      asOf: '2026-06-11',
+      researchState: 'employment_watch',
+      businessQuality: 'high',
+      valuationState: 'not_verified',
+      marketEvidence: 'not_verified',
+      finalRead: 'Payroll and HCM platform where the thesis depends on client retention, pays-per-control, and client fund float yield.',
+      keySupport: [
+        'SEC filings partition ADP into Employer Services and PEO Services segments.',
+        'The business is highly recurring, driven by long-term customer relationships and payroll processing contracts.',
+        'Cash balances held for client funds generate interest float income, enhancing earnings power.'
+      ],
+      keyRisk: [
+        'Slowdown in employment growth or rising layoffs can reduce pays-per-control volume.',
+        'Declining interest rates can decrease the yield earned on the client cash float.',
+        'Security breaches or system outages in payroll infrastructure can lead to client churn and reputational harm.'
+      ]
+    },
+    valueCore: {
+      ticker: 'ADP',
+      value_core_type: 'HCM software & services platform',
+      company_stage_candidate: 'Established compounder',
+      primary_value_driver: 'Employer Services client retention, pays-per-control growth, and client fund float yields',
+      thesis_break_trigger: 'U.S. employment pays-per-control growth turns negative, interest rate cuts reduce client float yield, or key client retention deteriorates',
+      evidence_needed: [
+        'pays-per-control growth rate',
+        'Employer Services client retention rate',
+        'interest rate yield on client funds float',
+        'PEO average worksite employees growth',
+        'operating margin trends',
+        'IT infrastructure and security spending'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_10',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: [
+          {
+            question: 'What does ADP do?',
+            answer: 'ADP is a global provider of cloud-based human capital management software and services, providing payroll, human resources, talent, and benefits administration.'
+          }
+        ],
+        thesisRisk: [
+          {
+            question: 'What would break the ADP thesis?',
+            answer: 'The thesis weakens if the employment market softens, causing a drop in payroll transaction volumes, or if interest rates fall, reducing float income.'
+          }
+        ]
+      },
+      phaseTwo: {
+        thesisRisk: {
+          lead: 'The primary risk is macroeconomic employment cyclicality and interest rate sensitivity of client funds float.',
+          riskMap: [
+            {
+              label: 'Employment market slowdown',
+              severity: 'High',
+              watch: 'Identity of pays-per-control growth drops near or below zero.'
+            },
+            {
+              label: 'Interest rate cuts / lower float yield',
+              severity: 'Medium',
+              watch: 'Interest income on client funds float falls due to central bank rate cuts.'
+            },
+            {
+              label: 'Client retention deterioration',
+              severity: 'Medium',
+              watch: 'Employer Services retention rate falls below historic 90%+ averages.'
+            }
+          ],
+          evidenceNeeded: [
+            'pays-per-control growth rate',
+            'Employer Services client retention rate',
+            'interest rate yield on client funds float',
+            'PEO average worksite employees growth',
+            'operating margin trends',
+            'IT infrastructure and security spending'
+          ]
+        }
+      }
+    }
+  },
+  ALNY: {
+    ticker: 'ALNY',
+    companyName: 'Alnylam Pharmaceuticals, Inc.',
+    exchange: 'NASDAQ',
+    logoUrl: buildStockLogoUrl('ALNY'),
+    overview: 'Alnylam is a biopharmaceutical company focused on the discovery, development, and commercialization of RNA interference therapeutics.',
+    category: 'Biotech Platform',
+    analysisDate: '2026-06-11',
+    latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
+    dossierVerdict: {
+      sourceType: 'curated',
+      asOf: '2026-06-11',
+      researchState: 'biotech_pipeline_watch',
+      businessQuality: 'medium_high',
+      valuationState: 'not_verified',
+      marketEvidence: 'not_verified',
+      finalRead: 'RNAi biotech platform where the thesis depends on commercial drug revenue growth, pipeline advancement, and regulatory milestones.',
+      keySupport: [
+        'SEC filings track Alnylam as an RNAi biotechnology platform with approved drugs (AMVUTTRA, ONPATTRO, etc.).',
+        'Clinical pipeline programs target genetic, cardio-metabolic, and infectious diseases.',
+        'Collaborations and royalty streams augment product sales revenue.'
+      ],
+      keyRisk: [
+        'Clinical trial setbacks or safety signals can impair asset value and pipeline progress.',
+        'Regulatory delays or failure to secure product approvals can restrict new market access.',
+        'High R&D and commercial launch expenses can accelerate cash burn, requiring dilutive equity issues.'
+      ]
+    },
+    valueCore: {
+      ticker: 'ALNY',
+      value_core_type: 'Biotech platform / RNAi therapeutics',
+      company_stage_candidate: 'Scaling biotech',
+      primary_value_driver: 'Net commercial product sales (AMVUTTRA), clinical trial progression, and regulatory approvals',
+      thesis_break_trigger: 'Clinical trial failures or safety concerns, regulatory delays, commercial drug uptake underperforms, or cash burn forces dilutive financing',
+      evidence_needed: [
+        'commercial product revenue growth (especially AMVUTTRA)',
+        'phase 3 clinical trial readouts',
+        'FDA and international regulatory filing timelines',
+        'R&D and SG&A cash burn rate',
+        'cash runway and financing needs',
+        'intellectual property and patent dispute outcomes'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_10',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: [
+          {
+            question: 'What does ALNY do?',
+            answer: 'Alnylam is a biotech company that pioneered RNA interference (RNAi) therapeutics, translating gene-silencing biology into commercial medicines for rare and chronic diseases.'
+          }
+        ],
+        thesisRisk: [
+          {
+            question: 'What would break the ALNY thesis?',
+            answer: 'The thesis weakens if commercial drug sales slow, clinical trials fail to meet primary endpoints, or drug development costs lead to dilutive capital raises.'
+          }
+        ]
+      },
+      phaseTwo: {
+        thesisRisk: {
+          lead: 'The main risk lies in clinical development execution, regulatory approvals, and commercial drug launch uptake.',
+          riskMap: [
+            {
+              label: 'Clinical trial setbacks',
+              severity: 'High',
+              watch: 'Negative efficacy/safety data in pivotal phase 3 clinical programs.'
+            },
+            {
+              label: 'Regulatory approval delays',
+              severity: 'High',
+              watch: 'FDA complete response letters (CRLs) or delayed filing reviews.'
+            },
+            {
+              label: 'High cash burn & dilution',
+              severity: 'Medium',
+              watch: 'Cash runway shrinks faster than product sales can reach cash-flow break-even.'
+            }
+          ],
+          evidenceNeeded: [
+            'commercial product revenue growth (especially AMVUTTRA)',
+            'phase 3 clinical trial readouts',
+            'FDA and international regulatory filing timelines',
+            'R&D and SG&A cash burn rate',
+            'cash runway and financing needs',
+            'intellectual property and patent dispute outcomes'
+          ]
+        }
+      }
+    }
+  },
+  ANET: {
+    ticker: 'ANET',
+    companyName: 'Arista Networks, Inc.',
+    exchange: 'NYSE',
+    logoUrl: buildStockLogoUrl('ANET'),
+    overview: 'Arista Networks provides software-driven cognitive client-to-cloud networking solutions for data center environments.',
+    category: 'Cloud Networking',
+    analysisDate: '2026-06-11',
+    latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
+    dossierVerdict: {
+      sourceType: 'curated',
+      asOf: '2026-06-11',
+      researchState: 'cloud_capex_watch',
+      businessQuality: 'high',
+      valuationState: 'not_verified',
+      marketEvidence: 'not_verified',
+      finalRead: 'Cloud networking platform where the thesis depends on hyperscaler capex, AI network switching adoption, and gross margin durability.',
+      keySupport: [
+        'SEC filings describe Arista as a supplier of software-driven networking switches using its EOS software.',
+        'Major revenue is generated from cloud titans (Microsoft and Meta), who are key anchors of data center buildouts.',
+        'AI network clustering increases demand for high-speed Ethernet switches and routers.'
+      ],
+      keyRisk: [
+        'Hyperscaler capex consolidation or digestion cycles can lead to sudden order deceleration.',
+        'Customer concentration creates vulnerability to changes in cloud titan procurement and supplier choices.',
+        'Cisco competition or transition to custom white-box switches can compress gross margins.'
+      ]
+    },
+    valueCore: {
+      ticker: 'ANET',
+      value_core_type: 'Cloud networking hardware & software',
+      company_stage_candidate: 'Market leader',
+      primary_value_driver: 'Hyperscaler cloud capex, AI network cluster Ethernet adoption, and gross margin durability',
+      thesis_break_trigger: 'Hyperscaler capex slows materially, customer concentration shifts away from Arista, Ethernet AI networking adoption slows, or gross margin compresses',
+      evidence_needed: [
+        'hyperscaler cloud provider capex guidance',
+        'customer concentration revenue disclosures (Microsoft/Meta)',
+        'AI ethernet network switching volume',
+        'gross margins and hardware/software mix',
+        'supply chain purchase commitments',
+        'Cisco / competitor market share trends'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_10',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: [
+          {
+            question: 'What does ANET do?',
+            answer: 'Arista Networks sells high-speed networking switches and routers powered by its EOS software, primarily used by cloud scale providers and large enterprise data centers.'
+          }
+        ],
+        thesisRisk: [
+          {
+            question: 'What would break the ANET thesis?',
+            answer: 'The thesis weakens if major cloud providers Meta or Microsoft cut data center networking capex, or if AI clusters use InfiniBand over Ethernet networking switches.'
+          }
+        ]
+      },
+      phaseTwo: {
+        thesisRisk: {
+          lead: 'The primary risk is heavy customer concentration and exposure to cloud provider capital expenditure cycles.',
+          riskMap: [
+            {
+              label: 'Hyperscaler capex slowdown',
+              severity: 'High',
+              watch: 'Deceleration in IT capex guides from major cloud platforms.'
+            },
+            {
+              label: 'Customer concentration shift',
+              severity: 'High',
+              watch: 'Microsoft or Meta reducing Arista spend or using internal custom solutions.'
+            },
+            {
+              label: 'AI switching competition',
+              severity: 'Medium',
+              watch: 'InfiniBand capture of AI network connectivity or gross margin erosion.'
+            }
+          ],
+          evidenceNeeded: [
+            'hyperscaler cloud provider capex guidance',
+            'customer concentration revenue disclosures (Microsoft/Meta)',
+            'AI ethernet network switching volume',
+            'gross margins and hardware/software mix',
+            'supply chain purchase commitments',
+            'Cisco / competitor market share trends'
+          ]
+        }
+      }
+    }
+  },
+  APLD: {
+    ticker: 'APLD',
+    companyName: 'Applied Digital Corporation',
+    exchange: 'NASDAQ',
+    logoUrl: buildStockLogoUrl('APLD'),
+    overview: 'Applied Digital designs, builds, and operates data centers and digital infrastructure for high-performance computing and AI.',
+    category: 'Data Center Infrastructure',
+    analysisDate: '2026-06-11',
+    latestFiscalPeriod: 'Q3 FY2026 ended 2026-02-28',
+    dossierVerdict: {
+      sourceType: 'curated',
+      asOf: '2026-06-11',
+      researchState: 'infrastructure_build_watch',
+      businessQuality: 'medium',
+      valuationState: 'not_verified',
+      marketEvidence: 'not_verified',
+      finalRead: 'AI infrastructure hosting provider where the thesis depends on power access, contracted capacity execution, and debt financing.',
+      keySupport: [
+        'SEC filings detail Applied Digital\'s focus on next-generation HPC and GPU hosting infrastructure.',
+        'The company has contracts for GPU colocation services and runs a GPU cloud services segment.',
+        'Securing long-term electrical power capacity at competitive prices is a critical asset.'
+      ],
+      keyRisk: [
+        'Delays in power access or utility grid upgrades can defer data center commission dates and revenue.',
+        'High capital requirements to build out data centers can require dilutive equity issues or high-cost debt.',
+        'Concentrated customer base in GPU cloud and hosting creates credit default risk.'
+      ]
+    },
+    valueCore: {
+      ticker: 'APLD',
+      value_core_type: 'NextGen data center hosting',
+      company_stage_candidate: 'Infrastructure builder',
+      primary_value_driver: 'Power capacity access, data center hosting buildout, GPU cloud revenue, and contract execution',
+      thesis_break_trigger: 'Power utility connection delays, hosting contract execution delays, debt interest cost spikes, or GPU cloud customer credit defaults',
+      evidence_needed: [
+        'contracted megawatts (MW) power capacity',
+        'data center facility buildout timeline',
+        'GPU cloud capacity and pricing',
+        'interest expense and debt financing terms',
+        'major customer creditworthiness',
+        'gross margins by hosting segment'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_10',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: [
+          {
+            question: 'What does APLD do?',
+            answer: 'Applied Digital builds and operates high-power density data centers designed for artificial intelligence, machine learning, and high-performance computing workloads.'
+          }
+        ],
+        thesisRisk: [
+          {
+            question: 'What would break the APLD thesis?',
+            answer: 'The thesis weakens if utility companies delay connecting power to Applied Digital facilities, or if the company fails to secure low-cost debt/equity to finance construction.'
+          }
+        ]
+      },
+      phaseTwo: {
+        thesisRisk: {
+          lead: 'The main risk centers on the execution of capital-intensive data center buildouts and securing power connectivity.',
+          riskMap: [
+            {
+              label: 'Power connection delays',
+              severity: 'High',
+              watch: 'Grid capacity constraints or delayed substation construction by utility partners.'
+            },
+            {
+              label: 'Financing & interest costs',
+              severity: 'High',
+              watch: 'High-interest debt issuances or share dilution to fund capital expenditures.'
+            },
+            {
+              label: 'Customer concentration & default',
+              severity: 'Medium',
+              watch: 'Major GPU hosting tenants deferring payments or defaulting.'
+            }
+          ],
+          evidenceNeeded: [
+            'contracted megawatts (MW) power capacity',
+            'data center facility buildout timeline',
+            'GPU cloud capacity and pricing',
+            'interest expense and debt financing terms',
+            'major customer creditworthiness',
+            'gross margins by hosting segment'
+          ]
+        }
+      }
+    }
+  },
+  APP: {
+    ticker: 'APP',
+    companyName: 'AppLovin Corporation',
+    exchange: 'NASDAQ',
+    logoUrl: buildStockLogoUrl('APP'),
+    overview: 'AppLovin provides a software platform for mobile developers to monetize and market their apps, alongside owned mobile games.',
+    category: 'Mobile Advertising / Software Platform',
+    analysisDate: '2026-06-11',
+    latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
+    dossierVerdict: {
+      sourceType: 'curated',
+      asOf: '2026-06-11',
+      researchState: 'software_platform_watch',
+      businessQuality: 'high',
+      valuationState: 'not_verified',
+      marketEvidence: 'not_verified',
+      finalRead: 'Mobile advertising platform where the thesis depends on AXON recommendation engine efficiency, advertising budgets, and mobile game margin stability.',
+      keySupport: [
+        'SEC filings structure AppLovin into Software Platform and Apps segments.',
+        'Software Platform growth is driven by the AXON machine learning engine, which optimizes mobile ad campaigns.',
+        'A highly recurring customer base consists of mobile app developers and advertisers.'
+      ],
+      keyRisk: [
+        'AXON engine efficiency deterioration can reduce ad optimization, lowering ROI for developers.',
+        'Slowing global digital advertising spend can compress software segment growth.',
+        'App store policy changes regarding privacy (Apple/Google tracking rules) can restrict ad targeting.'
+      ]
+    },
+    valueCore: {
+      ticker: 'APP',
+      value_core_type: 'Mobile ad software platform',
+      company_stage_candidate: 'Scaling software platform',
+      primary_value_driver: 'Software Platform revenue growth, AXON engine efficiency, and Apps segment EBITDA margins',
+      thesis_break_trigger: 'AXON optimization performance degrades, mobile developer marketing budgets shrink, mobile game EBITDA decays, or App Store privacy rules restrict targeting',
+      evidence_needed: [
+        'Software Platform segment revenue growth',
+        'Apps segment EBITDA margin',
+        'AXON model update disclosures',
+        'average revenue per active user trends',
+        'operating cash flow margins',
+        'mobile OS privacy / tracking policy changes'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_10',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: [
+          {
+            question: 'What does APP do?',
+            answer: 'AppLovin provides software to help mobile game and app developers market and monetize their products. It also operates a portfolio of free-to-play mobile games.'
+          }
+        ],
+        thesisRisk: [
+          {
+            question: 'What would break the APP thesis?',
+            answer: 'The thesis weakens if AppLovin\'s AXON AI engine loses attribution efficiency, or if OS privacy updates from Apple/Google disrupt mobile ad tracking and targeting.'
+          }
+        ]
+      },
+      phaseTwo: {
+        thesisRisk: {
+          lead: 'The core risk relates to AI attribution algorithms, advertiser demand, and mobile OS policy changes.',
+          riskMap: [
+            {
+              label: 'AXON efficiency loss',
+              severity: 'High',
+              watch: 'Decline in Software Platform organic growth rate or ROI metrics.'
+            },
+            {
+              label: 'OS privacy and tracking changes',
+              severity: 'High',
+              watch: 'New restrictions on user identifier data from Apple iOS or Google Android.'
+            },
+            {
+              label: 'Ad budget contractions',
+              severity: 'Medium',
+              watch: 'Macro downturn in mobile gaming industry marketing expenditures.'
+            }
+          ],
+          evidenceNeeded: [
+            'Software Platform segment revenue growth',
+            'Apps segment EBITDA margin',
+            'AXON model update disclosures',
+            'average revenue per active user trends',
+            'operating cash flow margins',
+            'mobile OS privacy / tracking policy changes'
+          ]
+        }
+      }
+    }
+  },
+  ARCC: {
+    ticker: 'ARCC',
+    companyName: 'Ares Capital Corporation',
+    exchange: 'NASDAQ',
+    logoUrl: buildStockLogoUrl('ARCC'),
+    overview: 'Ares Capital is a specialty finance company operating as a business development company, providing debt and equity financing to middle-market companies.',
+    category: 'Private Credit BDC',
+    analysisDate: '2026-06-11',
+    latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
+    dossierVerdict: {
+      sourceType: 'curated',
+      asOf: '2026-06-11',
+      researchState: 'credit_cycle_watch',
+      businessQuality: 'high',
+      valuationState: 'not_verified',
+      marketEvidence: 'not_verified',
+      finalRead: 'Private credit BDC where the thesis depends on Net Asset Value stability, non-accrual loan rates, and credit spreads.',
+      keySupport: [
+        'SEC filings identify ARCC as a Closed-End Business Development Company (BDC) managed by Ares Capital Management.',
+        'The loan portfolio is primarily senior secured loans, mitigating credit default risk.',
+        'Net investment income supports BDC dividend coverage and shareholder returns.'
+      ],
+      keyRisk: [
+        'Deterioration in middle-market credit quality can lead to rising non-accrual loans and NAV write-downs.',
+        'Credit spread compression can reduce net investment income yield.',
+        'Interest rate fluctuations can impact borrower repayment ability and BDC net interest margins.'
+      ]
+    },
+    valueCore: {
+      ticker: 'ARCC',
+      value_core_type: 'Private credit BDC',
+      company_stage_candidate: 'Established income platform',
+      primary_value_driver: 'Net Asset Value (NAV) stability, net investment income yield, and credit quality',
+      thesis_break_trigger: 'Non-accruals increase materially, NAV decays, net investment income dividend coverage falls, or credit spreads compress sharply',
+      evidence_needed: [
+        'Net Asset Value (NAV) per share',
+        'non-accrual loan percentage of portfolio',
+        'net investment income (NII) dividend coverage ratio',
+        'weighted average portfolio yield',
+        'leverage ratio and debt-to-equity headroom',
+        'portfolio mix (senior secured vs subordinated)'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_10',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: [
+          {
+            question: 'What does ARCC do?',
+            answer: 'Ares Capital Corporation is a closed-end business development company that acts as a lender, providing financing to private middle-market businesses in the US.'
+          }
+        ],
+        thesisRisk: [
+          {
+            question: 'What would break the ARCC thesis?',
+            answer: 'The thesis weakens if default rates rise among middle-market borrowers, causing non-accruals to spike and eroding Ares Capital\'s NAV per share.'
+          }
+        ]
+      },
+      phaseTwo: {
+        thesisRisk: {
+          lead: 'The main risk lies in credit default cycles within middle-market borrowers and leverage limit constraints.',
+          riskMap: [
+            {
+              label: 'Credit quality decay / non-accruals',
+              severity: 'High',
+              watch: 'Non-accrual loans as a percentage of total portfolio rises above historical averages.'
+            },
+            {
+              label: 'Net Asset Value contraction',
+              severity: 'High',
+              watch: 'Quarterly NAV per share writes down due to portfolio asset valuation impairments.'
+            },
+            {
+              label: 'Dividend coverage erosion',
+              severity: 'Medium',
+              watch: 'Net investment income falls below declared dividends.'
+            }
+          ],
+          evidenceNeeded: [
+            'Net Asset Value (NAV) per share',
+            'non-accrual loan percentage of portfolio',
+            'net investment income (NII) dividend coverage ratio',
+            'weighted average portfolio yield',
+            'leverage ratio and debt-to-equity headroom',
+            'portfolio mix (senior secured vs subordinated)'
+          ]
+        }
+      }
+    }
   }
 };
 
