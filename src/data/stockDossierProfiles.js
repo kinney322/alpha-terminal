@@ -405,6 +405,511 @@ const stockDossierProfiles = {
         ]
       }
     ]
+  },
+  NVDA: {
+    ticker: 'NVDA',
+    companyName: 'NVIDIA Corporation',
+    exchange: 'NASDAQ',
+    logoUrl: buildStockLogoUrl('NVDA'),
+    overview:
+      'NVIDIA is an accelerated computing platform company centered on data-center AI infrastructure, compute, networking, and edge computing platforms.',
+    category: 'AI Compute / Accelerated Computing',
+    analysisDate: '2026-06-10',
+    latestFiscalPeriod: 'Q1 FY2027 ended 2026-04-26',
+    dossierVerdict: {
+      sourceType: 'curated',
+      asOf: '2026-06-10',
+      researchState: 'ai_infrastructure_watch',
+      businessQuality: 'high',
+      valuationState: 'not_verified',
+      marketEvidence: 'not_verified',
+      finalRead: 'Platform leader in accelerated computing, with thesis risk tied to AI capex durability and margin normalization.',
+      keySupport: [
+        'NVIDIA reported record Q1 FY2027 revenue and record Data Center revenue in its official earnings release.',
+        'SEC filings describe accelerated computing, Data Center, and Edge Computing as core platform areas.',
+        'The business is positioned around AI factories, hyperscale demand, AI clouds, industrial AI, enterprise AI, and edge AI.'
+      ],
+      keyRisk: [
+        'AI data-center demand could slow after a large capex cycle.',
+        'Gross margin could normalize if supply-demand balance becomes less favorable.',
+        'Major customers may increase custom silicon or internal accelerator usage.',
+        'Export controls and geopolitics can limit revenue opportunity in restricted markets.'
+      ]
+    },
+    quickFacts: [
+      { label: 'Business Model', value: 'Semiconductor platform / accelerated computing ecosystem' },
+      { label: 'Primary Segment', value: 'Data Center' },
+      { label: 'Current Evidence', value: 'Q1 FY2027 record revenue' },
+      { label: 'Main Monitor', value: 'AI data-center demand durability' }
+    ],
+    marketEvidence: {
+      title: 'AI infrastructure evidence is strong, but market expectations are demanding.',
+      points: [
+        'Data Center growth is the core evidence point to monitor.',
+        'Networking attach and platform breadth matter beside GPU demand.',
+        'Momentum is not the same as proof that future AI capex will keep accelerating.'
+      ]
+    },
+    valueCore: {
+      ticker: 'NVDA',
+      value_core_type: 'AI compute / accelerated computing platform',
+      company_stage_candidate: 'Platform leader',
+      primary_value_driver: 'Data Center accelerated computing demand, networking attach, and AI platform ecosystem scale',
+      thesis_break_trigger: 'AI data-center demand slows materially, gross margin normalizes faster than expected, major customers shift more spend to internal silicon, or export controls materially reduce growth',
+      evidence_needed: [
+        'Data Center revenue growth',
+        'compute and networking demand',
+        'gross margin durability',
+        'hyperscaler / AI-cloud capex signal',
+        'supply and capacity commitments',
+        'export-control impact'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_1',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q and NVIDIA official earnings release'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: [
+          {
+            question: 'What does NVDA do?',
+            answer: 'NVIDIA builds accelerated computing platforms for AI data centers, networking, and edge computing. CrowdRisk treats it as an AI compute platform rather than a simple chip-only company.'
+          }
+        ],
+        thesisRisk: [
+          {
+            question: 'What would break the NVDA thesis?',
+            answer: 'The thesis weakens if AI data-center demand slows, gross margin normalizes faster than expected, major customers move more spend to internal silicon, or export controls materially reduce growth.'
+          }
+        ]
+      },
+      phaseTwo: {
+        thesisRisk: {
+          lead: 'The main risk is whether AI infrastructure demand, margin durability, and customer dependence continue to justify platform-leader expectations.',
+          riskMap: [
+            { label: 'AI capex digestion', severity: 'High', watch: 'Data Center growth decelerates or order visibility weakens.' },
+            { label: 'Margin normalization', severity: 'High', watch: 'Gross margin falls faster than platform mix can offset.' },
+            { label: 'Customer concentration / custom silicon', severity: 'High', watch: 'Hyperscalers reduce NVIDIA share of incremental AI spend.' },
+            { label: 'Export controls / geopolitics', severity: 'Medium', watch: 'Restricted-region revenue remains excluded or impaired.' }
+          ],
+          evidenceNeeded: [
+            'Data Center revenue growth',
+            'compute and networking demand',
+            'gross margin durability',
+            'hyperscaler / AI-cloud capex signal',
+            'supply and capacity commitments',
+            'export-control impact'
+          ]
+        }
+      }
+    }
+  },
+  AMZN: {
+    ticker: 'AMZN',
+    companyName: 'Amazon.com, Inc.',
+    exchange: 'NASDAQ',
+    logoUrl: buildStockLogoUrl('AMZN'),
+    overview:
+      'Amazon operates a multi-segment platform across North America retail, International retail, and AWS, serving consumers, sellers, developers, enterprises, content creators, advertisers, and employees.',
+    category: 'Cloud / Commerce / Advertising Platform',
+    analysisDate: '2026-06-10',
+    latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
+    dossierVerdict: {
+      sourceType: 'curated',
+      asOf: '2026-06-10',
+      researchState: 'platform_watch',
+      businessQuality: 'high',
+      valuationState: 'not_verified',
+      marketEvidence: 'not_verified',
+      finalRead: 'Mega-cap platform where AWS growth, retail operating leverage, advertising monetization, and capex discipline need to move together.',
+      keySupport: [
+        'SEC filings organize Amazon around North America, International, and AWS segments.',
+        'The business serves consumers, sellers, developers, enterprises, content creators, advertisers, and employees.',
+        'AWS remains the cleanest economic engine to monitor beside retail scale and advertising monetization.'
+      ],
+      keyRisk: [
+        'AWS growth or margins could weaken.',
+        'Retail margin improvement could reverse.',
+        'AI infrastructure and fulfillment capex can pressure free cash flow.',
+        'Regulatory and antitrust pressure can limit platform economics.'
+      ]
+    },
+    quickFacts: [
+      { label: 'Business Model', value: 'Commerce platform + cloud infrastructure + advertising' },
+      { label: 'Segments', value: 'North America / International / AWS' },
+      { label: 'Primary Value Driver', value: 'AWS growth and platform operating leverage' },
+      { label: 'Main Monitor', value: 'AWS growth, retail margin, capex intensity' }
+    ],
+    marketEvidence: {
+      title: 'Amazon is a platform-quality story, but the evidence must be read by segment.',
+      points: [
+        'AWS economics should be separated from retail scale.',
+        'Advertising monetization is an important layer on top of marketplace traffic.',
+        'AI and logistics capex discipline matters for free-cash-flow quality.'
+      ]
+    },
+    valueCore: {
+      ticker: 'AMZN',
+      value_core_type: 'Cloud + commerce + advertising platform',
+      company_stage_candidate: 'Mega-cap platform',
+      primary_value_driver: 'AWS growth and margins, advertising monetization, Prime / marketplace scale, and retail operating leverage',
+      thesis_break_trigger: 'AWS growth or margin weakens, retail margin improvement reverses, AI / logistics capex overwhelms cash generation, or regulatory pressure materially limits platform economics',
+      evidence_needed: [
+        'AWS revenue growth and operating margin',
+        'North America retail operating leverage',
+        'International profitability',
+        'advertising services growth',
+        'AI and fulfillment capex intensity',
+        'regulatory / antitrust exposure'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_1',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: [
+          {
+            question: 'What does AMZN do?',
+            answer: 'Amazon runs a large platform across retail, marketplace, advertising, subscriptions, and AWS cloud infrastructure. CrowdRisk reads it by segment, because AWS economics are different from retail scale.'
+          }
+        ],
+        thesisRisk: [
+          {
+            question: 'What would break the AMZN thesis?',
+            answer: 'The thesis weakens if AWS growth or margins slow, retail margin improvement reverses, AI and logistics capex overwhelm cash generation, or regulation limits platform economics.'
+          }
+        ]
+      },
+      phaseTwo: {
+        thesisRisk: {
+          lead: 'The main risk is whether AWS, retail margin, advertising, and capex discipline keep supporting one platform story.',
+          riskMap: [
+            { label: 'AWS deceleration', severity: 'High', watch: 'AWS revenue growth or operating income contribution weakens.' },
+            { label: 'Retail margin reversal', severity: 'Medium', watch: 'North America and International operating leverage stalls.' },
+            { label: 'Capex intensity', severity: 'Medium', watch: 'AI infrastructure and fulfillment investment pressure free cash flow.' },
+            { label: 'Regulatory / antitrust', severity: 'Medium', watch: 'Platform remedies, marketplace rules, or cloud regulation pressure growth or margins.' }
+          ],
+          evidenceNeeded: [
+            'AWS revenue growth and operating margin',
+            'North America retail operating leverage',
+            'International profitability',
+            'advertising services growth',
+            'AI and fulfillment capex intensity',
+            'regulatory / antitrust exposure'
+          ]
+        }
+      }
+    }
+  },
+  MRVL: {
+    ticker: 'MRVL',
+    companyName: 'Marvell Technology, Inc.',
+    exchange: 'NASDAQ',
+    logoUrl: buildStockLogoUrl('MRVL'),
+    overview:
+      'Marvell is a data infrastructure semiconductor supplier with exposure to data center, cloud, communications, custom silicon, connectivity, and optical / interconnect demand.',
+    category: 'Data Infrastructure Semiconductor',
+    analysisDate: '2026-06-10',
+    latestFiscalPeriod: 'Q1 FY2027 ended 2026-05-02',
+    dossierVerdict: {
+      sourceType: 'curated',
+      asOf: '2026-06-10',
+      researchState: 'ai_data_center_watch',
+      businessQuality: 'medium_high',
+      valuationState: 'not_verified',
+      marketEvidence: 'not_verified',
+      finalRead: 'AI data-center semiconductor ramp with meaningful upside if custom silicon and connectivity demand convert into durable revenue.',
+      keySupport: [
+        'SEC filings describe Marvell as a data infrastructure semiconductor supplier.',
+        'Current filings reference data-center, AI, cloud, connectivity, and custom-silicon opportunities.',
+        'The core research question is whether AI-related design wins convert into durable revenue.'
+      ],
+      keyRisk: [
+        'AI custom-silicon ramps can slip or underdeliver.',
+        'Customer concentration can reduce revenue visibility.',
+        'Non-AI semiconductor cycles can offset data-center strength.',
+        'Acquisitions and product transitions can pressure margins or execution.'
+      ]
+    },
+    quickFacts: [
+      { label: 'Business Model', value: 'Semiconductor supplier / data infrastructure silicon' },
+      { label: 'Core Exposure', value: 'Data center / custom silicon / connectivity' },
+      { label: 'Primary Value Driver', value: 'AI data-center silicon ramp' },
+      { label: 'Main Monitor', value: 'Design-win conversion and customer concentration' }
+    ],
+    marketEvidence: {
+      title: 'Marvell needs AI bookings and design wins to become durable revenue.',
+      points: [
+        'Data-center mix is the key evidence point.',
+        'Custom silicon and optical connectivity are central to the AI infrastructure thesis.',
+        'Non-AI cyclicality can still offset the headline AI story.'
+      ]
+    },
+    valueCore: {
+      ticker: 'MRVL',
+      value_core_type: 'Data infrastructure semiconductor',
+      company_stage_candidate: 'AI data-center ramp',
+      primary_value_driver: 'AI data-center custom silicon, networking, optical connectivity, and cloud data infrastructure ramps',
+      thesis_break_trigger: 'AI data-center ramp disappoints, custom silicon wins fail to convert into revenue, customer concentration hurts visibility, or non-AI cyclicality offsets AI growth',
+      evidence_needed: [
+        'data-center revenue mix',
+        'AI custom silicon ramp',
+        'optical / interconnect demand',
+        'design-win conversion',
+        'customer concentration',
+        'inventory and non-data-center cycle'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_1',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: [
+          {
+            question: 'What does MRVL do?',
+            answer: 'Marvell supplies data infrastructure semiconductors for data-center, cloud, communications, custom silicon, connectivity, and optical interconnect use cases.'
+          }
+        ],
+        thesisRisk: [
+          {
+            question: 'What would break the MRVL thesis?',
+            answer: 'The thesis weakens if AI data-center ramps disappoint, custom silicon wins do not convert into revenue, customer concentration hurts visibility, or non-AI cycles offset AI growth.'
+          }
+        ]
+      },
+      phaseTwo: {
+        thesisRisk: {
+          lead: 'The main risk is whether AI custom silicon, networking, and optical connectivity demand becomes durable revenue rather than a short-cycle ramp.',
+          riskMap: [
+            { label: 'AI ramp timing', severity: 'High', watch: 'Data-center and custom silicon growth fails to match bookings or design-win expectations.' },
+            { label: 'Customer concentration', severity: 'High', watch: 'Revenue depends too heavily on a small number of large cloud / infrastructure customers.' },
+            { label: 'Cycle offset', severity: 'Medium', watch: 'Carrier, enterprise, or storage weakness offsets AI data-center strength.' },
+            { label: 'Execution / integration', severity: 'Medium', watch: 'Acquisitions, product transitions, or supply constraints pressure margins or delivery.' }
+          ],
+          evidenceNeeded: [
+            'data-center revenue mix',
+            'AI custom silicon ramp',
+            'optical / interconnect demand',
+            'design-win conversion',
+            'customer concentration',
+            'inventory and non-data-center cycle'
+          ]
+        }
+      }
+    }
+  },
+  PLTR: {
+    ticker: 'PLTR',
+    companyName: 'Palantir Technologies Inc.',
+    exchange: 'NASDAQ',
+    logoUrl: buildStockLogoUrl('PLTR'),
+    overview:
+      'Palantir builds software platforms for data integration, operations, analytics, and AI workflows across government and commercial customers, including Gotham, Foundry, Apollo, and AIP.',
+    category: 'AI Software / Data Operating System',
+    analysisDate: '2026-06-10',
+    latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
+    dossierVerdict: {
+      sourceType: 'curated',
+      asOf: '2026-06-10',
+      researchState: 'ai_software_watch',
+      businessQuality: 'high',
+      valuationState: 'not_verified',
+      marketEvidence: 'not_verified',
+      finalRead: 'AI software platform where the thesis depends on commercial expansion, government durability, and AIP monetization.',
+      keySupport: [
+        'SEC filings identify Gotham, Foundry, Apollo, and AIP as Palantir software platforms.',
+        'The company serves both government and commercial customers.',
+        'AIP adoption and workflow embedding are central evidence points for the current thesis.'
+      ],
+      keyRisk: [
+        'Commercial expansion can slow after high-growth periods.',
+        'Government contract timing and concentration can create volatility.',
+        'AIP pilots need to convert into durable production revenue.',
+        'Premium expectations require growth and margin evidence to keep improving.'
+      ]
+    },
+    quickFacts: [
+      { label: 'Business Model', value: 'Enterprise / government software platform' },
+      { label: 'Core Platforms', value: 'Gotham / Foundry / Apollo / AIP' },
+      { label: 'Primary Value Driver', value: 'AIP adoption and platform embedding' },
+      { label: 'Main Monitor', value: 'Commercial expansion and government durability' }
+    ],
+    marketEvidence: {
+      title: 'Palantir is an AI software platform thesis, but adoption must become durable revenue.',
+      points: [
+        'AIP is the central product evidence point.',
+        'Commercial expansion and government durability should be monitored separately.',
+        'Premium expectations make the evidence bar high.'
+      ]
+    },
+    valueCore: {
+      ticker: 'PLTR',
+      value_core_type: 'AI software / data operating system',
+      company_stage_candidate: 'Scaling platform',
+      primary_value_driver: 'AIP adoption, commercial expansion, government durability, and platform embedding into mission-critical workflows',
+      thesis_break_trigger: 'Commercial expansion slows, government contract growth weakens, AIP adoption fails to convert into durable revenue, or valuation expectations outrun evidence',
+      evidence_needed: [
+        'U.S. commercial revenue growth',
+        'government contract durability',
+        'AIP adoption and usage',
+        'remaining deal value / contract conversion',
+        'GAAP profitability and SBC discipline',
+        'customer concentration and procurement timing'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_1',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: [
+          {
+            question: 'What does PLTR do?',
+            answer: 'Palantir provides data integration, operations, analytics, and AI workflow platforms for government and commercial customers through Gotham, Foundry, Apollo, and AIP.'
+          }
+        ],
+        thesisRisk: [
+          {
+            question: 'What would break the PLTR thesis?',
+            answer: 'The thesis weakens if commercial expansion slows, government contract growth weakens, AIP adoption fails to convert into durable revenue, or valuation expectations outrun evidence.'
+          }
+        ]
+      },
+      phaseTwo: {
+        thesisRisk: {
+          lead: 'The main risk is whether AIP adoption and platform embedding can keep converting into durable commercial and government revenue.',
+          riskMap: [
+            { label: 'Commercial durability', severity: 'High', watch: 'U.S. commercial growth slows or customer expansion weakens.' },
+            { label: 'Government concentration', severity: 'Medium', watch: 'Large government contracts become less predictable or procurement slows.' },
+            { label: 'AIP monetization', severity: 'High', watch: 'AIP demos and pilots fail to convert into durable production revenue.' },
+            { label: 'Valuation / SBC tolerance', severity: 'Medium', watch: 'Growth and margin evidence fails to support premium expectations.' }
+          ],
+          evidenceNeeded: [
+            'U.S. commercial revenue growth',
+            'government contract durability',
+            'AIP adoption and usage',
+            'remaining deal value / contract conversion',
+            'GAAP profitability and SBC discipline',
+            'customer concentration and procurement timing'
+          ]
+        }
+      }
+    }
+  },
+  NOW: {
+    ticker: 'NOW',
+    companyName: 'ServiceNow, Inc.',
+    exchange: 'NYSE',
+    logoUrl: buildStockLogoUrl('NOW'),
+    overview:
+      'ServiceNow provides an AI platform and workflow software that helps organizations govern, secure, manage AI, and digitize workflows across enterprise functions.',
+    category: 'Enterprise Workflow SaaS / AI Platform',
+    analysisDate: '2026-06-10',
+    latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
+    dossierVerdict: {
+      sourceType: 'curated',
+      asOf: '2026-06-10',
+      researchState: 'enterprise_software_watch',
+      businessQuality: 'high',
+      valuationState: 'not_verified',
+      marketEvidence: 'not_verified',
+      finalRead: 'Enterprise workflow platform where subscription durability, platform breadth, and AI workflow monetization need to keep compounding.',
+      keySupport: [
+        'SEC filings describe ServiceNow as helping organizations govern, secure, and manage AI while digitizing workflows.',
+        'Subscription revenue is the core business model evidence point.',
+        'The ServiceNow AI Platform is the central platform framing for current research.'
+      ],
+      keyRisk: [
+        'Subscription growth or cRPO can decelerate.',
+        'Large enterprise budget pressure can delay deals or weaken renewals.',
+        'AI workflow monetization may not become material enough to support premium expectations.',
+        'Workflow and platform competition can pressure pricing or win rates.'
+      ]
+    },
+    quickFacts: [
+      { label: 'Business Model', value: 'Subscription enterprise workflow SaaS' },
+      { label: 'Platform', value: 'ServiceNow AI Platform' },
+      { label: 'Primary Value Driver', value: 'Subscription growth and workflow expansion' },
+      { label: 'Main Monitor', value: 'cRPO, renewal quality, AI monetization' }
+    ],
+    marketEvidence: {
+      title: 'ServiceNow is a workflow platform thesis, not just a software growth screen.',
+      points: [
+        'Subscription growth is the core evidence point.',
+        'Workflow expansion and AI monetization need to show up in durable demand.',
+        'Enterprise budget pressure can matter even when product quality is high.'
+      ]
+    },
+    valueCore: {
+      ticker: 'NOW',
+      value_core_type: 'Enterprise workflow SaaS / AI platform',
+      company_stage_candidate: 'Scaling enterprise platform',
+      primary_value_driver: 'Subscription revenue growth, renewal / expansion durability, workflow platform breadth, and AI workflow automation adoption',
+      thesis_break_trigger: 'Subscription growth slows, renewal / expansion weakens, AI workflow monetization disappoints, or premium multiple compresses because enterprise IT demand softens',
+      evidence_needed: [
+        'subscription revenue growth',
+        'current remaining performance obligations',
+        'large-customer expansion',
+        'workflow module adoption',
+        'AI product monetization',
+        'renewal rates and enterprise IT budget pressure'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_1',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: [
+          {
+            question: 'What does NOW do?',
+            answer: 'ServiceNow provides enterprise workflow software and an AI platform that helps organizations govern, secure, manage AI, and digitize work across business functions.'
+          }
+        ],
+        thesisRisk: [
+          {
+            question: 'What would break the NOW thesis?',
+            answer: 'The thesis weakens if subscription growth slows, renewal or expansion weakens, AI workflow monetization disappoints, or premium expectations compress because enterprise IT demand softens.'
+          }
+        ]
+      },
+      phaseTwo: {
+        thesisRisk: {
+          lead: 'The main risk is whether subscription growth, workflow expansion, and AI monetization remain durable enough for a premium enterprise-software platform.',
+          riskMap: [
+            { label: 'Subscription growth', severity: 'High', watch: 'Subscription revenue or cRPO growth decelerates.' },
+            { label: 'Enterprise budget pressure', severity: 'Medium', watch: 'Large enterprise deals elongate or renewals weaken.' },
+            { label: 'AI monetization', severity: 'Medium', watch: 'AI workflow products do not convert into material incremental demand.' },
+            { label: 'Platform competition', severity: 'Medium', watch: 'Workflow, automation, or AI platform competition pressures win rates or pricing.' }
+          ],
+          evidenceNeeded: [
+            'subscription revenue growth',
+            'current remaining performance obligations',
+            'large-customer expansion',
+            'workflow module adoption',
+            'AI product monetization',
+            'renewal rates and enterprise IT budget pressure'
+          ]
+        }
+      }
+    }
   }
 };
 

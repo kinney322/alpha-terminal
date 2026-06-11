@@ -7,9 +7,9 @@ const NOT_VERIFIED_EN = 'CrowdRisk cannot answer this with verified data yet.';
 const NOT_VERIFIED_ZH = 'CrowdRisk 目前未能用已驗證資料回答這個問題。';
 const TICKER_STOPWORDS = new Set([
   'A', 'AN', 'AND', 'ARE', 'AS', 'CAP', 'CHEAP', 'CROWRISK', 'DAY', 'DAYS', 'DO', 'DOES',
-  'EARNINGS', 'EXPENSIVE', 'FOR', 'FROM', 'HOW', 'IN', 'IS', 'MARKET', 'MONTH', 'MOMENTUM',
-  'OF', 'OR', 'OUTSTANDING', 'PRICE', 'RANK', 'REASONABLE', 'RETURN', 'SHARE', 'SHARES',
-  'TARGET', 'THE', 'TO', 'VALUATION', 'WEEK', 'WHAT'
+  'BREAK', 'EARNINGS', 'EXPENSIVE', 'FOR', 'FROM', 'HOW', 'IN', 'IS', 'MARKET', 'MONTH',
+  'MOMENTUM', 'OF', 'OR', 'OUTSTANDING', 'PRICE', 'RANK', 'REASONABLE', 'RETURN', 'RISK',
+  'SHARE', 'SHARES', 'TARGET', 'THE', 'THESIS', 'TO', 'VALUATION', 'WEEK', 'WHAT', 'WOULD'
 ]);
 
 const normalizeTicker = (value) => String(value || '').trim().toUpperCase();
