@@ -910,6 +910,511 @@ const stockDossierProfiles = {
         }
       }
     }
+  },
+  AMD: {
+    ticker: 'AMD',
+    companyName: 'Advanced Micro Devices, Inc.',
+    exchange: 'NASDAQ',
+    logoUrl: buildStockLogoUrl('AMD'),
+    overview:
+      'AMD is a high-performance semiconductor company with data-center CPUs, GPUs, AI accelerators, adaptive computing products, embedded processors, and client / gaming semiconductor exposure.',
+    category: 'AI Compute / Semiconductor Platform',
+    analysisDate: '2026-06-10',
+    latestFiscalPeriod: 'Q1 2026 ended 2026-03-28',
+    dossierVerdict: {
+      sourceType: 'curated',
+      asOf: '2026-06-10',
+      researchState: 'ai_compute_watch',
+      businessQuality: 'medium_high',
+      valuationState: 'not_verified',
+      marketEvidence: 'not_verified',
+      finalRead: 'AI compute and data-center semiconductor platform where the thesis depends on Instinct GPU ramp, EPYC server share, and margin durability.',
+      keySupport: [
+        'SEC filings identify AMD as a high-performance semiconductor company with Data Center, Client and Gaming, and Embedded segments.',
+        'The Data Center segment includes server CPUs, GPUs, AI accelerators, DPUs, AI NICs, FPGAs, and adaptive SoCs.',
+        'The research case centers on whether EPYC and Instinct can keep converting AI and cloud infrastructure demand into durable revenue.'
+      ],
+      keyRisk: [
+        'AI accelerator ramp or customer deployments can disappoint.',
+        'GPU software ecosystem gaps can limit adoption versus incumbent platforms.',
+        'Client, gaming, and embedded cyclicality can offset data-center strength.',
+        'Competition can pressure share gains, pricing, and gross margin.'
+      ]
+    },
+    quickFacts: [
+      { label: 'Business Model', value: 'Semiconductor platform' },
+      { label: 'Core Exposure', value: 'Data center CPU / GPU / AI accelerator' },
+      { label: 'Primary Value Driver', value: 'Instinct GPU ramp and EPYC share gains' },
+      { label: 'Main Monitor', value: 'Data Center growth, gross margin, AI customer adoption' }
+    ],
+    marketEvidence: {
+      title: 'AMD needs data-center AI demand to convert into durable platform revenue.',
+      points: [
+        'Instinct GPU adoption and customer deployment evidence matter more than headline AI excitement.',
+        'EPYC server CPU share gains remain a separate durability signal.',
+        'Client, gaming, and embedded cycles should be monitored beside the AI data-center story.'
+      ]
+    },
+    valueCore: {
+      ticker: 'AMD',
+      value_core_type: 'AI compute / semiconductor platform',
+      company_stage_candidate: 'Data-center AI ramp',
+      primary_value_driver: 'Data Center CPU / GPU / AI accelerator demand, EPYC server share gains, Instinct GPU adoption, and embedded / adaptive computing contribution',
+      thesis_break_trigger: 'AI data-center ramp disappoints, EPYC share gains stall, GPU software ecosystem remains a barrier, gross margin is pressured, or client / gaming cyclicality offsets data-center growth',
+      evidence_needed: [
+        'Data Center revenue growth and mix',
+        'Instinct GPU shipment / customer adoption evidence',
+        'EPYC server CPU share and cloud wins',
+        'gross margin trend',
+        'customer inventory and channel normalization signals',
+        'client / gaming / embedded cycle evidence'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_2',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: [
+          {
+            question: 'What does AMD do?',
+            answer: 'AMD designs high-performance semiconductors, including server CPUs, GPUs, AI accelerators, adaptive computing products, embedded processors, and client / gaming chips. CrowdRisk reads AMD mainly through the data-center AI ramp and EPYC server share evidence.'
+          }
+        ],
+        thesisRisk: [
+          {
+            question: 'What would break the AMD thesis?',
+            answer: 'The thesis weakens if AI data-center demand disappoints, EPYC share gains stall, GPU software remains a barrier, gross margin is pressured, or client and gaming cycles offset data-center strength.'
+          }
+        ]
+      },
+      phaseTwo: {
+        thesisRisk: {
+          lead: 'The main risk is whether AMD can turn AI and cloud infrastructure demand into durable data-center revenue and margin expansion.',
+          riskMap: [
+            { label: 'AI accelerator ramp', severity: 'High', watch: 'Instinct deployments, customer adoption, and shipment evidence fail to build.' },
+            { label: 'EPYC share gains', severity: 'High', watch: 'Server CPU share or cloud wins stall.' },
+            { label: 'Software ecosystem', severity: 'Medium', watch: 'GPU software and developer ecosystem remain adoption barriers.' },
+            { label: 'Cycle offset', severity: 'Medium', watch: 'Client, gaming, or embedded weakness offsets data-center growth.' }
+          ],
+          evidenceNeeded: [
+            'Data Center revenue growth and mix',
+            'Instinct GPU shipment / customer adoption evidence',
+            'EPYC server CPU share and cloud wins',
+            'gross margin trend',
+            'customer inventory and channel normalization signals',
+            'client / gaming / embedded cycle evidence'
+          ]
+        }
+      }
+    }
+  },
+  AVGO: {
+    ticker: 'AVGO',
+    companyName: 'Broadcom Inc.',
+    exchange: 'NASDAQ',
+    logoUrl: buildStockLogoUrl('AVGO'),
+    overview:
+      'Broadcom combines semiconductor solutions with infrastructure software, including AI networking, custom accelerator exposure, connectivity, storage, VMware-related private cloud, mainframe, cybersecurity, and enterprise software portfolios.',
+    category: 'AI Networking / Infrastructure Software Platform',
+    analysisDate: '2026-06-10',
+    latestFiscalPeriod: 'Q2 FY2026 ended 2026-05-03',
+    dossierVerdict: {
+      sourceType: 'curated',
+      asOf: '2026-06-10',
+      researchState: 'ai_infrastructure_watch',
+      businessQuality: 'high',
+      valuationState: 'not_verified',
+      marketEvidence: 'not_verified',
+      finalRead: 'Infrastructure compounder where AI networking, custom silicon, and VMware software monetization need to keep supporting one platform story.',
+      keySupport: [
+        'SEC filings describe two reportable segments: semiconductor solutions and infrastructure software.',
+        'Semiconductor revenue is supported by networking solutions, including custom AI accelerators and AI networking products.',
+        'Infrastructure software includes private cloud, mainframe software, cybersecurity, enterprise software, FC SAN management, and VMware-related exposure.'
+      ],
+      keyRisk: [
+        'AI networking or custom accelerator demand can slow.',
+        'VMware integration or subscription transition can hurt customer retention.',
+        'Semiconductor cyclicality can offset software resilience.',
+        'Customer concentration and design-win timing can reduce revenue visibility.'
+      ]
+    },
+    quickFacts: [
+      { label: 'Business Model', value: 'Semiconductors + infrastructure software' },
+      { label: 'Core Exposure', value: 'AI networking / custom accelerators / VMware' },
+      { label: 'Primary Value Driver', value: 'AI semiconductor demand and software monetization' },
+      { label: 'Main Monitor', value: 'AI networking growth, VMware retention, segment margins' }
+    ],
+    marketEvidence: {
+      title: 'Broadcom is both an AI semiconductor and infrastructure software thesis.',
+      points: [
+        'AI networking and custom accelerator demand are the headline growth drivers.',
+        'VMware / private cloud software gives the company a separate recurring infrastructure layer.',
+        'The key question is whether both semiconductor and software engines stay durable together.'
+      ]
+    },
+    valueCore: {
+      ticker: 'AVGO',
+      value_core_type: 'AI networking / infrastructure software platform',
+      company_stage_candidate: 'Infrastructure compounder',
+      primary_value_driver: 'AI networking and custom accelerator demand, semiconductor operating leverage, VMware / private cloud software monetization, and enterprise infrastructure renewal',
+      thesis_break_trigger: 'AI networking or custom accelerator demand slows, VMware integration or subscription transition weakens retention, semiconductor cycle turns down faster than software can offset, or customer concentration reduces visibility',
+      evidence_needed: [
+        'AI semiconductor revenue growth',
+        'networking and custom accelerator commentary',
+        'infrastructure software renewal / subscription evidence',
+        'VMware integration margin and retention signals',
+        'semiconductor segment gross margin and backlog',
+        'customer concentration and design-win timing'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_2',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: [
+          {
+            question: 'What does AVGO do?',
+            answer: 'Broadcom sells semiconductor solutions and infrastructure software. CrowdRisk reads AVGO through AI networking and custom silicon demand on one side, and VMware / private cloud software monetization on the other.'
+          }
+        ],
+        thesisRisk: [
+          {
+            question: 'What would break the AVGO thesis?',
+            answer: 'The thesis weakens if AI networking demand slows, custom accelerator wins do not convert, VMware retention or subscription transition disappoints, or semiconductor cyclicality overwhelms software resilience.'
+          }
+        ]
+      },
+      phaseTwo: {
+        thesisRisk: {
+          lead: 'The main risk is whether AI semiconductor demand and VMware-led software monetization both remain durable.',
+          riskMap: [
+            { label: 'AI networking demand', severity: 'High', watch: 'AI networking and custom accelerator demand slows.' },
+            { label: 'VMware integration', severity: 'High', watch: 'Subscription transition or customer retention weakens.' },
+            { label: 'Semiconductor cycle', severity: 'Medium', watch: 'Semiconductor downcycle offsets software strength.' },
+            { label: 'Customer concentration', severity: 'Medium', watch: 'Large customer or design-win timing reduces visibility.' }
+          ],
+          evidenceNeeded: [
+            'AI semiconductor revenue growth',
+            'networking and custom accelerator commentary',
+            'infrastructure software renewal / subscription evidence',
+            'VMware integration margin and retention signals',
+            'semiconductor segment gross margin and backlog',
+            'customer concentration and design-win timing'
+          ]
+        }
+      }
+    }
+  },
+  CRWD: {
+    ticker: 'CRWD',
+    companyName: 'CrowdStrike Holdings, Inc.',
+    exchange: 'NASDAQ',
+    logoUrl: buildStockLogoUrl('CRWD'),
+    overview:
+      'CrowdStrike provides the Falcon cloud-native cybersecurity platform, delivered mainly through SaaS subscriptions across endpoint, cloud, identity, SIEM, exposure management, data protection, IT operations, and AI-related security workflows.',
+    category: 'Cybersecurity Platform',
+    analysisDate: '2026-06-10',
+    latestFiscalPeriod: 'Q1 FY2027 ended 2026-04-30',
+    dossierVerdict: {
+      sourceType: 'curated',
+      asOf: '2026-06-10',
+      researchState: 'cybersecurity_platform_watch',
+      businessQuality: 'high',
+      valuationState: 'not_verified',
+      marketEvidence: 'not_verified',
+      finalRead: 'Cloud-native security platform where the thesis depends on Falcon trust, module expansion, retention, and large-customer growth.',
+      keySupport: [
+        'SEC filings describe Falcon as a cloud-native cybersecurity platform built around a single lightweight sensor and cloud data.',
+        'Falcon spans multiple large security markets, including endpoint, cloud workload, identity, SIEM / log management, exposure management, and AI-related security.',
+        'The land-and-expand model depends on module adoption, retention, and customer trust.'
+      ],
+      keyRisk: [
+        'Platform reliability or security efficacy concerns can damage trust.',
+        'Net retention, module adoption, or large-customer growth can slow.',
+        'Competition can compress pricing or slow platform consolidation.',
+        'Security incidents, outages, or reputational damage can affect renewals.'
+      ]
+    },
+    quickFacts: [
+      { label: 'Business Model', value: 'Cybersecurity SaaS platform' },
+      { label: 'Platform', value: 'Falcon' },
+      { label: 'Primary Value Driver', value: 'Module expansion and retention' },
+      { label: 'Main Monitor', value: 'ARR, net retention, module adoption, trust' }
+    ],
+    marketEvidence: {
+      title: 'CrowdStrike is a trust-sensitive cybersecurity platform thesis.',
+      points: [
+        'Falcon module expansion is the core business evidence point.',
+        'Retention and large-customer growth show whether platform consolidation remains intact.',
+        'Any trust or reliability issue should be monitored because cybersecurity vendors sell confidence as well as software.'
+      ]
+    },
+    valueCore: {
+      ticker: 'CRWD',
+      value_core_type: 'Cybersecurity platform',
+      company_stage_candidate: 'Scaling security platform',
+      primary_value_driver: 'Falcon module expansion, cloud-native security data and AI network effect, dollar-based net retention, and security platform consolidation',
+      thesis_break_trigger: 'Customer trust weakens after platform reliability or security efficacy concerns, net retention or module adoption slows, competition compresses pricing, or reputation damage persists',
+      evidence_needed: [
+        'ARR and subscription revenue growth',
+        'dollar-based net retention',
+        'module adoption per customer',
+        'large customer count and expansion',
+        'gross retention / customer churn commentary',
+        'post-incident renewal and win-rate evidence'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_2',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: [
+          {
+            question: 'What does CRWD do?',
+            answer: 'CrowdStrike provides the Falcon cloud-native cybersecurity platform. It sells subscription modules across endpoint, cloud, identity, SIEM, exposure management, data protection, IT operations, and AI-related security workflows.'
+          }
+        ],
+        thesisRisk: [
+          {
+            question: 'What would break the CRWD thesis?',
+            answer: 'The thesis weakens if customer trust falls, platform reliability or security efficacy is questioned, retention or module expansion slows, competition pressures pricing, or reputation damage affects renewals.'
+          }
+        ]
+      },
+      phaseTwo: {
+        thesisRisk: {
+          lead: 'The main risk is whether Falcon keeps trust, retention, and module expansion strong enough to support the platform-consolidation thesis.',
+          riskMap: [
+            { label: 'Trust / reliability', severity: 'High', watch: 'Security efficacy, outage, or reliability concerns affect customer confidence.' },
+            { label: 'Retention and module expansion', severity: 'High', watch: 'Dollar-based net retention or module adoption slows.' },
+            { label: 'Competition', severity: 'Medium', watch: 'Platform and point-solution competition pressure pricing or win rates.' },
+            { label: 'Reputation', severity: 'Medium', watch: 'Post-incident renewal or win-rate evidence weakens.' }
+          ],
+          evidenceNeeded: [
+            'ARR and subscription revenue growth',
+            'dollar-based net retention',
+            'module adoption per customer',
+            'large customer count and expansion',
+            'gross retention / customer churn commentary',
+            'post-incident renewal and win-rate evidence'
+          ]
+        }
+      }
+    }
+  },
+  MSFT: {
+    ticker: 'MSFT',
+    companyName: 'Microsoft Corporation',
+    exchange: 'NASDAQ',
+    logoUrl: buildStockLogoUrl('MSFT'),
+    overview:
+      'Microsoft is a broad software, cloud, AI, and devices platform across Productivity and Business Processes, Intelligent Cloud, and More Personal Computing, including Microsoft 365, LinkedIn, Dynamics, Azure, server products, Windows, gaming, search, and advertising.',
+    category: 'Cloud / AI / Enterprise Software Platform',
+    analysisDate: '2026-06-10',
+    latestFiscalPeriod: 'Q3 FY2026 ended 2026-03-31',
+    dossierVerdict: {
+      sourceType: 'curated',
+      asOf: '2026-06-10',
+      researchState: 'mega_cap_ai_cloud_watch',
+      businessQuality: 'high',
+      valuationState: 'not_verified',
+      marketEvidence: 'not_verified',
+      finalRead: 'Mega-cap enterprise platform where Azure, Microsoft Cloud, AI infrastructure, Copilot monetization, and software distribution need to justify heavy AI investment.',
+      keySupport: [
+        'SEC filings describe Microsoft through Productivity and Business Processes, Intelligent Cloud, and More Personal Computing.',
+        'Azure, Microsoft Cloud, Microsoft 365, Dynamics, LinkedIn, Windows, gaming, search, and advertising provide broad platform distribution.',
+        'The current research case centers on cloud growth, AI infrastructure, Copilot adoption, and enterprise software durability.'
+      ],
+      keyRisk: [
+        'Azure or Microsoft Cloud growth can slow while AI capex remains elevated.',
+        'Copilot / AI monetization may not justify infrastructure investment.',
+        'Enterprise software growth or retention can weaken.',
+        'Cybersecurity, regulatory, privacy, antitrust, or competition pressure can affect trust and distribution.'
+      ]
+    },
+    quickFacts: [
+      { label: 'Business Model', value: 'Enterprise software + cloud + AI platform' },
+      { label: 'Segments', value: 'Productivity / Intelligent Cloud / More Personal Computing' },
+      { label: 'Primary Value Driver', value: 'Azure, Microsoft Cloud, and AI monetization' },
+      { label: 'Main Monitor', value: 'Azure growth, AI capex ROI, Copilot adoption' }
+    ],
+    marketEvidence: {
+      title: 'Microsoft is a cloud and enterprise AI platform thesis.',
+      points: [
+        'Azure and Microsoft Cloud growth are the central operating evidence points.',
+        'Copilot and AI services need to convert infrastructure spend into monetization.',
+        'The business has broad distribution, but that does not remove capex, competition, or regulatory risk.'
+      ]
+    },
+    valueCore: {
+      ticker: 'MSFT',
+      value_core_type: 'Cloud / AI / enterprise software platform',
+      company_stage_candidate: 'Mega-cap platform',
+      primary_value_driver: 'Azure and Microsoft Cloud growth, AI infrastructure and Copilot monetization, enterprise software seat expansion, and operating leverage',
+      thesis_break_trigger: 'Azure / Microsoft Cloud growth slows while AI capex remains elevated, Copilot monetization fails to justify infrastructure investment, enterprise software retention weakens, or regulatory / cybersecurity pressure affects trust and distribution',
+      evidence_needed: [
+        'Azure growth and cloud margin',
+        'AI services revenue / usage evidence',
+        'commercial remaining performance obligations',
+        'capital expenditure and capacity commentary',
+        'Microsoft 365 / Copilot adoption',
+        'security and regulatory developments'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_2',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: [
+          {
+            question: 'What does MSFT do?',
+            answer: 'Microsoft sells enterprise software, cloud infrastructure, AI services, operating systems, gaming, search, and advertising products. CrowdRisk reads MSFT mainly through Azure, Microsoft Cloud, AI infrastructure, Copilot monetization, and enterprise software durability.'
+          }
+        ],
+        thesisRisk: [
+          {
+            question: 'What would break the MSFT thesis?',
+            answer: 'The thesis weakens if Azure or Microsoft Cloud growth slows while AI capex stays elevated, Copilot monetization fails to justify investment, enterprise software retention weakens, or regulatory / cybersecurity pressure damages trust and distribution.'
+          }
+        ]
+      },
+      phaseTwo: {
+        thesisRisk: {
+          lead: 'The main risk is whether Microsoft can turn AI infrastructure spend into durable cloud, Copilot, and enterprise software monetization.',
+          riskMap: [
+            { label: 'Azure / cloud growth', severity: 'High', watch: 'Azure or Microsoft Cloud growth slows.' },
+            { label: 'AI capex ROI', severity: 'High', watch: 'AI infrastructure spend outpaces monetization evidence.' },
+            { label: 'Copilot adoption', severity: 'Medium', watch: 'Copilot adoption or usage fails to convert into meaningful revenue.' },
+            { label: 'Regulatory / security', severity: 'Medium', watch: 'Regulatory, antitrust, privacy, or cybersecurity issues pressure trust and distribution.' }
+          ],
+          evidenceNeeded: [
+            'Azure growth and cloud margin',
+            'AI services revenue / usage evidence',
+            'commercial remaining performance obligations',
+            'capital expenditure and capacity commentary',
+            'Microsoft 365 / Copilot adoption',
+            'security and regulatory developments'
+          ]
+        }
+      }
+    }
+  },
+  GOOGL: {
+    ticker: 'GOOGL',
+    companyName: 'Alphabet Inc.',
+    exchange: 'NASDAQ',
+    logoUrl: buildStockLogoUrl('GOOGL'),
+    overview:
+      'Alphabet operates Google Services, Google Cloud, and Other Bets, with CrowdRisk focus on Search and YouTube advertising durability, Google Cloud growth, AI integration, traffic acquisition costs, and regulatory pressure.',
+    category: 'Search / Advertising / Cloud AI Platform',
+    analysisDate: '2026-06-10',
+    latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
+    dossierVerdict: {
+      sourceType: 'curated',
+      asOf: '2026-06-10',
+      researchState: 'mega_cap_ai_platform_watch',
+      businessQuality: 'high',
+      valuationState: 'not_verified',
+      marketEvidence: 'not_verified',
+      finalRead: 'Search, ads, YouTube, and Cloud platform where AI can be both product opportunity and disruption risk.',
+      keySupport: [
+        'SEC filings report Alphabet through Google Services, Google Cloud, and Other Bets.',
+        'Google Services includes the advertising-led Search / YouTube ecosystem, subscriptions, platforms, and devices.',
+        'Google Cloud provides infrastructure, platform services, collaboration tools, and AI-related cloud offerings.'
+      ],
+      keyRisk: [
+        'AI search disruption can pressure commercial query monetization or traffic quality.',
+        'Regulatory remedies can impair distribution, advertising economics, or product integration.',
+        'Google Cloud growth or profitability can disappoint despite AI capex.',
+        'YouTube or advertising growth can weaken while infrastructure costs rise.'
+      ]
+    },
+    quickFacts: [
+      { label: 'Business Model', value: 'Advertising + cloud + AI platform' },
+      { label: 'Segments', value: 'Google Services / Google Cloud / Other Bets' },
+      { label: 'Primary Value Driver', value: 'Search / YouTube ads and Google Cloud growth' },
+      { label: 'Main Monitor', value: 'AI search, Cloud margin, regulation, TAC' }
+    ],
+    marketEvidence: {
+      title: 'Alphabet is both an AI beneficiary and an AI disruption watch.',
+      points: [
+        'Search and YouTube advertising durability remain the core profit engine.',
+        'Google Cloud growth and operating leverage show whether enterprise AI demand is converting.',
+        'AI changes in search behavior and regulatory remedies are central thesis-risk monitors.'
+      ]
+    },
+    valueCore: {
+      ticker: 'GOOGL',
+      value_core_type: 'Search / advertising / cloud AI platform',
+      company_stage_candidate: 'Mega-cap platform',
+      primary_value_driver: 'Search and YouTube advertising durability, Google Cloud growth and operating leverage, AI integration across Search / Cloud / productivity surfaces, and traffic acquisition cost efficiency',
+      thesis_break_trigger: 'AI search disruption reduces monetization or traffic quality, regulatory remedies impair ads or distribution, Google Cloud growth / profitability disappoints, or infrastructure costs rise faster than monetization',
+      evidence_needed: [
+        'Search and YouTube ad revenue growth',
+        'Google Cloud revenue growth and operating income',
+        'AI product adoption and monetization evidence',
+        'traffic acquisition cost trend and margin impact',
+        'regulatory case outcomes and remedies',
+        'capex / technical infrastructure commentary'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_2',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: [
+          {
+            question: 'What does GOOGL do?',
+            answer: 'Alphabet operates Google Services, Google Cloud, and Other Bets. CrowdRisk reads GOOGL through Search and YouTube advertising durability, Google Cloud growth, AI integration, traffic acquisition costs, and regulatory pressure.'
+          }
+        ],
+        thesisRisk: [
+          {
+            question: 'What would break the GOOGL thesis?',
+            answer: 'The thesis weakens if AI search disruption reduces monetization or traffic quality, regulatory remedies impair ads or distribution, Google Cloud growth or profitability disappoints, or infrastructure costs rise faster than monetization.'
+          }
+        ]
+      },
+      phaseTwo: {
+        thesisRisk: {
+          lead: 'The main risk is whether Alphabet can defend Search and ads economics while turning AI and Google Cloud investment into durable growth.',
+          riskMap: [
+            { label: 'AI search disruption', severity: 'High', watch: 'Commercial query monetization, traffic quality, or search usage changes.' },
+            { label: 'Regulatory remedies', severity: 'High', watch: 'Ads, distribution, product integration, or data-use remedies impair economics.' },
+            { label: 'Google Cloud execution', severity: 'Medium', watch: 'Cloud growth or operating income disappoints despite AI capex.' },
+            { label: 'Infrastructure cost', severity: 'Medium', watch: 'Technical infrastructure and TAC pressure margins.' }
+          ],
+          evidenceNeeded: [
+            'Search and YouTube ad revenue growth',
+            'Google Cloud revenue growth and operating income',
+            'AI product adoption and monetization evidence',
+            'traffic acquisition cost trend and margin impact',
+            'regulatory case outcomes and remedies',
+            'capex / technical infrastructure commentary'
+          ]
+        }
+      }
+    }
   }
 };
 
