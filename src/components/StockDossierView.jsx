@@ -288,7 +288,8 @@ const SummaryMetric = ({ label, summary, value }) => (
 );
 
 const metricById = (valuationCore, id) => (
-  valuationCore.coreMetrics.find((metric) => metric.id === id) || null
+  (Array.isArray(valuationCore?.coreMetrics) ? valuationCore.coreMetrics : [])
+    .find((metric) => metric.id === id) || null
 );
 
 const valuationMetricValue = (valuationCore, id) => {

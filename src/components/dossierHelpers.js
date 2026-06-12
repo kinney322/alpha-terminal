@@ -252,6 +252,14 @@ export const buildStockOverview = (eventDetail, payload, profile = null) => {
   const companyName = eventDetail?.company_name || profile?.companyName || null;
   const businessDescription = eventDetail?.business_summary || eventDetail?.description || profile?.overview || null;
   const eventPhase = eventDetail?.event_phase ? eventDetail.event_phase.replace(/_/g, ' ') : 'research watch';
+  const profileQuickFacts = Array.isArray(profile?.quickFacts) ? profile.quickFacts : null;
+  const valueCore = profile?.valueCore || {};
+  const derivedQuickFacts = profile ? [
+    { label: 'Business Model', value: profile.category || 'Pending' },
+    { label: 'Company Stage', value: valueCore.company_stage_candidate || 'Pending' },
+    { label: 'Primary Value Driver', value: valueCore.primary_value_driver || 'Pending' },
+    { label: 'Evidence Quality', value: valueCore.evidence_quality || valueCore.coverage_status || 'Pending' }
+  ] : null;
 
   return {
     title: companyName || `${eventDetail?.ticker || 'Ticker'} Stock Overview`,
@@ -259,7 +267,7 @@ export const buildStockOverview = (eventDetail, payload, profile = null) => {
     theme: profile?.category || (theme ? formatOverviewLabel(theme) : 'Theme Pending'),
     eventContext: eventPhase,
     dataCoverage: profile ? 'Curated Dossier Available' : fundamental.status === 'available' ? 'Fundamentals Available' : 'Company Profile Pending',
-    quickFacts: profile?.quickFacts || [
+    quickFacts: profileQuickFacts || derivedQuickFacts || [
       { label: 'Research State', value: eventPhase },
       { label: 'Theme / Industry', value: theme ? formatOverviewLabel(theme) : 'Pending' },
       { label: 'Fundamentals', value: fundamental.status === 'available' ? 'Available' : 'Pending' },

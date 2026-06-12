@@ -225,7 +225,13 @@ const expectationFactLabels = (language) => language === 'zh'
     median: 'Median implied price'
   };
 
-const metricById = (metrics, id) => (metrics || []).find((metric) => metric.id === id);
+const asArray = (value) => {
+  if (Array.isArray(value)) return value;
+  if (value === undefined || value === null) return [];
+  return [value];
+};
+
+const metricById = (metrics, id) => asArray(metrics).find((metric) => metric?.id === id);
 
 const formatMetricValue = (metric) => {
   const numeric = toFiniteNumber(metric?.value);
@@ -602,10 +608,17 @@ const buildCoverageStatusAnswer = ({ ticker, language, payload, stockPerformance
 
 const firstFaqAnswer = (profile, group, matcher) => {
   const rows = profile?.visualPhaseOne?.faq?.[group] || [];
-  return rows.find((item) => matcher(String(item?.question || '').toLowerCase()))?.answer || null;
+  if (typeof rows === 'string') return rows;
+  return asArray(rows).find((item) => matcher(String(item?.question || '').toLowerCase()))?.answer || null;
 };
 
 const sentenceAfterName = (name) => (String(name || '').trim().endsWith('.') ? '' : '.');
+
+const withTerminalPeriod = (value) => {
+  const text = String(value || '').trim();
+  if (!text) return '';
+  return /[.!?。！？]$/.test(text) ? text : `${text}.`;
+};
 
 const localizedBusinessOverview = ({ ticker, profile, overview, faqAnswer, language }) => {
   if (language === 'zh' && ticker === 'DDOG') {
@@ -633,11 +646,46 @@ const localizedRiskWatch = ({ ticker, item, language }) => {
   return map[item.label] || `${item.label}：${item.watch}`;
 };
 
+const normalizeQuickFacts = (profile) => {
+  const quickFacts = asArray(profile?.quickFacts);
+  if (quickFacts.length) return quickFacts;
+  const valueCore = profile?.valueCore || {};
+  return [
+    { label: 'Business Model', value: profile?.category || null },
+    { label: 'Company Stage', value: valueCore.company_stage_candidate || null },
+    { label: 'Primary Value Driver', value: valueCore.primary_value_driver || null }
+  ].filter((item) => item.value);
+};
+
+const normalizeThesisRisk = (profile) => {
+  const raw = profile?.visualPhaseOne?.phaseTwo?.thesisRisk || {};
+  if (Array.isArray(raw)) {
+    return {
+      lead: null,
+      riskMap: raw.map((item) => ({
+        label: item?.label || item?.category || 'Risk monitor',
+        severity: item?.severity || null,
+        watch: item?.watch || item?.risk || 'Not verified'
+      })),
+      evidenceNeeded: []
+    };
+  }
+  return {
+    lead: raw?.lead || null,
+    riskMap: asArray(raw?.riskMap).map((item) => ({
+      label: item?.label || item?.category || 'Risk monitor',
+      severity: item?.severity || null,
+      watch: item?.watch || item?.risk || 'Not verified'
+    })),
+    evidenceNeeded: asArray(raw?.evidenceNeeded)
+  };
+};
+
 const buildBusinessSummaryAnswer = ({ ticker, language }) => {
   const profile = getStockDossierProfile(ticker);
   const overview = profile?.overview;
   const valueCore = profile?.valueCore || {};
-  const quickFacts = profile?.quickFacts || [];
+  const quickFacts = normalizeQuickFacts(profile);
   const businessModel = quickFacts.find((item) => item.label === 'Business Model')?.value || null;
   const customerBase = quickFacts.find((item) => item.label === 'Customer Base')?.value || null;
   const largeCustomers = quickFacts.find((item) => item.label === '$100k+ ARR Customers')?.value || null;
@@ -656,7 +704,7 @@ const buildBusinessSummaryAnswer = ({ ticker, language }) => {
     });
   }
 
-  const evidenceFocus = (valueCore.evidence_needed || []).slice(0, 4);
+  const evidenceFocus = asArray(valueCore.evidence_needed).slice(0, 4);
 
   return response({
     intent: 'business_summary',
@@ -704,11 +752,11 @@ const buildBusinessSummaryAnswer = ({ ticker, language }) => {
 const buildThesisRiskAnswer = ({ ticker, language }) => {
   const profile = getStockDossierProfile(ticker);
   const valueCore = profile?.valueCore || {};
-  const thesisRisk = profile?.visualPhaseOne?.phaseTwo?.thesisRisk || {};
+  const thesisRisk = normalizeThesisRisk(profile);
   const breakTrigger = valueCore.thesis_break_trigger || thesisRisk.lead || null;
   const displayedBreakTrigger = localizedThesisBreakTrigger({ ticker, breakTrigger, language });
-  const evidenceNeeded = thesisRisk.evidenceNeeded || valueCore.evidence_needed || [];
-  const riskMap = thesisRisk.riskMap || [];
+  const evidenceNeeded = thesisRisk.evidenceNeeded.length ? thesisRisk.evidenceNeeded : asArray(valueCore.evidence_needed);
+  const riskMap = thesisRisk.riskMap;
   const faqAnswer = firstFaqAnswer(profile, 'thesisRisk', (question) => question.includes('risk') || question.includes('thesis'));
 
   if (!profile || (!breakTrigger && !riskMap.length && !evidenceNeeded.length)) {
@@ -753,7 +801,7 @@ const buildThesisRiskAnswer = ({ ticker, language }) => {
       ]
       : [
         `${ticker}'s thesis is not mainly about one trading day. It depends on whether business durability weakens.`,
-        breakTrigger ? `CrowdRisk's current break trigger is: ${breakTrigger}.` : (faqAnswer || 'The break trigger is not fully verified yet.'),
+        breakTrigger ? `CrowdRisk's current break trigger is: ${withTerminalPeriod(breakTrigger)}` : (faqAnswer || 'The break trigger is not fully verified yet.'),
         riskItems.length ? `Main risk monitors include: ${riskItems.map((item) => `${item.label}: ${item.watch}`).join('; ')}.` : 'CrowdRisk does not yet have a structured risk map.',
         evidenceItems.length ? `To reduce thesis risk, keep verifying: ${evidenceItems.join(', ')}.` : 'CrowdRisk does not yet have a structured missing-evidence checklist.',
         'This is risk and evidence framing, not a final investment decision.'

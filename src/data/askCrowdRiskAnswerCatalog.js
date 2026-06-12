@@ -69,8 +69,8 @@ export const ASK_CROWDRISK_ANSWER_CATALOG = [
     allowedJudgment: ['business model explanation', 'evidence focus'],
     bannedWording: ['invented revenue mix', 'unverified TAM', 'final investment decision'],
     trigger: {
-      enPatterns: [/\bwhat does\b/, /\bdo\??\b/, /\bbusiness model\b/, /\bwhat is .* business\b/, /\bcompany do\b/],
-      zhTerms: ['做什麼', '做咩', '業務', '商業模式', '公司做', '生意模式']
+      enPatterns: [/\bwhat does\b/, /\bdo\??\b/, /\bbusiness\b/, /\bbusiness summary\b/, /\bbusiness core\b/, /\bbusiness model\b/, /\bwhat is .* business\b/, /\bcompany do\b/],
+      zhTerms: ['做什麼', '做咩', '是甚麼公司', '是什麼公司', '甚麼公司', '什麼公司', '業務', '業務核心', '商業模式', '公司做', '生意模式']
     }
   },
   {
