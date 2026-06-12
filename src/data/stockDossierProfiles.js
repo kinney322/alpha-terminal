@@ -14115,6 +14115,846 @@ const stockDossierProfiles = {
         ]
       }
     }
+  },
+  PYPL: {
+    ticker: 'PYPL',
+    companyName: 'PayPal Holdings, Inc.',
+    exchange: 'NASDAQ',
+    logoUrl: buildStockLogoUrl('PYPL'),
+    overview: 'PayPal Holdings operates a digital payments platform that connects merchants and consumers, processing transactions through PayPal, Venmo, Braintree, and other branded checkout solutions globally.',
+    category: 'Digital Payments & Financial Technology',
+    analysisDate: '2026-06-12',
+    latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
+    dossierVerdict: 'PayPal manages transaction payment margins and branded checkout volumes, navigating intense competition from tech-platform payment solutions.',
+    valueCore: {
+      ticker: 'PYPL',
+      value_core_type: 'business_summary_thesis_risk',
+      company_stage_candidate: 'Mature Financial Technology Platform',
+      primary_value_driver: 'Expanding branded checkout volumes, scaling Braintree payment processing, and improving transaction margins.',
+      thesis_break_trigger: 'Sustained drop in branded checkout volumes, compression in transaction margins from processing mix, or active account attrition.',
+      evidence_needed: [
+        'Transaction payment margin percentage',
+        'Branded checkout volume growth rate',
+        'Braintree total payment volume',
+        'Active customer accounts count',
+        'Total payment volume processed'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_19',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: 'PayPal provides digital transaction processing services through its global digital wallets and merchant gateway brands.',
+        thesisRisk: 'Key risks include competition in branded retail checkouts, processing volume margins, and active user retention.'
+      },
+      phaseTwo: {
+        thesisRisk: [
+          {
+            category: 'Branded Checkout Growth',
+            risk: 'Fierce competition from alternative digital payment wallets reduces PayPal branded checkout transaction volumes.',
+            watch: 'Branded checkout volume growth rate.'
+          },
+          {
+            category: 'Transaction Margin Pressure',
+            risk: 'Rapid growth in lower-margin unbranded Braintree processing outpaces high-margin PayPal transactions, compressing margins.',
+            watch: 'Transaction payment margin percentage.'
+          },
+          {
+            category: 'User Retention',
+            risk: 'Loss of active consumer accounts reduces transaction frequency and platform network effects.',
+            watch: 'Active customer accounts count.'
+          }
+        ]
+      }
+    }
+  },
+  RCL: {
+    ticker: 'RCL',
+    companyName: 'Royal Caribbean Cruises Ltd.',
+    exchange: 'NYSE',
+    logoUrl: buildStockLogoUrl('RCL'),
+    overview: 'Royal Caribbean Cruises Ltd. is a global cruise vacation company, operating passenger fleets under brands like Royal Caribbean International, Celebrity Cruises, and Silversea Cruises.',
+    category: 'Consumer Travel / Cruise Lines',
+    analysisDate: '2026-06-12',
+    latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
+    dossierVerdict: 'Royal Caribbean manages booking backlogs, fleet capacity expansions, onboard spending levels, and fuel costs under high balance sheet leverage.',
+    valueCore: {
+      ticker: 'RCL',
+      value_core_type: 'business_summary_thesis_risk',
+      company_stage_candidate: 'Mature Consumer Services / Cruise Vacation',
+      primary_value_driver: 'Sustaining advance passenger ticket bookings, maintaining high occupancy rates, and increasing onboard customer spending.',
+      thesis_break_trigger: 'Sustained contraction in advance bookings, drop in occupancy rates below historical averages, or passenger capacity underutilization.',
+      evidence_needed: [
+        'Advance passenger bookings balance',
+        'Passenger cruise occupancy percentage',
+        'Average onboard customer spending',
+        'Net debt to adjusted EBITDA ratio',
+        'Weighted average fuel cost per metric ton'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_19',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: 'Royal Caribbean operates premium cruise ships, generating revenues from ticket sales and passenger spending onboard.',
+        thesisRisk: 'Key risks include macroeconomic travel demand declines, fuel cost volatility, and debt leverage refinancing.'
+      },
+      phaseTwo: {
+        thesisRisk: [
+          {
+            category: 'Consumer Demand Cycles',
+            risk: 'Economic recessions reduce discretionary spending on vacations, causing cruise ticket price discounting.',
+            watch: 'Advance passenger bookings balance and occupancy.'
+          },
+          {
+            category: 'Fuel Cost Volatility',
+            risk: 'Sharp increases in marine diesel prices raise operating costs, lowering fleet margins.',
+            watch: 'Weighted average fuel cost per metric ton.'
+          },
+          {
+            category: 'Leverage and Debt Service',
+            risk: 'High debt levels require significant interest payments, limiting capital deployment for fleet upgrades.',
+            watch: 'Net debt to adjusted EBITDA ratio.'
+          }
+        ]
+      }
+    }
+  },
+  REGN: {
+    ticker: 'REGN',
+    companyName: 'Regeneron Pharmaceuticals, Inc.',
+    exchange: 'NASDAQ',
+    logoUrl: buildStockLogoUrl('REGN'),
+    overview: 'Regeneron Pharmaceuticals discovers, develops, and commercializes biopharmaceutical therapies, relying on core products like Eylea and Dupixent while investing in oncology pipelines.',
+    category: 'Biotechnology & Therapeutics',
+    analysisDate: '2026-06-12',
+    latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
+    dossierVerdict: 'Regeneron depends on Eylea and Dupixent revenue contributions, clinical trial readouts, and patent litigation cycles.',
+    valueCore: {
+      ticker: 'REGN',
+      value_core_type: 'business_summary_thesis_risk',
+      company_stage_candidate: 'Mature Commercial Biopharmaceutical',
+      primary_value_driver: 'Scaling Dupixent global revenues, defending Eylea market share, and advancing oncology and immunology drug pipelines.',
+      thesis_break_trigger: 'Rapid erosion of Eylea revenues from biosimilar competition, negative clinical trial outcomes for key candidates, or regulatory review delays.',
+      evidence_needed: [
+        'Eylea net product sales',
+        'Dupixent global net sales',
+        'Clinical trial pipeline progression',
+        'Research and development spending',
+        'Biosimilar market penetration rates'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_19',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: 'Regeneron is a commercial biotech company developing treatments for eye diseases, inflammatory conditions, and cancer.',
+        thesisRisk: 'Key risks include biosimilar competition for Eylea, drug pipeline trial failures, and commercialization costs.'
+      },
+      phaseTwo: {
+        thesisRisk: [
+          {
+            category: 'Biosimilar Competition',
+            risk: 'Competitor biosimilar products erode Eylea market share, reducing high-margin revenues.',
+            watch: 'Eylea net product sales and biosimilar market share.'
+          },
+          {
+            category: 'Pipeline Development',
+            risk: 'Key oncology or immunology drug candidates fail to meet endpoints in clinical trials, delaying approvals.',
+            watch: 'Clinical trial pipeline progression.'
+          },
+          {
+            category: 'Concentration Risk',
+            risk: 'High reliance on Dupixent growth to offset potential legacy product declines increases portfolio risk.',
+            watch: 'Dupixent global net sales.'
+          }
+        ]
+      }
+    }
+  },
+  ROP: {
+    ticker: 'ROP',
+    companyName: 'Roper Technologies, Inc.',
+    exchange: 'NYSE',
+    logoUrl: buildStockLogoUrl('ROP'),
+    overview: 'Roper Technologies designs and markets application software and technology solutions for niche markets in healthcare, education, municipal, and industrial segments.',
+    category: 'Niche Application Software & Technology',
+    analysisDate: '2026-06-12',
+    latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
+    dossierVerdict: 'Roper operates an acquisition-driven business model, focusing on recurring software subscription revenues and high EBITDA margins.',
+    valueCore: {
+      ticker: 'ROP',
+      value_core_type: 'business_summary_thesis_risk',
+      company_stage_candidate: 'Mature Software & Technology Solutions',
+      primary_value_driver: 'Scaling organic recurring software subscription revenues, integrating newly acquired software businesses, and maintaining high free cash flow conversion.',
+      thesis_break_trigger: 'Deceleration in organic software subscription growth, integration failure of large acquisitions, or debt leverage limits.',
+      evidence_needed: [
+        'Organic recurring software revenue growth',
+        'Consolidated EBITDA margin percentage',
+        'Acquired business integration timelines',
+        'Free cash flow conversion rate',
+        'Net debt to adjusted EBITDA ratio'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_19',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: 'Roper acquires and operates niche vertical software providers, maintaining an asset-light corporate structure.',
+        thesisRisk: 'Key risks include slowing organic software subscription demand, high debt from acquisitions, and integration challenges.'
+      },
+      phaseTwo: {
+        thesisRisk: [
+          {
+            category: 'Organic Growth Slowdown',
+            risk: 'Slowing customer renewals or software license upgrades reduces recurring segment growth rates.',
+            watch: 'Organic recurring software revenue growth.'
+          },
+          {
+            category: 'Acquisition Valuation',
+            risk: 'Paying high valuations for new software businesses fails to yield expected returns, reducing cash generation.',
+            watch: 'Consolidated EBITDA margin percentage.'
+          },
+          {
+            category: 'Leverage Risks',
+            risk: 'High debt balances incurred for acquisitions limit future deployment and raise interest expenses.',
+            watch: 'Net debt to adjusted EBITDA ratio.'
+          }
+        ]
+      }
+    }
+  },
+  ROST: {
+    ticker: 'ROST',
+    companyName: 'Ross Stores, Inc.',
+    exchange: 'NASDAQ',
+    logoUrl: buildStockLogoUrl('ROST'),
+    overview: 'Ross Stores operates off-price retail stores under Ross Dress for Less and dd\'s DISCOUNTS, providing branded apparel and home fashion products at discounted prices.',
+    category: 'Off-Price Retail & Apparel',
+    analysisDate: '2026-06-12',
+    latestFiscalPeriod: 'Q1 2026 ended 2026-05-02',
+    dossierVerdict: 'Ross Stores relies on comparable store sales growth, retail store expansions, inventory turnover rates, and lower-to-middle income consumer demand.',
+    valueCore: {
+      ticker: 'ROST',
+      value_core_type: 'business_summary_thesis_risk',
+      company_stage_candidate: 'Mature Consumer Retail / Off-Price',
+      primary_value_driver: 'Expanding comparable store sales, growing retail store count footprints, and optimizing merchandise procurement margin spreads.',
+      thesis_break_trigger: 'Decline in comparable store sales growth, supply chain inventory bottlenecks, or middle-income consumer wallet contraction.',
+      evidence_needed: [
+        'Comparable store sales growth rate',
+        'Store count additions',
+        'Merchandise gross profit margin',
+        'Inventory turnover ratio',
+        'Average customer ticket transaction value'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_19',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: 'Ross Stores distributes brand name apparel and home fashion products at discounted prices through its retail stores.',
+        thesisRisk: 'Key risks relate to consumer spending volatility, inventory sourcing availability, and retail operating cost inflation.'
+      },
+      phaseTwo: {
+        thesisRisk: [
+          {
+            category: 'Consumer Discretionary Shift',
+            risk: 'Persistent inflation reduces middle-income consumer spending on apparel, slowing store traffic.',
+            watch: 'Comparable store sales growth rate.'
+          },
+          {
+            category: 'Inventory Sourcing',
+            risk: 'Shortages in closeout apparel manufacturing restrict the availability of high-quality discounted brands.',
+            watch: 'Merchandise gross profit margin.'
+          },
+          {
+            category: 'Wage and Rent Costs',
+            risk: 'Increases in retail store hourly wages and real estate lease rents compress operating margins.',
+            watch: 'Store segment operating margins.'
+          }
+        ]
+      }
+    }
+  },
+  RTX: {
+    ticker: 'RTX',
+    companyName: 'RTX Corporation',
+    exchange: 'NYSE',
+    logoUrl: buildStockLogoUrl('RTX'),
+    overview: 'RTX Corporation is an aerospace and defense contractor operating Pratt & Whitney (commercial engines), Collins Aerospace (avionics), and Raytheon (missiles and space systems).',
+    category: 'Defense & Aerospace Systems',
+    analysisDate: '2026-06-12',
+    latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
+    dossierVerdict: 'RTX balances commercial aerospace aftermarket service volumes against defense backlogs, program deliveries, and quality inspections.',
+    valueCore: {
+      ticker: 'RTX',
+      value_core_type: 'business_summary_thesis_risk',
+      company_stage_candidate: 'Mature Aerospace & Defense Contractor',
+      primary_value_driver: 'Securing defense order backlogs, executing Pratt & Whitney GTF engine inspection schedules, and scaling aerospace aftermarket service sales.',
+      thesis_break_trigger: 'GTF engine inspection cost overruns, delays in defense project deliveries, or fixed-price contract margin compression.',
+      evidence_needed: [
+        'Pratt and Whitney GTF engine inspection metrics',
+        'Raytheon defense segment backlog',
+        'Aerospace aftermarket service revenues',
+        'Free cash flow conversion rate',
+        'Fixed-price contract operating margins'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_19',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: 'RTX manufactures aviation engines and defense missile systems, serving commercial airlines and military customers.',
+        thesisRisk: 'Key risks include commercial engine quality inspections, fixed-price defense program cost overruns, and supply chains.'
+      },
+      phaseTwo: {
+        thesisRisk: [
+          {
+            category: 'Engine Inspection Costs',
+            risk: 'Compensations to airlines and repair costs for Pratt & Whitney GTF engines exceed financial provisions.',
+            watch: 'GTF engine inspection metrics and cash outflows.'
+          },
+          {
+            category: 'Fixed-Price Overruns',
+            risk: 'Materials and labor inflation on fixed-price defense contracts erode division operating margins.',
+            watch: 'Fixed-price contract operating margins.'
+          },
+          {
+            category: 'Supply Chain Bottlenecks',
+            risk: 'Shortages of aerospace components delay defense systems and aircraft engine deliveries.',
+            watch: 'Defense segment backlog and shipments.'
+          }
+        ]
+      }
+    }
+  },
+  SCHW: {
+    ticker: 'SCHW',
+    companyName: 'The Charles Schwab Corporation',
+    exchange: 'NYSE',
+    logoUrl: buildStockLogoUrl('SCHW'),
+    overview: 'The Charles Schwab Corporation provides wealth management, securities brokerage, banking, and client cash sweep deposit services to retail and institutional customers.',
+    category: 'Securities Brokerage & Financial Services',
+    analysisDate: '2026-06-12',
+    latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
+    dossierVerdict: 'Schwab manages client sweep deposits, banking segment net interest margins, assets under management, and cash sorting behaviors.',
+    valueCore: {
+      ticker: 'SCHW',
+      value_core_type: 'business_summary_thesis_risk',
+      company_stage_candidate: 'Mature Financial Services & Wealth Management',
+      primary_value_driver: 'Stabilizing client sweep deposit balances, expanding net interest margin spreads, and increasing total client assets.',
+      thesis_break_trigger: 'Sustained client cash sorting into higher-yielding assets, net interest margin compression, or client asset outflows.',
+      evidence_needed: [
+        'Client sweep deposit balances',
+        'Net interest margin percentage',
+        'Total client assets under management',
+        'Securities brokerage active account count',
+        'Banking regulatory Tier 1 leverage ratio'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_19',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: 'Charles Schwab provides securities brokerage services and bank accounts, managing customer investments and cash deposits.',
+        thesisRisk: 'Key risks involve client cash sorting into higher-yielding money market funds, deposit outflows, and interest rate changes.'
+      },
+      phaseTwo: {
+        thesisRisk: [
+          {
+            category: 'Client Cash Sorting',
+            risk: 'Customers moving low-yield brokerage sweep deposits into high-yield funds forces Schwab to fund its bank with higher-cost debt.',
+            watch: 'Client sweep deposit balances.'
+          },
+          {
+            category: 'Net Interest Compression',
+            risk: 'Declining benchmark rates compress net interest margins on its banking investment portfolio.',
+            watch: 'Net interest margin percentage.'
+          },
+          {
+            category: 'Asset Asset Outflows',
+            risk: 'Fierce wealth management competition leads to outflows in fee-generating advisory accounts.',
+            watch: 'Total client assets under management.'
+          }
+        ]
+      }
+    }
+  },
+  SHW: {
+    ticker: 'SHW',
+    companyName: 'The Sherwin-Williams Company',
+    exchange: 'NYSE',
+    logoUrl: buildStockLogoUrl('SHW'),
+    overview: 'The Sherwin-Williams Company manufactures, distributes, and markets paints, architectural coatings, and industrial supplies to professional contractors and retail customers.',
+    category: 'Paints & Coatings Manufacturing',
+    analysisDate: '2026-06-12',
+    latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
+    dossierVerdict: 'Sherwin-Williams manages retail paint store same-store sales, raw material chemical inflation, and professional contractor paint demand.',
+    valueCore: {
+      ticker: 'SHW',
+      value_core_type: 'business_summary_thesis_risk',
+      company_stage_candidate: 'Mature Industrial / Consumer Retail',
+      primary_value_driver: 'Growing Paint Stores segment same-store sales, implementing price increases to offset raw material costs, and expanding professional contractor accounts.',
+      thesis_break_trigger: 'Contraction in same-store sales, severe raw chemical cost inflation, or downturn in residential construction and painting activity.',
+      evidence_needed: [
+        'Paint Stores segment same-store sales growth',
+        'Consolidated gross profit margin',
+        'Professional contractor account additions',
+        'Housing starts and home resale volume',
+        'Days inventory outstanding'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_19',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: 'Sherwin-Williams operates retail stores and manufacturing sites, supplying paints and coatings to builders and consumers.',
+        thesisRisk: 'Key risks include residential housing construction volume downturns, raw chemical cost inflation, and retail pricing power.'
+      },
+      phaseTwo: {
+        thesisRisk: [
+          {
+            category: 'Housing Cycle Downturn',
+            risk: 'Weak new home construction and low existing home resales reduce professional paint demand.',
+            watch: 'Paint Stores segment same-store sales growth.'
+          },
+          {
+            category: 'Chemical Cost Inflation',
+            risk: 'Rising costs for petrochemicals and titanium dioxide compress manufacturing gross margins.',
+            watch: 'Consolidated gross profit margin.'
+          },
+          {
+            category: 'Contractor Labor Constraints',
+            risk: 'Shortages of professional painters limit the number of projects completed, slowing paint sales.',
+            watch: 'Professional contractor account additions.'
+          }
+        ]
+      }
+    }
+  },
+  SNDK: {
+    ticker: 'SNDK',
+    companyName: 'SanDisk Corporation',
+    exchange: 'NASDAQ',
+    logoUrl: buildStockLogoUrl('SNDK'),
+    overview: 'SanDisk Corporation designs, manufactures, and markets flash memory storage solutions, including NAND flash components and solid-state drives for datacenters and consumer devices.',
+    category: 'Flash Memory & NAND Storage',
+    analysisDate: '2026-06-12',
+    latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
+    dossierVerdict: 'SanDisk navigates cyclical NAND flash market pricing, datacenter customer inventory cycles, and wafer fabrication plant utilization.',
+    valueCore: {
+      ticker: 'SNDK',
+      value_core_type: 'business_summary_thesis_risk',
+      company_stage_candidate: 'Mature Semiconductor / Memory Storage',
+      primary_value_driver: 'Scaling datacenter enterprise solid-state drive shipments, normalizing NAND memory pricing, and increasing wafer fabrication plant utilization.',
+      thesis_break_trigger: 'Severe collapse in NAND flash market pricing, underutilization of wafer fabrication capacity, or datacenter client capital reductions.',
+      evidence_needed: [
+        'NAND flash market price per gigabyte',
+        'Enterprise solid-state drive shipment volumes',
+        'Wafer fabrication plant utilization rate',
+        'Consolidated gross profit margin',
+        'Days inventory outstanding'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_19',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: 'SanDisk manufactures flash memory storage products used in servers, phones, and computers.',
+        thesisRisk: 'Key risks involve volatility in NAND flash market pricing, server customer build cycles, and factory underutilization.'
+      },
+      phaseTwo: {
+        thesisRisk: [
+          {
+            category: 'NAND Price Volatility',
+            risk: 'Industry oversupply of memory chips drives down price per gigabyte, compressing gross margins.',
+            watch: 'NAND flash market price per gigabyte.'
+          },
+          {
+            category: 'Factory Underutilization',
+            risk: 'Slowing client demand forces production cuts, leading to high fixed cost underutilization charges.',
+            watch: 'Wafer fabrication plant utilization rate.'
+          },
+          {
+            category: 'Datacenter CapEx Cycles',
+            risk: 'Hyperscale cloud providers deferring server memory upgrades due to infrastructure budget constraints.',
+            watch: 'Enterprise solid-state drive shipment volumes.'
+          }
+        ]
+      }
+    }
+  },
+  SNPS: {
+    ticker: 'SNPS',
+    companyName: 'Synopsys, Inc.',
+    exchange: 'NASDAQ',
+    logoUrl: buildStockLogoUrl('SNPS'),
+    overview: 'Synopsys designs electronic design automation (EDA) software and design IP blocks used by chip design companies to model, verify, and manufacture semiconductors.',
+    category: 'Semiconductor Design Software (EDA)',
+    analysisDate: '2026-06-12',
+    latestFiscalPeriod: 'Q2 2026 ended 2026-04-30',
+    dossierVerdict: 'Synopsys operates a stable software model, driven by semiconductor customer R&D budgets, EDA subscriptions, and IP reuse licensing.',
+    valueCore: {
+      ticker: 'SNPS',
+      value_core_type: 'business_summary_thesis_risk',
+      company_stage_candidate: 'Mature Engineering Software & IP',
+      primary_value_driver: 'Growing EDA software recurring subscription revenues, expanding reuse IP block licensing deals, and managing R&D capital spend.',
+      thesis_break_trigger: 'Slowing semiconductor customer research and development budgets, deceleration in EDA software subscriptions, or merger integration delays.',
+      evidence_needed: [
+        'EDA software recurring subscription revenues',
+        'Design IP segment licensing revenues',
+        'Semiconductor industry R&D capital spend',
+        'Operating income margin percentage',
+        'Customer design start project counts'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_19',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: 'Synopsys develops the software tools that semiconductor companies use to design and test new computer chips.',
+        thesisRisk: 'Key risks involve changes in semiconductor client R&D spending, competitive chip design tools, and merger regulations.'
+      },
+      phaseTwo: {
+        thesisRisk: [
+          {
+            category: 'Client R&D Reductions',
+            risk: 'Consolidation or budget cuts among chipmakers reduce EDA software seat license renewals.',
+            watch: 'Semiconductor industry R&D capital spend.'
+          },
+          {
+            category: 'IP Block Obsolescence',
+            risk: 'Failing to update standard design blocks for next-generation manufacturing processes reduces licensing fees.',
+            watch: 'Design IP segment licensing revenues.'
+          },
+          {
+            category: 'Merger Regulatory Hurdles',
+            risk: 'Regulatory authorities blocking or delaying acquisitions limits long-term growth platforms.',
+            watch: 'Operating income margin percentage.'
+          }
+        ]
+      }
+    }
+  },
+  SO: {
+    ticker: 'SO',
+    companyName: 'The Southern Company',
+    exchange: 'NYSE',
+    logoUrl: buildStockLogoUrl('SO'),
+    overview: 'The Southern Company is a utility parent company, operating regulated electric and gas distribution subsidiaries supplying customer markets across multiple US states.',
+    category: 'Regulated Electricity & Gas Utility',
+    analysisDate: '2026-06-12',
+    latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
+    dossierVerdict: 'Southern Company manages regulated utility commission rate cases, nuclear power and grid capital expenditures, and weather-driven demand.',
+    valueCore: {
+      ticker: 'SO',
+      value_core_type: 'business_summary_thesis_risk',
+      company_stage_candidate: 'Mature Regulated Utility',
+      primary_value_driver: 'Securing constructive utility commission rate adjustments, executing power plant and grid capital spending plans, and expanding retail customer counts.',
+      thesis_break_trigger: 'Unfavorable regulatory rate decisions, capital cost overruns on utility infrastructure, or rising interest rates inflating debt service.',
+      evidence_needed: [
+        'Regulated rate case decisions',
+        'Utility infrastructure capital spending',
+        'Retail customer connection counts',
+        'Wholesale interest rate refinancing costs',
+        'Weather-normalized electricity demand'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_19',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: 'Southern Company operates electric and gas utilities, generating power and distributing natural gas to retail customers.',
+        thesisRisk: 'Key risks include state commission utility rate cases, construction cost overruns on power plants, and refinancing debt costs.'
+      },
+      phaseTwo: {
+        thesisRisk: [
+          {
+            category: 'Regulatory Decisions',
+            risk: 'State public service commissions deny requested rate increases, lowering utility operating returns.',
+            watch: 'Regulated rate case decisions.'
+          },
+          {
+            category: 'Capital Project Overruns',
+            risk: 'Nuclear reactor or major grid upgrades experience construction delays and budget overruns that cannot be recovered in rates.',
+            watch: 'Utility infrastructure capital spending.'
+          },
+          {
+            category: 'Debt Refinancing Rates',
+            risk: 'High interest rates increase the cost of refinancing maturing utility bonds, compressing net income margins.',
+            watch: 'Wholesale interest rate refinancing costs.'
+          }
+        ]
+      }
+    }
+  },
+  SPG: {
+    ticker: 'SPG',
+    companyName: 'Simon Property Group, Inc.',
+    exchange: 'NYSE',
+    logoUrl: buildStockLogoUrl('SPG'),
+    overview: 'Simon Property Group is a retail real estate investment trust (REIT), owning, developing, and leasing premium shopping malls and premium outlet centers.',
+    category: 'Retail Property REIT',
+    analysisDate: '2026-06-12',
+    latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
+    dossierVerdict: 'Simon Property Group manages retail property occupancy rates, tenant retail operator credit stability, and base rent per square foot metrics.',
+    valueCore: {
+      ticker: 'SPG',
+      value_core_type: 'business_summary_thesis_risk',
+      company_stage_candidate: 'Mature Real Estate / REIT',
+      primary_value_driver: 'Maintaining high shopping mall occupancy levels, increasing average base rent rates, and securing stable tenant lease renewals.',
+      thesis_break_trigger: 'Sustained occupancy decline below ninety percent, tenant bankruptcies in major department store anchors, or refinancing cost increases.',
+      evidence_needed: [
+        'Simon retail mall occupancy percentage',
+        'Average base rent per square foot',
+        'Tenant lease renewal retention rate',
+        'Net debt to adjusted EBITDA ratio',
+        'Refinancing debt interest rate yields'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_19',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: 'Simon Property Group owns premium retail real estate, generating lease revenues from brand retailers in malls and outlets.',
+        thesisRisk: 'Key risks involve shopping mall occupancy rates, retail tenant bankruptcies, and debt refinancing costs.'
+      },
+      phaseTwo: {
+        thesisRisk: [
+          {
+            category: 'Occupancy Devaluation',
+            risk: 'Retail store closures and department store bankruptcies lower overall mall occupancy rates.',
+            watch: 'Simon retail mall occupancy percentage.'
+          },
+          {
+            category: 'Lease Pricing Compression',
+            risk: 'Weak tenant sales force concessions on base rent rates during lease renewal negotiations.',
+            watch: 'Average base rent per square foot.'
+          },
+          {
+            category: 'Debt Refinancing Costs',
+            risk: 'Refinancing mortgage debt at higher benchmark rates increases interest expenses, compressing cash flows.',
+            watch: 'Refinancing debt interest rate yields.'
+          }
+        ]
+      }
+    }
+  },
+  STX: {
+    ticker: 'STX',
+    companyName: 'Seagate Technology Holdings plc',
+    exchange: 'NASDAQ',
+    logoUrl: buildStockLogoUrl('STX'),
+    overview: 'Seagate Technology designs and manufactures hard disk drives (HDDs) and read-write heads for enterprise cloud datacenters and consumer electronic systems.',
+    category: 'Data Storage & Hard Disk Drives',
+    analysisDate: '2026-06-12',
+    latestFiscalPeriod: 'Q3 2026 ended 2026-04-03',
+    dossierVerdict: 'Seagate Technology navigates cloud datacenter client inventory cycles, hard disk drive average realized prices, and factory utilization rates.',
+    valueCore: {
+      ticker: 'STX',
+      value_core_type: 'business_summary_thesis_risk',
+      company_stage_candidate: 'Mature Technology Hardware / Storage',
+      primary_value_driver: 'Growing enterprise mass capacity HDD shipments, maintaining average realized prices per drive, and improving manufacturing margins.',
+      thesis_break_trigger: 'Severe drop in datacenter mass capacity HDD shipments, price competition compressing average realized prices, or underutilization charges.',
+      evidence_needed: [
+        'Enterprise mass capacity HDD shipments',
+        'Average realized price per drive',
+        'HDD segment gross profit margin',
+        'Cloud datacenter inventory levels',
+        'Days inventory outstanding'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_19',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: 'Seagate designs and manufactures high-capacity hard drives used in datacenter servers and cloud storage infrastructure.',
+        thesisRisk: 'Key risks relate to cloud provider capital spending cycles, hard drive pricing, and manufacturing capacity utilization.'
+      },
+      phaseTwo: {
+        thesisRisk: [
+          {
+            category: 'Cloud CapEx Cycles',
+            risk: 'Major cloud host providers deferring storage server purchases due to inventory digestion cycles.',
+            watch: 'Enterprise mass capacity HDD shipments.'
+          },
+          {
+            category: 'Pricing Competition',
+            risk: 'Price wars in standard hard drive markets reduce average realized prices, compressing margins.',
+            watch: 'Average realized price per drive.'
+          },
+          {
+            category: 'Underutilization Charges',
+            risk: 'Production cuts required to balance market supply create fixed cost underutilization drag.',
+            watch: 'HDD segment gross profit margin.'
+          }
+        ]
+      }
+    }
+  },
+  T: {
+    ticker: 'T',
+    companyName: 'AT&T Inc.',
+    exchange: 'NYSE',
+    logoUrl: buildStockLogoUrl('T'),
+    overview: 'AT&T Inc. provides mobile telecommunication services, high-speed fiber broadband connections, and business communication solutions across the US.',
+    category: 'Telecommunication Services',
+    analysisDate: '2026-06-12',
+    latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
+    dossierVerdict: 'AT&T manages wireless postpaid subscriber net additions, postpaid ARPU, fiber broadband expansions, and total debt reduction.',
+    valueCore: {
+      ticker: 'T',
+      value_core_type: 'business_summary_thesis_risk',
+      company_stage_candidate: 'Mature Telecommunications Provider',
+      primary_value_driver: 'Growing postpaid wireless subscribers, expanding fiber broadband home connections, and generating free cash flows to reduce debt.',
+      thesis_break_trigger: 'Wireless subscriber net losses, average revenue per user compression from price wars, or failure to meet free cash flow targets.',
+      evidence_needed: [
+        'Postpaid wireless subscriber net additions',
+        'Postpaid phone average revenue per user',
+        'Fiber broadband subscriber counts',
+        'Free cash flow generation',
+        'Net debt outstanding balance'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_19',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: 'AT&T provides mobile voice and data services, broadband fiber connections, and business IT networks.',
+        thesisRisk: 'Key risks include wireless market price wars lowering ARPU, fiber rollout capital costs, and balance sheet leverage.'
+      },
+      phaseTwo: {
+        thesisRisk: [
+          {
+            category: 'ARPU Compression',
+            risk: 'Aggressive promotional pricing by telecom competitors lowers average monthly billing rates per subscriber.',
+            watch: 'Postpaid phone average revenue per user.'
+          },
+          {
+            category: 'Broadband Capital Cost',
+            risk: 'High installation costs for residential fiber lines outpace customer connections, lowering returns.',
+            watch: 'Fiber broadband subscriber counts.'
+          },
+          {
+            category: 'Debt Maturity Drag',
+            risk: 'Slower-than-planned free cash flow generation delays balance sheet deleveraging goals.',
+            watch: 'Net debt outstanding balance.'
+          }
+        ]
+      }
+    }
+  },
+  TPVG: {
+    ticker: 'TPVG',
+    companyName: 'TriplePoint Venture Growth BDC Corp.',
+    exchange: 'NYSE',
+    logoUrl: buildStockLogoUrl('TPVG'),
+    overview: 'TriplePoint Venture Growth BDC Corp. is a business development company providing customized debt financing to growth stage, venture-backed companies in technology and life sciences.',
+    category: 'Specialty Finance (BDC)',
+    analysisDate: '2026-06-12',
+    latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
+    dossierVerdict: 'TriplePoint BDC operates a senior secured venture lending portfolio, sensitive to loan non-accrual rates, net asset value stability, and NII dividend coverage.',
+    valueCore: {
+      ticker: 'TPVG',
+      value_core_type: 'business_summary_thesis_risk',
+      company_stage_candidate: 'Mature Specialty Finance / Business Development Company',
+      primary_value_driver: 'Managing venture loan non-accrual rates, securing stable net asset value per share, and generating net investment income to cover dividends.',
+      thesis_break_trigger: 'Spike in venture borrower loan defaults, significant net asset value write-downs, or venture funding market freezes.',
+      evidence_needed: [
+        'Venture loan portfolio non-accrual rates',
+        'Net asset value per share',
+        'Net investment income dividend coverage ratio',
+        'Weighted average yield on venture debt',
+        'New debt loan origination volumes'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_19',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: 'TriplePoint BDC provides debt loans to growth-stage technology and biotech companies backed by venture capital firms.',
+        thesisRisk: 'Key risks include high portfolio non-accrual rates, venture industry funding recessions, and NAV per share stability.'
+      },
+      phaseTwo: {
+        thesisRisk: [
+          {
+            category: 'Venture Defaults',
+            risk: 'Venture-backed startups fail to raise new equity rounds and default on senior loans, causing credit losses.',
+            watch: 'Venture loan portfolio non-accrual rates.'
+          },
+          {
+            category: 'NAV Depreciation',
+            risk: 'Write-downs in the valuation of equity warrants and venture loans reduce net asset value per share.',
+            watch: 'Net asset value per share.'
+          },
+          {
+            category: 'Funding Freeze',
+            risk: 'Slowing venture capital fundraising reduces demand for venture debt originations.',
+            watch: 'New debt loan origination volumes.'
+          }
+        ]
+      }
+    }
   }
 };
 
