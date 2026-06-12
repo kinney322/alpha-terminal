@@ -10232,6 +10232,557 @@ const stockDossierProfiles = {
       }
     }
   }
+,
+  C: {
+    ticker: 'C',
+    companyName: 'Citigroup Inc.',
+    exchange: 'NYSE',
+    overview: 'Citigroup is a diversified global financial services holding company providing consumers, corporations, governments, and institutions with a broad range of financial products and services, including consumer banking and credit, corporate and investment banking, securities brokerage, transaction services, and wealth management.',
+    category: 'Global Diversified Banking',
+    analysisDate: '2026-06-11',
+    latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
+    dossierVerdict: 'Citigroup has embarked on a multi-year organizational simplification plan aimed at reducing bureaucracy, improving operating efficiency, and meeting regulatory commitments, while continuing to manage credit card risk and capital adequacy.',
+    valueCore: {
+      ticker: 'C',
+      value_core_type: 'business_summary_thesis_risk',
+      company_stage_candidate: 'Restructuring / Mature Financial',
+      primary_value_driver: 'Expense reduction from organizational simplification, growth in wealth and services business, and stabilization of net interest income and credit card charge-offs.',
+      thesis_break_trigger: 'Failure to reduce expenses according to guidance, CET1 capital ratio dropping below regulatory requirements, or credit card net charge-off rates exceeding historical levels.',
+      evidence_needed: [
+        'Operating expenses excluding regulatory penalties',
+        'Common Equity Tier 1 (CET1) capital ratio',
+        'Net interest margin and net interest income',
+        'Gross credit card loan non-accrual rate',
+        'Wealth management assets under management'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_12',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: 'Citigroup is a global systemically important bank operating across consumer banking, corporate client services, markets, transaction services, and wealth management.',
+        thesisRisk: 'The primary risks revolve around its ability to execute its massive restructuring program to lower operating costs, manage credit card delinquency and charge-off rates in a changing macro environment, and maintain regulatory capital ratios above target levels.'
+      },
+      phaseTwo: {
+        thesisRisk: [
+          {
+            category: 'Operational Execution',
+            risk: 'Failing to lower operating expenses and streamline layers of management during its restructuring process.',
+            watch: 'Quarterly operating expenses and restructuring charge guidance.'
+          },
+          {
+            category: 'Credit Risk',
+            risk: 'Rising credit card delinquencies and charge-off rates leading to higher-than-expected provisions for credit losses.',
+            watch: 'Net charge-off rates and non-accrual loan metrics for the US personal banking segment.'
+          },
+          {
+            category: 'Capital Adequacy',
+            risk: 'CET1 ratio drops close to regulatory minimums, limiting stock repurchases and capital deployment options.',
+            watch: 'Quarterly Common Equity Tier 1 (CET1) capital ratio updates.'
+          }
+        ]
+      }
+    }
+  },
+  CCEP: {
+    ticker: 'CCEP',
+    companyName: 'Coca-Cola Europacific Partners plc',
+    exchange: 'NASDAQ',
+    overview: 'Coca-Cola Europacific Partners (CCEP) is the world\'s largest independent Coca-Cola bottler, manufacturing, distributing, and selling beverages across Europe, Australia, the Pacific, and parts of Southeast Asia under exclusive franchise agreements.',
+    category: 'Beverage Distribution',
+    analysisDate: '2026-06-11',
+    latestFiscalPeriod: 'Q1 2026 ended 2026-03-27',
+    dossierVerdict: 'CCEP maintains a strong market position through exclusive bottling rights for Coca-Cola brands, utilizing geographic diversification and pricing power to manage input cost volatility.',
+    valueCore: {
+      ticker: 'CCEP',
+      value_core_type: 'business_summary_thesis_risk',
+      company_stage_candidate: 'Mature Consumer Staples / Consolidation',
+      primary_value_driver: 'Volume growth in premium beverage categories, pricing power to pass through packaging and raw material costs, and realization of synergies from geographic integration.',
+      thesis_break_trigger: 'Significant volume contraction in core territories, material pricing pushback from retail partners, or raw material cost inflation outpacing gross margins.',
+      evidence_needed: [
+        'Comparable volume growth by territory',
+        'Cost of goods sold per unit case',
+        'Gross profit margin percentage',
+        'Operating cash flow conversion rate',
+        'Foreign exchange translation impact on revenue'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_12',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 20-F / 6-K'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: 'CCEP is a major global consumer staples business operating as the lead anchor bottler for The Coca-Cola Company across major European, Asia-Pacific, and Australian markets.',
+        thesisRisk: 'Main business risks involve input cost inflation (packaging, electricity, sugar), unfavorable volume changes from pricing increases, and regulatory risks such as sugar taxes or deposit return schemes.'
+      },
+      phaseTwo: {
+        thesisRisk: [
+          {
+            category: 'Pricing & Volume',
+            risk: 'Price increases designed to offset inflation lead to volume contraction or consumer switching to private label brands.',
+            watch: 'Territory volume changes and price/mix metrics.'
+          },
+          {
+            category: 'Raw Materials',
+            risk: 'Surges in cost of aluminum, PET, glass, and energy compress gross profit margins.',
+            watch: 'Cost of goods sold per unit case and gross margin percentage.'
+          },
+          {
+            category: 'Franchise Dependency',
+            risk: 'Changes in terms of exclusive bottling agreements with The Coca-Cola Company.',
+            watch: 'Related party transactions and franchise agreement disclosures.'
+          }
+        ]
+      }
+    }
+  },
+  CCL: {
+    ticker: 'CCL',
+    companyName: 'Carnival Corporation & plc',
+    exchange: 'NYSE',
+    overview: 'Carnival Corporation & plc is the world\'s largest leisure travel company and cruise operator, operating a global fleet of cruise ships across multiple well-known brands including Carnival Cruise Line, Princess Cruises, Holland America Line, and Costa Cruises.',
+    category: 'Leisure & Travel',
+    analysisDate: '2026-06-11',
+    latestFiscalPeriod: 'Q1 2026 ended 2026-02-28',
+    dossierVerdict: 'Carnival is focused on post-pandemic deleveraging, aiming to improve yields and occupancy while deploying cash flow to pay down its high debt burden.',
+    valueCore: {
+      ticker: 'CCL',
+      value_core_type: 'business_summary_thesis_risk',
+      company_stage_candidate: 'Post-Pandemic Deleveraging / Cyclical Recovery',
+      primary_value_driver: 'Higher occupancy rates, expansion of net passenger yields, strong onboard guest spending, and repayment of high-cost debt to reduce interest expenses.',
+      thesis_break_trigger: 'Occupancy levels falling below historical averages, sudden increase in marine fuel costs without effective hedging, or rising interest rates compounding debt service costs.',
+      evidence_needed: [
+        'Occupancy percentage by quarter',
+        'Net passenger yields and onboard spending per passenger',
+        'Total outstanding debt and interest expense coverage',
+        'Marine fuel cost per metric ton',
+        'Advanced cruise ticket booking volumes'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_12',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: 'Carnival operates in the global travel sector, running cruise brands that cater to diverse market segments worldwide.',
+        thesisRisk: 'The thesis hinges on sustained leisure travel demand to cover high capital expenditures and heavy debt obligations, alongside managing volatile operating costs such as marine fuel.'
+      },
+      phaseTwo: {
+        thesisRisk: [
+          {
+            category: 'Balance Sheet Leverage',
+            risk: 'High interest expenses consume operating cash flow, delaying credit rating improvements and increasing refinancing risk.',
+            watch: 'Debt repayments, interest expense coverage ratio, and credit ratings.'
+          },
+          {
+            category: 'Consumer Demand',
+            risk: 'Economic slowdowns dampening consumer spending on leisure cruises, leading to discounting.',
+            watch: 'Occupancy levels and advanced booking trends.'
+          },
+          {
+            category: 'Operating Cost Volatility',
+            risk: 'Sharp spikes in fuel and food prices reducing cruise operating margins.',
+            watch: 'Fuel costs per metric ton and gross cruise costs.'
+          }
+        ]
+      }
+    }
+  },
+  CDNS: {
+    ticker: 'CDNS',
+    companyName: 'Cadence Design Systems, Inc.',
+    exchange: 'NASDAQ',
+    overview: 'Cadence Design Systems is a leading provider of electronic design automation (EDA) software, hardware, and IP blocks used by semiconductor and system companies to design, verify, and package integrated circuits and electronic systems.',
+    category: 'Semiconductor Software & IP',
+    analysisDate: '2026-06-11',
+    latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
+    dossierVerdict: 'Cadence benefits from high customer switching costs and structural demand for AI and custom silicon design software, generating high-margin recurring revenues.',
+    valueCore: {
+      ticker: 'CDNS',
+      value_core_type: 'business_summary_thesis_risk',
+      company_stage_candidate: 'High-Growth Software / R&D Enabler',
+      primary_value_driver: 'Rising demand for EDA software tools and IP blocks driven by complex AI and system-on-chip architectures, leading to high recurring subscription revenues.',
+      thesis_break_trigger: 'Slowing semiconductor R&D spending, supply chain delays for hardware emulator systems, or market share loss to major EDA competitors.',
+      evidence_needed: [
+        'Recurring product and maintenance revenue growth',
+        'Total order backlog dollar value',
+        'Operating margin percentage',
+        'R&D expenses as a percentage of revenue',
+        'Product revenue growth from hardware emulation systems'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_12',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: 'Cadence provides critical software infrastructure to the semiconductor industry, facilitating chip design from concept to manufacturing.',
+        thesisRisk: 'Risks include potential downturns in chip design activity, export restrictions on advanced design tools, and the heavy R&D investment required to integrate AI design features.'
+      },
+      phaseTwo: {
+        thesisRisk: [
+          {
+            category: 'R&D Spend Cycles',
+            risk: 'Semiconductor clients reducing design starts or R&D budgets during industry downturns.',
+            watch: 'Software subscription growth rates and total backlog value.'
+          },
+          {
+            category: 'Hardware Supply Chain',
+            risk: 'Shortage of components for advanced emulation hardware systems, delaying delivery to customers.',
+            watch: 'Product segment revenue and inventory levels.'
+          },
+          {
+            category: 'Geopolitical Controls',
+            risk: 'Tightening export controls restricting sale of advanced EDA tools to specific markets.',
+            watch: 'International revenue mix and regulatory compliance disclosures.'
+          }
+        ]
+      }
+    }
+  },
+  CEG: {
+    ticker: 'CEG',
+    companyName: 'Constellation Energy Corporation',
+    exchange: 'NASDAQ',
+    overview: 'Constellation Energy is the largest producer of carbon-free energy in the United States, operating the nation\'s largest nuclear power fleet alongside hydro, wind, and solar assets, supplying electricity to commercial, industrial, and residential customers.',
+    category: 'Clean Energy & Utilities',
+    analysisDate: '2026-06-11',
+    latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
+    dossierVerdict: 'Constellation is uniquely positioned to capture growing demand from artificial intelligence data centers seeking round-the-clock clean power, backed by nuclear tax credits.',
+    valueCore: {
+      ticker: 'CEG',
+      value_core_type: 'business_summary_thesis_risk',
+      company_stage_candidate: 'Clean Energy Producer / Infrastructure',
+      primary_value_driver: 'Growth in power purchase agreements with hyperscale data centers, favorable wholesale merchant power prices, and clean energy production tax credits.',
+      thesis_break_trigger: 'Unexpected extended outages in major nuclear units, regulatory changes in clean energy credits, or falling capacity market clearing prices.',
+      evidence_needed: [
+        'Nuclear fleet capacity factor percentage',
+        'Weighted average wholesale power price realized',
+        'Capacity market auction clearing prices',
+        'Revenue generated from hyperscale data center PPAs',
+        'Nuclear fuel procurement cost changes'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_12',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: 'Constellation generates and sells carbon-free wholesale electricity, relying primarily on its nuclear power plant fleet.',
+        thesisRisk: 'Operational risks include nuclear refueling cycles and forced outages, alongside power market price fluctuations and regulatory policy changes.'
+      },
+      phaseTwo: {
+        thesisRisk: [
+          {
+            category: 'Nuclear Operations',
+            risk: 'Forced outages or safety violations leading to extended reactor shutdowns and reduced power generation.',
+            watch: 'Nuclear capacity factor percentage and forced outage rates.'
+          },
+          {
+            category: 'Energy Pricing',
+            risk: 'Depressed wholesale merchant electricity prices reducing unhedged generation revenue.',
+            watch: 'Realized power prices and percentage of hedged capacity.'
+          },
+          {
+            category: 'Policy & Regulations',
+            risk: 'Modifications to federal Production Tax Credits (PTC) or state clean energy programs.',
+            watch: 'Regulatory filing updates and policy announcement disclosures.'
+          }
+        ]
+      }
+    }
+  },
+  CHTR: {
+    ticker: 'CHTR',
+    companyName: 'Charter Communications, Inc.',
+    exchange: 'NASDAQ',
+    overview: 'Charter Communications is a leading broadband communications company and cable operator in the United States, operating under the Spectrum brand to provide high-speed internet, mobile phone, subscription television, and voice services.',
+    category: 'Cable & Telecommunications',
+    analysisDate: '2026-06-11',
+    latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
+    dossierVerdict: 'Charter faces competitive headwinds in residential broadband, counterbalanced by Spectrum Mobile expansion and high-split network infrastructure upgrades.',
+    valueCore: {
+      ticker: 'CHTR',
+      value_core_type: 'business_summary_thesis_risk',
+      company_stage_candidate: 'Mature Cable Operator / Telecom Transition',
+      primary_value_driver: 'Broadband customer stabilization, rapid expansion of mobile phone lines via Spectrum Mobile, and high-split network upgrades to defend market share.',
+      thesis_break_trigger: 'Accelerated broadband subscriber losses, margin erosion from aggressive mobile discounting, or capital expenditure overruns on network high-splits.',
+      evidence_needed: [
+        'Broadband subscriber net additions or losses',
+        'Spectrum Mobile line additions and ARPU',
+        'Subscription video subscriber churn rate',
+        'Capital expenditures for network upgrades',
+        'Adjusted EBITDA margin percentage'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_12',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: 'Charter is a major cable network provider in the US, transitioning its business model to focus on broadband and mobile bundles.',
+        thesisRisk: 'The primary risk is customer losses in broadband to fiber and FWA, combined with video cord-cutting and heavy capex requirements.'
+      },
+      phaseTwo: {
+        thesisRisk: [
+          {
+            category: 'Broadband Competition',
+            risk: 'Fiber-to-the-home expansions and 5G fixed-wireless access (FWA) draw away broadband customers.',
+            watch: 'Broadband net adds/losses by quarter.'
+          },
+          {
+            category: 'Capital Spending',
+            risk: 'High-split network upgrades to offer symmetrical speeds require elevated capex, depressing free cash flow.',
+            watch: 'Quarterly capital expenditures and free cash flow.'
+          },
+          {
+            category: 'Cord Cutting',
+            risk: 'Accelerated loss of video customers reduces high-margin video revenues.',
+            watch: 'Video subscriber churn rates.'
+          }
+        ]
+      }
+    }
+  },
+  CIEN: {
+    ticker: 'CIEN',
+    companyName: 'Ciena Corporation',
+    exchange: 'NYSE',
+    overview: 'Ciena Corporation is a network specialist providing optical transport systems, routing and switching platforms, software, and services to telecommunications service providers, cable operators, governments, and large enterprises globally.',
+    category: 'Optical Networking Equipment',
+    analysisDate: '2026-06-11',
+    latestFiscalPeriod: 'Q2 2026 ended 2026-05-02',
+    dossierVerdict: 'Ciena relies on cloud provider demand to offset cautious capital spending among traditional telecommunications operators.',
+    valueCore: {
+      ticker: 'CIEN',
+      value_core_type: 'business_summary_thesis_risk',
+      company_stage_candidate: 'Cyclical Tech Hardware / Telecom Vendor',
+      primary_value_driver: 'Drawdown of hardware backlog, carrier network upgrades to higher optical speeds, and capital expenditure recovery from cloud providers.',
+      thesis_break_trigger: 'Extended pause in telecom carrier capital spending, rapid backlog depletion without new orders, or gross margin compression from competitive pricing.',
+      evidence_needed: [
+        'Optical networking segment revenue growth',
+        'Order backlog drawdown rate',
+        'Gross profit margin percentage',
+        'Telecom carrier capital expenditure guidance',
+        'Inventory turnover ratio'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_12',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: 'Ciena designs and builds optical network hardware that powers internet backbone infrastructure and datacenter connections.',
+        thesisRisk: 'Performance is cyclical, tied directly to carrier capital spend, customer inventory drawdowns, and component supply chains.'
+      },
+      phaseTwo: {
+        thesisRisk: [
+          {
+            category: 'Client Capex Cycles',
+            risk: 'Major telecom carriers reducing network hardware upgrades to conserve cash flow.',
+            watch: 'Carrier capital expenditure announcements and segment revenues.'
+          },
+          {
+            category: 'Backlog Drawdown',
+            risk: 'Depleting the order backlog built up during supply shortages without securing matching new orders.',
+            watch: 'Backlog total value and book-to-bill ratio.'
+          },
+          {
+            category: 'Gross Margin Compression',
+            risk: 'Increased pricing competition in optical transport markets lowers margins.',
+            watch: 'Gross margin percentage and cost of goods sold.'
+          }
+        ]
+      }
+    }
+  },
+  CIFR: {
+    ticker: 'CIFR',
+    companyName: 'Cipher Mining Inc.',
+    exchange: 'NASDAQ',
+    overview: 'Cipher Mining is an industrial-scale technology company focused on development and operation of bitcoin mining data centers in the United States, utilizing power infrastructure to run high-performance ASIC rigs.',
+    category: 'Bitcoin Mining & Computing Infrastructure',
+    analysisDate: '2026-06-11',
+    latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
+    dossierVerdict: 'Cipher focuses on securing long-term power purchase agreements and growing its operational hash rate, with potential expansion into HPC data center hosting.',
+    valueCore: {
+      ticker: 'CIFR',
+      value_core_type: 'business_summary_thesis_risk',
+      company_stage_candidate: 'Early-Stage High-Beta Infrastructure',
+      primary_value_driver: 'Expansion of active self-mining hash rate, access to low-cost electricity contracts, and operational transitions toward HPC/AI data hosting.',
+      thesis_break_trigger: 'Protracted decline in Bitcoin price below marginal production costs, failure to secure low-cost power renewals, or dilutive share issuances exceeding growth value.',
+      evidence_needed: [
+        'Active self-mining hash rate (EH/s)',
+        'Weighted average electricity cost per megawatt-hour',
+        'Bitcoin mined per quarter',
+        'Capital expenditure commitments for site development',
+        'Total outstanding share dilution percentage'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_12',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: 'Cipher Mining operates specialized data centers containing ASIC computer chips designed to mine the Bitcoin network.',
+        thesisRisk: 'The business model is highly exposed to Bitcoin price volatility, rising electricity grid pricing, and the network difficulty rate.'
+      },
+      phaseTwo: {
+        thesisRisk: [
+          {
+            category: 'Bitcoin Pricing',
+            risk: 'A steep decrease in Bitcoin price makes mining operations unprofitable relative to power costs.',
+            watch: 'Bitcoin market price and average mining cost per coin.'
+          },
+          {
+            category: 'Electricity Pricing',
+            risk: 'Expiration or disruption of fixed-price electricity contracts increases the cost of mining.',
+            watch: 'Power costs per megawatt-hour (MWh).'
+          },
+          {
+            category: 'Capital Dilution',
+            risk: 'Issuing high volumes of common stock through ATM programs to fund hardware acquisitions dilute existing owners.',
+            watch: 'Total shares outstanding and ATM program drawdowns.'
+          }
+        ]
+      }
+    }
+  },
+  CL: {
+    ticker: 'CL',
+    companyName: 'Colgate-Palmolive Company',
+    exchange: 'NYSE',
+    overview: 'Colgate-Palmolive is a leading global consumer products company focused on Oral Care, Personal Care, Home Care, and Pet Nutrition, selling widely recognized brands like Colgate, Palmolive, and Hill\'s Science Diet.',
+    category: 'Consumer Staples',
+    analysisDate: '2026-06-11',
+    latestFiscalPeriod: 'FY2025 ended 2025-12-31',
+    dossierVerdict: 'Colgate-Palmolive utilizes strong brand equity to execute pricing increases, protecting gross margins against raw material cost inflation.',
+    valueCore: {
+      ticker: 'CL',
+      value_core_type: 'business_summary_thesis_risk',
+      company_stage_candidate: 'Mature Dividend Consumer Staples',
+      primary_value_driver: 'Organic sales growth through pricing and volume increases, premiumization in oral care, and gross margin recovery from raw material deflation.',
+      thesis_break_trigger: 'Volume decline indicating lack of pricing power, gross margin compression from renewed raw material inflation, or severe currency headwinds in emerging markets.',
+      evidence_needed: [
+        'Organic sales growth percentage',
+        'Volume growth percentage vs pricing impact',
+        'Gross profit margin recovery rate',
+        'Advertising and promotion expenses',
+        'Pet nutrition (Hill\'s) revenue growth'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_12',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: 'Colgate-Palmolive manufactures and sells household personal care brands globally, maintaining high market shares in oral care.',
+        thesisRisk: 'Risks include volume erosion if prices are raised too aggressively, input cost surges, and translation losses from emerging market currencies.'
+      },
+      phaseTwo: {
+        thesisRisk: [
+          {
+            category: 'Volume Elasticity',
+            risk: 'Consumer pushback against pricing actions leads to market share loss to private labels.',
+            watch: 'Volume growth trends vs pricing increases.'
+          },
+          {
+            category: 'Input Inflation',
+            risk: 'Renewed commodity spikes in packaging and chemical ingredients compress gross margins.',
+            watch: 'Gross margin percentage and cost of goods sold.'
+          },
+          {
+            category: 'Foreign Exchange',
+            risk: 'Local currency depreciations in emerging markets reduce reported US dollar earnings.',
+            watch: 'Foreign exchange translation impact on revenue and operating profit.'
+          }
+        ]
+      }
+    }
+  },
+  CLSK: {
+    ticker: 'CLSK',
+    companyName: 'CleanSpark, Inc.',
+    exchange: 'NASDAQ',
+    overview: 'CleanSpark is an industrial-scale bitcoin mining company that owns and operates multiple data centers in the United States, powered primarily by low-carbon energy sources to support high-efficiency computing equipment.',
+    category: 'Bitcoin Mining & Computing Infrastructure',
+    analysisDate: '2026-06-11',
+    latestFiscalPeriod: 'Q2 2026 ended 2026-03-31',
+    dossierVerdict: 'CleanSpark focuses on acquisition-driven hash rate expansion and fleet power efficiency to maintain competitiveness in the bitcoin mining sector.',
+    valueCore: {
+      ticker: 'CLSK',
+      value_core_type: 'business_summary_thesis_risk',
+      company_stage_candidate: 'Growth Infrastructure / Bitcoin Mining',
+      primary_value_driver: 'Rapid expansion of mining fleet capacity, high ASIC efficiency, and acquisition of low-cost power infrastructure in key regions.',
+      thesis_break_trigger: 'Substantial decrease in Bitcoin price, rising electricity unit costs, or operational inefficiency leading to high fleet energy consumption.',
+      evidence_needed: [
+        'Operational hash rate capacity (EH/s)',
+        'Fleet efficiency measured in Joules per Terahash (J/TH)',
+        'Weighted average electricity costs',
+        'ASIC miner purchase commitments',
+        'ATM equity facility drawdowns and share counts'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_12',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: 'CleanSpark operates data centers in Georgia, Mississippi, and other regions dedicated to running ASIC miners for Bitcoin.',
+        thesisRisk: 'The thesis depends on rapid fleet deployment and low power costs to offset cyclical fluctuations in Bitcoin price and network difficulty.'
+      },
+      phaseTwo: {
+        thesisRisk: [
+          {
+            category: 'Bitcoin Volatility',
+            risk: 'A drop in Bitcoin value compresses mining margins, restricting funds for debt service and capital expansion.',
+            watch: 'Bitcoin price and marginal cost of mining per coin.'
+          },
+          {
+            category: 'Fleet Efficiency',
+            risk: 'Failure to upgrade to newer ASIC hardware increases average electricity consumption per unit of computing power.',
+            watch: 'Average mining fleet efficiency (J/TH).'
+          },
+          {
+            category: 'Financing Risk',
+            risk: 'Slowing ATM share sales restricts growth capital, while excessive share sales dilute value.',
+            watch: 'Outstanding shares and ATM financing activities.'
+          }
+        ]
+      }
+    }
+  }
 };
 
 export function getStockDossierProfile(ticker) {
