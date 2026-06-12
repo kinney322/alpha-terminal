@@ -10783,6 +10783,557 @@ const stockDossierProfiles = {
       }
     }
   }
+,
+  COF: {
+    ticker: 'COF',
+    companyName: 'Capital One Financial Corporation',
+    exchange: 'NYSE',
+    overview: 'Capital One Financial is a diversified financial services holding company specializing in credit cards, auto loans, and consumer and commercial banking, utilizing high-volume data analytics to drive credit underwriting and marketing.',
+    category: 'Consumer Finance & Banking',
+    analysisDate: '2026-06-11',
+    latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
+    dossierVerdict: 'Capital One Financial operates a high-volume consumer lending model heavily dependent on credit card and auto loan credit performance, supported by deposit funding.',
+    valueCore: {
+      ticker: 'COF',
+      value_core_type: 'business_summary_thesis_risk',
+      company_stage_candidate: 'Mature Consumer Credit & Banking',
+      primary_value_driver: 'Credit card loan expansion with data-driven underwriting, stabilization of auto loan delinquency rates, and growth in low-cost deposit funding.',
+      thesis_break_trigger: 'Credit card net charge-off rates exceeding historical cycle averages, auto loan credit deterioration, or deposit flight forcing high-cost wholesale funding.',
+      evidence_needed: [
+        'Credit card net charge-off rate',
+        '30+ day credit card delinquency rate',
+        'Net interest margin and net interest income',
+        'Average deposit interest rate cost',
+        'Auto loan provision for credit losses'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_13',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: 'Capital One is a major consumer finance firm known for its large credit card portfolio and retail banking franchise in the US.',
+        thesisRisk: 'The primary risk lies in consumer credit performance (delinquencies/charge-offs) during economic downturns and the rising cost of retaining deposits.'
+      },
+      phaseTwo: {
+        thesisRisk: [
+          {
+            category: 'Credit Deterioration',
+            risk: 'Increasing default rates in the credit card and auto loan portfolios require larger provisions, impacting profitability.',
+            watch: 'Credit card net charge-off rate and provisions.'
+          },
+          {
+            category: 'Funding Cost Pressure',
+            risk: 'Competitive pressure to offer higher deposit yields compresses net interest margin.',
+            watch: 'Average interest rate paid on deposits.'
+          },
+          {
+            category: 'Marketing Expense Inflation',
+            risk: 'Sustained elevated marketing and technology spend fails to generate proportional loan growth.',
+            watch: 'Non-interest marketing expenses.'
+          }
+        ]
+      }
+    }
+  },
+  CORZ: {
+    ticker: 'CORZ',
+    companyName: 'Core Scientific, Inc.',
+    exchange: 'NASDAQ',
+    overview: 'Core Scientific is a leading operator of digital infrastructure for high-performance computing and bitcoin mining in North America, offering self-mining operations and hosting services to third-party clients.',
+    category: 'Bitcoin Mining & Digital Infrastructure',
+    analysisDate: '2026-06-11',
+    latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
+    dossierVerdict: 'Core Scientific focuses on expanding self-mining hash rate capacity and transitioning energy infrastructure toward high-performance computing hosting contracts.',
+    valueCore: {
+      ticker: 'CORZ',
+      value_core_type: 'business_summary_thesis_risk',
+      company_stage_candidate: 'Early-Stage High-Beta Computing Infrastructure',
+      primary_value_driver: 'Expansion of active self-mining hash rate, securing low-cost power purchase contracts, and scaling host computer systems for high-performance computing (HPC) and artificial intelligence clients.',
+      thesis_break_trigger: 'Bitcoin price falling below marginal production cost, unexpected power tariff increases at major sites, or delays in data center infrastructure conversion for HPC clients.',
+      evidence_needed: [
+        'Active self-mining hash rate (EH/s)',
+        'Weighted average electricity cost per megawatt-hour',
+        'HPC hosting contract revenue and backlog',
+        'Bitcoin mined per quarter',
+        'Total outstanding share dilution'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_13',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: 'Core Scientific is an industrial-scale bitcoin miner that also provides hosting infrastructure for third-party miners and artificial intelligence applications.',
+        thesisRisk: 'Key risks include high exposure to Bitcoin market prices, power grid stability and cost inflation, and the execution risk of converting sites for HPC/AI clients.'
+      },
+      phaseTwo: {
+        thesisRisk: [
+          {
+            category: 'Bitcoin Volatility',
+            risk: 'A drop in Bitcoin value compresses self-mining margins, restricting liquidity for debt service.',
+            watch: 'Bitcoin price and cash cost to mine per coin.'
+          },
+          {
+            category: 'Power Costs',
+            risk: 'Rising regional power pricing or grid transmission fees increase the cost of running ASIC miner rigs.',
+            watch: 'Average electricity rate per MWh.'
+          },
+          {
+            category: 'HPC Transition Delays',
+            risk: 'Slower-than-expected buildout of high-performance computing data center capacity delays contractual revenue.',
+            watch: 'HPC hosting revenue and capital expenditures.'
+          }
+        ]
+      }
+    }
+  },
+  CPRT: {
+    ticker: 'CPRT',
+    companyName: 'Copart, Inc.',
+    exchange: 'NASDAQ',
+    overview: 'Copart is a global provider of online auction and vehicle processing services, connecting vehicle sellers (primarily insurance companies) with dismantlers, rebuilders, and exporters.',
+    category: 'Industrial Auction & Salvage Services',
+    analysisDate: '2026-06-11',
+    latestFiscalPeriod: 'Q3 2026 ended 2026-04-30',
+    dossierVerdict: 'Copart operates a dominant vehicle salvage auction marketplace, leveraging proprietary online bidding tech and physical storage yard networks.',
+    valueCore: {
+      ticker: 'CPRT',
+      value_core_type: 'business_summary_thesis_risk',
+      company_stage_candidate: 'High-Moat Industrial Services',
+      primary_value_driver: 'Rising vehicle complexity increasing total loss frequency by insurers, expanding international buyer base driving higher auction yields, and growth in storage fees.',
+      thesis_break_trigger: 'Sustained decline in insurance total loss frequency due to advanced safety systems, shortage of storage yard land capacity, or pricing pressure from major insurance clients.',
+      evidence_needed: [
+        'Insurance total loss frequency rate',
+        'Global active yard storage capacity in acres',
+        'Average fee revenue per vehicle processed',
+        'International buyer volume growth',
+        'Operating income margin percentage'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_13',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: 'Copart operates a virtual monopoly in vehicle salvage auctions, leveraging its extensive network of physical storage yards to store and process wrecked cars.',
+        thesisRisk: 'Key risks are a structural decline in car accident rates from autonomous driving tech, local zoning restrictions blocking yard expansions, and fluctuations in scrap metal prices.'
+      },
+      phaseTwo: {
+        thesisRisk: [
+          {
+            category: 'Total Loss Rates',
+            risk: 'Active driver safety technology or lower repair costs decrease the rate of cars declared total losses by insurers.',
+            watch: 'US total loss frequency statistics.'
+          },
+          {
+            category: 'Yard Expansion Blocks',
+            risk: 'Difficulties in securing zoning permits for land acquisitions restrict storage growth in key metropolitan areas.',
+            watch: 'Capital expenditures on land and yard development.'
+          },
+          {
+            category: 'Salvage Values',
+            risk: 'Decreases in used car values or global steel prices lower salvage auction yields.',
+            watch: 'Used vehicle price indices and scrap metal prices.'
+          }
+        ]
+      }
+    }
+  },
+  CSGP: {
+    ticker: 'CSGP',
+    companyName: 'CoStar Group, Inc.',
+    exchange: 'NASDAQ',
+    overview: 'CoStar Group is a leading provider of commercial real estate information, analytics, and online marketplaces, operating major platforms such as CoStar, LoopNet, and Homes.com.',
+    category: 'Real Estate Data & Marketplace',
+    analysisDate: '2026-06-11',
+    latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
+    dossierVerdict: 'CoStar maintains subscription databases in commercial real estate data, while actively deploying capital to build Homes.com as a residential competitor.',
+    valueCore: {
+      ticker: 'CSGP',
+      value_core_type: 'business_summary_thesis_risk',
+      company_stage_candidate: 'High-Moat Software & Marketplace',
+      primary_value_driver: 'Subscription model resilience in commercial real estate data, monetization of residential listing portals (Homes.com), and expansion into international markets.',
+      thesis_break_trigger: 'Failing to monetize Homes.com despite elevated advertising investments, persistent decline in commercial real estate client base, or integration challenges with acquisitions.',
+      evidence_needed: [
+        'Homes.com paid subscription additions',
+        'Commercial real estate subscription retention rate',
+        'Sales and marketing expenses as a percentage of revenue',
+        'Total monthly active users on marketplaces',
+        'Average revenue per advertiser'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_13',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: 'CoStar Group is the dominant database provider for commercial real estate and is actively investing to compete in the residential real estate listing market.',
+        thesisRisk: 'The primary risk is the high cash burn associated with marketing Homes.com to compete with entrenched residential rivals, and cyclical commercial real estate downturns.'
+      },
+      phaseTwo: {
+        thesisRisk: [
+          {
+            category: 'Residential Cash Burn',
+            risk: 'High marketing campaigns for Homes.com do not translate into adequate high-margin advertiser revenue.',
+            watch: 'Sales and marketing expenses and Homes.com revenue.'
+          },
+          {
+            category: 'Subscription Churn',
+            risk: 'A prolonged downturn in commercial real estate transaction volumes leads to broker layoffs and database subscription cancellations.',
+            watch: 'CoStar Suite retention rates.'
+          },
+          {
+            category: 'Competitive Backlash',
+            risk: 'Entrenched residential listing competitors lower prices or block agent access to defend market share.',
+            watch: 'Residential agent subscriber counts and ARPU.'
+          }
+        ]
+      }
+    }
+  },
+  CSX: {
+    ticker: 'CSX',
+    companyName: 'CSX Corporation',
+    exchange: 'NASDAQ',
+    overview: 'CSX Corporation is a major rail transportation company in North America, operating a network that covers the Eastern United States, transporting coal, intermodal containers, and diverse industrial goods.',
+    category: 'Transportation & Logistics',
+    analysisDate: '2026-06-11',
+    latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
+    dossierVerdict: 'CSX operates a vital rail logistics network in the Eastern US, focusing on Precision Scheduled Railroading and coal/intermodal shipping cycles.',
+    valueCore: {
+      ticker: 'CSX',
+      value_core_type: 'business_summary_thesis_risk',
+      company_stage_candidate: 'Cyclical Industrial Infrastructure',
+      primary_value_driver: 'Improvement in network operating efficiency (Precision Scheduled Railroading), conversion of highway truck traffic to intermodal rail, and coal export demand.',
+      thesis_break_trigger: 'Extended service disruptions or derailments leading to regulatory penalties, labor shortages increasing overtime expenses, or structural decline in coal shipments.',
+      evidence_needed: [
+        'Average train velocity (mph)',
+        'Terminal dwell time (hours)',
+        'Quarterly carload volumes by product segment',
+        'Operating ratio percentage',
+        'Fuel surcharge revenue vs fuel expenses'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_13',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: 'CSX operates a dual-rail network in the Eastern US, providing cost-effective heavy transport for industrial, energy, and intermodal freight.',
+        thesisRisk: 'Risks are closely tied to regional industrial production, labor wage inflation, regulatory oversight regarding safety, and long-term decline in coal usage.'
+      },
+      phaseTwo: {
+        thesisRisk: [
+          {
+            category: 'Network Efficiency',
+            risk: 'Congestion at major rail terminals lowers train velocity, reducing asset turns and service reliability.',
+            watch: 'Average train velocity and dwell time.'
+          },
+          {
+            category: 'Macro Freight Downturn',
+            risk: 'Declines in manufacturing output or retail imports reduce intermodal and industrial carload volumes.',
+            watch: 'Segment carload volumes.'
+          },
+          {
+            category: 'Regulatory Oversight',
+            risk: 'Strict safety rules post-derailment increase operating costs and capex requirements.',
+            watch: 'Casualty and insurance expenses and track maintenance capex.'
+          }
+        ]
+      }
+    }
+  },
+  CTAS: {
+    ticker: 'CTAS',
+    companyName: 'Cintas Corporation',
+    exchange: 'NASDAQ',
+    overview: 'Cintas Corporation is a leading provider of corporate uniform rental programs, facility services, first aid and safety supplies, and fire protection services to businesses across North America.',
+    category: 'Business Services',
+    analysisDate: '2026-06-11',
+    latestFiscalPeriod: 'Q3 2026 ended 2026-02-28',
+    dossierVerdict: 'Cintas benefits from high customer retention and route density, expanding uniform rental programs and facilities services to business customers.',
+    valueCore: {
+      ticker: 'CTAS',
+      value_core_type: 'business_summary_thesis_risk',
+      company_stage_candidate: 'Mature Business Services / Consolidation',
+      primary_value_driver: 'Route density expansion lowering travel costs per customer, high retention rates, and cross-selling facility/first-aid services to existing uniform rental clients.',
+      thesis_break_trigger: 'Sharp rise in corporate employee layoffs reducing uniform users, persistent fuel price inflation eroding route margins, or high customer churn.',
+      evidence_needed: [
+        'Organic revenue growth rate',
+        'Gross profit margin percentage',
+        'Route service rep headcount and wage growth',
+        'Average route fuel cost per mile',
+        'Customer contract retention rate'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_13',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: 'Cintas provides uniform rentals and facility maintenance, operating a large route distribution network across North America.',
+        thesisRisk: 'Primary risks are labor costs, route delivery fuel price changes, and changes in corporate employment levels that dictate the number of uniforms needed.'
+      },
+      phaseTwo: {
+        thesisRisk: [
+          {
+            category: 'Employment Levels',
+            risk: 'Economic slowdowns lead to layoffs in manufacturing, service, and hospitality sectors, reducing active uniform wearers.',
+            watch: 'US employment trends and Cintas organic uniform growth.'
+          },
+          {
+            category: 'Route Logistics Costs',
+            risk: 'Surges in diesel and gasoline prices increase route operating expenses.',
+            watch: 'Operating expense margins and fuel costs.'
+          },
+          {
+            category: 'Labor Pressures',
+            risk: 'Wage inflation for route drivers and laundry plant employees compresses gross margins.',
+            watch: 'Selling, general, and administrative labor costs.'
+          }
+        ]
+      }
+    }
+  },
+  CTSH: {
+    ticker: 'CTSH',
+    companyName: 'Cognizant Technology Solutions Corporation',
+    exchange: 'NASDAQ',
+    overview: 'Cognizant is a multinational provider of information technology, consulting, and business process outsourcing services, helping enterprises modernize core systems and integrate digital workflows.',
+    category: 'IT Consulting & Outsourcing',
+    analysisDate: '2026-06-11',
+    latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
+    dossierVerdict: 'Cognizant provides digital consulting and system integration services, managing margin pressures through global delivery centers.',
+    valueCore: {
+      ticker: 'CTSH',
+      value_core_type: 'business_summary_thesis_risk',
+      company_stage_candidate: 'Mature Technology Services',
+      primary_value_driver: 'Enterprise transition to digital operations and cloud infrastructure, cost advantages from offshore delivery centers, and expansion of multi-year outsourcing contracts.',
+      thesis_break_trigger: 'Corporate IT budget cuts delaying digital consulting projects, high wage inflation in offshore delivery hubs compressing margins, or loss of large accounts to Indian or global competitors.',
+      evidence_needed: [
+        'Digital segment revenue growth',
+        'Voluntary employee attrition rate',
+        'Global delivery headcount and utilization rate',
+        'Average hourly billing rate realized',
+        'Operating margin percentage'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_13',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: 'Cognizant is a major global IT services firm, utilizing a large offshore labor pool (primarily in India) to deliver software development and consulting services.',
+        thesisRisk: 'Key risks include wage inflation for software engineers, high attrition, client budget pressure, and the transition of enterprise spending to AI automation.'
+      },
+      phaseTwo: {
+        thesisRisk: [
+          {
+            category: 'IT Budget Reductions',
+            risk: 'Global clients defer discretionary software development and system integration spending.',
+            watch: 'Total backlog value and consulting segment revenue.'
+          },
+          {
+            category: 'Talent Cost Inflation',
+            risk: 'Rising salaries for tech talent in offshore delivery centers erode consulting margins.',
+            watch: 'Cost of services and voluntary employee attrition rates.'
+          },
+          {
+            category: 'Technological Disruption',
+            risk: 'AI code generation tools reduce the need for junior developers, pressuring traditional billing models.',
+            watch: 'Utilization rates and average billing rates.'
+          }
+        ]
+      }
+    }
+  },
+  CVS: {
+    ticker: 'CVS',
+    companyName: 'CVS Health Corporation',
+    exchange: 'NYSE',
+    overview: 'CVS Health is an integrated healthcare provider operating retail pharmacies, a pharmacy benefit manager (Caremark), and a health insurance segment (Aetna), coordinating prescription and medical care.',
+    category: 'Healthcare Services & Pharmacy',
+    analysisDate: '2026-06-11',
+    latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
+    dossierVerdict: 'CVS Health operates an integrated healthcare network, balancing retail pharmacy volumes against medical cost inflation in its insurance operations.',
+    valueCore: {
+      ticker: 'CVS',
+      value_core_type: 'business_summary_thesis_risk',
+      company_stage_candidate: 'Mature Integrated Healthcare',
+      primary_value_driver: 'Expansion of pharmacy benefit management (PBM) volumes, management of healthcare insurance premium yields, and growth in clinical primary care services.',
+      thesis_break_trigger: 'Medicare Advantage medical benefit ratio rising significantly due to high utilization, pharmacy reimbursement rate cuts by government programs, or regulatory restrictions on PBM pricing.',
+      evidence_needed: [
+        'Medicare Advantage Medical Benefit Ratio (MBR)',
+        'Total retail pharmacy scripts processed',
+        'PBM product profit margins',
+        'Operating cash flow conversion',
+        'Interest coverage ratio on outstanding debt'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_13',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: 'CVS Health operates an integrated healthcare model combining insurance (Aetna), pharmacy benefits (Caremark), and retail clinics.',
+        thesisRisk: 'The primary risk is healthcare insurance cost inflation, particularly within Medicare Advantage, along with drug reimbursement pressures and regulatory scrutiny on PBM practices.'
+      },
+      phaseTwo: {
+        thesisRisk: [
+          {
+            category: 'Medical Loss Inflation',
+            risk: 'Elevated outpatient utilization rates among Medicare Advantage members increase claim payouts.',
+            watch: 'Health Care Benefits segment Medical Benefit Ratio.'
+          },
+          {
+            category: 'Reimbursement Pressures',
+            risk: 'Government programs or commercial insurers reduce pharmacy dispensing fees and drug reimbursement rates.',
+            watch: 'Pharmacy Services segment gross margins.'
+          },
+          {
+            category: 'Legislative Action',
+            risk: 'Federal rules restricting PBM rebate retention or requiring net-pricing transparency compress transaction margins.',
+            watch: 'Caremark segment operating margins.'
+          }
+        ]
+      }
+    }
+  },
+  DAL: {
+    ticker: 'DAL',
+    companyName: 'Delta Air Lines, Inc.',
+    exchange: 'NYSE',
+    overview: 'Delta Air Lines is a major global carrier operating an international network of scheduled air transportation for passengers and cargo, supported by its premium branding and loyalty program (SkyMiles).',
+    category: 'Transportation & Airlines',
+    analysisDate: '2026-06-11',
+    latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
+    dossierVerdict: 'Delta focuses on premium seating expansion and loyalty program revenues, managing seasonal demand changes and jet fuel price fluctuations.',
+    valueCore: {
+      ticker: 'DAL',
+      value_core_type: 'business_summary_thesis_risk',
+      company_stage_candidate: 'Cyclical Consumer & Business Travel',
+      primary_value_driver: 'Premium passenger yield expansion, growth in high-margin co-brand credit card fees (American Express partnership), and domestic hub dominance.',
+      thesis_break_trigger: 'Sharp decline in corporate travel demand, rapid increase in non-hedged jet fuel pricing, or pilot wage agreements significantly exceeding target cost structures.',
+      evidence_needed: [
+        'Passenger Revenue per Available Seat Mile (PRASM)',
+        'Cost per Available Seat Mile excluding fuel (CASM-Ex)',
+        'Average price paid per gallon of jet fuel',
+        'SkyMiles co-brand cash revenue',
+        'Total liquidity and net debt levels'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_13',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: 'Delta is a premium-focused global airline, generating significant cash flow from its brand equity and co-branded credit card partnership.',
+        thesisRisk: 'Key risks include fuel price shocks, pilot and labor wage inflation, and the cyclical nature of consumer discretionary and business travel spending.'
+      },
+      phaseTwo: {
+        thesisRisk: [
+          {
+            category: 'Fuel Price Spikes',
+            risk: 'Unhedged jet fuel price increases raise operating costs, which cannot be immediately passed to ticket buyers.',
+            watch: 'Jet fuel cost per gallon and refinery margins.'
+          },
+          {
+            category: 'Labor Cost Expansion',
+            risk: 'New union contracts for pilots and ground crews elevate fixed operating costs.',
+            watch: 'CASM-Ex growth rate.'
+          },
+          {
+            category: 'Discretionary Travel Decline',
+            risk: 'Economic contractions lead to lower load factors and pressure ticket yields.',
+            watch: 'PRASM and load factor percentages.'
+          }
+        ]
+      }
+    }
+  },
+  DASH: {
+    ticker: 'DASH',
+    companyName: 'DoorDash, Inc.',
+    exchange: 'NASDAQ',
+    overview: 'DoorDash operates a local commerce platform connecting merchants, consumers, and delivery couriers (Dashers) in the United States and internationally, specializing in food and grocery delivery.',
+    category: 'Marketplace & Delivery Services',
+    analysisDate: '2026-06-11',
+    latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
+    dossierVerdict: 'DoorDash focuses on local marketplace scale, expanding its delivery courier logistics from food delivery to local grocery and convenience retail.',
+    valueCore: {
+      ticker: 'DASH',
+      value_core_type: 'business_summary_thesis_risk',
+      company_stage_candidate: 'High-Growth Marketplace & Logistics',
+      primary_value_driver: 'Expansion of grocery and convenience retail delivery, optimization of logistics networks to lower delivery costs per order, and growth in high-margin advertising revenue.',
+      thesis_break_trigger: 'Dasher incentive costs rising due to labor shortages, regulatory reclassification of couriers as employees increasing benefits costs, or marketplace GOV growth stagnation.',
+      evidence_needed: [
+        'Marketplace Gross Order Value (GOV)',
+        'Marketplace Take Rate percentage',
+        'Dasher acquisition and incentive expenses',
+        'Adjusted EBITDA margin as a percentage of GOV',
+        'Non-food delivery order volume growth'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_13',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: 'DoorDash is the leading food delivery marketplace in the US, expanding into grocery, convenience, and local retail logistics.',
+        thesisRisk: 'The thesis depends on maintaining courier supply without excessive incentive costs, managing regulatory classification risks, and scaling non-food delivery profitably.'
+      },
+      phaseTwo: {
+        thesisRisk: [
+          {
+            category: 'Courier Incentives',
+            risk: 'Labor tight markets require DoorDash to offer high bonuses to attract Dashers, compressing gross margins.',
+            watch: 'Dasher acquisition and incentive costs.'
+          },
+          {
+            category: 'Regulatory Classification',
+            risk: 'Federal or state rulings forcing the reclassification of Dashers from independent contractors to employees.',
+            watch: 'Legal and regulatory risk disclosures and SG&A expenses.'
+          },
+          {
+            category: 'Growth Saturation',
+            risk: 'US food delivery orders reach saturation, forcing dependency on lower-margin grocery delivery expansion.',
+            watch: 'GOV growth rates and order frequency.'
+          }
+        ]
+      }
+    }
+  }
 };
 
 export function getStockDossierProfile(ticker) {
