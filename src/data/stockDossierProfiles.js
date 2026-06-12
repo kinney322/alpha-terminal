@@ -12995,6 +12995,566 @@ const stockDossierProfiles = {
         ]
       }
     }
+  },
+  MAR: {
+    ticker: 'MAR',
+    companyName: 'Marriott International, Inc.',
+    exchange: 'NASDAQ',
+    logoUrl: buildStockLogoUrl('MAR'),
+    overview: 'Marriott International is a leading global lodging franchisor and operator, managing hotels and licensing brands under franchise, management, and licensing agreements across multiple market tiers.',
+    category: 'Lodging & Hospitality Management',
+    analysisDate: '2026-06-12',
+    latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
+    dossierVerdict: 'Marriott operates an asset-light fee-based model, sensitive to global consumer travel demand cycles, net room growth rates, and RevPAR metrics.',
+    valueCore: {
+      ticker: 'MAR',
+      value_core_type: 'business_summary_thesis_risk',
+      company_stage_candidate: 'Mature Consumer Services / Hospitality',
+      primary_value_driver: 'Expanding loyalty program membership, increasing system-wide RevPAR, and accelerating net room addition rates across brand portfolios.',
+      thesis_break_trigger: 'Sustained drop in travel volumes, contraction in hotel room additions, or loyalty member attrition.',
+      evidence_needed: [
+        'System-wide RevPAR growth rate',
+        'Net room additions and pipeline count',
+        'Loyalty program member counts',
+        'Franchise and management fee margins',
+        'Average daily room rates'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_17',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: 'Marriott operates an asset-light hotel model, earning fees from franchising and managing lodging brands.',
+        thesisRisk: 'Key risks involve changes in global travel demand, rooms growth pipeline delays, and loyalty member engagement.'
+      },
+      phaseTwo: {
+        thesisRisk: [
+          {
+            category: 'Travel Demand Elasticity',
+            risk: 'Macroeconomic downturns reduce travel spending, lowering hotel occupancy rates and fee revenues.',
+            watch: 'System-wide occupancy rates and RevPAR growth.'
+          },
+          {
+            category: 'Pipeline Execution Delays',
+            risk: 'Rising construction costs and developer financing challenges delay hotel openings, reducing net room growth.',
+            watch: 'Total room pipeline and net room additions.'
+          },
+          {
+            category: 'Franchise Fee Compression',
+            risk: 'Competitive pressures force adjustments in fee structures for independent hotel developers.',
+            watch: 'Franchise and management fee margins.'
+          }
+        ]
+      }
+    }
+  },
+  MCHP: {
+    ticker: 'MCHP',
+    companyName: 'Microchip Technology Incorporated',
+    exchange: 'NASDAQ',
+    logoUrl: buildStockLogoUrl('MCHP'),
+    overview: 'Microchip Technology designs, manufactures, and markets microcontrollers, mixed-signal, analog, and Flash-IP solutions for embedded control systems across automotive, industrial, and consumer markets.',
+    category: 'Embedded Semiconductors & Microcontrollers',
+    analysisDate: '2026-06-12',
+    latestFiscalPeriod: 'FY 2026 ended 2026-03-31',
+    dossierVerdict: 'Microchip Technology navigates semiconductor distribution inventory cycles, factory utilization rates, and embedded microcontroller demand.',
+    valueCore: {
+      ticker: 'MCHP',
+      value_core_type: 'business_summary_thesis_risk',
+      company_stage_candidate: 'Mature Semiconductor Manufacturing',
+      primary_value_driver: 'Improving factory utilization rates, expanding automotive and industrial design wins, and normalizing distribution channel inventory levels.',
+      thesis_break_trigger: 'Persistent high inventory weeks in distribution channels, severe gross margin compression from low utilization, or automotive demand downturn.',
+      evidence_needed: [
+        'Distribution channel inventory weeks',
+        'Manufacturing plant utilization rates',
+        'Consolidated gross profit margin',
+        'Automotive and industrial segment revenues',
+        'Design win pipeline metrics'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_17',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: 'Microchip Technology designs microcontrollers and analog chips used in embedded control systems for industrial and automotive applications.',
+        thesisRisk: 'Key risks involve cyclical inventory adjustments in the distribution channel, manufacturing factory utilization, and automotive sector demand.'
+      },
+      phaseTwo: {
+        thesisRisk: [
+          {
+            category: 'Inventory Normalization',
+            risk: 'Extended distributor destocking cycles delay revenue recovery and new order bookings.',
+            watch: 'Distributor inventory weeks and backlog.'
+          },
+          {
+            category: 'Underutilization Charges',
+            risk: 'Slowing demand forcing production cuts, leading to significant underutilization charges that compress gross margins.',
+            watch: 'Consolidated gross profit margin.'
+          },
+          {
+            category: 'Automotive Demand Cyclicality',
+            risk: 'Weakness in automotive vehicle production cycles reduces microcontroller content demand.',
+            watch: 'Automotive segment revenues.'
+          }
+        ]
+      }
+    }
+  },
+  MELI: {
+    ticker: 'MELI',
+    companyName: 'MercadoLibre, Inc.',
+    exchange: 'NASDAQ',
+    logoUrl: buildStockLogoUrl('MELI'),
+    overview: 'MercadoLibre operates the dominant e-commerce marketplace and fintech transaction network (Mercado Pago) in Latin America, providing logistics, advertising, and credit services.',
+    category: 'Latin American E-Commerce & Fintech',
+    analysisDate: '2026-06-12',
+    latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
+    dossierVerdict: 'MercadoLibre runs a high-growth Latin American digital marketplace and payment ecosystem, balancing logistics costs and credit portfolio risks.',
+    valueCore: {
+      ticker: 'MELI',
+      value_core_type: 'business_summary_thesis_risk',
+      company_stage_candidate: 'High-Growth E-Commerce & Fintech Platform',
+      primary_value_driver: 'Increasing gross merchandise volume, scaling Mercado Pago payments processing, and managing credit book interest spreads.',
+      thesis_break_trigger: 'Spike in consumer credit defaults, slowing digital marketplace transactions, or rising transport and logistics costs.',
+      evidence_needed: [
+        'Gross merchandise volume growth',
+        'Fintech payment volume processed',
+        'Credit portfolio non-performing loan ratio',
+        'Net interest income on credit book',
+        'Logistics shipping cost margins'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_17',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: 'MercadoLibre provides online retail marketplaces and fintech payment solutions across major Latin American countries.',
+        thesisRisk: 'Key risks relate to credit portfolio loan defaults, local currency fluctuations, and fulfillment shipping costs.'
+      },
+      phaseTwo: {
+        thesisRisk: [
+          {
+            category: 'Credit Default Spikes',
+            risk: 'Rising non-performing loans in its consumer credit segment require high provisions, reducing fintech profitability.',
+            watch: 'Credit portfolio non-performing loan ratio.'
+          },
+          {
+            category: 'Marketplace Competition',
+            risk: 'Aggressive entry of international commerce platforms increases customer acquisition costs in Brazil and Mexico.',
+            watch: 'Gross merchandise volume growth.'
+          },
+          {
+            category: 'Fulfillment Cost Inflation',
+            risk: 'Rising fuel and logistics labor costs compress e-commerce margins on free shipping programs.',
+            watch: 'Logistics shipping cost margins.'
+          }
+        ]
+      }
+    }
+  },
+  MMM: {
+    ticker: 'MMM',
+    companyName: '3M Company',
+    exchange: 'NYSE',
+    logoUrl: buildStockLogoUrl('MMM'),
+    overview: '3M Company is a diversified global technology manufacturer, developing consumer, electronics, safety, industrial, and transportation products through advanced materials science.',
+    category: 'Diversified Industrial Manufacturing',
+    analysisDate: '2026-06-12',
+    latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
+    dossierVerdict: '3M manages diversified industrial product segments, balancing restructuring actions against legal settlement payouts and environmental liabilities.',
+    valueCore: {
+      ticker: 'MMM',
+      value_core_type: 'business_summary_thesis_risk',
+      company_stage_candidate: 'Mature Diversified Industrial Conglomerate',
+      primary_value_driver: 'Executing corporate restructuring and separation plans, recovering organic volume growth, and managing long-term legal cash payouts.',
+      thesis_break_trigger: 'Slowing organic industrial demand, lower-than-planned restructuring cost savings, or expansion of legal liability provisions.',
+      evidence_needed: [
+        'Organic volume sales growth rate',
+        'Segment operating profit margins',
+        'Restructuring cost savings achieved',
+        'Net legal liabilities cash payouts',
+        'Free cash flow conversion rate'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_17',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: '3M manufactures a broad range of industrial and consumer goods while restructuring its operating divisions.',
+        thesisRisk: 'Key risks include litigation settlement cash requirements, restructuring implementation delays, and cyclical industrial demand.'
+      },
+      phaseTwo: {
+        thesisRisk: [
+          {
+            category: 'Litigation Cash Drain',
+            risk: 'Settlement payout schedules for environmental and product liabilities reduce cash available for research and capital spending.',
+            watch: 'Free cash flow conversion and legal cash payouts.'
+          },
+          {
+            category: 'Restructuring Execution',
+            risk: 'Operational restructuring programs fail to deliver target margin improvements across industrial divisions.',
+            watch: 'Segment operating profit margins.'
+          },
+          {
+            category: 'Cyclical Industrial Demand',
+            risk: 'Slowing consumer electronics or automotive production reduces materials demand.',
+            watch: 'Organic volume sales growth rate.'
+          }
+        ]
+      }
+    }
+  },
+  MNST: {
+    ticker: 'MNST',
+    companyName: 'Monster Beverage Corporation',
+    exchange: 'NASDAQ',
+    logoUrl: buildStockLogoUrl('MNST'),
+    overview: 'Monster Beverage Corporation develops, markets, and distributes energy drink brands globally, utilizing a centralized brand management model and third-party bottling networks.',
+    category: 'Consumer Beverages / Energy Drinks',
+    analysisDate: '2026-06-12',
+    latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
+    dossierVerdict: 'Monster Beverage relies on energy drink category growth, distribution network alliances, pricing actions, and packaging material cost trends.',
+    valueCore: {
+      ticker: 'MNST',
+      value_core_type: 'business_summary_thesis_risk',
+      company_stage_candidate: 'Mature Consumer Staples / Beverages',
+      primary_value_driver: 'Expanding energy drink case volumes, implementing pricing adjustments, and growing international brand distribution.',
+      thesis_break_trigger: 'Slowing energy drink category consumption, rising packaging costs for aluminum, or distribution network transitions.',
+      evidence_needed: [
+        'Energy drink case shipment volumes',
+        'Gross profit margins',
+        'International segment revenue growth',
+        'Marketing expenditures as a percentage of sales',
+        'Bottler partner inventory levels'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_17',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: 'Monster Beverage designs and markets energy drink products, distributing through global bottling partners.',
+        thesisRisk: 'Key risks involve energy drink category competition, packaging commodity inflation, and distribution partner transitions.'
+      },
+      phaseTwo: {
+        thesisRisk: [
+          {
+            category: 'Category Saturation',
+            risk: 'Slowing expansion of the energy drink category in mature North American markets limits case volume growth.',
+            watch: 'Energy drink case shipment volumes.'
+          },
+          {
+            category: 'Aluminum and Packing Costs',
+            risk: 'Spikes in aluminum can costs and shipping transport rates compress beverage gross margins.',
+            watch: 'Gross profit margins.'
+          },
+          {
+            category: 'Distribution Dependencies',
+            risk: 'Delays or service disruptions in its primary bottling partner network restrict product availability on retail shelves.',
+            watch: 'Bottler partner inventory levels.'
+          }
+        ]
+      }
+    }
+  },
+  MPWR: {
+    ticker: 'MPWR',
+    companyName: 'Monolithic Power Systems, Inc.',
+    exchange: 'NASDAQ',
+    logoUrl: buildStockLogoUrl('MPWR'),
+    overview: 'Monolithic Power Systems designs and markets high-performance, semiconductor power management solutions for computing, automotive, industrial, communications, and consumer markets.',
+    category: 'Power Management Semiconductors',
+    analysisDate: '2026-06-12',
+    latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
+    dossierVerdict: 'Monolithic Power Systems leverages AI server power system design wins, managing enterprise chip margins and customer inventory levels.',
+    valueCore: {
+      ticker: 'MPWR',
+      value_core_type: 'business_summary_thesis_risk',
+      company_stage_candidate: 'Growth Semiconductor Designer / Fabless',
+      primary_value_driver: 'Expanding power management component placements in advanced AI servers, scaling automotive design wins, and maintaining high gross margins.',
+      thesis_break_trigger: 'Loss of power stage design wins in cloud servers, automotive customer inventory adjustments, or margin compression from chip design rivals.',
+      evidence_needed: [
+        'Enterprise Data segment revenues',
+        'Consolidated gross profit margin',
+        'Automotive segment design wins',
+        'Research and development spending',
+        'Days inventory outstanding'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_17',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: 'Monolithic Power Systems is a fabless chip company designing power management systems for computing and automotive markets.',
+        thesisRisk: 'Key risks relate to AI server processor power stage design wins, customer design changes, and automotive semiconductor inventory levels.'
+      },
+      phaseTwo: {
+        thesisRisk: [
+          {
+            category: 'AI Server Design Cycles',
+            risk: 'Customer design changes or rival power chips displace Monolithic components in next-generation AI processors.',
+            watch: 'Enterprise Data segment revenues.'
+          },
+          {
+            category: 'Automotive Inventory Adjustments',
+            risk: 'Automotive manufacturers deferring new chip shipments to reduce built-up electronic component inventories.',
+            watch: 'Automotive segment design wins.'
+          },
+          {
+            category: 'Gross Margin Pressure',
+            risk: 'Pricing concessions required to win high-volume consumer or industrial platform deals reduce gross margins.',
+            watch: 'Consolidated gross profit margin.'
+          }
+        ]
+      }
+    }
+  },
+  MSTR: {
+    ticker: 'MSTR',
+    companyName: 'MicroStrategy Incorporated',
+    exchange: 'NASDAQ',
+    logoUrl: buildStockLogoUrl('MSTR'),
+    overview: 'MicroStrategy operates an enterprise analytics software platform while executing a treasury strategy of acquiring and retaining significant reserves of bitcoin.',
+    category: 'Enterprise Software & Bitcoin Treasury',
+    analysisDate: '2026-06-12',
+    latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
+    dossierVerdict: 'MicroStrategy operates a traditional enterprise software business, but its financial performance is dominated by its bitcoin treasury reserves and debt structure.',
+    valueCore: {
+      ticker: 'MSTR',
+      value_core_type: 'business_summary_thesis_risk',
+      company_stage_candidate: 'Special Situations Software / Digital Treasury',
+      primary_value_driver: 'Scaling software-as-a-service subscription revenues, managing convertible debt financing costs, and growing treasury reserves of bitcoin.',
+      thesis_break_trigger: 'Slowing analytics software recurring revenues, severe declines in bitcoin valuations, or high interest refinancing requirements.',
+      evidence_needed: [
+        'Software subscription services revenues',
+        'Total bitcoin treasury valuation',
+        'Convertible debt principal and interest obligations',
+        'Software operating profit margins',
+        'Cash flows from software operations'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_17',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: 'MicroStrategy licenses business intelligence software while maintaining a corporate treasury strategy centered on bitcoin acquisitions.',
+        thesisRisk: 'Key risks include the volatility of bitcoin valuations, interest obligations on convertible debt, and the transition of software to subscription models.'
+      },
+      phaseTwo: {
+        thesisRisk: [
+          {
+            category: 'Bitcoin Price Volatility',
+            risk: 'Significant drops in bitcoin valuation reduce asset backing and limit capital access via convertible debt.',
+            watch: 'Total bitcoin treasury valuation.'
+          },
+          {
+            category: 'Debt Servicing Obligations',
+            risk: 'Inability to refinance convertible notes under favorable terms increases interest expenses, straining software cash flow.',
+            watch: 'Convertible debt principal and interest obligations.'
+          },
+          {
+            category: 'Software Transition Headwinds',
+            risk: 'Slowing enterprise adoption of cloud analytics subscriptions reduces recurring software cash generation.',
+            watch: 'Software subscription services revenues.'
+          }
+        ]
+      }
+    }
+  },
+  NBIS: {
+    ticker: 'NBIS',
+    companyName: 'Nebius Group N.V.',
+    exchange: 'NASDAQ',
+    logoUrl: buildStockLogoUrl('NBIS'),
+    overview: 'Nebius Group provides full-stack artificial intelligence infrastructure, operating large-scale GPU cloud platforms and machine learning training services for global developers.',
+    category: 'AI Infrastructure & GPU Cloud',
+    analysisDate: '2026-06-12',
+    latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
+    dossierVerdict: 'Nebius Group scales its AI GPU cloud hosting capacity, managing significant server capital expenditures and cloud customer concentration.',
+    valueCore: {
+      ticker: 'NBIS',
+      value_core_type: 'business_summary_thesis_risk',
+      company_stage_candidate: 'Growth AI Infrastructure & Computing',
+      primary_value_driver: 'Installing and leasing high-capacity GPU server clusters, expanding enterprise AI training customer bases, and managing capital deployment for data centers.',
+      thesis_break_trigger: 'GPU hardware procurement delays, underutilization of built-out cloud capacity, or loss of large AI training clients.',
+      evidence_needed: [
+        'GPU cloud utilization rates',
+        'Capital expenditures on server infrastructure',
+        'Active GPU cluster count',
+        'Enterprise AI customer concentration',
+        'Consolidated operating cash flow'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_17',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 20-F / 6-K'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: 'Nebius Group operates data center clusters containing advanced GPUs to host AI training workloads for corporate developers.',
+        thesisRisk: 'Key risks include GPU supply chain delays, cloud tenant concentration, and the high capital spending required for expansion.'
+      },
+      phaseTwo: {
+        thesisRisk: [
+          {
+            category: 'GPU Supply Chain Delays',
+            risk: 'Delays in receiving next-generation GPU hardware from suppliers slow data center expansions and revenue scaling.',
+            watch: 'Active GPU cluster count and capital expenditures.'
+          },
+          {
+            category: 'Cloud Tenant Concentration',
+            risk: 'High reliance on a small number of large AI model developers exposes Nebius to sudden revenue drops if clients migrate workloads.',
+            watch: 'Enterprise AI customer concentration.'
+          },
+          {
+            category: 'High Capital Burn',
+            risk: 'Heavy upfront cash spending for server hardware outpaces cloud lease cash collection, requiring additional financing.',
+            watch: 'Consolidated operating cash flow.'
+          }
+        ]
+      }
+    }
+  },
+  NRG: {
+    ticker: 'NRG',
+    companyName: 'NRG Energy, Inc.',
+    exchange: 'NYSE',
+    logoUrl: buildStockLogoUrl('NRG'),
+    overview: 'NRG Energy is an integrated retail electricity and smart home services provider, supplying energy, smart devices, and home security systems to residential and commercial markets.',
+    category: 'Integrated Energy & Home Services',
+    analysisDate: '2026-06-12',
+    latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
+    dossierVerdict: 'NRG Energy operates an integrated energy and retail services model, exposed to customer count trends, weather volatility, and energy price hedging.',
+    valueCore: {
+      ticker: 'NRG',
+      value_core_type: 'business_summary_thesis_risk',
+      company_stage_candidate: 'Mature Utility / Consumer Services',
+      primary_value_driver: 'Maintaining retail electricity customer counts, executing wholesale power price hedging, and expanding smart home product subscription margins.',
+      thesis_break_trigger: 'Severe weather events disrupting wholesale supply, customer churn to retail electricity provider competition, or hedge contract losses.',
+      evidence_needed: [
+        'Retail electricity customer counts',
+        'Wholesale energy price margins',
+        'Smart home subscription gross margins',
+        'Consolidated debt leverage ratios',
+        'Customer acquisition costs'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_17',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: 'NRG Energy sells electricity and natural gas to retail customers while offering connected home security and automation products.',
+        thesisRisk: 'Key risks include wholesale energy price volatility, retail customer retention, and weather disruptions to power supplies.'
+      },
+      phaseTwo: {
+        thesisRisk: [
+          {
+            category: 'Wholesale Hedging Errors',
+            risk: 'Failure to hedge power generation output during price spikes forces NRG to purchase expensive wholesale market energy.',
+            watch: 'Wholesale energy price margins.'
+          },
+          {
+            category: 'Customer Churn',
+            risk: 'Intense price competition in retail electricity markets increases residential customer churn.',
+            watch: 'Retail electricity customer counts.'
+          },
+          {
+            category: 'Weather Volatility',
+            risk: 'Extreme winter storms or summer heatwaves cause supply disruptions and unexpected power procurement costs.',
+            watch: 'Wholesale energy price margins.'
+          }
+        ]
+      }
+    }
+  },
+  NXPI: {
+    ticker: 'NXPI',
+    companyName: 'NXP Semiconductors N.V.',
+    exchange: 'NASDAQ',
+    logoUrl: buildStockLogoUrl('NXPI'),
+    overview: 'NXP Semiconductors provides mixed-signal semiconductor solutions, focusing on automotive microcontrollers, industrial control systems, mobile secure connectivity, and communication processors.',
+    category: 'Automotive & Industrial Semiconductors',
+    analysisDate: '2026-06-12',
+    latestFiscalPeriod: 'Q1 2026 ended 2026-03-29',
+    dossierVerdict: 'NXP Semiconductors manages automotive silicon content growth, distribution channel inventory weeks, and factory manufacturing utilization rates.',
+    valueCore: {
+      ticker: 'NXPI',
+      value_core_type: 'business_summary_thesis_risk',
+      company_stage_candidate: 'Mature Semiconductor Manufacturing',
+      primary_value_driver: 'Increasing semiconductor content in electric and autonomous vehicles, normalizing distributor channel inventories, and maintaining high manufacturing margins.',
+      thesis_break_trigger: 'Slowing automotive production cycles, extended channel inventory adjustments, or gross margin compression from lower utilization.',
+      evidence_needed: [
+        'Automotive segment revenues',
+        'Distributor channel inventory weeks',
+        'Manufacturing plant utilization rates',
+        'Consolidated gross profit margin',
+        'Industrial and IoT segment revenues'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_17',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: 'NXP Semiconductors manufactures chips for vehicle systems, industrial automation equipment, and mobile devices.',
+        thesisRisk: 'Key risks include automotive manufacturing cycles, distributor channel inventory weeks, and factory underutilization charges.'
+      },
+      phaseTwo: {
+        thesisRisk: [
+          {
+            category: 'Automotive Slowdown',
+            risk: 'Slowing passenger vehicle production reduces demand for automotive microcontrollers and radar chips.',
+            watch: 'Automotive segment revenues.'
+          },
+          {
+            category: 'Channel Inventory Normalization',
+            risk: 'Distributors holding excess chip inventories defer placing new orders, extending the revenue downturn.',
+            watch: 'Distributor channel inventory weeks.'
+          },
+          {
+            category: 'Factory Underutilization',
+            risk: 'Slowing demand requires factory production cuts, creating underutilization charges that lower margins.',
+            watch: 'Consolidated gross profit margin.'
+          }
+        ]
+      }
+    }
   }
 };
 
