@@ -14955,6 +14955,902 @@ const stockDossierProfiles = {
         ]
       }
     }
+  },
+  TRI: {
+    ticker: 'TRI',
+    companyName: 'Thomson Reuters Corporation',
+    exchange: 'NYSE',
+    logoUrl: buildStockLogoUrl('TRI'),
+    overview: 'Thomson Reuters Corporation provides business information services, delivering legal, tax, accounting, and news content through integrated software and digital platforms.',
+    category: 'Business Information Services',
+    analysisDate: '2026-06-12',
+    latestFiscalPeriod: 'Q1 2026 ended March 31, 2026',
+    dossierVerdict: 'Thomson Reuters manages organic revenue growth across legal and corporates segments, adjusts adjusted EBITDA margins, and integrates AI technology such as CoCounsel.',
+    valueCore: {
+      ticker: 'TRI',
+      value_core_type: 'business_summary_thesis_risk',
+      company_stage_candidate: 'Mature Business Information Provider',
+      primary_value_driver: 'Expanding organic revenues in core legal, tax, and corporates segments, and scaling AI-driven product adoption.',
+      thesis_break_trigger: 'Slowdown in professional software subscription renewals, failure of AI-driven products to justify investment, or competitive market share loss.',
+      evidence_needed: [
+        'Big 3 segment organic revenue growth',
+        'Adjusted EBITDA margin',
+        'Legal professionals organic revenue growth',
+        'CoCounsel user adoption',
+        'Free cash flow generation'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_20',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 20-F / 6-K'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: 'Thomson Reuters provides legal, tax, and news databases and software to professional firms.',
+        thesisRisk: 'Key risks relate to professional spending cycles, AI product integration costs, and competition.'
+      },
+      phaseTwo: {
+        thesisRisk: [
+          {
+            category: 'Professional Spending',
+            risk: 'Economic downturns cause law and accounting firms to cut database seats and software licenses.',
+            watch: 'Big 3 segment organic revenue growth'
+          },
+          {
+            category: 'AI Tech Transition',
+            risk: 'High development cost of generative AI integrations fails to drive corresponding subscription price increases.',
+            watch: 'CoCounsel user adoption'
+          },
+          {
+            category: 'Competition',
+            risk: 'Alternative legal and tax software providers offer lower cost databases, compressing profit margins.',
+            watch: 'Adjusted EBITDA margin'
+          }
+        ]
+      }
+    }
+  },
+  TRV: {
+    ticker: 'TRV',
+    companyName: 'The Travelers Companies, Inc.',
+    exchange: 'NYSE',
+    logoUrl: buildStockLogoUrl('TRV'),
+    overview: 'The Travelers Companies, Inc. is a leading provider of property and casualty insurance products for businesses, individuals, and associations in the United States and select international markets.',
+    category: 'Property & Casualty Insurance',
+    analysisDate: '2026-06-12',
+    latestFiscalPeriod: 'Q1 2026 ended March 31, 2026',
+    dossierVerdict: 'Travelers operates a commercial and personal insurance portfolio, sensitive to underwriting margins, combined ratios, and catastrophe loss trends.',
+    valueCore: {
+      ticker: 'TRV',
+      value_core_type: 'business_summary_thesis_risk',
+      company_stage_candidate: 'Mature Property & Casualty Insurer',
+      primary_value_driver: 'Maintaining underwriting discipline to secure a combined ratio below 90%, managing catastrophe losses, and growing net written premiums.',
+      thesis_break_trigger: 'Persistent increase in the combined ratio above 100%, severe unexpected catastrophe losses, or pricing power deterioration.',
+      evidence_needed: [
+        'Consolidated combined ratio',
+        'Underlying combined ratio',
+        'Pre-tax catastrophe losses',
+        'Net written premium growth',
+        'Net investment income'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_20',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: 'Travelers provides commercial, personal, and specialty property and casualty insurance policies.',
+        thesisRisk: 'Key risks relate to severe weather catastrophe losses, underwriting combined ratios, and premium pricing trends.'
+      },
+      phaseTwo: {
+        thesisRisk: [
+          {
+            category: 'Weather Catastrophes',
+            risk: 'Rising frequency and severity of hurricanes, tornadoes, and wildfires increase insurance claims.',
+            watch: 'Pre-tax catastrophe losses'
+          },
+          {
+            category: 'Underwriting Margins',
+            risk: 'Inflation in auto parts and construction costs increases claim severity faster than premiums rise.',
+            watch: 'Consolidated combined ratio'
+          },
+          {
+            category: 'Pricing Competition',
+            risk: 'Competitors lower premium rates to capture market share, reducing underwriting profit margins.',
+            watch: 'Net written premium growth'
+          }
+        ]
+      }
+    }
+  },
+  TSM: {
+    ticker: 'TSM',
+    companyName: 'Taiwan Semiconductor Manufacturing Company Limited',
+    exchange: 'NYSE',
+    logoUrl: buildStockLogoUrl('TSM'),
+    overview: 'Taiwan Semiconductor Manufacturing Company Limited is the world\'s largest dedicated semiconductor foundry, manufacturing advanced integrated circuits for global fabless chip design customers.',
+    category: 'Semiconductor Foundry',
+    analysisDate: '2026-06-12',
+    latestFiscalPeriod: 'Q1 2026 ended March 31, 2026',
+    dossierVerdict: 'TSMC navigates wafer manufacturing capacity utilization, advanced node revenue mix, gross margins, and global factory expansion capital investments.',
+    valueCore: {
+      ticker: 'TSM',
+      value_core_type: 'business_summary_thesis_risk',
+      company_stage_candidate: 'Scale Semiconductor Manufacturer',
+      primary_value_driver: 'Scaling manufacturing capacity for advanced technology nodes (3nm, 5nm) to support AI demand while securing gross margins above 60%.',
+      thesis_break_trigger: 'Decline in advanced node utilization, geopolitical disruptions in Taiwan, or cost overruns at international fab locations.',
+      evidence_needed: [
+        'Gross profit margin',
+        'Advanced node revenue share',
+        'Net sales revenue growth',
+        'Capital expenditures',
+        'Wafer shipments'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_20',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 20-F / 6-K'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: 'TSMC manufactures silicon microchips for tech companies, specializing in advanced high-performance nodes.',
+        thesisRisk: 'Key risks relate to geopolitical concentration, high capital expenditure for international factories, and semiconductor cycles.'
+      },
+      phaseTwo: {
+        thesisRisk: [
+          {
+            category: 'Geopolitical Risk',
+            risk: 'Political tension disrupts wafer manufacturing facilities located in Taiwan, choking global electronics supply chains.',
+            watch: 'Wafer shipments'
+          },
+          {
+            category: 'Capital Cost',
+            risk: 'Constructing and operating new factories in the US, Europe, and Japan increases depreciation and lowers returns.',
+            watch: 'Gross profit margin'
+          },
+          {
+            category: 'Customer Concentration',
+            risk: 'Slower demand for high-end smartphones or AI servers reduces advanced node wafer orders.',
+            watch: 'Advanced node revenue share'
+          }
+        ]
+      }
+    }
+  },
+  TTWO: {
+    ticker: 'TTWO',
+    companyName: 'Take-Two Interactive Software, Inc.',
+    exchange: 'NASDAQ',
+    logoUrl: buildStockLogoUrl('TTWO'),
+    overview: 'Take-Two Interactive Software, Inc. designs, publishes, and distributes interactive entertainment and mobile gaming content through internal developer studios including Rockstar Games, 2K, and Zynga.',
+    category: 'Interactive Media & Gaming',
+    analysisDate: '2026-06-12',
+    latestFiscalPeriod: 'Q4/FY 2026 ended March 31, 2026',
+    dossierVerdict: 'Take-Two manages game release schedules, Net Bookings growth, recurring consumer spending, and integration of mobile gaming properties.',
+    valueCore: {
+      ticker: 'TTWO',
+      value_core_type: 'business_summary_thesis_risk',
+      company_stage_candidate: 'Large Scale Interactive Entertainment Developer',
+      primary_value_driver: 'Delivering major franchise releases on schedule (such as Grand Theft Auto VI) and growing recurring mobile game net bookings.',
+      thesis_break_trigger: 'Multi-quarter delays in critical game launches, structural declines in mobile game monetization, or rising software development cost inflation.',
+      evidence_needed: [
+        'Total Net Bookings',
+        'Recurring consumer spending share',
+        'Mobile net bookings',
+        'Console and PC net bookings',
+        'Operating cash flows'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_20',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: 'Take-Two develops and publishes games like Grand Theft Auto and NBA 2K for consoles, PC, and mobile.',
+        thesisRisk: 'Key risks relate to major game release delays, escalating development budgets, and mobile game player retention.'
+      },
+      phaseTwo: {
+        thesisRisk: [
+          {
+            category: 'Release Schedule',
+            risk: 'Complex development requirements cause Rockstar Games to defer the Grand Theft Auto VI release past guided dates.',
+            watch: 'Total Net Bookings'
+          },
+          {
+            category: 'Mobile Performance',
+            risk: 'Post-acquisition Zynga mobile games experience user churn or drop in in-app microtransactions.',
+            watch: 'Mobile net bookings'
+          },
+          {
+            category: 'Cost Escalation',
+            risk: 'Talent competition and longer development cycles inflate software capitalization budgets.',
+            watch: 'Operating cash flows'
+          }
+        ]
+      }
+    }
+  },
+  UAL: {
+    ticker: 'UAL',
+    companyName: 'United Airlines',
+    exchange: 'NASDAQ',
+    logoUrl: buildStockLogoUrl('UAL'),
+    overview: 'United Airlines operates a major global passenger airline network, managing hubs across the United States and offering domestic and international air transportation.',
+    category: 'Air Transportation',
+    analysisDate: '2026-06-12',
+    latestFiscalPeriod: 'Q1 2026 ended March 31, 2026',
+    dossierVerdict: 'United Airlines manages passenger unit revenue (PRASM), flight capacity (ASMs), jet fuel price fluctuations, and balance sheet leverage.',
+    valueCore: {
+      ticker: 'UAL',
+      value_core_type: 'business_summary_thesis_risk',
+      company_stage_candidate: 'Large Network Air Carrier',
+      primary_value_driver: 'Achieving passenger revenue per available seat mile (PRASM) growth, optimizing network capacity, and generating free cash flows to reduce debt.',
+      thesis_break_trigger: 'Severe drop in corporate or international travel demand, passenger capacity oversupply crushing PRASM, or soaring fuel costs.',
+      evidence_needed: [
+        'Passenger revenue per available seat mile',
+        'Available seat miles capacity',
+        'Average fuel price per gallon',
+        'Passenger load factor',
+        'Total debt outstanding'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_20',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: 'United Airlines operates scheduled passenger flights worldwide, utilizing a hub-and-spoke model.',
+        thesisRisk: 'Key risks include high jet fuel costs, pricing pressure from industry overcapacity, and labor contract inflation.'
+      },
+      phaseTwo: {
+        thesisRisk: [
+          {
+            category: 'Fuel Expense',
+            risk: 'Global crude price spikes increase average jet fuel costs, creating immediate margin drag.',
+            watch: 'Average fuel price per gallon'
+          },
+          {
+            category: 'Industry Overcapacity',
+            risk: 'Airlines expand scheduled domestic routes too aggressively, lowering passenger load factors and unit fares.',
+            watch: 'Passenger revenue per available seat mile'
+          },
+          {
+            category: 'Labor Costs',
+            risk: 'New collective bargaining contracts for pilots and flight attendants raise fixed operating expenses.',
+            watch: 'Passenger load factor'
+          }
+        ]
+      }
+    }
+  },
+  USB: {
+    ticker: 'USB',
+    companyName: 'U.S. Bancorp',
+    exchange: 'NYSE',
+    logoUrl: buildStockLogoUrl('USB'),
+    overview: 'U.S. Bancorp is a bank parent company providing consumer banking, commercial lending, wealth management, and payment services across the United States.',
+    category: 'Regional Banking',
+    analysisDate: '2026-06-12',
+    latestFiscalPeriod: 'Q1 2026 ended March 31, 2026',
+    dossierVerdict: 'U.S. Bancorp manages net interest income, average deposit growth, Common Equity Tier 1 (CET1) capital ratios, and loan credit quality.',
+    valueCore: {
+      ticker: 'USB',
+      value_core_type: 'business_summary_thesis_risk',
+      company_stage_candidate: 'Mature Financial Institution',
+      primary_value_driver: 'Growing net interest income through deposit cost control, maintaining stable loan credit quality, and preserving CET1 ratios above 10.5%.',
+      thesis_break_trigger: 'Sharp contraction in net interest margins, accelerating loan charge-offs, or regulatory deposit capital requirements hikes.',
+      evidence_needed: [
+        'Net interest income',
+        'Average total deposits',
+        'Basel III CET1 capital ratio',
+        'Net charge-off ratio',
+        'Nonperforming asset ratio'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_20',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: 'U.S. Bancorp provides retail and commercial banking, trust, and payment services to individuals and businesses.',
+        thesisRisk: 'Key risks include deposit cost interest margin squeeze, commercial loan defaults, and capital requirements.'
+      },
+      phaseTwo: {
+        thesisRisk: [
+          {
+            category: 'Margin Compression',
+            risk: 'Intense deposit competition forces the bank to pay higher deposit rates, squeezing net interest margins.',
+            watch: 'Net interest income'
+          },
+          {
+            category: 'Credit Quality',
+            risk: 'Defaults in commercial real estate or consumer credit card portfolios escalate charge-off rates.',
+            watch: 'Net charge-off ratio'
+          },
+          {
+            category: 'Capital Regulation',
+            risk: 'Stricter capital rules require higher equity cushions, reducing return on equity.',
+            watch: 'Basel III CET1 capital ratio'
+          }
+        ]
+      }
+    }
+  },
+  VRSK: {
+    ticker: 'VRSK',
+    companyName: 'Verisk Analytics, Inc.',
+    exchange: 'NASDAQ',
+    logoUrl: buildStockLogoUrl('VRSK'),
+    overview: 'Verisk Analytics, Inc. provides data analytics, predictive modeling, and decision support solutions primarily for insurance underwriters and underwriters in the United States and internationally.',
+    category: 'Data & Risk Analytics',
+    analysisDate: '2026-06-12',
+    latestFiscalPeriod: 'Q1 2026 ended March 31, 2026',
+    dossierVerdict: 'Verisk Analytics operates subscription data platforms, sensitive to insurance sector customer budgets, organic recurring revenue growth, and EBITDA margins.',
+    valueCore: {
+      ticker: 'VRSK',
+      value_core_type: 'business_summary_thesis_risk',
+      company_stage_candidate: 'Mature Data & Software Provider',
+      primary_value_driver: 'Expanding subscription recurring revenues through new predictive analytics tools and maintaining adjusted EBITDA margins above 50%.',
+      thesis_break_trigger: 'Slowdown in organic subscription revenue growth, consolidation of major insurance customers reducing pricing power, or analytics database outages.',
+      evidence_needed: [
+        'Organic recurring revenue growth',
+        'Subscription revenue share',
+        'Adjusted EBITDA margin',
+        'Remaining performance obligations',
+        'Customer retention rate'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_20',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: 'Verisk provides underwriting data, predictive risk modeling, and software tools to property and casualty insurers.',
+        thesisRisk: 'Key risks include insurance customer consolidation, subscription growth deceleration, and tech system security.'
+      },
+      phaseTwo: {
+        thesisRisk: [
+          {
+            category: 'Customer Power',
+            risk: 'Mergers between major property and casualty insurers reduce the number of enterprise subscription accounts, compressing prices.',
+            watch: 'Organic recurring revenue growth'
+          },
+          {
+            category: 'IT Expenditures',
+            risk: 'High capital expenditure to migrate database servers to cloud environments reduces near-term operating cash flows.',
+            watch: 'Adjusted EBITDA margin'
+          },
+          {
+            category: 'Database Disruption',
+            risk: 'Security breaches in proprietary database centers compromise sensitive insurer claims data, eroding customer trust.',
+            watch: 'Customer retention rate'
+          }
+        ]
+      }
+    }
+  },
+  VRT: {
+    ticker: 'VRT',
+    companyName: 'Vertiv Co.',
+    exchange: 'NYSE',
+    logoUrl: buildStockLogoUrl('VRT'),
+    overview: 'Vertiv Co. designs, builds, and services critical digital infrastructure and cooling solutions for data centers, communication networks, and industrial applications globally.',
+    category: 'Data Center Infrastructure',
+    analysisDate: '2026-06-12',
+    latestFiscalPeriod: 'Q1 2026 ended March 31, 2026',
+    dossierVerdict: 'Vertiv manages order bookings, data center infrastructure demand, organic sales growth, and adjusted operating margins.',
+    valueCore: {
+      ticker: 'VRT',
+      value_core_type: 'business_summary_thesis_risk',
+      company_stage_candidate: 'Scaling Industrial Technology Provider',
+      primary_value_driver: 'Capturing high-density computing demand through liquid cooling and power solutions while expanding operating margins.',
+      thesis_break_trigger: 'Sharp deceleration in cloud data center capital spending, supply chain constraints for critical cooling modules, or margin compression from commodity costs.',
+      evidence_needed: [
+        'Organic sales growth rate',
+        'Adjusted operating profit margin',
+        'Americas regional sales growth',
+        'Book-to-bill ratio',
+        'Inventory turnover days'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_20',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: 'Vertiv provides power management, thermal cooling systems, and technical services to enterprise and cloud data centers.',
+        thesisRisk: 'Key risks include cyclical data center capital expenditure, copper commodity price increases, and manufacturing component delays.'
+      },
+      phaseTwo: {
+        thesisRisk: [
+          {
+            category: 'CapEx Cycles',
+            risk: 'Data center operators pause expansions to digest current thermal cooling capacity installations.',
+            watch: 'Organic sales growth rate'
+          },
+          {
+            category: 'Supply Bottlenecks',
+            risk: 'Constraints in securing specialized thermal components (such as coolant distribution units) delay shipment revenues.',
+            watch: 'Book-to-bill ratio'
+          },
+          {
+            category: 'Material Inflation',
+            risk: 'Spikes in raw copper, aluminum, and freight costs compress gross margins before prices can be adjusted.',
+            watch: 'Adjusted operating profit margin'
+          }
+        ]
+      }
+    }
+  },
+  VRTX: {
+    ticker: 'VRTX',
+    companyName: 'Vertex Pharmaceuticals Incorporated',
+    exchange: 'NASDAQ',
+    logoUrl: buildStockLogoUrl('VRTX'),
+    overview: 'Vertex Pharmaceuticals Incorporated is a global biotechnology company that discovers, develops, and commercializes small molecule therapies for cystic fibrosis, alongside gene therapies for sickle cell disease.',
+    category: 'Biotechnology',
+    analysisDate: '2026-06-12',
+    latestFiscalPeriod: 'Q1 2026 ended March 31, 2026',
+    dossierVerdict: 'Vertex manages product concentration in cystic fibrosis, pipeline developments (such as Casgevy), R&D expenditures, and regulatory approval milestones.',
+    valueCore: {
+      ticker: 'VRTX',
+      value_core_type: 'business_summary_thesis_risk',
+      company_stage_candidate: 'Large Scale Commercial Biotech',
+      primary_value_driver: 'Preserving the dominant market share of the cystic fibrosis franchise while commercializing new therapies to diversify the revenue base.',
+      thesis_break_trigger: 'Clinical trial failures in advanced pipeline candidates, patent expiration of core cystic fibrosis therapies, or commercial launch delays for new treatments.',
+      evidence_needed: [
+        'Cystic fibrosis segment product sales',
+        'New product revenue contribution',
+        'Research and development expenses',
+        'Casgevy patient treatment initiations',
+        'Cash and marketable securities'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_20',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: 'Vertex commercializes therapies for cystic fibrosis, and develops new pipelines in pain management and gene therapy.',
+        thesisRisk: 'Key risks relate to high product concentration, clinical trial timelines, and commercial execution of new treatments.'
+      },
+      phaseTwo: {
+        thesisRisk: [
+          {
+            category: 'Product Concentration',
+            risk: 'Dependency on the cystic fibrosis franchise exposes the company to patent challenges or safety concerns.',
+            watch: 'Cystic fibrosis segment product sales'
+          },
+          {
+            category: 'Commercial Launch',
+            risk: 'Long manufacturing timelines and medical center onboarding delay revenue conversion for gene therapies.',
+            watch: 'Casgevy patient treatment initiations'
+          },
+          {
+            category: 'Pipeline Setbacks',
+            risk: 'Advanced non-opioid pain therapies or kidney disease candidates fail to meet primary endpoints in Phase 3 trials.',
+            watch: 'New product revenue contribution'
+          }
+        ]
+      }
+    }
+  },
+  WBD: {
+    ticker: 'WBD',
+    companyName: 'Warner Bros. Discovery, Inc.',
+    exchange: 'NASDAQ',
+    logoUrl: buildStockLogoUrl('WBD'),
+    overview: 'Warner Bros. Discovery, Inc. operates as a global media and entertainment company, distributing films, television series, and streaming services through brands like Warner Bros., HBO, and Max.',
+    category: 'Media & Entertainment',
+    analysisDate: '2026-06-12',
+    latestFiscalPeriod: 'Q1 2026 ended March 31, 2026',
+    dossierVerdict: 'Warner Bros. Discovery manages streaming subscriber net additions, linear TV advertising revenue declines, content production costs, and net debt reduction.',
+    valueCore: {
+      ticker: 'WBD',
+      value_core_type: 'business_summary_thesis_risk',
+      company_stage_candidate: 'Mature Media and Entertainment Company',
+      primary_value_driver: 'Growing Max streaming revenues, securing theatrical box office hits, and utilizing studio cash flows to reduce debt leverage.',
+      thesis_break_trigger: 'Accelerating pay-TV subscriber cord-cutting, persistent declines in linear advertising, or failure to grow streaming profitability.',
+      evidence_needed: [
+        'Total revenue growth',
+        'Streaming segment adjusted EBITDA',
+        'Direct-to-consumer subscriber counts',
+        'Advertising revenue decline rate',
+        'Free cash flow generation'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_20',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: 'Warner Bros. Discovery provides content through television, movie studios, and its streaming platform (Max).',
+        thesisRisk: 'Key risks include linear pay-TV subscriber erosion, structural advertising declines, and high debt load.'
+      },
+      phaseTwo: {
+        thesisRisk: [
+          {
+            category: 'Linear Decay',
+            risk: 'High-margin affiliate fees decline due to domestic pay-TV cord-cutting, outstripping streaming expansion.',
+            watch: 'Advertising revenue decline rate'
+          },
+          {
+            category: 'Debt Leverage',
+            risk: 'Declining cash flows from linear television divisions delay leverage reduction on the balance sheet.',
+            watch: 'Free cash flow generation'
+          },
+          {
+            category: 'Streaming Competition',
+            risk: 'Competitor content spend increases churn at Max, forcing higher promotional discounts and compressing margins.',
+            watch: 'Streaming segment adjusted EBITDA'
+          }
+        ]
+      }
+    }
+  },
+  WDC: {
+    ticker: 'WDC',
+    companyName: 'Western Digital Corporation',
+    exchange: 'NASDAQ',
+    logoUrl: buildStockLogoUrl('WDC'),
+    overview: 'Western Digital Corporation designs and manufactures data storage solutions, producing hard disk drives (HDDs) for datacenters and flash memory products for mobile and client devices.',
+    category: 'Technology Hardware & Storage',
+    analysisDate: '2026-06-12',
+    latestFiscalPeriod: 'Q3 2026 ended April 3, 2026',
+    dossierVerdict: 'Western Digital manages nearline HDD shipments, flash memory pricing cycles, factory capacity utilization, and capital structure debt reduction.',
+    valueCore: {
+      ticker: 'WDC',
+      value_core_type: 'business_summary_thesis_risk',
+      company_stage_candidate: 'Cyclical Tech Hardware Manufacturer',
+      primary_value_driver: 'Expanding high-capacity nearline HDD gross margins through AI data center demand and managing flash memory cost reductions.',
+      thesis_break_trigger: 'Severe downturn in average realized prices for flash memory, hyperscaler cloud storage inventory digestion, or manufacturing cost inflation.',
+      evidence_needed: [
+        'Total revenues',
+        'Non-GAAP gross profit margin',
+        'Nearline enterprise HDD sales',
+        'Operating cash flows',
+        'Total debt outstanding'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_20',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: 'Western Digital provides flash memory cards, solid-state drives, and high-capacity hard drives for cloud and client systems.',
+        thesisRisk: 'Key risks relate to storage price cycles, cloud customer capital spending pauses, and manufacturing fixed cost coverage.'
+      },
+      phaseTwo: {
+        thesisRisk: [
+          {
+            category: 'Storage Price Cycles',
+            risk: 'Excess flash memory capacity in the industry triggers a collapse in average realized prices, crushing margins.',
+            watch: 'Non-GAAP gross profit margin'
+          },
+          {
+            category: 'Hyperscaler Pauses',
+            risk: 'Major cloud providers pause storage server purchases to digest existing hard drive inventories.',
+            watch: 'Nearline enterprise HDD sales'
+          },
+          {
+            category: 'Capital Leverage',
+            risk: 'Slower operating cash flow generation delays debt repayment goals on the remaining corporate credit facilities.',
+            watch: 'Total debt outstanding'
+          }
+        ]
+      }
+    }
+  },
+  WFC: {
+    ticker: 'WFC',
+    companyName: 'Wells Fargo & Company',
+    exchange: 'NYSE',
+    logoUrl: buildStockLogoUrl('WFC'),
+    overview: 'Wells Fargo & Company is a diversified financial services company providing banking, investments, mortgages, and consumer and commercial finance across the United States.',
+    category: 'Diversified Banking',
+    analysisDate: '2026-06-12',
+    latestFiscalPeriod: 'Q1 2026 ended March 31, 2026',
+    dossierVerdict: 'Wells Fargo manages net interest income, average deposit growth, loan credit quality, nonaccrual assets, and capital distribution ratios.',
+    valueCore: {
+      ticker: 'WFC',
+      value_core_type: 'business_summary_thesis_risk',
+      company_stage_candidate: 'Large Financial Services Institution',
+      primary_value_driver: 'Growing consumer lending products post-asset cap removal while controlling deposit funding costs and regulatory compliance expenses.',
+      thesis_break_trigger: 'Rapid compression in net interest margins from interest rate cuts, surge in commercial real estate loan defaults, or new regulatory consent orders.',
+      evidence_needed: [
+        'Net interest income',
+        'Average deposits outstanding',
+        'Basel III CET1 ratio',
+        'Net charge-offs ratio',
+        'Nonperforming asset ratio'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_20',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: 'Wells Fargo provides retail, commercial, and investment banking services to consumers and institutional clients.',
+        thesisRisk: 'Key risks include net interest margin compression, commercial portfolio credit losses, and compliance costs.'
+      },
+      phaseTwo: {
+        thesisRisk: [
+          {
+            category: 'Margin Squeeze',
+            risk: 'Rapid interest rate reductions lower yields on floating-rate loans faster than deposit costs can be adjusted.',
+            watch: 'Net interest income'
+          },
+          {
+            category: 'Credit Losses',
+            risk: 'Commercial office real estate values decline, causing a spike in nonperforming commercial loans.',
+            watch: 'Nonperforming asset ratio'
+          },
+          {
+            category: 'Expense Management',
+            risk: 'Compliance upgrades and legacy legal settlements inflate non-interest operating expenses.',
+            watch: 'Net charge-offs ratio'
+          }
+        ]
+      }
+    }
+  },
+  XEL: {
+    ticker: 'XEL',
+    companyName: 'Xcel Energy Inc.',
+    exchange: 'NASDAQ',
+    logoUrl: buildStockLogoUrl('XEL'),
+    overview: 'Xcel Energy Inc. is a public utility parent company operating electric and natural gas utility systems through subsidiaries serving customers in Minnesota, Colorado, and other states.',
+    category: 'Regulated Utility',
+    analysisDate: '2026-06-12',
+    latestFiscalPeriod: 'Q1 2026 ended March 31, 2026',
+    dossierVerdict: 'Xcel Energy manages regulated rate base expansions, capital investment recovery, commission rate case outcomes, and interest expense burdens.',
+    valueCore: {
+      ticker: 'XEL',
+      value_core_type: 'business_summary_thesis_risk',
+      company_stage_candidate: 'Regulated Infrastructure Provider',
+      primary_value_driver: 'Executing a multi-year capital investment program to expand the regulated rate base while securing rate case approvals.',
+      thesis_break_trigger: 'Unfavorable utility commission decisions lowering allowed return on equity, wildfire litigation damages, or rising cost of capital.',
+      evidence_needed: [
+        'Ongoing net earnings',
+        'Regulated rate base CAGR',
+        'Capital investment program',
+        'Allowed return on equity',
+        'Interest expense ratio'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_20',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: 'Xcel Energy operates regulated electric and gas utilities, focusing on transmission grid modernization.',
+        thesisRisk: 'Key risks include rate case outcomes, wildfire liability risks, and interest rate hikes on capital expenditures.'
+      },
+      phaseTwo: {
+        thesisRisk: [
+          {
+            category: 'Regulatory Friction',
+            risk: 'State utility commissions reject rate hikes or lower allowed returns on equity, reducing cash flows.',
+            watch: 'Allowed return on equity'
+          },
+          {
+            category: 'Wildfire Liability',
+            risk: 'Utility transmission equipment is linked to wildfire starts, triggering massive civil damage claims.',
+            watch: 'Ongoing net earnings'
+          },
+          {
+            category: 'Funding Costs',
+            risk: 'High interest rates increase the financing cost of the capital program, diluting return on equity.',
+            watch: 'Interest expense ratio'
+          }
+        ]
+      }
+    }
+  },
+  XOM: {
+    ticker: 'XOM',
+    companyName: 'Exxon Mobil Corporation',
+    exchange: 'NYSE',
+    logoUrl: buildStockLogoUrl('XOM'),
+    overview: 'Exxon Mobil Corporation explores, produces, refines, and markets crude oil and natural gas, and manufactures commodity and specialty chemicals globally.',
+    category: 'Integrated Oil & Gas',
+    analysisDate: '2026-06-12',
+    latestFiscalPeriod: 'Q1 2026 ended March 31, 2026',
+    dossierVerdict: 'Exxon Mobil manages global oil-equivalent production volumes, Permian and Guyana upstream expansions, capital expenditures, and shareowner cash returns.',
+    valueCore: {
+      ticker: 'XOM',
+      value_core_type: 'business_summary_thesis_risk',
+      company_stage_candidate: 'Large Integrated Energy Corporation',
+      primary_value_driver: 'Growing low-cost upstream production (Guyana, Permian) and returning capital to shareowners through dividends and share repurchases.',
+      thesis_break_trigger: 'Collapse in crude oil and natural gas prices, refinery margin compression, upstream production shortfalls, or capital overspending.',
+      evidence_needed: [
+        'Total oil-equivalent production',
+        'Capital and exploration expenditures',
+        'Upstream segment earnings',
+        'Shareowner cash returns',
+        'Guyana net production volume'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_20',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: 'Exxon Mobil produces crude oil and gas, operates refining facilities, and markets petrochemical products.',
+        thesisRisk: 'Key risks include oil price volatility, refining margin compression, and execution of carbon capture projects.'
+      },
+      phaseTwo: {
+        thesisRisk: [
+          {
+            category: 'Commodity Volatility',
+            risk: 'Oversupply in global oil markets collapses crude prices, reducing operating cash flows.',
+            watch: 'Upstream segment earnings'
+          },
+          {
+            category: 'Refining Margins',
+            risk: 'Excess refining capacity or feedstock price hikes squeeze energy product downstream margins.',
+            watch: 'Total oil-equivalent production'
+          },
+          {
+            category: 'Project Execution',
+            risk: 'Technical delays or partner disputes at Guyana offshore assets slow production growth.',
+            watch: 'Guyana net production volume'
+          }
+        ]
+      }
+    }
+  },
+  XYZ: {
+    ticker: 'XYZ',
+    companyName: 'Block, Inc.',
+    exchange: 'NYSE',
+    logoUrl: buildStockLogoUrl('XYZ'),
+    overview: 'Block, Inc. builds ecosystems focused on commerce and financial services, combining the Square merchant payment ecosystem, the Cash App consumer finance platform, and Afterpay installment payment integrations.',
+    category: 'Fintech & Payments',
+    analysisDate: '2026-06-12',
+    latestFiscalPeriod: 'Q1 2026 ended March 31, 2026',
+    dossierVerdict: 'Block manages gross profit expansion across Cash App and Square divisions, implements operating expense discipline through workforce streamlining, and monitors bitcoin transaction exposure.',
+    valueCore: {
+      ticker: 'XYZ',
+      value_core_type: 'business_summary_thesis_risk',
+      company_stage_candidate: 'Scaling Financial Technology Platform',
+      primary_value_driver: 'Expanding gross profits in Cash App and Square merchant divisions while maintaining disciplined operating expenses.',
+      thesis_break_trigger: 'Gross profit growth deceleration below 15% in Cash App, severe merchant customer churn, or costly regulatory compliance failures.',
+      evidence_needed: [
+        'Total gross profit growth rate',
+        'Cash App segment gross profit',
+        'Square segment gross profit',
+        'Cash App primary banking active users',
+        'Square gross payment volume'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_20',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: 'Block provides digital payment processing, consumer financial services, and installment payment solutions.',
+        thesisRisk: 'Key risks relate to merchant payment industry competition, consumer compliance regulations, and digital asset volatility.'
+      },
+      phaseTwo: {
+        thesisRisk: [
+          {
+            category: 'Payments Competition',
+            risk: 'Aggressive pricing from alternative payment processors and merchant banks reduces Square transaction margins.',
+            watch: 'Square segment gross profit'
+          },
+          {
+            category: 'Compliance Regulation',
+            risk: 'Stricter federal consumer finance compliance requirements increase Cash App operating overhead and customer acquisition costs.',
+            watch: 'Cash App primary banking active users'
+          },
+          {
+            category: 'Transaction Volume',
+            risk: 'Workforce reductions or customer friction from AI-driven automation tools disrupts merchant acquisition pipelines.',
+            watch: 'Total gross profit growth rate'
+          }
+        ]
+      }
+    }
+  },
+  ZS: {
+    ticker: 'ZS',
+    companyName: 'Zscaler, Inc.',
+    exchange: 'NASDAQ',
+    logoUrl: buildStockLogoUrl('ZS'),
+    overview: 'Zscaler, Inc. provides cloud-delivered security solutions, protecting users, devices, and applications in enterprise networks through its Zero Trust Exchange platform.',
+    category: 'Cloud Security Software',
+    analysisDate: '2026-06-12',
+    latestFiscalPeriod: 'Q3 2026 ended April 30, 2026',
+    dossierVerdict: 'Zscaler manages annual recurring revenue (ARR), Billings, Remaining Performance Obligations (RPO), net retention rates, and operating margins.',
+    valueCore: {
+      ticker: 'ZS',
+      value_core_type: 'business_summary_thesis_risk',
+      company_stage_candidate: 'Scaling Cloud Cybersecurity Provider',
+      primary_value_driver: 'Growing enterprise subscription ARR through platform adoption (such as AI Protect) while maintaining operating cash flows.',
+      thesis_break_trigger: 'Slowdown in enterprise cybersecurity software adoption, compression of subscription prices from competition, or integration issues with acquisitions.',
+      evidence_needed: [
+        'Annual recurring revenue',
+        'Remaining performance obligations',
+        'Net retention rate',
+        'Non-GAAP operating margin',
+        'Free cash flow margin'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_20',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: 'Zscaler provides Zero Trust network access, cloud firewall, and threat protection services to enterprise customers.',
+        thesisRisk: 'Key risks include cyber market price competition, sales execution challenges, and IT infrastructure capital expenditures.'
+      },
+      phaseTwo: {
+        thesisRisk: [
+          {
+            category: 'Price Competition',
+            risk: 'Network legacy vendors bundle firewalls at near-zero incremental prices, undercutting Zscaler pricing.',
+            watch: 'Non-GAAP operating margin'
+          },
+          {
+            category: 'Retention Headwinds',
+            risk: 'Customers optimize software counts during budget sweeps, reducing seat count expansion and NRR.',
+            watch: 'Net retention rate'
+          },
+          {
+            category: 'Infrastructure Costs',
+            risk: 'Capital expenditures for AI processing servers scale rapidly, depressing free cash flow margins.',
+            watch: 'Free cash flow margin'
+          }
+        ]
+      }
+    }
   }
 };
 
