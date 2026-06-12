@@ -9271,6 +9271,966 @@ const stockDossierProfiles = {
         }
       }
     }
+  },
+  ARM: {
+    ticker: 'ARM',
+    companyName: 'Arm Holdings plc',
+    exchange: 'NASDAQ',
+    logoUrl: buildStockLogoUrl('ARM'),
+    overview: 'Arm designs energy-efficient microprocessors and related semiconductor IP licensed globally.',
+    category: 'Semiconductor IP',
+    analysisDate: '2026-06-11',
+    latestFiscalPeriod: 'FY2026 ended 2026-03-31',
+    dossierVerdict: {
+      sourceType: 'curated',
+      asOf: '2026-06-11',
+      researchState: 'semiconductor_ip_watch',
+      businessQuality: 'high',
+      valuationState: 'not_verified',
+      marketEvidence: 'not_verified',
+      finalRead: 'Processor IP platform where the thesis depends on royalty fee rate expansion, AI data center design wins, and smartphone market trends.',
+      keySupport: [
+        'SEC Form 20-F details Arm licensing and royalty models across CPU and GPU architectures.',
+        'Royalty fees provide highly recurring, high-margin revenue streams from historical chip designs.',
+        'AI workload acceleration drives demand for advanced v9 architecture licenses with premium royalty rates.'
+      ],
+      keyRisk: [
+        'Slowing smartphone unit shipments can drag down core royalty fee volumes.',
+        'Customer concentration makes revenues sensitive to decisions by major mobile and cloud chip designers.',
+        'Arm China partnership complexities and geopolitical export rules present ongoing operational risks.'
+      ]
+    },
+    valueCore: {
+      ticker: 'ARM',
+      value_core_type: 'Semiconductor IP licensing',
+      company_stage_candidate: 'Established IP leader',
+      primary_value_driver: 'Royalty fee rate expansion, licensing deal pipeline growth, and AI data center processor adoption',
+      thesis_break_trigger: 'Royalty rates per chip decline, licensing deal signings slow, custom processor designs bypass Arm architecture, or export rules restrict key markets',
+      evidence_needed: [
+        'royalty revenue growth rate',
+        'licensing backlog and bookings',
+        'average royalty rate per chip',
+        'v9 architecture adoption mix',
+        'customer concentration revenue disclosures',
+        'Arm China business performance updates'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_11',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 20-F / 6-K'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: [
+          {
+            question: 'What does ARM do?',
+            answer: 'Arm designs microprocessors and architectures and licenses them to semiconductor firms. It earns licensing fees and ongoing royalties per chip shipped.'
+          }
+        ],
+        thesisRisk: [
+          {
+            question: 'What would break the ARM thesis?',
+            answer: 'The thesis weakens if chip licensing momentum slows, mobile markets decline, customers bypass Arm for open-source architectures like RISC-V, or geopolitics disrupt China operations.'
+          }
+        ]
+      },
+      phaseTwo: {
+        thesisRisk: {
+          lead: 'The main risk centers on smartphone market dependency, customer architecture choices, and export rules.',
+          riskMap: [
+            {
+              label: 'Client transition risk',
+              severity: 'High',
+              watch: 'Major clients design custom silicon bypassing Arm licensing.'
+            },
+            {
+              label: 'Smartphone market decline',
+              severity: 'Medium',
+              watch: 'Slowing mobile device shipments reducing royalty volumes.'
+            },
+            {
+              label: 'Export and China risks',
+              severity: 'High',
+              watch: 'Regulatory actions limiting IP sales to restricted regions.'
+            }
+          ],
+          evidenceNeeded: [
+            'royalty revenue growth rate',
+            'licensing backlog and bookings',
+            'average royalty rate per chip',
+            'v9 architecture adoption mix',
+            'customer concentration revenue disclosures',
+            'Arm China business performance updates'
+          ]
+        }
+      }
+    }
+  },
+  AXON: {
+    ticker: 'AXON',
+    companyName: 'Axon Enterprise, Inc.',
+    exchange: 'NASDAQ',
+    logoUrl: buildStockLogoUrl('AXON'),
+    overview: 'Axon provides public safety technology, including conducted energy devices, body-worn cameras, and cloud software.',
+    category: 'Public Safety Technology',
+    analysisDate: '2026-06-11',
+    latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
+    dossierVerdict: {
+      sourceType: 'curated',
+      asOf: '2026-06-11',
+      researchState: 'public_safety_watch',
+      businessQuality: 'high',
+      valuationState: 'not_verified',
+      marketEvidence: 'not_verified',
+      finalRead: 'Public safety tech provider where the thesis depends on software recurring revenue expansion and agency retention.',
+      keySupport: [
+        'SEC filings partition Axon into Software and Sensors and TASER segments.',
+        'Evidence.com cloud subscription platform creates high customer switching costs.',
+        'TASER device upgrades provide stable hardware cash flows alongside camera software subscriptions.'
+      ],
+      keyRisk: [
+        'Sensors segment product gross margins can compress during new hardware version rollouts.',
+        'Slowing adoption of digital evidence management by smaller law enforcement agencies.',
+        'Long public-sector procurement cycles and municipal budget constraints can delay bookings.'
+      ]
+    },
+    valueCore: {
+      ticker: 'AXON',
+      value_core_type: 'Public safety tech & SaaS',
+      company_stage_candidate: 'Established segment leader',
+      primary_value_driver: 'Software recurring revenue growth, agency retention rates, and product gross margins',
+      thesis_break_trigger: 'Software recurring revenue slows, agency customer churn increases, product margins compress, or public safety funding is reduced',
+      evidence_needed: [
+        'Annual Recurring Revenue (ARR) growth',
+        'net software subscription retention rate',
+        'Sensors segment product gross margin',
+        'TASER device shipment volumes',
+        'international booking metrics',
+        'public agency budget trend indicators'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_11',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: [
+          {
+            question: 'What does AXON do?',
+            answer: 'Axon provides public safety tech, selling TASER devices, body-worn cameras, and cloud-based digital evidence management software to law enforcement agencies.'
+          }
+        ],
+        thesisRisk: [
+          {
+            question: 'What would break the AXON thesis?',
+            answer: 'The thesis weakens if SaaS recurring revenue decelerates, agency client retention drops, or hardware margins compress during new device rollouts.'
+          }
+        ]
+      },
+      phaseTwo: {
+        thesisRisk: {
+          lead: 'The primary risk relates to public sector funding cycles and hardware margin execution.',
+          riskMap: [
+            {
+              label: 'Hardware margin compression',
+              severity: 'Medium',
+              watch: 'Sensors segment gross margin drops due to component costs.'
+            },
+            {
+              label: 'Software growth deceleration',
+              severity: 'High',
+              watch: 'Evidence.com subscription ARR growth falls below double digits.'
+            },
+            {
+              label: 'Public sector procurement delays',
+              severity: 'Medium',
+              watch: 'Municipal budget contractions delaying law enforcement tech upgrades.'
+            }
+          ],
+          evidenceNeeded: [
+            'Annual Recurring Revenue (ARR) growth',
+            'net software subscription retention rate',
+            'Sensors segment product gross margin',
+            'TASER device shipment volumes',
+            'international booking metrics',
+            'public agency budget trend indicators'
+          ]
+        }
+      }
+    }
+  },
+  BA: {
+    ticker: 'BA',
+    companyName: 'The Boeing Company',
+    exchange: 'NYSE',
+    logoUrl: buildStockLogoUrl('BA'),
+    overview: 'Boeing is a global aerospace and defense manufacturer supplying commercial airplanes, defense systems, and global services.',
+    category: 'Aerospace & Defense',
+    analysisDate: '2026-06-11',
+    latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
+    dossierVerdict: {
+      sourceType: 'curated',
+      asOf: '2026-06-11',
+      researchState: 'aerospace_turnaround_watch',
+      businessQuality: 'medium_low',
+      valuationState: 'not_verified',
+      marketEvidence: 'not_verified',
+      finalRead: 'Aerospace duopolist with turnaround risk tied to production delivery rates, quality control, and cash flow generation.',
+      keySupport: [
+        'SEC filings partition Boeing into Commercial Airplanes, BDS, and BGS segments.',
+        'A multi-year commercial backlog supports long-term revenue visibility once production normalizes.',
+        'Global Services provides stable, higher-margin cash flows independent of new plane production.'
+      ],
+      keyRisk: [
+        'FAA production rate limits and quality control audits can restrict commercial deliveries.',
+        'Fixed-price development contracts in the defense segment are prone to cost overrun charges.',
+        'Extended supply chain disruptions and labor relations issues can delay delivery schedules.'
+      ]
+    },
+    valueCore: {
+      ticker: 'BA',
+      value_core_type: 'Aerospace manufacturing & services',
+      company_stage_candidate: 'Turnaround candidate',
+      primary_value_driver: 'Commercial airplane delivery rates, quality control execution, and free cash flow generation',
+      thesis_break_trigger: 'Commercial airplane deliveries decline, regulatory audits impose further production limits, BDS segment losses expand, or free cash flow remains negative',
+      evidence_needed: [
+        'commercial airplane delivery count (737/787)',
+        'FAA regulatory review and audit disclosures',
+        'Defense segment operating margins',
+        'free cash flow generation trend',
+        'order backlog volume and pricing',
+        'key supplier production rate compliance'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_11',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: [
+          {
+            question: 'What does BA do?',
+            answer: 'Boeing designs, builds, and services commercial airplanes, defense systems, satellites, and security systems globally as part of a global duopoly.'
+          }
+        ],
+        thesisRisk: [
+          {
+            question: 'What would break the BA thesis?',
+            answer: 'The thesis weakens if regulatory limits restrict plane deliveries, manufacturing quality issues persist, or fixed-price defense contracts incur additional losses.'
+          }
+        ]
+      },
+      phaseTwo: {
+        thesisRisk: {
+          lead: 'The primary risk is regulatory quality limits restricting delivery rate acceleration and defense cost overruns.',
+          riskMap: [
+            {
+              label: 'Regulatory delivery constraints',
+              severity: 'High',
+              watch: 'FAA limits on monthly 737 MAX production remain in place.'
+            },
+            {
+              label: 'Defense contract losses',
+              severity: 'High',
+              watch: 'BDS segment records additional write-downs on fixed-price projects.'
+            },
+            {
+              label: 'Free cash flow deficits',
+              severity: 'High',
+              watch: 'High working capital requirements keep free cash flow negative.'
+            }
+          ],
+          evidenceNeeded: [
+            'commercial airplane delivery count (737/787)',
+            'FAA regulatory review and audit disclosures',
+            'Defense segment operating margins',
+            'free cash flow generation trend',
+            'order backlog volume and pricing',
+            'key supplier production rate compliance'
+          ]
+        }
+      }
+    }
+  },
+  BE: {
+    ticker: 'BE',
+    companyName: 'Bloom Energy Corporation',
+    exchange: 'NYSE',
+    logoUrl: buildStockLogoUrl('BE'),
+    overview: 'Bloom Energy designs and manufactures solid oxide fuel cell servers generating distributed on-site electricity.',
+    category: 'Distributed Clean Energy',
+    analysisDate: '2026-06-11',
+    latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
+    dossierVerdict: {
+      sourceType: 'curated',
+      asOf: '2026-06-11',
+      researchState: 'energy_infrastructure_watch',
+      businessQuality: 'medium_low',
+      valuationState: 'not_verified',
+      marketEvidence: 'not_verified',
+      finalRead: 'Distributed energy manufacturer where the thesis depends on backlog conversion, product gross margins, and cash burn.',
+      keySupport: [
+        'SEC filings describe Bloom Energy\'s solid oxide fuel cell servers for clean, on-site energy.',
+        'Servers operate on natural gas, biogas, or hydrogen, providing fuel flexibility.',
+        'Data centers and industrial facilities represent key growth channels for on-site power.'
+      ],
+      keyRisk: [
+        'Customer project delays due to local utility grid connection limits can defer revenues.',
+        'Inability to achieve manufacturing cost reductions can compress product gross margins.',
+        'High capital requirements and cash burn can increase dependence on external debt/equity financing.'
+      ]
+    },
+    valueCore: {
+      ticker: 'BE',
+      value_core_type: 'Fuel cell clean energy generation',
+      company_stage_candidate: 'Growth stage manufacturer',
+      primary_value_driver: 'Product revenue backlog conversion, manufacturing product gross margins, and cash burn rate',
+      thesis_break_trigger: 'Product backlog conversion stalls, product gross margins decline, hydrogen server adoption fails to scale, or liquidity runway shrinks',
+      evidence_needed: [
+        'product revenue and bookings backlog',
+        'product-level gross margins',
+        'cash runway and quarterly cash burn',
+        'hydrogen server shipment volume',
+        'utility grid connection delay times',
+        'data center customer pipeline scaling'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_11',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: [
+          {
+            question: 'What does BE do?',
+            answer: 'Bloom Energy builds solid oxide fuel cell servers that generate constant, reliable on-site electricity, serving commercial, industrial, and data center clients.'
+          }
+        ],
+        thesisRisk: [
+          {
+            question: 'What would break the BE thesis?',
+            answer: 'The thesis weakens if the company cannot convert its project backlog to revenue, product margins compress, or high cash burn leads to dilutive financing.'
+          }
+        ]
+      },
+      phaseTwo: {
+        thesisRisk: {
+          lead: 'The main risk is project grid-connection delays and product manufacturing margin execution.',
+          riskMap: [
+            {
+              label: 'Grid connection delays',
+              severity: 'High',
+              watch: 'Utility grid interconnect delays defer server activation dates.'
+            },
+            {
+              label: 'Product margin compression',
+              severity: 'High',
+              watch: 'Product gross margin falls below targets due to material costs.'
+            },
+            {
+              label: 'Cash burn and liquidity',
+              severity: 'High',
+              watch: 'Operating cash flow remains negative, shrinking cash runway.'
+            }
+          ],
+          evidenceNeeded: [
+            'product revenue and bookings backlog',
+            'product-level gross margins',
+            'cash runway and quarterly cash burn',
+            'hydrogen server shipment volume',
+            'utility grid connection delay times',
+            'data center customer pipeline scaling'
+          ]
+        }
+      }
+    }
+  },
+  BK: {
+    ticker: 'BK',
+    companyName: 'The Bank of New York Mellon Corporation',
+    exchange: 'NYSE',
+    logoUrl: buildStockLogoUrl('BK'),
+    overview: 'BNY Mellon is a global financial services institution specializing in custody, asset servicing, and investment management.',
+    category: 'Custody & Asset Servicing',
+    analysisDate: '2026-06-11',
+    latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
+    dossierVerdict: {
+      sourceType: 'curated',
+      asOf: '2026-06-11',
+      researchState: 'financial_services_watch',
+      businessQuality: 'high',
+      valuationState: 'not_verified',
+      marketEvidence: 'not_verified',
+      finalRead: 'Global custody bank where the thesis depends on Assets under Custody levels, fee revenue growth, and Net Interest Income.',
+      keySupport: [
+        'SEC filings structure BNY Mellon across Securities Services, Market and Wealth Services, and Investment segments.',
+        'Custody assets create highly sticky fee-based service relationships with institutions.',
+        'The business model features lower credit risk compared to traditional lending-focused commercial banks.'
+      ],
+      keyRisk: [
+        'A decline in global equity and debt market values can compress asset-based fee revenues.',
+        'Net Interest Income (NII) contraction driven by changes in central bank interest rates.',
+        'Regulatory compliance failures or custody asset security issues can cause client departures.'
+      ]
+    },
+    valueCore: {
+      ticker: 'BK',
+      value_core_type: 'Custody & asset servicing bank',
+      company_stage_candidate: 'Established services compounder',
+      primary_value_driver: 'Assets under Custody / Administration (AUC/A) levels, asset servicing fee growth, and Net Interest Income',
+      thesis_break_trigger: 'AUC/A levels drop sharply, asset servicing fee rates compress, Net Interest Income declines, or operational expenses outrun revenues',
+      evidence_needed: [
+        'Assets under Custody / Administration (AUC/A) balance',
+        'Securities Services fee revenue growth',
+        'Net Interest Income (NII) and net interest margin',
+        'client deposit balance and deposit beta',
+        'operating leverage and expense ratio',
+        'regulatory capital ratios (CET1)'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_11',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: [
+          {
+            question: 'What does BK do?',
+            answer: 'BNY Mellon is a custody bank. It safekeeps, clears, and services financial assets for institutional investors, corporations, and wealthy individuals.'
+          }
+        ],
+        thesisRisk: [
+          {
+            question: 'What would break the BK thesis?',
+            answer: 'The thesis weakens if global markets decline (reducing asset fee revenues), client deposits drop, or Net Interest Income declines due to rate cuts.'
+          }
+        ]
+      },
+      phaseTwo: {
+        thesisRisk: {
+          lead: 'The core risk relates to global financial market levels and interest rate sensitivity.',
+          riskMap: [
+            {
+              label: 'Global market declines',
+              severity: 'High',
+              watch: 'Equity/bond market index declines reducing AUC/A and fee income.'
+            },
+            {
+              label: 'Net Interest Income contraction',
+              severity: 'Medium',
+              watch: 'NII declines due to interest rate cuts or rising deposit costs.'
+            },
+            {
+              label: 'Operational expense growth',
+              severity: 'Medium',
+              watch: 'Expenses outrun fee revenue growth, impairing operating leverage.'
+            }
+          ],
+          evidenceNeeded: [
+            'Assets under Custody / Administration (AUC/A) balance',
+            'Securities Services fee revenue growth',
+            'Net Interest Income (NII) and net interest margin',
+            'client deposit balance and deposit beta',
+            'operating leverage and expense ratio',
+            'regulatory capital ratios (CET1)'
+          ]
+        }
+      }
+    }
+  },
+  BKR: {
+    ticker: 'BKR',
+    companyName: 'Baker Hughes Company',
+    exchange: 'NASDAQ',
+    logoUrl: buildStockLogoUrl('BKR'),
+    overview: 'Baker Hughes is an energy technology company supplying oilfield services, equipment, and industrial gas solutions.',
+    category: 'Energy Technology / Services',
+    analysisDate: '2026-06-11',
+    latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
+    dossierVerdict: {
+      sourceType: 'curated',
+      asOf: '2026-06-11',
+      researchState: 'energy_technology_watch',
+      businessQuality: 'medium_high',
+      valuationState: 'not_verified',
+      marketEvidence: 'not_verified',
+      finalRead: 'Energy tech supplier where the thesis depends on LNG order bookings, global energy capex, and segment profit margins.',
+      keySupport: [
+        'SEC filings partition Baker Hughes into OFSE and IET segments.',
+        'Industrial & Energy Technology (IET) segment benefits from global LNG infrastructure capacity expansion.',
+        'Oilfield Services & Equipment (OFSE) segment provides exposure to global offshore drilling cycles.'
+      ],
+      keyRisk: [
+        'A slowdown in global liquefied natural gas (LNG) project approvals can weaken IET backlog growth.',
+        'Deterioration in global oil and gas prices can cause operators to cut drilling capex.',
+        'Supply chain cost inflation or logistics delays can compress segment operating margins.'
+      ]
+    },
+    valueCore: {
+      ticker: 'BKR',
+      value_core_type: 'Energy tech & equipment supplier',
+      company_stage_candidate: 'Cyclical compounder',
+      primary_value_driver: 'IET / LNG booking order momentum, global energy capex, and segment operating margins',
+      thesis_break_trigger: 'IET order bookings decelerate, global energy capex declines, oilfield services margins contract, or free cash flow fails to convert',
+      evidence_needed: [
+        'IET segment order bookings and backlog',
+        'OFSE segment operating margins',
+        'global LNG project FID status',
+        'upstream energy producer capex budgets',
+        'raw material and supply chain costs',
+        'free cash flow conversion rate'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_11',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: [
+          {
+            question: 'What does BKR do?',
+            answer: 'Baker Hughes supplies technology and services for energy and industrial clients, selling gas turbines, compressors, oilfield equipment, and digital solutions.'
+          }
+        ],
+        thesisRisk: [
+          {
+            question: 'What would break the BKR thesis?',
+            answer: 'The thesis weakens if LNG infrastructure buildout slows, international oilfield spending drops, or input cost inflation compresses segment margins.'
+          }
+        ]
+      },
+      phaseTwo: {
+        thesisRisk: {
+          lead: 'The main risk is cyclicality in global energy capital expenditure and LNG investment timing.',
+          riskMap: [
+            {
+              label: 'LNG investment slowdown',
+              severity: 'High',
+              watch: 'Delay in final investment decisions (FIDs) for global LNG terminals.'
+            },
+            {
+              label: 'Energy capex cuts',
+              severity: 'High',
+              watch: 'Major oil and gas producers reduce drilling and services budgets.'
+            },
+            {
+              label: 'Margin compression',
+              severity: 'Medium',
+              watch: 'IET or OFSE segment margins compress due to supply chain inflation.'
+            }
+          ],
+          evidenceNeeded: [
+            'IET segment order bookings and backlog',
+            'OFSE segment operating margins',
+            'global LNG project FID status',
+            'upstream energy producer capex budgets',
+            'raw material and supply chain costs',
+            'free cash flow conversion rate'
+          ]
+        }
+      }
+    }
+  },
+  BLK: {
+    ticker: 'BLK',
+    companyName: 'BlackRock, Inc.',
+    exchange: 'NYSE',
+    logoUrl: buildStockLogoUrl('BLK'),
+    overview: 'BlackRock is a global investment manager providing public and private market funds, iShares ETFs, and Aladdin technology services.',
+    category: 'Asset Management',
+    analysisDate: '2026-06-11',
+    latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
+    dossierVerdict: {
+      sourceType: 'curated',
+      asOf: '2026-06-11',
+      researchState: 'asset_management_watch',
+      businessQuality: 'high',
+      valuationState: 'not_verified',
+      marketEvidence: 'not_verified',
+      finalRead: 'Asset management platform where the thesis depends on AUM levels, net inflows, fee rate stability, and Aladdin technology revenue.',
+      keySupport: [
+        'SEC filings structure BlackRock as a unified investment management platform.',
+        'iShares exchange-traded funds (ETFs) represent a dominant driver of passive asset inflows.',
+        'Aladdin enterprise technology services provide recurring SaaS revenue streams to institutional clients.'
+      ],
+      keyRisk: [
+        'Macro market declines can reduce total asset values, depressing asset-based fee income.',
+        'Asset class mix shifts from high-fee active funds to low-fee passive products.',
+        'Slowing adoption of Aladdin portfolio risk software by institutional managers.'
+      ]
+    },
+    valueCore: {
+      ticker: 'BLK',
+      value_core_type: 'Asset management & tech platform',
+      company_stage_candidate: 'Established market leader',
+      primary_value_driver: 'Assets under Management (AUM) levels, client net inflows, fee rates, and Aladdin revenue scaling',
+      thesis_break_trigger: 'AUM decays due to market downturns, client net inflows turn negative, average fee rates compress, or Aladdin revenue slows',
+      evidence_needed: [
+        'Assets under Management (AUM) balance',
+        'quarterly net client asset inflows',
+        'average investment management fee rate',
+        'Aladdin technology services revenue growth',
+        'operating margin trends',
+        'passive vs active asset mix shifts'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_11',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: [
+          {
+            question: 'What does BLK do?',
+            answer: 'BlackRock is the world\'s largest asset manager, offering mutual funds, iShares ETFs, private market strategies, and Aladdin investment risk software.'
+          }
+        ],
+        thesisRisk: [
+          {
+            question: 'What would break the BLK thesis?',
+            answer: 'The thesis weakens if market declines compress AUM, passive price competition reduces fee rates, or Aladdin software adoption slows.'
+          }
+        ]
+      },
+      phaseTwo: {
+        thesisRisk: {
+          lead: 'The main risk is macro market asset value sensitivity and fee rate compression.',
+          riskMap: [
+            {
+              label: 'Market asset value compression',
+              severity: 'High',
+              watch: 'Equity and fixed income market corrections reducing total AUM.'
+            },
+            {
+              label: 'Fee rate compression',
+              severity: 'Medium',
+              watch: 'Faster-than-expected client shifts into lowest-fee passive products.'
+            },
+            {
+              label: 'Aladdin growth slowdown',
+              severity: 'Medium',
+              watch: 'Technology services revenue growth drops below historical double digits.'
+            }
+          ],
+          evidenceNeeded: [
+            'Assets under Management (AUM) balance',
+            'quarterly net client asset inflows',
+            'average investment management fee rate',
+            'Aladdin technology services revenue growth',
+            'operating margin trends',
+            'passive vs active asset mix shifts'
+          ]
+        }
+      }
+    }
+  },
+  BMY: {
+    ticker: 'BMY',
+    companyName: 'Bristol-Myers Squibb Company',
+    exchange: 'NYSE',
+    logoUrl: buildStockLogoUrl('BMY'),
+    overview: 'Bristol-Myers Squibb is a global biopharmaceutical company focusing on oncology, immunology, and cardiovascular diseases.',
+    category: 'Biopharmaceuticals',
+    analysisDate: '2026-06-11',
+    latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
+    dossierVerdict: {
+      sourceType: 'curated',
+      asOf: '2026-06-11',
+      researchState: 'biopharma_transition_watch',
+      businessQuality: 'medium_high',
+      valuationState: 'not_verified',
+      marketEvidence: 'not_verified',
+      finalRead: 'Biopharmaceutical company where the thesis depends on key drug patent timelines, new product portfolio uptake, and pipeline execution.',
+      keySupport: [
+        'SEC filings structure BMY as a single biopharmaceutical segment.',
+        'Revenue is anchored by key blockbusters like Eliquis and Opdivo.',
+        'A newly approved product portfolio provides growth drivers to offset legacy patent losses.'
+      ],
+      keyRisk: [
+        'Generic competition after patent loss of exclusivity (LOE) for core products.',
+        'Development failures or safety signals in late-stage clinical trials.',
+        'High leverage and financing costs following recent biopharma company acquisitions.'
+      ]
+    },
+    valueCore: {
+      ticker: 'BMY',
+      value_core_type: 'Biopharmaceutical developer',
+      company_stage_candidate: 'Established biopharma',
+      primary_value_driver: 'Drug patent life cycles, new product portfolio uptake, and clinical pipeline execution',
+      thesis_break_trigger: 'Patent LOE impact exceeds new drug revenue, clinical trials fail, regulatory approvals are delayed, or acquisition debt integration underperforms',
+      evidence_needed: [
+        'Eliquis and Opdivo sales volumes',
+        'new product portfolio sales growth',
+        'phase 3 clinical trial readouts',
+        'FDA regulatory filing and approval dates',
+        'operating cash flow and debt reduction rate',
+        'in-licensing and business development pipeline'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_11',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: [
+          {
+            question: 'What does BMY do?',
+            answer: 'Bristol-Myers Squibb discovers and builds medicines for serious chronic diseases, primarily in cancer care, cardiovascular health, and immunology.'
+          }
+        ],
+        thesisRisk: [
+          {
+            question: 'What would break the BMY thesis?',
+            answer: 'The thesis weakens if generic rivals erode blockbuster drug sales faster than new medicines can launch, or if pipeline trials fail to secure regulatory approval.'
+          }
+        ]
+      },
+      phaseTwo: {
+        thesisRisk: {
+          lead: 'The primary risk is blockbuster drug patent cliffs and pipeline replacement execution.',
+          riskMap: [
+            {
+              label: 'Patent cliff erosion',
+              severity: 'High',
+              watch: 'Eliquis or Opdivo sales decline due to generic or biosimilar entry.'
+            },
+            {
+              label: 'New drug launch underperformance',
+              severity: 'High',
+              watch: 'Sales of newly launched medicines fail to match market consensus.'
+            },
+            {
+              label: 'Clinical trial pipeline failures',
+              severity: 'Medium',
+              watch: 'Late-stage clinical trial program failures or safety setbacks.'
+            }
+          ],
+          evidenceNeeded: [
+            'Eliquis and Opdivo sales volumes',
+            'new product portfolio sales growth',
+            'phase 3 clinical trial readouts',
+            'FDA regulatory filing and approval dates',
+            'operating cash flow and debt reduction rate',
+            'in-licensing and business development pipeline'
+          ]
+        }
+      }
+    }
+  },
+  'BRK-B': {
+    ticker: 'BRK-B',
+    companyName: 'Berkshire Hathaway Inc.',
+    exchange: 'NYSE',
+    logoUrl: buildStockLogoUrl('BRK-B'),
+    overview: 'Berkshire Hathaway is a diversified holding company operating insurance, railroad, utilities, and industrial businesses alongside a major investment portfolio.',
+    category: 'Diversified Holding Company',
+    analysisDate: '2026-06-11',
+    latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
+    dossierVerdict: {
+      sourceType: 'curated',
+      asOf: '2026-06-11',
+      researchState: 'diversified_holding_watch',
+      businessQuality: 'high',
+      valuationState: 'not_verified',
+      marketEvidence: 'not_verified',
+      finalRead: 'Diversified holding company where the thesis depends on insurance underwriting margins, rail/energy returns, and cash redeployment.',
+      keySupport: [
+        'SEC filings structure Berkshire across Insurance, Railroad (BNSF), Energy (BHE), and manufacturing/retailing businesses.',
+        'Underwriting float provides low-cost capital to fund operating expansions and equity investments.',
+        'A robust balance sheet features massive cash reserves, offering safety and acquisition capacity.'
+      ],
+      keyRisk: [
+        'Severe natural catastrophe losses can depress insurance underwriting profit margins.',
+        'Railroad volume slowdowns or energy utility regulatory changes can impact operating segment returns.',
+        'Inability to redeploy cash balances into high-return acquisitions or repurchases.'
+      ]
+    },
+    valueCore: {
+      ticker: 'BRK-B',
+      value_core_type: 'Diversified holding company',
+      company_stage_candidate: 'Conglomerate leader',
+      primary_value_driver: 'Insurance underwriting float, operating business margins (BNSF/BHE), and capital deployment efficiency',
+      thesis_break_trigger: 'Underwriting profit margins deteriorate, railroad/energy segment returns decline, or cash reserves drag down returns',
+      evidence_needed: [
+        'insurance underwriting profit/loss and float balance',
+        'BNSF shipping volumes and operating ratio',
+        'BHE regulatory utility returns and capital expenditures',
+        'cash and cash equivalents balance',
+        'equity investment portfolio market value',
+        'share repurchase volume and price levels'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_11',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: [
+          {
+            question: 'What does BRK-B do?',
+            answer: 'Berkshire Hathaway is a conglomerate that owns GEICO insurance, BNSF railway, Berkshire energy, and diverse industrial companies, plus a large stock portfolio.'
+          }
+        ],
+        thesisRisk: [
+          {
+            question: 'What would break the BRK-B thesis?',
+            answer: 'The thesis weakens if insurance underwriting suffers heavy catastrophe losses, rail shipping volumes drop, or massive cash piles drag down returns.'
+          }
+        ]
+      },
+      phaseTwo: {
+        thesisRisk: {
+          lead: 'The primary risk relates to insurance catastrophe exposure, railroad/energy cycles, and cash reinvestment drag.',
+          riskMap: [
+            {
+              label: 'Insurance catastrophe losses',
+              severity: 'Medium',
+              watch: 'Major natural disasters causing severe insurance underwriting losses.'
+            },
+            {
+              label: 'Railroad and energy slowdown',
+              severity: 'Medium',
+              watch: 'BNSF freight volume decline or BHE regulatory rate limits.'
+            },
+            {
+              label: 'Reinvestment cash drag',
+              severity: 'Medium',
+              watch: 'Cash balances scale without accretive acquisition opportunities.'
+            }
+          ],
+          evidenceNeeded: [
+            'insurance underwriting profit/loss and float balance',
+            'BNSF shipping volumes and operating ratio',
+            'BHE regulatory utility returns and capital expenditures',
+            'cash and cash equivalents balance',
+            'equity investment portfolio market value',
+            'share repurchase volume and price levels'
+          ]
+        }
+      }
+    }
+  },
+  BXSL: {
+    ticker: 'BXSL',
+    companyName: 'Blackstone Secured Lending Fund',
+    exchange: 'NYSE',
+    logoUrl: buildStockLogoUrl('BXSL'),
+    overview: 'Blackstone Secured Lending Fund is a business development company focused on senior secured debt to private middle-market companies.',
+    category: 'Private Credit BDC',
+    analysisDate: '2026-06-11',
+    latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
+    dossierVerdict: {
+      sourceType: 'curated',
+      asOf: '2026-06-11',
+      researchState: 'private_credit_watch',
+      businessQuality: 'high',
+      valuationState: 'not_verified',
+      marketEvidence: 'not_verified',
+      finalRead: 'Private credit BDC where the thesis depends on Net Asset Value stability, non-accrual loan rates, and credit quality.',
+      keySupport: [
+        'SEC filings identify BXSL as a regulated business development company managed by Blackstone.',
+        'The portfolio is anchored by first-lien senior secured loans, providing strong asset coverage.',
+        'Net investment income yields support stable dividend payments and capital structure.'
+      ],
+      keyRisk: [
+        'Middle-market credit cycle decay can increase borrower default rates and non-accrual loans.',
+        'Credit spread compression in the private credit market can lower net investment yields.',
+        'Leverage ratio limits or asset coverage headroom constraints can limit portfolio expansion.'
+      ]
+    },
+    valueCore: {
+      ticker: 'BXSL',
+      value_core_type: 'Private credit BDC',
+      company_stage_candidate: 'Established income compounder',
+      primary_value_driver: 'Net Asset Value (NAV) stability, net investment income yield, and credit portfolio quality',
+      thesis_break_trigger: 'Non-accruals increase, NAV writes down, net investment income coverage of dividends falls, or credit spreads compress',
+      evidence_needed: [
+        'Net Asset Value (NAV) per share',
+        'non-accrual loan percentage of portfolio',
+        'net investment income (NII) dividend coverage ratio',
+        'weighted average portfolio yield',
+        'asset coverage ratio and leverage ratio headroom',
+        'first-lien loan concentration percentage'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_11',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: [
+          {
+            question: 'What does BXSL do?',
+            answer: 'Blackstone Secured Lending Fund is a BDC that invests in senior secured private debt of US middle-market companies, earning interest income to pay dividends.'
+          }
+        ],
+        thesisRisk: [
+          {
+            question: 'What would break the BXSL thesis?',
+            answer: 'The thesis weakens if defaults rise among private borrowers, causing non-accruals to spike and eroding Blackstone Secured Lending\'s NAV per share.'
+          }
+        ]
+      },
+      phaseTwo: {
+        thesisRisk: {
+          lead: 'The main risk centers on private credit borrower defaults, interest rate volatility, and leverage limits.',
+          riskMap: [
+            {
+              label: 'Non-accrual loan spikes',
+              severity: 'High',
+              watch: 'Non-accrual loans as a percentage of total portfolio rises above historic averages.'
+            },
+            {
+              label: 'Net Asset Value contraction',
+              severity: 'High',
+              watch: 'Quarterly NAV per share writes down due to asset valuation impairments.'
+            },
+            {
+              label: 'Dividend coverage dilution',
+              severity: 'Medium',
+              watch: 'Net investment income falls below dividend requirements.'
+            }
+          ],
+          evidenceNeeded: [
+            'Net Asset Value (NAV) per share',
+            'non-accrual loan percentage of portfolio',
+            'net investment income (NII) dividend coverage ratio',
+            'weighted average portfolio yield',
+            'asset coverage ratio and leverage ratio headroom',
+            'first-lien loan concentration percentage'
+          ]
+        }
+      }
+    }
   }
 };
 
