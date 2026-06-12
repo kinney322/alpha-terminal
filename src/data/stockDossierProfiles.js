@@ -12435,6 +12435,566 @@ const stockDossierProfiles = {
         ]
       }
     }
+  },
+  HOOD: {
+    ticker: 'HOOD',
+    companyName: 'Robinhood Markets, Inc.',
+    exchange: 'NASDAQ',
+    logoUrl: buildStockLogoUrl('HOOD'),
+    overview: 'Robinhood Markets provides a digital financial services platform that enables retail users to trade in equities, options, and cryptocurrencies, alongside offering subscription services and interest income programs.',
+    category: 'Digital Financial Services & Brokerage',
+    analysisDate: '2026-06-12',
+    latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
+    dossierVerdict: 'Robinhood operates a retail-focused trading platform, sensitive to transaction volume cycles and earning interest spreads on customer cash balances.',
+    valueCore: {
+      ticker: 'HOOD',
+      value_core_type: 'business_summary_thesis_risk',
+      company_stage_candidate: 'Growth Financial Services & Brokerage',
+      primary_value_driver: 'Expanding gold subscription membership, attracting retail trading assets, increasing net interest margin on customer cash, and launching new transaction offerings.',
+      thesis_break_trigger: 'Sustained drop in retail trading activity, retail asset outflows, net interest margin compression from rate cuts, or gold membership attrition.',
+      evidence_needed: [
+        'Transaction-based revenues by asset class',
+        'Average revenues per user',
+        'Gold subscription subscriber count',
+        'Net interest revenues',
+        'Net deposits and assets under custody'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_16',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: 'Robinhood provides retail investment brokerage services, generating revenues from transactions and customer cash deposits.',
+        thesisRisk: 'Key risks involve changes in retail trading engagement, interest rate impacts on net interest margins, and gold subscription membership trends.'
+      },
+      phaseTwo: {
+        thesisRisk: [
+          {
+            category: 'Trading Volume Volatility',
+            risk: 'Drop in retail investor activity reduces transaction fees on options and crypto assets.',
+            watch: 'Transaction-based revenues and active users.'
+          },
+          {
+            category: 'Interest Rate Sensitivity',
+            risk: 'Declining interest rates reduce interest income margins on customer cash balances.',
+            watch: 'Net interest revenues and yield on cash.'
+          },
+          {
+            category: 'Gold Subscriber Attrition',
+            risk: 'Loss of gold subscriptions reduces steady recurring revenues and user engagement.',
+            watch: 'Gold subscription counts.'
+          }
+        ]
+      }
+    }
+  },
+  HPE: {
+    ticker: 'HPE',
+    companyName: 'Hewlett Packard Enterprise Company',
+    exchange: 'NYSE',
+    logoUrl: buildStockLogoUrl('HPE'),
+    overview: 'Hewlett Packard Enterprise provides enterprise server, hybrid cloud GreenLake subscriptions, storage, and networking hardware solutions globally.',
+    category: 'Enterprise Technology & Infrastructure',
+    analysisDate: '2026-06-12',
+    latestFiscalPeriod: 'Q2 2026 ended 2026-04-30',
+    dossierVerdict: 'Hewlett Packard Enterprise scales its GPU server segments and hybrid cloud subscription business, managing complex supply chains and hardware margins.',
+    valueCore: {
+      ticker: 'HPE',
+      value_core_type: 'business_summary_thesis_risk',
+      company_stage_candidate: 'Mature Enterprise Hardware & Cloud Services',
+      primary_value_driver: 'Increasing GPU server shipments, growing GreenLake annual run-rate subscription revenues, and expanding server backlog fulfillment.',
+      thesis_break_trigger: 'Severe GPU component supply constraints, margin compression on server transactions, or slowing enterprise software-defined services adoption.',
+      evidence_needed: [
+        'GreenLake annual run-rate subscription revenues',
+        'Server operating profit margins',
+        'Order book backlog fulfillment times',
+        'Free cash flow generation',
+        'Enterprise storage revenues'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_16',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: 'Hewlett Packard Enterprise manufactures servers and storage systems while expanding its hybrid cloud software subscription platform.',
+        thesisRisk: 'Key risks involve GPU server margin pressure, component supply chain constraints, and the rate of recurring subscription software growth.'
+      },
+      phaseTwo: {
+        thesisRisk: [
+          {
+            category: 'Server Margin Pressure',
+            risk: 'High concentration of lower-margin GPU servers reduces overall server segment operating margins.',
+            watch: 'Server segment operating profit margins.'
+          },
+          {
+            category: 'Supply Chain Bottlenecks',
+            risk: 'Shortages of critical semiconductor and GPU components delay backlog delivery and revenue recognition.',
+            watch: 'Order backlog and inventory trends.'
+          },
+          {
+            category: 'Subscription Growth Execution',
+            risk: 'GreenLake hybrid cloud software fails to scale recurring subscription revenues as fast as legacy hardware declines.',
+            watch: 'GreenLake annual run-rate subscription revenues.'
+          }
+        ]
+      }
+    }
+  },
+  HTGC: {
+    ticker: 'HTGC',
+    companyName: 'Hercules Capital, Inc.',
+    exchange: 'NYSE',
+    logoUrl: buildStockLogoUrl('HTGC'),
+    overview: 'Hercules Capital is a business development company focusing on senior secured venture debt loans to technology, life sciences, and renewable energy companies.',
+    category: 'Specialty Finance (BDC)',
+    analysisDate: '2026-06-12',
+    latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
+    dossierVerdict: 'Hercules Capital acts as a senior secured venture lender, exposed to non-accrual loan rates, NAV per share stability, and venture capital funding cycles.',
+    valueCore: {
+      ticker: 'HTGC',
+      value_core_type: 'business_summary_thesis_risk',
+      company_stage_candidate: 'Mature Specialty Finance / Business Development Company',
+      primary_value_driver: 'Expanding senior secured venture loan portfolio, maintaining net asset value per share stability, and sustaining net investment income to support dividend payouts.',
+      thesis_break_trigger: 'Spike in loan non-accruals from venture portfolio defaults, compression in debt yields due to rate cuts, or slowing venture funding activity.',
+      evidence_needed: [
+        'Portfolio loan non-accrual rates',
+        'Net asset value per share',
+        'Net investment income dividend coverage ratio',
+        'Floating-rate yield spreads',
+        'Venture debt loan origination volumes'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_16',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: 'Hercules Capital is a venture debt lender providing senior secured loans to growth stage technology and life sciences companies.',
+        thesisRisk: 'Key risks include portfolio default non-accrual rates, net asset value stability, and changes in floating interest rate yields.'
+      },
+      phaseTwo: {
+        thesisRisk: [
+          {
+            category: 'Loan Non-Accruals',
+            risk: 'Venture-backed borrowers defaulting on debt payments, leading to portfolio credit losses and asset write-downs.',
+            watch: 'Portfolio non-accrual rates.'
+          },
+          {
+            category: 'Interest Rate Exposure',
+            risk: 'Declining benchmark rates compress floating-rate yields, reducing net investment income margins.',
+            watch: 'Weighted average yield on debt investments.'
+          },
+          {
+            category: 'Venture Funding Slowdown',
+            risk: 'Reduced venture capital investments in technology and biotech sectors limit loan origination opportunities.',
+            watch: 'New debt loan origination volumes.'
+          }
+        ]
+      }
+    }
+  },
+  IDXX: {
+    ticker: 'IDXX',
+    companyName: 'IDEXX Laboratories, Inc.',
+    exchange: 'NASDAQ',
+    logoUrl: buildStockLogoUrl('IDXX'),
+    overview: 'IDEXX Laboratories develops and markets veterinary diagnostic instruments, test kits, reagents, and practice management software for companion animal and agricultural sectors.',
+    category: 'Veterinary Diagnostics & Health',
+    analysisDate: '2026-06-12',
+    latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
+    dossierVerdict: 'IDEXX Laboratories relies on recurring diagnostic revenues, companion animal clinic visit volumes, and instrument placements to sustain margins.',
+    valueCore: {
+      ticker: 'IDXX',
+      value_core_type: 'business_summary_thesis_risk',
+      company_stage_candidate: 'Mature Diagnostics & Medical Technology',
+      primary_value_driver: 'Growing Companion Animal Group recurring revenues, expanding global diagnostic instrument installations, and increasing clinic test utilization rates.',
+      thesis_break_trigger: 'Decline in companion animal clinic patient visits, slower instrument installations, or concentration risks from consolidated corporate vet clinic networks.',
+      evidence_needed: [
+        'Companion Animal Group recurring revenue growth',
+        'Diagnostic instrument net placements',
+        'Consolidated gross profit margin',
+        'Veterinary clinic patient visit volumes',
+        'Research and development spending'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_16',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: 'IDEXX Laboratories provides diagnostic testing services and lab instruments to veterinary clinics.',
+        thesisRisk: 'Key risks relate to companion animal clinic visit volumes, veterinary diagnostic instrument placement rates, and corporate customer concentration.'
+      },
+      phaseTwo: {
+        thesisRisk: [
+          {
+            category: 'Clinic Visit Volumes',
+            risk: 'Slowing pet ownership or rising veterinary care prices reduce routine clinic visits and diagnostic testing.',
+            watch: 'Veterinary clinic patient visit volumes.'
+          },
+          {
+            category: 'Instrument Placement Headwinds',
+            risk: 'Veterinary clinics deferring new diagnostic instrument capital purchases, slowing multi-year test demand.',
+            watch: 'Diagnostic instrument net placements.'
+          },
+          {
+            category: 'Corporate Concentration',
+            risk: 'Consolidation of veterinary practices into large corporate chains increases customer pricing power against IDEXX.',
+            watch: 'Companion Animal Group gross margins.'
+          }
+        ]
+      }
+    }
+  },
+  INSM: {
+    ticker: 'INSM',
+    companyName: 'Insmed Incorporated',
+    exchange: 'NASDAQ',
+    logoUrl: buildStockLogoUrl('INSM'),
+    overview: 'Insmed is a biopharmaceutical company commercializing therapies for orphan lung diseases and developing a clinical pipeline of anti-inflammatory treatments.',
+    category: 'Biotechnology & Therapeutics',
+    analysisDate: '2026-06-12',
+    latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
+    dossierVerdict: 'Insmed focuses on drug commercialization revenues, clinical trial readouts, regulatory review outcomes, and capital runway management.',
+    valueCore: {
+      ticker: 'INSM',
+      value_core_type: 'business_summary_thesis_risk',
+      company_stage_candidate: 'Early Commercial Biopharmaceutical',
+      primary_value_driver: 'Scaling Arikayce net revenues, achieving positive clinical trial results for brensocatib, and securing regulatory approvals for new indications.',
+      thesis_break_trigger: 'Slowing Arikayce revenue growth, disappointing clinical trial efficacy or safety readouts, or capital runway dilution.',
+      evidence_needed: [
+        'Arikayce quarterly net revenues',
+        'Clinical trial development progression',
+        'Cash and cash equivalents runway',
+        'Research and development expenses',
+        'Sales and marketing expenses'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_16',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: 'Insmed is a biotech firm marketing an orphan lung disease treatment and conducting clinical trials for new pipeline drugs.',
+        thesisRisk: 'Key risks include the commercial expansion speed of Arikayce, regulatory approval timelines, and clinical trial results.'
+      },
+      phaseTwo: {
+        thesisRisk: [
+          {
+            category: 'Commercial Execution',
+            risk: 'Arikayce adoption slowing in key international markets, failing to offset ongoing research costs.',
+            watch: 'Arikayce net revenues.'
+          },
+          {
+            category: 'Pipeline Efficacy Risks',
+            risk: 'Brensocatib or other clinical candidates fail to meet primary endpoints in phase three clinical trials.',
+            watch: 'Clinical trial progression updates.'
+          },
+          {
+            category: 'Capital Burn Rate',
+            risk: 'High R&D and launch costs deplete cash reserves, requiring dilutive equity issuance to extend the runway.',
+            watch: 'Cash runway and burn rate.'
+          }
+        ]
+      }
+    }
+  },
+  IREN: {
+    ticker: 'IREN',
+    companyName: 'Iris Energy Limited',
+    exchange: 'NASDAQ',
+    logoUrl: buildStockLogoUrl('IREN'),
+    overview: 'Iris Energy Limited operates industrial-scale bitcoin mining data centers and deploys high-performance GPU cloud hosting infrastructure for AI workloads, utilizing renewable energy.',
+    category: 'Digital Infrastructure & GPU Cloud',
+    analysisDate: '2026-06-12',
+    latestFiscalPeriod: 'Q3 2026 ended 2026-03-31',
+    dossierVerdict: 'Iris Energy operates a hybrid data center model, exposed to bitcoin mining hash rates, GPU cloud client adoption, power costs, and capital dilution.',
+    valueCore: {
+      ticker: 'IREN',
+      value_core_type: 'business_summary_thesis_risk',
+      company_stage_candidate: 'Growth Digital Infrastructure & Computing',
+      primary_value_driver: 'Expanding operating GPU cloud hosting capacity, scaling active self-mining hash rate, and maintaining low-cost power contracts.',
+      thesis_break_trigger: 'Bitcoin mining difficulty spikes, underutilization of GPU hosting capacity, rising power prices per megawatt-hour, or equity dilution.',
+      evidence_needed: [
+        'GPU cloud services segment revenues',
+        'Active bitcoin self-mining hash rate',
+        'Weighted average cost of power per megawatt-hour',
+        'Data center operational megawatt capacity',
+        'Outstanding share dilution count'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_16',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: 'Iris Energy operates data centers used for bitcoin self-mining and GPU cloud infrastructure hosting.',
+        thesisRisk: 'Key risks involve changes in bitcoin mining economics, GPU cloud client utilization, and electricity contract pricing.'
+      },
+      phaseTwo: {
+        thesisRisk: [
+          {
+            category: 'GPU Hosting Utilization',
+            risk: 'Slowing demand for AI workloads leads to unleased GPU cloud server capacity and pricing pressure.',
+            watch: 'GPU cloud services segment revenues.'
+          },
+          {
+            category: 'Power Cost Volatility',
+            risk: 'Increases in contracted power costs per megawatt-hour erode data center operating margins.',
+            watch: 'Average cost of electricity.'
+          },
+          {
+            category: 'Capital Dilution',
+            risk: 'Heavy capital expenditures for data center expansions require ongoing equity issuance, diluting existing holdings.',
+            watch: 'Total outstanding share count.'
+          }
+        ]
+      }
+    }
+  },
+  KDP: {
+    ticker: 'KDP',
+    companyName: 'Keurig Dr Pepper Inc.',
+    exchange: 'NASDAQ',
+    logoUrl: buildStockLogoUrl('KDP'),
+    overview: 'Keurig Dr Pepper designs single-serve coffee brewers and K-Cup pods while distributing refreshment soft drinks across North America through direct store delivery networks.',
+    category: 'Beverages & Coffee Systems',
+    analysisDate: '2026-06-12',
+    latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
+    dossierVerdict: 'Keurig Dr Pepper manages single-serve coffee pod volume trends, household brewer penetration, beverage pricing power, and balance sheet leverage.',
+    valueCore: {
+      ticker: 'KDP',
+      value_core_type: 'business_summary_thesis_risk',
+      company_stage_candidate: 'Mature Consumer Staples / Beverages',
+      primary_value_driver: 'Stabilizing coffee pod unit volume growth, expanding Keurig brewer household penetration, and exercising pricing power in liquid refreshment beverages.',
+      thesis_break_trigger: 'Contraction in coffee pod volumes, slowing household brewer penetration, commodity cost inflation for packaging, or leverage issues from high debt.',
+      evidence_needed: [
+        'Coffee segment net sales and volumes',
+        'US liquid refreshment beverage volume growth',
+        'Consolidated gross profit margin',
+        'Total debt to EBITDA leverage ratio',
+        'Brewer shipment volumes'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_16',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: 'Keurig Dr Pepper manufactures single-serve coffee systems and distributes a portfolio of carbonated soft drinks.',
+        thesisRisk: 'Key risks relate to single-serve coffee pod consumption rates, raw material inflation, and debt leverage.'
+      },
+      phaseTwo: {
+        thesisRisk: [
+          {
+            category: 'Coffee Volume Decline',
+            risk: 'Shifts in consumer behavior away from single-serve coffee pods compress segment revenues and margins.',
+            watch: 'Coffee segment volume growth.'
+          },
+          {
+            category: 'Commodity Inflation',
+            risk: 'Increases in raw materials such as coffee beans, aluminum, and plastics erode gross margins.',
+            watch: 'Consolidated gross profit margin.'
+          },
+          {
+            category: 'Debt Leverage Pressure',
+            risk: 'High balance sheet debt reduces cash available for capital deployment or share repurchases.',
+            watch: 'Net debt to adjusted EBITDA ratio.'
+          }
+        ]
+      }
+    }
+  },
+  KHC: {
+    ticker: 'KHC',
+    companyName: 'The Kraft Heinz Company',
+    exchange: 'NASDAQ',
+    logoUrl: buildStockLogoUrl('KHC'),
+    overview: 'The Kraft Heinz Company manufactures and markets branded condiments, sauces, packaged meals, and dairy products globally through retail and food service channels.',
+    category: 'Packaged Food & Condiments',
+    analysisDate: '2026-06-12',
+    latestFiscalPeriod: 'Q1 2026 ended 2026-03-28',
+    dossierVerdict: 'Kraft Heinz balances organic sales volume recovery against retail pricing actions, food commodity inflation, and brand marketing productivity.',
+    valueCore: {
+      ticker: 'KHC',
+      value_core_type: 'business_summary_thesis_risk',
+      company_stage_candidate: 'Mature Consumer Staples / Packaged Food',
+      primary_value_driver: 'Recovering organic sales volumes, implementing pricing adjustments to offset food input costs, and driving productivity in brand marketing.',
+      thesis_break_trigger: 'Sustained volume declines from retail price hikes, consumer trading down to private label brands, or rising agricultural input costs.',
+      evidence_needed: [
+        'Organic net sales volume growth',
+        'Price/mix revenue contribution',
+        'Consolidated gross profit margin',
+        'Marketing and advertising spending efficiency',
+        'Free cash flow conversion'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_16',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: 'Kraft Heinz is a global food manufacturer producing branded condiments, sauces, and packaged meals.',
+        thesisRisk: 'Key risks involve consumer resistance to pricing increases, competition from private labels, and food commodity inflation.'
+      },
+      phaseTwo: {
+        thesisRisk: [
+          {
+            category: 'Private Label Competition',
+            risk: 'Inflation-weary consumers switch to lower-priced supermarket private label brands, reducing market share.',
+            watch: 'Organic net sales volume growth.'
+          },
+          {
+            category: 'Input Cost Inflation',
+            risk: 'Spikes in agricultural commodities, packaging, and logistics costs compress food manufacturing gross margins.',
+            watch: 'Consolidated gross profit margin.'
+          },
+          {
+            category: 'Brand Marketing Efficiency',
+            risk: 'Increased marketing spend fails to drive volume growth, resulting in operating margin compression.',
+            watch: 'Marketing expenses and advertising return.'
+          }
+        ]
+      }
+    }
+  },
+  LMT: {
+    ticker: 'LMT',
+    companyName: 'Lockheed Martin Corporation',
+    exchange: 'NYSE',
+    logoUrl: buildStockLogoUrl('LMT'),
+    overview: 'Lockheed Martin is a global defense contractor focused on the design, development, and integration of advanced military aeronautics, space systems, and missile defense technologies.',
+    category: 'Defense & Aerospace Systems',
+    analysisDate: '2026-06-12',
+    latestFiscalPeriod: 'Q1 2026 ended 2026-03-29',
+    dossierVerdict: 'Lockheed Martin manages F-35 fighter jet delivery schedules, government defense budget appropriations, and operating margins on fixed-price contracts.',
+    valueCore: {
+      ticker: 'LMT',
+      value_core_type: 'business_summary_thesis_risk',
+      company_stage_candidate: 'Mature Defense Contractor',
+      primary_value_driver: 'Fulfilling F-35 fighter jet delivery targets, securing increased international defense appropriations, and managing subcontractor supply bottlenecks.',
+      thesis_break_trigger: 'Delays in F-35 software integration and delivery acceptances, fixed-price contract cost overruns, or supply chain component shortages.',
+      evidence_needed: [
+        'F-35 aircraft delivery volumes',
+        'Aerospace segment operating profit margin',
+        'Defense systems backlog book-to-bill ratio',
+        'Free cash flow generation',
+        'Government budget appropriation adjustments'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_16',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: 'Lockheed Martin is a aerospace and defense contractor manufacturing military aircraft, missiles, and space defense systems.',
+        thesisRisk: 'Key risks involve government defense budget funding levels, manufacturing delays on key programs, and supply chain supply bottlenecks.'
+      },
+      phaseTwo: {
+        thesisRisk: [
+          {
+            category: 'Program Delivery Delays',
+            risk: 'Software integration issues delay customer acceptance and delivery of F-35 aircraft, deferring revenue.',
+            watch: 'F-35 aircraft delivery volumes.'
+          },
+          {
+            category: 'Fixed-Price Cost Overruns',
+            risk: 'Subcontractor cost inflation on fixed-price development contracts reduces operating margins.',
+            watch: 'Segment operating profit margins.'
+          },
+          {
+            category: 'Supply Chain Disruptions',
+            risk: 'Shortages of critical components like rocket motors or microelectronics slow production across segments.',
+            watch: 'Backlog book-to-bill ratio.'
+          }
+        ]
+      }
+    }
+  },
+  MAIN: {
+    ticker: 'MAIN',
+    companyName: 'Main Street Capital Corporation',
+    exchange: 'NYSE',
+    logoUrl: buildStockLogoUrl('MAIN'),
+    overview: 'Main Street Capital is a business development company that provides customized debt and equity capital solutions to lower middle-market companies and debt investments in middle-market firms.',
+    category: 'Specialty Finance (BDC)',
+    analysisDate: '2026-06-12',
+    latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
+    dossierVerdict: 'Main Street Capital focuses on lower middle-market debt and equity investments, exposed to non-accrual loan rates, NAV per share stability, and investment exits.',
+    valueCore: {
+      ticker: 'MAIN',
+      value_core_type: 'business_summary_thesis_risk',
+      company_stage_candidate: 'Mature Specialty Finance / Business Development Company',
+      primary_value_driver: 'Generating net investment income to cover dividend distributions, maintaining stable net asset value per share, and realizing capital gains from equity investments.',
+      thesis_break_trigger: 'Spike in borrower default non-accruals, decline in lower middle-market portfolio valuations, or lower fee income from exit transactions.',
+      evidence_needed: [
+        'Lower middle-market non-accrual rates',
+        'Net asset value per share',
+        'Net investment income dividend coverage ratio',
+        'Lower middle-market equity holdings fair value',
+        'Distributable net investment income'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_16',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: 'Main Street Capital provides customized financing solutions, including debt and equity, to lower middle-market companies.',
+        thesisRisk: 'Key risks include non-accrual loan rates within the lower middle-market portfolio, asset valuation changes, and dividend coverage stability.'
+      },
+      phaseTwo: {
+        thesisRisk: [
+          {
+            category: 'LMM Portfolio Defaults',
+            risk: 'Lower middle-market borrowers struggle with debt service, leading to loan non-accruals and credit losses.',
+            watch: 'Portfolio non-accrual rates.'
+          },
+          {
+            category: 'NAV Valuation Changes',
+            risk: 'Declines in the fair value of lower middle-market equity investments reduce net asset value per share.',
+            watch: 'Net asset value per share.'
+          },
+          {
+            category: 'Dividend Coverage Pressure',
+            risk: 'Lower interest rates or loan defaults reduce net investment income below regular and supplemental dividend payouts.',
+            watch: 'Net investment income dividend coverage ratio.'
+          }
+        ]
+      }
+    }
   }
 };
 
