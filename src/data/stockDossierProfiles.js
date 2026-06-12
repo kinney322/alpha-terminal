@@ -13555,6 +13555,566 @@ const stockDossierProfiles = {
         ]
       }
     }
+  },
+  O: {
+    ticker: 'O',
+    companyName: 'Realty Income Corporation',
+    exchange: 'NYSE',
+    logoUrl: buildStockLogoUrl('O'),
+    overview: 'Realty Income Corporation is a real estate investment trust (REIT) specializing in acquiring and managing single-tenant retail and industrial properties under long-term net lease agreements.',
+    category: 'Retail & Industrial REIT',
+    analysisDate: '2026-06-12',
+    latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
+    dossierVerdict: 'Realty Income operates a diversified real estate net lease portfolio, sensitive to tenant occupancy levels, credit qualities, and interest rate refinancing cycles.',
+    valueCore: {
+      ticker: 'O',
+      value_core_type: 'business_summary_thesis_risk',
+      company_stage_candidate: 'Mature Real Estate / REIT',
+      primary_value_driver: 'Maintaining high occupancy rates, executing accretive property acquisitions, and adjusting lease escalation rates to manage inflation.',
+      thesis_break_trigger: 'Sustained occupancy decline below ninety-six percent, cash flow contraction from tenant defaults, or rising interest rates raising capital costs.',
+      evidence_needed: [
+        'Portfolio occupancy rate percentage',
+        'Normalized FFO per share growth rate',
+        'Weighted average lease term remaining',
+        'Net acquisition and development volume',
+        'Debt to adjusted EBITDA leverage ratio'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_18',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: 'Realty Income is a net lease retail REIT earning steady rental income from long-term single-tenant properties.',
+        thesisRisk: 'Key risks relate to property occupancy rates, tenant retail industry credit stability, and refinancing cost changes.'
+      },
+      phaseTwo: {
+        thesisRisk: [
+          {
+            category: 'Occupancy Devaluation',
+            risk: 'Disruptions in brick-and-mortar retail lead to tenant bankruptcies, lowering overall portfolio occupancy and rental incomes.',
+            watch: 'Portfolio occupancy rate percentage.'
+          },
+          {
+            category: 'Refinancing Costs',
+            risk: 'High interest rates increase borrowing costs on maturing debt, compressing FFO margins.',
+            watch: 'Weighted average interest rate on debt.'
+          },
+          {
+            category: 'Tenant Concentration',
+            risk: 'Financial distress in major retail tenant sectors reduces cash collections.',
+            watch: 'Top tenant industry concentration percentages.'
+          }
+        ]
+      }
+    }
+  },
+  OBDC: {
+    ticker: 'OBDC',
+    companyName: 'Blue Owl Capital BDC',
+    exchange: 'NYSE',
+    logoUrl: buildStockLogoUrl('OBDC'),
+    overview: 'Blue Owl Capital BDC is a specialty business development company that provides direct lending and private credit solutions, focusing on senior secured debt investments in middle-market companies.',
+    category: 'Specialty Finance (BDC)',
+    analysisDate: '2026-06-12',
+    latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
+    dossierVerdict: 'Blue Owl Capital BDC operates a senior secured private lending portfolio, exposed to loan non-accrual rates, net asset value stability, and dividend coverage ratios.',
+    valueCore: {
+      ticker: 'OBDC',
+      value_core_type: 'business_summary_thesis_risk',
+      company_stage_candidate: 'Mature Specialty Finance / Business Development Company',
+      primary_value_driver: 'Expanding senior secured loan portfolios, generating net investment income to support dividend payouts, and maintaining net asset value per share.',
+      thesis_break_trigger: 'Spike in borrower default non-accruals, compression in investment yields, or debt leverage exceeding regulatory limits.',
+      evidence_needed: [
+        'Portfolio loan non-accrual rates',
+        'Net asset value per share',
+        'Net investment income dividend coverage ratio',
+        'Weighted average yield on debt investments',
+        'Debt to equity leverage ratio'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_18',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: 'Blue Owl Capital BDC is a private credit lender providing senior secured debt to middle-market businesses.',
+        thesisRisk: 'Key risks include loan non-accrual rates, net asset value stability, and floating rate yield margins.'
+      },
+      phaseTwo: {
+        thesisRisk: [
+          {
+            category: 'Portfolio Credit Losses',
+            risk: 'Middle-market borrowers defaulting on interest payments, leading to loan non-accruals and credit write-downs.',
+            watch: 'Portfolio loan non-accrual rates.'
+          },
+          {
+            category: 'Yield Compression',
+            risk: 'Declining benchmark interest rates compress yields on floating-rate debt investments, lowering net investment income.',
+            watch: 'Weighted average yield on debt investments.'
+          },
+          {
+            category: 'Leverage Constraints',
+            risk: 'Debt to equity ratios rising near regulatory maximums, limiting new loan origination capacity.',
+            watch: 'Debt to equity leverage ratio.'
+          }
+        ]
+      }
+    }
+  },
+  ODFL: {
+    ticker: 'ODFL',
+    companyName: 'Old Dominion Freight Line, Inc.',
+    exchange: 'NASDAQ',
+    logoUrl: buildStockLogoUrl('ODFL'),
+    overview: 'Old Dominion Freight Line is a premium less-than-truckload (LTL) motor carrier, providing regional and national logistics and freight transport services across North America.',
+    category: 'Logistics & Freight Transport',
+    analysisDate: '2026-06-12',
+    latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
+    dossierVerdict: 'Old Dominion Freight Line manages transport volume and yield trends, focusing on operational efficiency ratios and customer service metrics.',
+    valueCore: {
+      ticker: 'ODFL',
+      value_core_type: 'business_summary_thesis_risk',
+      company_stage_candidate: 'Mature Industrial / Transportation',
+      primary_value_driver: 'Growing LTL shipments and tonnage volumes, executing yield management actions, and improving operational efficiency ratios.',
+      thesis_break_trigger: 'Contraction in industrial freight demand, price wars in LTL carrier markets, or rising driver labor and fuel costs.',
+      evidence_needed: [
+        'LTL shipments per day growth rate',
+        'LTL tonnage per day growth rate',
+        'LTL revenue per hundredweight yield',
+        'Operating ratio percentage',
+        'Capital spending on equipment and terminals'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_18',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: 'Old Dominion Freight Line is a Less-Than-Truckload shipping company providing regional and national freight services.',
+        thesisRisk: 'Key risks include freight volume cycles, operating ratio pressures from labor and fuel costs, and competitive shipping pricing.'
+      },
+      phaseTwo: {
+        thesisRisk: [
+          {
+            category: 'Freight Cycle Contraction',
+            risk: 'Slowing manufacturing activity reduces daily shipping volumes and carrier tonnage.',
+            watch: 'LTL shipments per day growth rate.'
+          },
+          {
+            category: 'Operating Ratio Pressure',
+            risk: 'Driver wage inflation and terminal expansion costs rise faster than revenues, compressing operating margins.',
+            watch: 'Operating ratio percentage.'
+          },
+          {
+            category: 'Fuel Cost Volatility',
+            risk: 'Rapid spikes in diesel fuel prices outpace surcharge collection adjustments.',
+            watch: 'Consolidated operating profit margins.'
+          }
+        ]
+      }
+    }
+  },
+  ONDS: {
+    ticker: 'ONDS',
+    companyName: 'Ondas Holdings Inc.',
+    exchange: 'NASDAQ',
+    logoUrl: buildStockLogoUrl('ONDS'),
+    overview: 'Ondas Holdings provides private wireless data network technology and automated drone systems for critical infrastructure, defense, and government security markets.',
+    category: 'Defense & Industrial Communications',
+    analysisDate: '2026-06-12',
+    latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
+    dossierVerdict: 'Ondas Holdings operates an early-stage drone and wireless network platform, dependent on contract backlog growth, commercial execution, and cash runway extension.',
+    valueCore: {
+      ticker: 'ONDS',
+      value_core_type: 'business_summary_thesis_risk',
+      company_stage_candidate: 'Early commercial Technology & Defense',
+      primary_value_driver: 'Securing customer orders for autonomous drone systems, expanding private wireless network deployments, and extending capital runway.',
+      thesis_break_trigger: 'Slowing project commercialization, loss of key government pilot contracts, or capital runway depletion.',
+      evidence_needed: [
+        'Wireless network and drone backlogs',
+        'Quarterly contract revenues',
+        'Cash runway duration months',
+        'Research and development spending',
+        'Outstanding share dilution count'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_18',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: 'Ondas Holdings designs private wireless data networks and automated drone-in-a-box platforms for industrial and military clients.',
+        thesisRisk: 'Key risks include slow commercial adoption cycles, high research burn rates, and capital dilution.'
+      },
+      phaseTwo: {
+        thesisRisk: [
+          {
+            category: 'Slow Adoption Cycles',
+            risk: 'Industrial and government clients deferring drone orders due to regulatory approvals or budget constraints.',
+            watch: 'Wireless network and drone backlogs.'
+          },
+          {
+            category: 'Capital Runway Risks',
+            risk: 'High cash burn outpaces system revenues, requiring dilutive equity issuance to sustain operations.',
+            watch: 'Cash runway duration months.'
+          },
+          {
+            category: 'Customer Concentration',
+            risk: 'High reliance on a few defense or utility partners exposes the firm to sudden order drops.',
+            watch: 'Quarterly contract revenues.'
+          }
+        ]
+      }
+    }
+  },
+  ORLY: {
+    ticker: 'ORLY',
+    companyName: 'O\'Reilly Automotive, Inc.',
+    exchange: 'NASDAQ',
+    logoUrl: buildStockLogoUrl('ORLY'),
+    overview: 'O\'Reilly Automotive is a specialty retailer of automotive aftermarket parts, tools, and accessories, serving both DIY consumers and professional automotive service businesses.',
+    category: 'Automotive Aftermarket Retail',
+    analysisDate: '2026-06-12',
+    latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
+    dossierVerdict: 'O\'Reilly Automotive relies on same-store sales growth, store count expansions, professional customer demand, and inventory management.',
+    valueCore: {
+      ticker: 'ORLY',
+      value_core_type: 'business_summary_thesis_risk',
+      company_stage_candidate: 'Mature Consumer Discretionary / Retail',
+      primary_value_driver: 'Growing comparable store sales, expanding store footprints, and increasing professional service customer revenues.',
+      thesis_break_trigger: 'Decline in comparable store sales, inventory supply chain delays, or consumer trading down to lower-margin products.',
+      evidence_needed: [
+        'Comparable store sales growth rate',
+        'Store count additions',
+        'Consolidated gross profit margin',
+        'Inventory turnover ratio',
+        'Professional customer transaction mix'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_18',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: 'O\'Reilly Automotive distributes car parts and tools to retail consumers and professional mechanics.',
+        thesisRisk: 'Key risks involve same-store sales trends, supply chain inventory management, and shifts in vehicle average age.'
+      },
+      phaseTwo: {
+        thesisRisk: [
+          {
+            category: 'Comparable Store Sales Slowdown',
+            risk: 'Milder weather or economic pressures reduce DIY car maintenance transactions.',
+            watch: 'Comparable store sales growth rate.'
+          },
+          {
+            category: 'Supply Chain Inflation',
+            risk: 'Rising shipping and component costs compress retail gross margins.',
+            watch: 'Consolidated gross profit margin.'
+          },
+          {
+            category: 'Mechanic Labor Shortages',
+            risk: 'Labor shortages at professional garages limit professional client parts orders.',
+            watch: 'Professional customer transaction mix.'
+          }
+        ]
+      }
+    }
+  },
+  PANW: {
+    ticker: 'PANW',
+    companyName: 'Palo Alto Networks, Inc.',
+    exchange: 'NASDAQ',
+    logoUrl: buildStockLogoUrl('PANW'),
+    overview: 'Palo Alto Networks provides enterprise cybersecurity solutions, offering network firewalls, cloud security software subscriptions, and threat detection platforms globally.',
+    category: 'Enterprise Cybersecurity & Cloud Software',
+    analysisDate: '2026-06-12',
+    latestFiscalPeriod: 'Q2 2026 ended 2026-01-31',
+    dossierVerdict: 'Palo Alto Networks drives platform customer consolidation, expanding recurring software security ARR and managing remaining performance obligations.',
+    valueCore: {
+      ticker: 'PANW',
+      value_core_type: 'business_summary_thesis_risk',
+      company_stage_candidate: 'Growth Cybersecurity / Enterprise Software',
+      primary_value_driver: 'Expanding next-generation security annual recurring revenues, increasing remaining performance obligations, and driving platform consolidation deals.',
+      thesis_break_trigger: 'Slowing next-generation security ARR, deceleration in enterprise cyber spending, or margin compression from software competitor discounting.',
+      evidence_needed: [
+        'Next-generation security annual recurring revenues',
+        'Remaining performance obligations balance',
+        'Consolidated gross profit margin',
+        'Free cash flow conversion rate',
+        'Operating income margin percentage'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_18',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: 'Palo Alto Networks designs cybersecurity platforms that integrate firewalls and automated threat detection software.',
+        thesisRisk: 'Key risks relate to cybersecurity platform pricing competition, software subscription transition speed, and enterprise IT budget cycles.'
+      },
+      phaseTwo: {
+        thesisRisk: [
+          {
+            category: 'Cybersecurity Pricing Pressure',
+            risk: 'Competitors offering high discounts on software packages slow Palo Alto\'s subscription ARR expansion.',
+            watch: 'Next-generation security annual recurring revenues.'
+          },
+          {
+            category: 'Enterprise Budget Reductions',
+            risk: 'Slowing economic activity leads to IT budget cuts and deferred cybersecurity software upgrades.',
+            watch: 'Remaining performance obligations balance.'
+          },
+          {
+            category: 'Platform Transition Execution',
+            risk: 'Failing to convert legacy firewall customers into full-platform cloud security software subscribers.',
+            watch: 'Next-generation security annual recurring revenues.'
+          }
+        ]
+      }
+    }
+  },
+  PAYX: {
+    ticker: 'PAYX',
+    companyName: 'Paychex, Inc.',
+    exchange: 'NASDAQ',
+    logoUrl: buildStockLogoUrl('PAYX'),
+    overview: 'Paychex provides human capital management solutions, offering payroll, human resources compliance, employee benefits, and insurance services for small to medium-sized businesses.',
+    category: 'Human Capital Management (HCM) Services',
+    analysisDate: '2026-06-12',
+    latestFiscalPeriod: 'Q3 2026 ended 2026-02-28',
+    dossierVerdict: 'Paychex manages small business payroll client counts, human resource compliance services, client cash float interest yields, and employment cycles.',
+    valueCore: {
+      ticker: 'PAYX',
+      value_core_type: 'business_summary_thesis_risk',
+      company_stage_candidate: 'Mature Business Services / HCM',
+      primary_value_driver: 'Retaining small business client payroll counts, expanding human resource services, and increasing yield on client cash float investments.',
+      thesis_break_trigger: 'Contraction in small business employment, decline in client retention rates, or falling interest rates compressing float yields.',
+      evidence_needed: [
+        'Payroll and HR services client counts',
+        'Client retention rate percentage',
+        'Interest yield on client cash float',
+        'Consolidated operating profit margin',
+        'Consolidated revenue growth rate'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_18',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: 'Paychex offers payroll processing and human resource compliance outsourcing services to small and mid-sized companies.',
+        thesisRisk: 'Key risks involve changes in small business employment levels, client cash float interest yields, and competitive pricing.'
+      },
+      phaseTwo: {
+        thesisRisk: [
+          {
+            category: 'Employment Downturn',
+            risk: 'Rising layoffs or business closures in the small business sector reduce payroll processing volumes.',
+            watch: 'Payroll and HR services client counts.'
+          },
+          {
+            category: 'Interest Float Compression',
+            risk: 'Declining interest rates reduce earnings on client funds held during transaction processing.',
+            watch: 'Interest yield on client cash float.'
+          },
+          {
+            category: 'Outsourcing Pricing Pressure',
+            risk: 'Cloud-native payroll competitors discounting basic services lowers HR segment margins.',
+            watch: 'Consolidated operating profit margin.'
+          }
+        ]
+      }
+    }
+  },
+  PCAR: {
+    ticker: 'PCAR',
+    companyName: 'PACCAR Inc',
+    exchange: 'NASDAQ',
+    logoUrl: buildStockLogoUrl('PCAR'),
+    overview: 'PACCAR designs, manufactures, and markets premium commercial trucks while providing financial services and aftermarket parts distribution globally.',
+    category: 'Commercial Truck Manufacturing',
+    analysisDate: '2026-06-12',
+    latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
+    dossierVerdict: 'PACCAR manages commercial truck delivery rates, manufacturing gross margins, order backlogs, and financial services credit quality.',
+    valueCore: {
+      ticker: 'PCAR',
+      value_core_type: 'business_summary_thesis_risk',
+      company_stage_candidate: 'Mature Industrial / Automotive',
+      primary_value_driver: 'Fulfilling commercial truck delivery volumes, maintaining premium pricing margins, and growing aftermarket parts distribution.',
+      thesis_break_trigger: 'Slowing fleet operator capital demand, truck backlog compression, or rising steel and supply component costs.',
+      evidence_needed: [
+        'Global truck deliveries count',
+        'Truck segment gross profit margin',
+        'Backlog book-to-bill ratio',
+        'Aftermarket parts revenue growth',
+        'Financial services loan default rate'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_18',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: 'PACCAR manufactures heavy-duty commercial trucks under Kenworth, Peterbilt, and DAF brands, supporting them with aftermarket parts.',
+        thesisRisk: 'Key risks involve freight carrier fleet replacement cycles, steel and commodity inflation, and commercial loan defaults.'
+      },
+      phaseTwo: {
+        thesisRisk: [
+          {
+            category: 'Fleet Replacement Slowdown',
+            risk: 'Slowing freight transport rates lead carrier operators to defer purchasing new heavy-duty trucks.',
+            watch: 'Backlog book-to-bill ratio and deliveries.'
+          },
+          {
+            category: 'Manufacturing Cost Inflation',
+            risk: 'Rising costs for steel, aluminum, and truck engines compress manufacturing gross margins.',
+            watch: 'Truck segment gross profit margin.'
+          },
+          {
+            category: 'Credit Default Risks',
+            risk: 'Financial distress among owner-operators increases defaults in its truck financing division.',
+            watch: 'Financial services loan default rate.'
+          }
+        ]
+      }
+    }
+  },
+  PDD: {
+    ticker: 'PDD',
+    companyName: 'PDD Holdings Inc.',
+    exchange: 'NASDAQ',
+    logoUrl: buildStockLogoUrl('PDD'),
+    overview: 'PDD Holdings operates global e-commerce platforms, including Pinduoduo in China and Temu internationally, connecting merchants directly with global consumers.',
+    category: 'Global E-Commerce Platforms',
+    analysisDate: '2026-06-12',
+    latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
+    dossierVerdict: 'PDD Holdings scales global direct-from-merchant e-commerce, balancing transaction margins, marketing spend efficiency, and cross-border transport logistics compliance.',
+    valueCore: {
+      ticker: 'PDD',
+      value_core_type: 'business_summary_thesis_risk',
+      company_stage_candidate: 'High-Growth E-Commerce Platform',
+      primary_value_driver: 'Scaling transaction volumes, growing Temu international shipments, and maintaining merchant marketing services revenues.',
+      thesis_break_trigger: 'Cross-border tariff and trade policy restrictions, rising transport shipping costs, or slowing consumer transaction frequency.',
+      evidence_needed: [
+        'Online marketing services revenues',
+        'Transaction services fee revenues',
+        'Consolidated operating profit margin',
+        'Marketing and promotion spending efficiency',
+        'Days inventory outstanding'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_18',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 20-F / 6-K'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: 'PDD Holdings runs online shopping marketplaces, facilitating direct transactions between manufacturers and retail buyers.',
+        thesisRisk: 'Key risks relate to international trade tariff rules, cross-border shipping transport costs, and merchant marketing platform revenues.'
+      },
+      phaseTwo: {
+        thesisRisk: [
+          {
+            category: 'Trade Policy and Tariffs',
+            risk: 'Changes in import tax thresholds or cross-border transport restrictions disrupt international Temu operations.',
+            watch: 'Transaction services fee revenues.'
+          },
+          {
+            category: 'Marketing Cost Escalation',
+            risk: 'Heavy advertising spend fails to retain international users, reducing marketing return on investment.',
+            watch: 'Marketing and promotion spending efficiency.'
+          },
+          {
+            category: 'Shipping Cost Spikes',
+            risk: 'Rising international air and maritime transport rates erode transaction fee operating margins.',
+            watch: 'Consolidated operating profit margin.'
+          }
+        ]
+      }
+    }
+  },
+  PWR: {
+    ticker: 'PWR',
+    companyName: 'Quanta Services, Inc.',
+    exchange: 'NYSE',
+    logoUrl: buildStockLogoUrl('PWR'),
+    overview: 'Quanta Services provides infrastructure solutions, offering engineering, procurement, and construction services for utility transmission, renewable energy, and communications infrastructure.',
+    category: 'Infrastructure Engineering & Construction',
+    analysisDate: '2026-06-12',
+    latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
+    dossierVerdict: 'Quanta Services executes utility transmission and renewable grid integration projects, managing backlogs, labor supply, and capital requirements.',
+    valueCore: {
+      ticker: 'PWR',
+      value_core_type: 'business_summary_thesis_risk',
+      company_stage_candidate: 'Mature Industrial / Infrastructure Services',
+      primary_value_driver: 'Expanding utility and renewable project backlogs, executing grid connection projects for data centers, and managing subcontractor labor costs.',
+      thesis_break_trigger: 'Project delays due to utility regulatory approvals, rising subcontractor wages, or working capital cash flow constraints.',
+      evidence_needed: [
+        'Electric Power and Renewable backlogs',
+        'Segment operating profit margins',
+        'Days sales outstanding in receivables',
+        'Capital expenditures as a percentage of sales',
+        'Free cash flow conversion rate'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_18',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: 'Quanta Services designs and builds electric grids, renewable energy connections, and telecommunication infrastructure.',
+        thesisRisk: 'Key risks include utility grid upgrade regulatory approval times, skilled labor shortages, and working capital project requirements.'
+      },
+      phaseTwo: {
+        thesisRisk: [
+          {
+            category: 'Regulatory Project Delays',
+            risk: 'Utility regulatory commissions defer grid upgrade approvals, delaying backlog project starts.',
+            watch: 'Electric Power and Renewable backlogs.'
+          },
+          {
+            category: 'Labor Supply Shortages',
+            risk: 'Shortages of skilled electrical line workers increase wages and project execution costs, compressing margins.',
+            watch: 'Segment operating profit margins.'
+          },
+          {
+            category: 'Working Capital Demands',
+            risk: 'Large infrastructure projects require significant upfront cash for materials, slowing free cash flow conversion.',
+            watch: 'Days sales outstanding in receivables.'
+          }
+        ]
+      }
+    }
   }
 };
 
