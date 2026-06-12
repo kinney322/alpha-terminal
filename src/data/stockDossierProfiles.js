@@ -11334,6 +11334,557 @@ const stockDossierProfiles = {
       }
     }
   }
+,
+  DELL: {
+    ticker: 'DELL',
+    companyName: 'Dell Technologies Inc.',
+    exchange: 'NYSE',
+    overview: 'Dell Technologies is a global provider of IT hardware, software, and services, offering client solutions (PCs) and infrastructure solutions (AI-optimized servers, storage, and networking) to enterprise and consumer segments.',
+    category: 'Computing Hardware & IT Solutions',
+    analysisDate: '2026-06-11',
+    latestFiscalPeriod: 'Q1 2026 ended 2026-05-01',
+    dossierVerdict: 'Dell Technologies balances cyclical PC business demand against structural growth in high-performance AI-optimized enterprise servers.',
+    valueCore: {
+      ticker: 'DELL',
+      value_core_type: 'business_summary_thesis_risk',
+      company_stage_candidate: 'Mature Tech Infrastructure / AI Transition',
+      primary_value_driver: 'Scaling shipment of high-margin AI-optimized servers to cloud and enterprise clients, PC refresh cycle stabilization, and debt reduction.',
+      thesis_break_trigger: 'Gross margins eroding due to competitive pricing in AI servers, severe component/GPU supply constraints delaying shipments, or a protracted downturn in PC demand.',
+      evidence_needed: [
+        'Infrastructure Solutions Group (ISG) revenue growth',
+        'AI server backlog dollar value',
+        'Consolidated gross profit margin',
+        'Client Solutions Group (CSG) revenue',
+        'Operating cash flow conversion'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_14',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: 'Dell provides computers, enterprise servers, and storage solutions, heavily integrating artificial intelligence capabilities into its hardware line.',
+        thesisRisk: 'The primary risk is the low gross margin on AI servers due to high component costs and competitive pricing, along with cyclical PC market demand.'
+      },
+      phaseTwo: {
+        thesisRisk: [
+          {
+            category: 'Margin Compression',
+            risk: 'Strong AI server demand fails to yield high operating profits due to severe GPU pricing pressure.',
+            watch: 'ISG operating margin percentage.'
+          },
+          {
+            category: 'Supply Constraints',
+            risk: 'Delays in acquiring advanced semiconductor chips restrict server shipment volume.',
+            watch: 'AI server backlog changes.'
+          },
+          {
+            category: 'PC Cyclicality',
+            risk: 'Slow corporate adoption of AI PCs extends the PC replacement cycle longer than expected.',
+            watch: 'CSG segment revenue.'
+          }
+        ]
+      }
+    }
+  },
+  DUK: {
+    ticker: 'DUK',
+    companyName: 'Duke Energy Corporation',
+    exchange: 'NYSE',
+    overview: 'Duke Energy is one of the largest energy holding companies in the United States, providing electricity and natural gas services to customers across the Carolinas, Florida, Ohio, Indiana, and Kentucky.',
+    category: 'Electric & Gas Utilities',
+    analysisDate: '2026-06-11',
+    latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
+    dossierVerdict: 'Duke Energy manages a large regulated utility footprint, funding clean energy grid transitions through state-approved rate adjustments.',
+    valueCore: {
+      ticker: 'DUK',
+      value_core_type: 'business_summary_thesis_risk',
+      company_stage_candidate: 'Regulated Utility / Infrastructure',
+      primary_value_driver: 'Timely regulatory approvals of rate cases to recover capital investments, expanding clean energy capacity, and data-center load growth.',
+      thesis_break_trigger: 'Unfavorable regulatory rate decisions capping returns on equity, substantial construction cost overruns on clean energy transition, or rising interest rates raising financing costs.',
+      evidence_needed: [
+        'Approved return on equity (ROE) by state commissions',
+        'Capital spending execution against guidance',
+        'Data center and industrial load growth rate',
+        'Weighted average cost of debt',
+        'Retail customer growth rate'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_14',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: 'Duke Energy operates regulated electricity and gas transmission networks, investing in low-carbon energy sources to meet clean energy goals.',
+        thesisRisk: 'Primary risks are regulatory commission decisions on utility rates, construction delays or cost overruns, and high sensitivity to capital market interest rates.'
+      },
+      phaseTwo: {
+        thesisRisk: [
+          {
+            category: 'Regulatory Decisions',
+            risk: 'Commission rate approvals grant lower ROE than requested, compressing investment returns.',
+            watch: 'Rate case decision filings and ROE parameters.'
+          },
+          {
+            category: 'Construction Overruns',
+            risk: 'Clean energy capital projects exceed cost budgets, with regulators blocking cost recovery from customers.',
+            watch: 'Utility capital expenditures vs regulatory asset base.'
+          },
+          {
+            category: 'Financing Costs',
+            risk: 'Prolonged elevated interest rates increase interest expenses on debt-financed utility construction.',
+            watch: 'Interest expense and debt-to-capital ratio.'
+          }
+        ]
+      }
+    }
+  },
+  DXCM: {
+    ticker: 'DXCM',
+    companyName: 'DexCom, Inc.',
+    exchange: 'NASDAQ',
+    overview: 'DexCom designs and manufactures continuous glucose monitoring (CGM) systems for people with diabetes, focusing on sensor accuracy, software connectivity, and integration with insulin pumps.',
+    category: 'Medical Devices & Healthcare Tech',
+    analysisDate: '2026-06-11',
+    latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
+    dossierVerdict: 'DexCom relies on CGM subscription sensor sales, expanding into non-insulin type 2 diabetes markets amid pricing competition.',
+    valueCore: {
+      ticker: 'DXCM',
+      value_core_type: 'business_summary_thesis_risk',
+      company_stage_candidate: 'High-Growth Medical Device',
+      primary_value_driver: 'CGM adoption expansion in type 2 non-insulin diabetes populations, international market penetration, and partnership integration with automated insulin delivery systems.',
+      thesis_break_trigger: 'Rapid erosion of average selling prices due to competitor discounting, slower-than-expected expansion into type 2 diabetes populations, or insurance coverage limitations.',
+      evidence_needed: [
+        'CGM subscriber volume growth',
+        'Average selling price (ASP) per sensor',
+        'Gross profit margin percentage',
+        'R&D expenses as a percentage of sales',
+        'Sales and marketing expense productivity'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_14',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: 'DexCom provides medical sensors that continuously track blood glucose levels, eliminating the need for routine fingersticks.',
+        thesisRisk: 'Risks involve competitive pricing pressure from other CGM manufacturers, changes in insurance reimbursement policies, and alternative diabetes treatment breakthroughs.'
+      },
+      phaseTwo: {
+        thesisRisk: [
+          {
+            category: 'Price Competition',
+            risk: 'Aggressive pricing from competitors forces DexCom to discount its sensor packages.',
+            watch: 'Gross margin and sensor ASP trends.'
+          },
+          {
+            category: 'Reimbursement Limits',
+            risk: 'Health insurance providers restrict CGM coverage to specific patient categories, slowing sales growth.',
+            watch: 'Reimbursement coverage updates.'
+          },
+          {
+            category: 'Innovation Risks',
+            risk: 'Failing to launch next-generation sensors on schedule allows competitors to gain market share.',
+            watch: 'Product release schedules and R&D spending.'
+          }
+        ]
+      }
+    }
+  },
+  EA: {
+    ticker: 'EA',
+    companyName: 'Electronic Arts Inc.',
+    exchange: 'NASDAQ',
+    overview: 'Electronic Arts is a leading global developer and publisher of interactive entertainment, creating games for consoles, PCs, and mobile devices, supported by franchises like EA Sports FC, Madden NFL, and Apex Legends.',
+    category: 'Interactive Entertainment & Gaming',
+    analysisDate: '2026-06-11',
+    latestFiscalPeriod: 'FY2026 ended 2026-03-31',
+    dossierVerdict: 'Electronic Arts generates high-margin cash flow through live services integration within its dominant global sports gaming franchises.',
+    valueCore: {
+      ticker: 'EA',
+      value_core_type: 'business_summary_thesis_risk',
+      company_stage_candidate: 'Mature Intellectual Property / Digital Entertainment',
+      primary_value_driver: 'Consistent monetization of live services in sports franchises, launching new original intellectual properties, and expanding margins through direct-to-consumer digital distribution.',
+      thesis_break_trigger: 'Significant decline in active player engagement in core sports live services, commercial failure of major non-sports game releases, or player attrition in mobile segments.',
+      evidence_needed: [
+        'Live services net bookings growth',
+        'Active player engagement count',
+        'Digital bookings as a percentage of total bookings',
+        'Mobile segment revenue growth',
+        'R&D development spend efficiency'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_14',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: 'EA publishes major video game franchises, relying heavily on recurring live service purchases (in-game content) within sports games.',
+        thesisRisk: 'Core risks are the concentration of earnings in sports franchises, changing gamer preferences, and delays in major game development cycles.'
+      },
+      phaseTwo: {
+        thesisRisk: [
+          {
+            category: 'Sports Concentration',
+            risk: 'A decline in user spending on Ultimate Team game modes impacts overall recurring booking streams.',
+            watch: 'Live services net bookings by game segment.'
+          },
+          {
+            category: 'Development Delays',
+            risk: 'Delays in major game release schedules shift projected revenue out of fiscal quarters.',
+            watch: 'Game pipeline timelines and launch announcements.'
+          },
+          {
+            category: 'Mobile Attrition',
+            risk: 'Monetization changes or user acquisition costs in mobile games reduce segment profit contributions.',
+            watch: 'Mobile net bookings and marketing expenses.'
+          }
+        ]
+      }
+    }
+  },
+  EMR: {
+    ticker: 'EMR',
+    companyName: 'Emerson Electric Co.',
+    exchange: 'NYSE',
+    overview: 'Emerson Electric is a global technology and engineering company providing automation solutions (control systems, software, valves, and instruments) to process, hybrid, and discrete manufacturing industries.',
+    category: 'Industrial Automation & Control',
+    analysisDate: '2026-06-11',
+    latestFiscalPeriod: 'Q2 2026 ended 2026-03-31',
+    dossierVerdict: 'Emerson focuses on process automation systems, utilizing order backlogs to buffer cyclical changes in industrial capital spending.',
+    valueCore: {
+      ticker: 'EMR',
+      value_core_type: 'business_summary_thesis_risk',
+      company_stage_candidate: 'Mature Industrial Automation',
+      primary_value_driver: 'Enterprise demand for manufacturing automation and decarbonization solutions, software recurring revenue growth, and execution of portfolio restructuring.',
+      thesis_break_trigger: 'A sharp contraction in global industrial capital spending, supply chain delays for specialized control components, or integration issues with software acquisitions.',
+      evidence_needed: [
+        'Organic order bookings growth rate',
+        'Automation Solutions segment operating margin',
+        'Software and control recurring revenue',
+        'Total order backlog value',
+        'Free cash flow conversion rate'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_14',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: 'Emerson provides control software, measurement instrumentation, and industrial valves to optimize manufacturing and process facilities.',
+        thesisRisk: 'Risks are tied to industrial capital cycles, the integration of new software assets, and economic activity in process industries like chemicals and power.'
+      },
+      phaseTwo: {
+        thesisRisk: [
+          {
+            category: 'Capex Slowdown',
+            risk: 'Global manufacturing firms reduce capital spending on automation upgrades during economic downturns.',
+            watch: 'Organic order growth trends.'
+          },
+          {
+            category: 'Backlog Drawdown',
+            risk: 'Consuming backlog faster than new orders are secured reduces future revenue visibility.',
+            watch: 'Backlog total value and book-to-bill ratio.'
+          },
+          {
+            category: 'Integration Execution',
+            risk: 'Failing to realize synergies or cross-promote software from acquired automation control companies.',
+            watch: 'Software segment margins.'
+          }
+        ]
+      }
+    }
+  },
+  ETN: {
+    ticker: 'ETN',
+    companyName: 'Eaton Corporation plc',
+    exchange: 'NYSE',
+    overview: 'Eaton is a global power management company providing electrical components, systems, and services, alongside aerospace, vehicle, and eMobility products, focusing on electrical grid modernization and electrification.',
+    category: 'Electrical Systems & Industrial Equipment',
+    analysisDate: '2026-06-11',
+    latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
+    dossierVerdict: 'Eaton experiences backlog expansion driven by structural utility grid upgrades, manufacturing reshoring, and data center electrification.',
+    valueCore: {
+      ticker: 'ETN',
+      value_core_type: 'business_summary_thesis_risk',
+      company_stage_candidate: 'Industrial Electrification Growth',
+      primary_value_driver: 'Data center infrastructure capacity expansion, utility grid upgrades, and manufacturing reshoring demanding advanced electrical systems.',
+      thesis_break_trigger: 'Unexpected slowdown in data center capacity additions, material component shortages slowing backlog execution, or margin compression from industrial competitors.',
+      evidence_needed: [
+        'Electrical Americas segment organic revenue growth',
+        'Total order backlog and backlog build rate',
+        'Segment operating margin percentage',
+        'Utility grid equipment bookings',
+        'EMobility segment profitability'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_14',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: 'Eaton designs and manufactures equipment to manage electrical, hydraulic, and mechanical power, heavily exposed to grid modernization and data center demand.',
+        thesisRisk: 'Core risks are supply chain constraints limiting backlog shipment, project delays in commercial real estate/data centers, and cyclical industrial demand.'
+      },
+      phaseTwo: {
+        thesisRisk: [
+          {
+            category: 'Supply Constraints',
+            risk: 'Extended lead times for electrical switches, transformers, and components delay project completions.',
+            watch: 'Segment inventory levels and backlog execution rates.'
+          },
+          {
+            category: 'Data Center Delay',
+            risk: 'Power grid connection delays slow down the construction of new data centers, deferring electrical equipment orders.',
+            watch: 'Electrical segment backlogs.'
+          },
+          {
+            category: 'Industrial Cyclicality',
+            risk: 'Economic downturns in automotive and industrial markets reduce demand for mechanical power systems.',
+            watch: 'Vehicle and aerospace segment revenues.'
+          }
+        ]
+      }
+    }
+  },
+  EXC: {
+    ticker: 'EXC',
+    companyName: 'Exelon Corporation',
+    exchange: 'NASDAQ',
+    overview: 'Exelon Corporation is a utility holding company operating fully regulated electric and natural gas transmission and distribution utilities, serving millions of customers in the Mid-Atlantic and Midwest.',
+    category: 'Electric Utilities & Transmission',
+    analysisDate: '2026-06-11',
+    latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
+    dossierVerdict: 'Exelon operates a regulated electric and gas transmission business model, recovering modernization capital expenditures through state commission rate approvals.',
+    valueCore: {
+      ticker: 'EXC',
+      value_core_type: 'business_summary_thesis_risk',
+      company_stage_candidate: 'Regulated Utility / Infrastructure',
+      primary_value_driver: 'Execution of massive multi-year grid modernization capital plans, regulatory recovery of investments, and load growth from commercial customers.',
+      thesis_break_trigger: 'Regulators rejecting rate case capital recovery requests, severe weather events raising storm restoration expenses, or rising interest rates raising capital costs.',
+      evidence_needed: [
+        'Approved rate base capital growth rate',
+        'Return on equity (ROE) allowed by state commissions',
+        'Storm restoration expenses incurred',
+        'Interest coverage ratio',
+        'Commercial and industrial load growth'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_14',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: 'Exelon operates regulated electric and gas utilities, focusing solely on transmission and distribution services.',
+        thesisRisk: 'Risks relate to regulatory approvals for rate hikes to fund grid upgrades, the impact of major storms, and capital market borrowing rates.'
+      },
+      phaseTwo: {
+        thesisRisk: [
+          {
+            category: 'Rate Recovery Denials',
+            risk: 'State utility commissions disallow rate base investments, lowering equity returns.',
+            watch: 'Regulatory commission orders and rate case filings.'
+          },
+          {
+            category: 'Weather Disruptions',
+            risk: 'Severe weather events require massive emergency crew deployments, raising operating costs.',
+            watch: 'Storm restoration cost disclosures.'
+          },
+          {
+            category: 'Cost of Capital',
+            risk: 'Higher interest rates raise borrowing costs for capital projects, reducing financial utility margins.',
+            watch: 'Weighted average interest rate on outstanding utility bonds.'
+          }
+        ]
+      }
+    }
+  },
+  FANG: {
+    ticker: 'FANG',
+    companyName: 'Diamondback Energy, Inc.',
+    exchange: 'NASDAQ',
+    overview: 'Diamondback Energy is an independent oil and natural gas company focused on the acquisition, development, exploration, and exploitation of unconventional onshore oil and natural gas reserves in the Permian Basin of West Texas.',
+    category: 'Oil & Gas Exploration & Production',
+    analysisDate: '2026-06-11',
+    latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
+    dossierVerdict: 'Diamondback Energy operates low-cost unconventional oil reserves in the Permian Basin, returning free cash flow to equity owners based on commodity prices.',
+    valueCore: {
+      ticker: 'FANG',
+      value_core_type: 'business_summary_thesis_risk',
+      company_stage_candidate: 'Cyclical Commodity Producer',
+      primary_value_driver: 'Low-cost Permian Basin acreage development, high drilling and completion efficiencies, and free cash flow generation for capital return.',
+      thesis_break_trigger: 'Sustained decline in global crude oil prices below cash breakeven levels, oilfield service inflation raising capital costs, or pipeline capacity bottlenecks restricting Permian production.',
+      evidence_needed: [
+        'Daily oil production volumes (MBOE/d)',
+        'Average realized oil price per barrel',
+        'Drilling and completion capital expenditure per well',
+        'Free cash flow conversion rate',
+        'Permian Basin pipeline throughput capacity'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_14',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: 'Diamondback is a pure-play Permian Basin oil producer, utilizing high-efficiency horizontal drilling to extract unconventional reserves.',
+        thesisRisk: 'Key risks include high exposure to crude oil market price volatility, oilfield service cost inflation, and geological reservoir degradation over time.'
+      },
+      phaseTwo: {
+        thesisRisk: [
+          {
+            category: 'Commodity Volatility',
+            risk: 'A drop in WTI oil prices reduces operating revenues, impacting free cash flow levels.',
+            watch: 'WTI pricing and cash operating margins.'
+          },
+          {
+            category: 'Service Inflation',
+            risk: 'Rising costs for drilling rigs, sand, water, and labor raise capital spending requirements.',
+            watch: 'Drilling and completion capex per lateral foot.'
+          },
+          {
+            category: 'Takeaway Constraints',
+            risk: 'Pipeline bottlenecks in the Permian Basin force producers to market oil and gas at deep local discounts.',
+            watch: 'Midstream transportation capacities and realized price differentials.'
+          }
+        ]
+      }
+    }
+  },
+  FAST: {
+    ticker: 'FAST',
+    companyName: 'Fastenal Company',
+    exchange: 'NASDAQ',
+    overview: 'Fastenal is a distributor of industrial and construction supplies, offering fasteners, tools, safety products, and inventory management solutions through physical branches, Onsite locations, and industrial vending machines.',
+    category: 'Industrial Distribution & Logistics',
+    analysisDate: '2026-06-11',
+    latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
+    dossierVerdict: 'Fastenal utilizes integrated supply chain programs, including Onsite locations and industrial vending installations, to manage cyclical industrial tool demand.',
+    valueCore: {
+      ticker: 'FAST',
+      value_core_type: 'business_summary_thesis_risk',
+      company_stage_candidate: 'Mature Industrial Distribution / Logistics Partner',
+      primary_value_driver: 'Onsite location signings integrating Fastenal into customer facilities, scaling industrial vending machine installs, and route logistics efficiency.',
+      thesis_break_trigger: 'Contraction in US manufacturing activity, pricing pressure from competitors eroding gross margins, or slowdown in corporate signing rates for new Onsite programs.',
+      evidence_needed: [
+        'Daily sales growth percentage',
+        'Active Onsite locations signed',
+        'Gross profit margin percentage',
+        'Fastener vs non-fastener sales mix',
+        'Vending machine installations count'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_14',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: 'Fastenal distributes industrial fasteners and tools, embedding its supply chain within customer plants through Onsite programs and smart vending machines.',
+        thesisRisk: 'The primary risk is cyclical contraction in manufacturing and construction industries, along with commodity pricing volatility in steel and shipping.'
+      },
+      phaseTwo: {
+        thesisRisk: [
+          {
+            category: 'Manufacturing Downturn',
+            risk: 'Slowing US industrial production reduces customer demand for maintenance and repair parts.',
+            watch: 'Daily sales growth rate and industrial PMI.'
+          },
+          {
+            category: 'Gross Margin Erosion',
+            risk: 'Product cost inflation cannot be fully passed through due to competitive distribution dynamics.',
+            watch: 'Gross margin percentage.'
+          },
+          {
+            category: 'Program Signing Slowdown',
+            risk: 'Corporate clients delay entering into new long-term Onsite supply agreements.',
+            watch: 'Onsite sign-up count and active base.'
+          }
+        ]
+      }
+    }
+  },
+  FDX: {
+    ticker: 'FDX',
+    companyName: 'FedEx Corporation',
+    exchange: 'NYSE',
+    overview: 'FedEx Corporation provides a broad portfolio of transportation, e-commerce, and business services, operating major segments including FedEx Express (time-definite delivery) and FedEx Ground (day-definite delivery).',
+    category: 'Transportation & Express Delivery',
+    analysisDate: '2026-06-11',
+    latestFiscalPeriod: 'Q3 2026 ended 2026-02-28',
+    dossierVerdict: 'FedEx executes a multi-year network integration program to combine Express and Ground operations, managing volume changes in global trade.',
+    valueCore: {
+      ticker: 'FDX',
+      value_core_type: 'business_summary_thesis_risk',
+      company_stage_candidate: 'Cyclical Transport / Operational Restructuring',
+      primary_value_driver: 'Cost reduction synergies from integrating Express and Ground networks (One FedEx), package volume recovery, and pricing discipline.',
+      thesis_break_trigger: 'Failure to achieve target cost savings from the network integration, pricing wars in air and ground shipping, or steep declines in global trade volumes.',
+      evidence_needed: [
+        'Daily package volume growth (Express & Ground)',
+        'Average revenue per package (yield)',
+        'One FedEx program cost savings realized',
+        'Operating income margin by segment',
+        'Fuel surcharge revenues vs fuel costs'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_14',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: 'FedEx operates a global express delivery and logistics network, undergoing a major structural integration of its separate delivery networks.',
+        thesisRisk: 'Core risks are execution issues in the network consolidation program, competition from Amazon and UPS, and cyclical trade and consumer shipping patterns.'
+      },
+      phaseTwo: {
+        thesisRisk: [
+          {
+            category: 'Integration Execution',
+            risk: 'Consolidating duplicate sorting facilities and delivery routes causes service disruptions or fails to achieve target savings.',
+            watch: 'One FedEx program progress reports and restructuring charges.'
+          },
+          {
+            category: 'Competitive Yield Pressures',
+            risk: 'Aggressive pricing from delivery competitors reduces average revenue per package.',
+            watch: 'Express and Ground yield metrics.'
+          },
+          {
+            category: 'Volume Contraction',
+            risk: 'Slowing global trade or consumer retail activity leads to lower package volumes.',
+            watch: 'Average daily package volumes.'
+          }
+        ]
+      }
+    }
+  }
 };
 
 export function getStockDossierProfile(ticker) {
