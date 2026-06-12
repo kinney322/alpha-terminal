@@ -11885,6 +11885,557 @@ const stockDossierProfiles = {
       }
     }
   }
+,
+  FER: {
+    ticker: 'FER',
+    companyName: 'Ferrari N.V.',
+    exchange: 'NYSE',
+    overview: 'Ferrari N.V. is a global designer, manufacturer, and seller of high-performance luxury sports cars, utilizing extreme brand exclusivity, low production volumes, and racing heritage to command industry-leading margins and pricing power.',
+    category: 'Luxury Automotive',
+    analysisDate: '2026-06-11',
+    latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
+    dossierVerdict: 'Ferrari N.V. commands extreme brand exclusivity and pricing power, leveraging vehicle personalization customization programs and long backlogs.',
+    valueCore: {
+      ticker: 'FER',
+      value_core_type: 'business_summary_thesis_risk',
+      company_stage_candidate: 'Mature Premium Luxury / High-Moat Brand',
+      primary_value_driver: 'Expanding vehicle personalization customization programs, pricing premium actions on new releases, and scaling hybrid and EV powertrains while maintaining low production caps.',
+      thesis_break_trigger: 'Structural contraction in high-net-worth individual demand, dealer inventory accumulation due to overproduction, or margins compressing due to EV development costs.',
+      evidence_needed: [
+        'Personalization revenue as a percentage of car revenues',
+        'Multi-year order book backlog coverage duration',
+        'EBITDA and EBIT profit margins',
+        'Hybrid and BEV unit volume mix percentage',
+        'Capital spending on next-generation manufacturing facilities'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_15',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 20-F / 6-K'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: 'Ferrari is an iconic luxury brand that produces limited numbers of high-performance sports cars, maintaining a highly exclusive waitlist.',
+        thesisRisk: 'Key risks include brand dilution if production volumes are raised too quickly, high development costs for new electric vehicle lines, and macro shifts affecting global high-net-worth consumer wealth.'
+      },
+      phaseTwo: {
+        thesisRisk: [
+          {
+            category: 'Brand Dilution',
+            risk: 'Over-shipping vehicles to meet near-term revenue targets degrades the exclusivity and secondary market resale value of the brand.',
+            watch: 'Annual vehicle shipment volumes and backlog length.'
+          },
+          {
+            category: 'Electrification Costs',
+            risk: 'Heavy research and development investment for the first electric Ferrari fails to match traditional internal combustion margin structures.',
+            watch: 'R&D spending and gross margins.'
+          },
+          {
+            category: 'Macro Wealth Shocks',
+            risk: 'Global economic contractions reduce demand for optional personalization features, lowering average transaction prices.',
+            watch: 'Personalization attach rates and average price per vehicle.'
+          }
+        ]
+      }
+    }
+  },
+  FTNT: {
+    ticker: 'FTNT',
+    companyName: 'Fortinet, Inc.',
+    exchange: 'NASDAQ',
+    overview: 'Fortinet is a global cybersecurity leader providing integrated network security solutions, including hardware firewall appliances (FortiGate), Secure Access Service Edge (SASE) software, and unified security operations platforms.',
+    category: 'Cybersecurity & Network Solutions',
+    analysisDate: '2026-06-11',
+    latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
+    dossierVerdict: 'Fortinet transitions clients from hardware firewall appliances to SASE software subscriptions, managing cyclical IT hardware refresh cycles.',
+    valueCore: {
+      ticker: 'FTNT',
+      value_core_type: 'business_summary_thesis_risk',
+      company_stage_candidate: 'High-Growth Cybersecurity / IT Security',
+      primary_value_driver: 'Transitioning customer base from hardware firewall appliances to recurring SASE and cloud security software subscriptions, and expanding unified threat management features.',
+      thesis_break_trigger: 'Slowing enterprise security billings growth, accelerated decline in firewall hardware demand before software scale, or gross margin compression from software competitor discounting.',
+      evidence_needed: [
+        'Total billings growth percentage',
+        'SASE and cloud security software subscription revenue',
+        'Product vs Service revenue growth split',
+        'Deferred revenue backlog balance',
+        'Operating income margin percentage'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_15',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: 'Fortinet designs hardware firewall appliances and integrates cloud-based security software to protect corporate networks.',
+        thesisRisk: 'Risks involve the cyclical hardware refresh cycle of security appliances, heavy competition in the SASE market, and the execution speed of its cloud software transition.'
+      },
+      phaseTwo: {
+        thesisRisk: [
+          {
+            category: 'Cyclical Hardware Downturns',
+            risk: 'Corporate customers deferring firewall appliance upgrades, leading to product revenue contraction.',
+            watch: 'Product revenue growth rates.'
+          },
+          {
+            category: 'Competitive SASE Markets',
+            risk: 'Aggressive pricing from cloud-native cybersecurity rivals slows Fortinet\'s software subscription growth.',
+            watch: 'Service segment margins and billings.'
+          },
+          {
+            category: 'Inventory Digestion',
+            risk: 'Distributors clearing excess hardware firewall inventories, temporarily reducing direct orders.',
+            watch: 'Days sales outstanding and channel inventory levels.'
+          }
+        ]
+      }
+    }
+  },
+  GBDC: {
+    ticker: 'GBDC',
+    companyName: 'Golub Capital BDC, Inc.',
+    exchange: 'NASDAQ',
+    overview: 'Golub Capital BDC is a closed-end specialty finance company that operates as a business development company (BDC), primarily investing in senior secured, one-stop, and junior debt securities of US middle-market companies.',
+    category: 'Specialty Finance / Private Credit BDC',
+    analysisDate: '2026-06-11',
+    latestFiscalPeriod: 'Q2 2026 ended 2026-03-31',
+    dossierVerdict: 'Golub Capital BDC operates a middle-market private credit model, distributing interest income from senior secured first-lien portfolios.',
+    valueCore: {
+      ticker: 'GBDC',
+      value_core_type: 'business_summary_thesis_risk',
+      company_stage_candidate: 'BDC / Private Credit Vehicle',
+      primary_value_driver: 'Generating stable interest income from senior secured first-lien loans, managing credit quality to limit default losses, and optimizing leverage capital structures.',
+      thesis_break_trigger: 'Credit defaults and non-accruals rising significantly in the middle-market loan portfolio, NAV per share eroding due to credit losses, or NII falling below dividend distributions.',
+      evidence_needed: [
+        'Non-accrual loans as a percentage of total portfolio cost',
+        'NAV per share change quarter-over-quarter',
+        'Net Investment Income (NII) dividend coverage ratio',
+        'Percentage of portfolio in first-lien debt',
+        'Asset coverage ratio and regulatory leverage headroom'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_15',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: 'Golub Capital BDC is a private credit fund providing debt financing to middle-market companies, returning interest income to shareholders.',
+        thesisRisk: 'The primary risk is default activity in its underlying borrower portfolio due to high interest rates, alongside compression of net interest margins as base rates decline.'
+      },
+      phaseTwo: {
+        thesisRisk: [
+          {
+            category: 'Credit Defaults',
+            risk: 'High borrowing costs stress middle-market company cash flows, leading to debt defaults and restructuring losses.',
+            watch: 'Non-accrual percentages and credit ratings of borrowers.'
+          },
+          {
+            category: 'Spread Compression',
+            risk: 'Increased competition in private credit capital deployment lowers loan pricing spreads relative to financing costs.',
+            watch: 'Weighted average portfolio yield and interest expense spreads.'
+          },
+          {
+            category: 'NAV Erosion',
+            risk: 'Write-downs on portfolio valuations due to credit deterioration reduce overall net asset value.',
+            watch: 'Quarterly NAV per share and realized/unrealized losses.'
+          }
+        ]
+      }
+    }
+  },
+  GD: {
+    ticker: 'GD',
+    companyName: 'General Dynamics Corporation',
+    exchange: 'NYSE',
+    overview: 'General Dynamics is a global aerospace and defense company, operating major segments including Marine Systems (nuclear submarines), Combat Systems (armored vehicles), Technologies (defense IT), and Aerospace (Gulfstream business jets).',
+    category: 'Aerospace & Defense',
+    analysisDate: '2026-06-11',
+    latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
+    dossierVerdict: 'General Dynamics manages long-cycle defense backlogs for nuclear submarines and corporate business jets, subject to labor shipyard capacity.',
+    valueCore: {
+      ticker: 'GD',
+      value_core_type: 'business_summary_thesis_risk',
+      company_stage_candidate: 'Mature Aerospace & Defense / Long-Cycle Backlog',
+      primary_value_driver: 'Securing multi-decade Navy nuclear submarine contracts, Gulfstream business jet delivery acceleration, and global defense budget expansion.',
+      thesis_break_trigger: 'Severe labor or supply shortages delaying submarine deliveries, production certifications delays for new Gulfstream models, or operating margin erosion on fixed-price defense contracts.',
+      evidence_needed: [
+        'Gulfstream aircraft delivery volumes',
+        'Defense segment backlog book-to-bill ratio',
+        'Marine Systems operating margin percentage',
+        'Technologies segment backlog',
+        'Free cash flow conversion rate'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_15',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: 'General Dynamics designs corporate jets and builds combat systems, naval submarines, and communication systems for military customers.',
+        thesisRisk: 'Key risks include supply chain and skilled labor constraints in naval shipyards, fixed-price contract margin risks, and jet delivery delays.'
+      },
+      phaseTwo: {
+        thesisRisk: [
+          {
+            category: 'Shipyard Capacity Constraints',
+            risk: 'Skilled welder shortages and component delays push back submarine completion dates, incurring penalty fees.',
+            watch: 'Marine Systems segment margins and delivery milestones.'
+          },
+          {
+            category: 'fixed-Price Margin Risks',
+            risk: 'Inflation in labor and raw materials compresses profitability on long-term fixed-price defense contracts.',
+            watch: 'Defense segment operating margins.'
+          },
+          {
+            category: 'Business Jet Cycles',
+            risk: 'Corporate cost-cutting or regulatory delays on flight certifications slow Gulfstream sales growth.',
+            watch: 'Gulfstream deliveries and order book backlogs.'
+          }
+        ]
+      }
+    }
+  },
+  GE: {
+    ticker: 'GE',
+    companyName: 'General Electric Company',
+    exchange: 'NYSE',
+    overview: 'GE Aerospace (operating as General Electric Company) is a leading provider of jet engines, components, and integrated systems for commercial and military aircraft, generating high-margin recurring revenues from its extensive engine services and spare parts backlog.',
+    category: 'Aerospace Propulsion & Systems',
+    analysisDate: '2026-06-11',
+    latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
+    dossierVerdict: 'GE Aerospace operates a commercial jet engine model, generating recurring aftermarket service revenues from global aircraft engine fleets.',
+    valueCore: {
+      ticker: 'GE',
+      value_core_type: 'business_summary_thesis_risk',
+      company_stage_candidate: 'High-Moat Commercial Aerospace Services',
+      primary_value_driver: 'Expanding the active installed base of commercial jet engines and capturing decades of high-margin aftermarket service shop visits and parts sales.',
+      thesis_break_trigger: 'Persistent supplier supply chain bottlenecks delaying engine deliveries, safety groundings of key aircraft models, or decline in global passenger traffic reducing shop visits.',
+      evidence_needed: [
+        'Commercial engine shop visit volume growth',
+        'Commercial engine delivery volumes (LEAP/GE9X)',
+        'Services segment bookings and backlog',
+        'Operating margin percentage',
+        'Free cash flow generation'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_15',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: 'GE Aerospace (retaining the GE ticker) designs jet engines and provides aftermarket services for a significant portion of global commercial aircraft.',
+        thesisRisk: 'The primary risk is supply chain constraints delaying new engine production and spare parts deliveries, along with cyclical aviation demand.'
+      },
+      phaseTwo: {
+        thesisRisk: [
+          {
+            category: 'Supply Chain Bottlenecks',
+            risk: 'Shortages of specialty castings and forgings limit engine production rates.',
+            watch: 'Engine delivery volumes vs aircraft manufacturing schedules.'
+          },
+          {
+            category: 'Service Shop Visit Volatility',
+            risk: 'Airlines deferring discretionary engine maintenance shop visits to manage cash flow.',
+            watch: 'Services revenue growth and shop visit counts.'
+          },
+          {
+            category: 'Customer Fleet Risks',
+            risk: 'Operational disruptions or groundings of aircraft fleets using GE engines curtail utilization.',
+            watch: 'Flight hours of installed engine base.'
+          }
+        ]
+      }
+    }
+  },
+  GEHC: {
+    ticker: 'GEHC',
+    companyName: 'GE HealthCare Technologies Inc.',
+    exchange: 'NASDAQ',
+    overview: 'GE HealthCare Technologies is a leading global medical technology company specializing in medical imaging (MRI, CT, ultrasound), pharmaceutical diagnostics, and digital health solutions for hospital networks.',
+    category: 'Medical Imaging & Healthcare Tech',
+    analysisDate: '2026-06-11',
+    latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
+    dossierVerdict: 'GE HealthCare leverages healthcare system installations to supply diagnostic contrast media and medical imaging services.',
+    valueCore: {
+      ticker: 'GEHC',
+      value_core_type: 'business_summary_thesis_risk',
+      company_stage_candidate: 'Mature Healthcare Equipment',
+      primary_value_driver: 'Global hospital demand for advanced MRI and CT systems, scaling high-margin pharmaceutical diagnostics agents, and expanding digital health subscription software.',
+      thesis_break_trigger: 'Substantial decline in hospital capital budgets, raw material price spikes in imaging contrast agents, or delays in product development pipelines.',
+      evidence_needed: [
+        'Imaging segment revenue growth',
+        'Product and service gross profit margins',
+        'Pharmaceutical Diagnostics segment operating margin',
+        'Order backlog drawdown rate',
+        'Free cash flow conversion rate'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_15',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: 'GE HealthCare designs medical imaging equipment and diagnostic agents used in hospitals worldwide, spun off from General Electric.',
+        thesisRisk: 'Key risks include hospital capital budget cycles, supply chain component costs, and the development timeline of molecular imaging agents.'
+      },
+      phaseTwo: {
+        thesisRisk: [
+          {
+            category: 'Capex Budget Cuts',
+            risk: 'Healthcare systems reduce capital spending on expensive MRI and CT equipment during economic pressure.',
+            watch: 'Imaging segment bookings.'
+          },
+          {
+            category: 'Diagnostic Input Inflation',
+            risk: 'Price increases in raw materials for contrast media, such as iodine, reduce diagnostic margins.',
+            watch: 'Pharmaceutical Diagnostics segment profit margins.'
+          },
+          {
+            category: 'Product Development Delays',
+            risk: 'Slower regulatory clearance for next-generation imaging software and hardware.',
+            watch: 'FDA approval announcements and R&D spending.'
+          }
+        ]
+      }
+    }
+  },
+  GEV: {
+    ticker: 'GEV',
+    companyName: 'GE Vernova Inc.',
+    exchange: 'NYSE',
+    overview: 'GE Vernova is a global energy transition company operating in Power (gas and steam turbines), Wind (onshore and offshore turbines), and Electrification (grid systems and software), helping utilities decarbonize electricity generation.',
+    category: 'Energy Transition / Restructuring',
+    analysisDate: '2026-06-11',
+    latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
+    dossierVerdict: 'GE Vernova operates wind and gas turbine platforms, executing margin recovery programs in wind projects and grid upgrades.',
+    valueCore: {
+      ticker: 'GEV',
+      value_core_type: 'business_summary_thesis_risk',
+      company_stage_candidate: 'Energy Transition / Restructuring',
+      primary_value_driver: 'Turnaround of Wind segment margins through onshore turbine pricing and restructuring offshore commitments, alongside steady services revenue from gas power turbine fleets.',
+      thesis_break_trigger: 'Persistent losses or warranty charges in offshore wind operations, decline in gas turbine aftermarket services, or grid infrastructure delays.',
+      evidence_needed: [
+        'Wind segment operating margin and backlog profitability',
+        'Power segment services revenue growth',
+        'Electrification segment backlog growth',
+        'Total order book bookings',
+        'Restructuring charges and cash margins'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_15',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: 'GE Vernova provides wind, gas, and grid electrification systems to utilities globally, spun off from General Electric in 2024.',
+        thesisRisk: 'The primary risk is profit margin execution in the Wind turbine segment, especially offshore wind contracts, alongside grid capacity constraints.'
+      },
+      phaseTwo: {
+        thesisRisk: [
+          {
+            category: 'Wind Margin Volatility',
+            risk: 'Historically signed low-price offshore wind contracts incur inflation and construction cost overruns.',
+            watch: 'Wind segment operating income and margins.'
+          },
+          {
+            category: 'Aftermarket Services Decline',
+            risk: 'Utilities deferring gas turbine services as they transition toward renewables.',
+            watch: 'Power segment services bookings.'
+          },
+          {
+            category: 'Grid Electrification Blocks',
+            risk: 'Delays in utility grid upgrades prevent new wind and gas generation connections.',
+            watch: 'Electrification segment backlogs.'
+          }
+        ]
+      }
+    }
+  },
+  GILD: {
+    ticker: 'GILD',
+    companyName: 'Gilead Sciences, Inc.',
+    exchange: 'NASDAQ',
+    overview: 'Gilead Sciences is a research-based biopharmaceutical company focused on the discovery, development, and commercialization of innovative medicines in areas of unmet medical need, including HIV, oncology, and viral hepatitis.',
+    category: 'Biopharmaceuticals',
+    analysisDate: '2026-06-11',
+    latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
+    dossierVerdict: 'Gilead Sciences supports HIV antiviral markets while deploying cash reserves into oncology therapeutics pipelines.',
+    valueCore: {
+      ticker: 'GILD',
+      value_core_type: 'business_summary_thesis_risk',
+      company_stage_candidate: 'Mature Biopharma / Pipeline transition',
+      primary_value_driver: 'Sustained market share in HIV therapies, expanding oncology therapeutics, and clinical development of next-generation drug candidates.',
+      thesis_break_trigger: 'Unexpected clinical trial failures for late-stage oncology assets, earlier-than-expected generic competition for core HIV drugs, or regulatory rejections of new drug applications.',
+      evidence_needed: [
+        'HIV product sales (Biktarvy)',
+        'Oncology product sales growth (Trodelvy)',
+        'Clinical development pipeline phase milestones',
+        'R&D expenses as a percentage of revenue',
+        'Operating cash flow conversion'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_15',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: 'Gilead is a major biotechnology company dominant in HIV treatment, actively investing to build a diversified oncology drug pipeline.',
+        thesisRisk: 'Key risks are the impending patent expirations of core HIV therapies and the execution risk of oncology clinical trials.'
+      },
+      phaseTwo: {
+        thesisRisk: [
+          {
+            category: 'Patent Expirations',
+            risk: 'Loss of exclusivity for major HIV treatments leads to generic competition and revenue erosion.',
+            watch: 'HIV franchise revenue split and patent dates.'
+          },
+          {
+            category: 'Clinical Trial Failures',
+            risk: 'Late-stage oncology drug candidates fail to meet primary endpoints in clinical trials.',
+            watch: 'Clinical phase trial announcements.'
+          },
+          {
+            category: 'Acquisition Integration',
+            risk: 'Heavy cash investments in biotech acquisitions fail to produce commercialized drug candidates.',
+            watch: 'Goodwill write-downs and acquired R&D charges.'
+          }
+        ]
+      }
+    }
+  },
+  GM: {
+    ticker: 'GM',
+    companyName: 'General Motors Company',
+    exchange: 'NYSE',
+    overview: 'General Motors designs, builds, and sells cars, trucks, and automobile parts globally, transitioning its product lineup toward electric vehicles (EVs) while relying on internal combustion engine (ICE) truck profits.',
+    category: 'Automotive Manufacturing',
+    analysisDate: '2026-06-11',
+    latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
+    dossierVerdict: 'General Motors depends on North American ICE trucks and SUVs pricing power to fund scalable electric vehicle manufacturing.',
+    valueCore: {
+      ticker: 'GM',
+      value_core_type: 'business_summary_thesis_risk',
+      company_stage_candidate: 'Mature Auto / Transitioning Capital structure',
+      primary_value_driver: 'Sustaining high pricing and margins on ICE trucks and SUVs, scaling EV production to achieve positive variable margins, and restructuring autonomous vehicle capital burn.',
+      thesis_break_trigger: 'ICE truck pricing power eroding due to industry oversupply, inability to lower EV battery cell production costs, or severe regulatory barriers for Cruise autonomous operations.',
+      evidence_needed: [
+        'North America ICE utility and truck margins',
+        'EV production volume and variable profit margin',
+        'Automotive net pricing change',
+        'Cruise autonomous vehicle capital burn rate',
+        'Dealer inventory days supply'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_15',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: 'GM is a legacy automaker generating core profits from large gasoline trucks in North America, while investing to build an electric and autonomous vehicle platform.',
+        thesisRisk: 'Key risks include consumer demand shifts away from ICE vehicles before EV operations reach profitability, EV battery scaling costs, and autonomous technology safety regulation.'
+      },
+      phaseTwo: {
+        thesisRisk: [
+          {
+            category: 'ICE Profit Erosion',
+            risk: 'Increased industry discounts and competition reduce margins on high-profit trucks.',
+            watch: 'Automotive average transaction prices and incentives.'
+          },
+          {
+            category: 'EV Margin Pressure',
+            risk: 'Sub-scale EV manufacturing plants incur high fixed cost drag, delaying positive variable margin targets.',
+            watch: 'EV production volume and unit margins.'
+          },
+          {
+            category: 'Autonomous Burn',
+            risk: 'Prolonged development and regulatory compliance costs for the Cruise division consume capital without commercial scale.',
+            watch: 'Cruise segment operating losses.'
+          }
+        ]
+      }
+    }
+  },
+  HON: {
+    ticker: 'HON',
+    companyName: 'Honeywell International Inc.',
+    exchange: 'NASDAQ',
+    overview: 'Honeywell is a diversified technology and manufacturing company, operating segments in Aerospace (aviation engines and avionics), Industrial Automation (safety and warehouse systems), Building Automation, and Energy & Sustainability Solutions.',
+    category: 'Diversified Industrial Technology',
+    analysisDate: '2026-06-11',
+    latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
+    dossierVerdict: 'Honeywell operates a diversified industrial conglomerate model, relying on aerospace component backlogs to manage business cycles.',
+    valueCore: {
+      ticker: 'HON',
+      value_core_type: 'business_summary_thesis_risk',
+      company_stage_candidate: 'Mature Diversified Industrial Conglomerate',
+      primary_value_driver: 'Commercial aviation aftermarket services recovery, software-defined industrial automation expansion, and portfolio optimization through acquisitions.',
+      thesis_break_trigger: 'Sustained slowdown in commercial aerospace flight hours, persistent contraction in warehouse automation capital orders, or integration failure of newly acquired industrial units.',
+      evidence_needed: [
+        'Aerospace segment organic revenue growth',
+        'Industrial Automation orders and backlog',
+        'Consolidated gross profit margin',
+        'Backlog book-to-bill ratio',
+        'Free cash flow conversion rate'
+      ],
+      evidence_quality: 'Partial',
+      dossier_state: 'curated_profile_batch_15',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'SEC 10-K / 10-Q'
+    },
+    visualPhaseOne: {
+      faq: {
+        overview: 'Honeywell is an industrial conglomerate providing flight systems, building controls, process safety software, and performance materials.',
+        thesisRisk: 'Risks relate to commercial aviation spending cycles, cyclical business capital spending in warehouse automation, and execution of conglomerate reorganization.'
+      },
+      phaseTwo: {
+        thesisRisk: [
+          {
+            category: 'Aerospace Supply Chains',
+            risk: 'Component shortages delay aviation engine and avionics deliveries to aircraft builders.',
+            watch: 'Aerospace segment backlog and shipment volumes.'
+          },
+          {
+            category: 'Automation Downturn',
+            risk: 'Slowing e-commerce growth reduces customer orders for new warehouse sorting automation systems.',
+            watch: 'Industrial Automation orders.'
+          },
+          {
+            category: 'Restructuring Execution',
+            risk: 'Synergy execution delays from reorganizing its industrial and building divisions.',
+            watch: 'Consolidated operating profit margins and restructuring costs.'
+          }
+        ]
+      }
+    }
+  }
 };
 
 export function getStockDossierProfile(ticker) {
