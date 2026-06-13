@@ -70,7 +70,7 @@ export const ASK_CROWDRISK_ANSWER_CATALOG = [
     bannedWording: ['invented revenue mix', 'unverified TAM', 'final investment decision'],
     trigger: {
       enPatterns: [/\bwhat does\b/, /\bdo\??\b/, /\bbusiness\b/, /\bbusiness summary\b/, /\bbusiness core\b/, /\bbusiness model\b/, /\bwhat is .* business\b/, /\bcompany do\b/],
-      zhTerms: ['做什麼', '做咩', '是甚麼公司', '是什麼公司', '甚麼公司', '什麼公司', '業務', '業務核心', '商業模式', '公司做', '生意模式']
+      zhTerms: ['做什麼', '做甚麼', '做咩', '是甚麼公司', '是什麼公司', '甚麼公司', '什麼公司', '業務', '業務核心', '的業務核心是甚麼', '商業模式', '公司做', '生意模式']
     }
   },
   {
@@ -190,6 +190,23 @@ export const ASK_CROWDRISK_ANSWER_CATALOG = [
     trigger: {
       enPatterns: [/\b(valuation|expensive|cheap|reasonable|price target|multiple)\b/],
       zhTerms: ['估值', '貴', '便宜', '合理', '目標價', '倍數']
+    }
+  },
+  {
+    id: 'financial_health',
+    intent: 'financial_health',
+    label: 'Financial health',
+    deterministic: true,
+    sources: ['stockDossierProfiles.js'],
+    requiredSlots: ['ticker'],
+    requiredFacts: ['fcf_margin', 'sbc_revenue', 'quality_cards'],
+    verifiedRule: 'Ticker must have a curated Stock Dossier profile with financialHealth info.',
+    notVerifiedRule: 'Do not infer missing balance-sheet or dilution conclusions.',
+    allowedJudgment: ['financial-quality evidence', 'risk framing'],
+    bannedWording: ['rating recommendation terms', 'portfolio sizing language'],
+    trigger: {
+      enPatterns: [/\b(financial\s*health|fcf|cash\s*flow|free\s*cash\s*flow|sbc|dilution|convertible\s*notes|cash\s*(and|\+)\s*securities)\b/],
+      zhTerms: ['財務健康', '財務質素', '現金流', '自由現金流', 'SBC', '股權薪酬', '股權稀釋', '稀釋', '可轉換票據', '現金', '資產負債']
     }
   }
 ];

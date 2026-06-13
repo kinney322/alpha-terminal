@@ -13,7 +13,7 @@ const stockDossierProfiles = {
     latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
     marketSnapshot: {
       currentPrice: '$200.16',
-      marketCap: '$73.0B',
+      marketCap: null,
       enterpriseValue: '$69.2B',
       fiscalYearRevenueGuide: '$4.30B-$4.34B'
     },

@@ -1173,10 +1173,22 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, refer
       { label: 'Base Case', value: valuationCore.topVerdict.baseCaseSupport, note: 'Evidence status' },
       { label: 'Margin of Safety', value: valuationCore.topVerdict.marginOfSafety, note: 'Risk cushion' }
     ];
-    const valuationTensionCards = valuationTab.tensionCards || [
+    const isPeerMapVerified = peerEcosystem?.source === 'live_reference_peer_map';
+    const valuationTensionCards = (valuationTab.tensionCards || [
       { title: 'Growth vs multiple', state: 'Coverage pending', text: valuationCore.topVerdict.why },
       { title: 'Evidence gap', state: 'Not verified', text: valuationCore.missingEvidence.join('; ') || 'Missing evidence pending.' }
-    ];
+    ]).map((card) => {
+      if (String(card.title || '').toLowerCase().includes('peer')) {
+        return {
+          ...card,
+          state: isPeerMapVerified ? 'Live reference context' : 'Not verified',
+          text: isPeerMapVerified
+            ? 'Reference peer ecosystem context loaded successfully from reference peer map feed.'
+            : card.text
+        };
+      }
+      return card;
+    });
     const valuationChecklist = valuationTab.checklist || valuationCore.researchJudgment;
     const thesisRiskTab = phaseTwo.thesisRisk || {};
     const thesisRiskMap = thesisRiskTab.riskMap || (renderedVerdict.risks.length ? renderedVerdict.risks : [
@@ -1328,6 +1340,15 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, refer
                 </div>
 
                 <div className="dossier-visual-cockpit__grid">
+                  <article className="dossier-cockpit-card dossier-cockpit-card--wide">
+                    <div className="dossier-cockpit-card__heading">
+                      <span>Why now</span>
+                      <em>Dossier core verdict</em>
+                    </div>
+                    <strong>{dossierProfile?.whyNow?.reason || renderedVerdict.reason}</strong>
+                    <p style={{ marginTop: '0.5rem', opacity: 0.9 }}>{dossierProfile?.whyNow?.verdict || renderedVerdict.verdict}</p>
+                  </article>
+
                   <article className="dossier-cockpit-card">
                     <span>Primary read</span>
                     <strong>{primaryRead}</strong>

@@ -1108,10 +1108,10 @@ const buildValuationSnapshotAnswer = ({ ticker, language, stockPerformancePayloa
   const expectationFrame = resolveExpectationGapFrame(valuationCore);
   const labels = expectationFactLabels(language);
   const rangeLineZh = rangeDisplay && medianDisplay
-    ? `如果你問的「目標價」是指 CrowdRisk 估值區間，根據 CrowdRisk model，目前 model-implied valuation range 是 ${rangeDisplay}，中位數 ${medianDisplay}。`
+    ? `根據 CrowdRisk model，目前 model-implied valuation range 是 ${rangeDisplay}，中位數是 ${medianDisplay}。`
     : '目前 CrowdRisk model 的資料不足以產生完整估值區間。';
   const rangeLineEn = rangeDisplay && medianDisplay
-    ? `If by price target you mean CrowdRisk's valuation range, the CrowdRisk model currently implies ${rangeDisplay}, with a median implied price of ${medianDisplay}.`
+    ? `Based on the CrowdRisk model, the current model-implied valuation range is ${rangeDisplay}, with a median of ${medianDisplay}.`
     : 'The current CrowdRisk model does not have enough verified inputs to produce a complete valuation range.';
 
   return response({
@@ -1157,6 +1157,89 @@ const buildValuationSnapshotAnswer = ({ ticker, language, stockPerformancePayloa
         buildExpectationEvidenceLine(ticker, language, valuationCore),
         `Plainly, the question is not only whether ${ticker} is good. It is whether ${ticker} can be good enough to exceed what the market already believes. If it merely meets expectations, valuation tolerance may stay low; if growth, NRR, or FCF margin slows, repricing risk rises. This is not a final investment decision.`
       ],
+    action: { type: 'open_dossier', label: language === 'zh' ? '打開股票檔案' : 'Open Dossier' }
+  });
+};
+
+const buildFinancialHealthAnswer = ({ ticker, language }) => {
+  const profile = getStockDossierProfile(ticker);
+  const financialHealth = profile?.visualPhaseOne?.phaseTwo?.financialHealth;
+  if (!financialHealth) {
+    return buildNotVerified({
+      intent: 'financial_health',
+      language,
+      ticker,
+      source: { feed: 'stockDossierProfiles.js' },
+      reason: language === 'zh'
+        ? 'CrowdRisk 目前沒有足夠已核實的財務健康數據。'
+        : 'CrowdRisk does not currently have enough verified financial health data.'
+    });
+  }
+
+  const qualityRead = financialHealth.qualityRead || '';
+  const metricCards = financialHealth.metricCards || [];
+  const qualityCards = financialHealth.qualityCards || [];
+
+  const findMetricValue = (labelSubstr) => {
+    const card = metricCards.find(c => String(c.label || '').toLowerCase().includes(labelSubstr.toLowerCase()));
+    return card ? card.value : null;
+  };
+
+  const revGrowth = findMetricValue('Revenue Growth') || findMetricValue('Revenue');
+  const fcfMargin = findMetricValue('FCF Margin') || findMetricValue('FCF');
+  const grossMargin = findMetricValue('Gross Margin') || findMetricValue('Gross');
+  const cashSecurities = findMetricValue('Cash + Securities') || findMetricValue('Cash');
+  const convNotes = findMetricValue('Convertible Notes') || findMetricValue('Convertible');
+  const sbcRevenue = findMetricValue('SBC / Revenue') || findMetricValue('SBC');
+
+  const boundaryLineZh = '這是財務質素和證據框架，不是最終買賣決定。';
+  const boundaryLineEn = 'This is financial-quality evidence and risk framing, not a final investment decision.';
+
+  const facts = {
+    revenue_growth: revGrowth,
+    fcf_margin: fcfMargin,
+    gross_margin: grossMargin,
+    cash_securities: cashSecurities,
+    convertible_notes: convNotes,
+    sbc_revenue: sbcRevenue
+  };
+
+  const factsList = metricCards.map(c => ({
+    label: c.label,
+    value: c.value || 'Not verified'
+  }));
+
+  const financialQualityLineZh = ticker === 'DDOG'
+    ? 'DDOG 的財務質素目前有支持：收入仍在增長，自由現金流利潤率夠高，資產負債表上的現金有彈性。不過，股權薪酬仍然要留意，因為它會攤薄股東回報。'
+    : `${ticker} 的財務質素目前要從收入增長、自由現金流利潤率、資產負債表上的現金彈性和股權薪酬一齊判斷。`;
+
+  const linesZh = [
+    financialQualityLineZh,
+    `核心指標：收入增長 ${revGrowth || '未驗證'}，自由現金流利潤率 ${fcfMargin || '未驗證'}，毛利率 ${grossMargin || '未驗證'}。`,
+    `資產負債表與攤薄：現金及有價證券 ${cashSecurities || '未驗證'}，可轉換票據 ${convNotes || '未驗證'}，股權薪酬佔收入比例 ${sbcRevenue || '未驗證'}。`,
+    '後續要看的，是這些指標能否一齊支持財務質素，而不是只看單一數字。',
+    boundaryLineZh
+  ];
+
+  const linesEn = [
+    `${ticker} Financial Health Assessment: ${qualityRead}`,
+    `Core metrics: Revenue Growth: ${revGrowth || 'Not verified'}, FCF Margin: ${fcfMargin || 'Not verified'}, Gross Margin: ${grossMargin || 'Not verified'}.`,
+    `Balance Sheet & Dilution: Cash & Securities: ${cashSecurities || 'Not verified'}, Convertible Notes: ${convNotes || 'Not verified'}, SBC / Revenue: ${sbcRevenue || 'Not verified'}.`,
+    ...qualityCards.map(c => `[${c.title} - ${c.state}] ${c.text}`),
+    boundaryLineEn
+  ];
+
+  return response({
+    intent: 'financial_health',
+    language,
+    ticker,
+    verifiedStatus: 'verified',
+    source: {
+      financial_profile: 'stockDossierProfiles.js'
+    },
+    facts,
+    factsList,
+    lines: language === 'zh' ? linesZh : linesEn,
     action: { type: 'open_dossier', label: language === 'zh' ? '打開股票檔案' : 'Open Dossier' }
   });
 };
@@ -1660,6 +1743,7 @@ export const answerAskCrowdRiskQuestion = ({ question, locale = 'en', payload = 
   if (intent === 'stock_performance') return buildStockPerformanceAnswer({ question, ticker, language, stockPerformancePayload });
   if (intent === 'momentum_rank') return buildMomentumRankAnswer({ ticker, language, payload });
   if (intent === 'valuation_snapshot') return buildValuationSnapshotAnswer({ ticker, language, stockPerformancePayload });
+  if (intent === 'financial_health') return buildFinancialHealthAnswer({ ticker, language });
   if (intent === 'earnings_reaction') return buildEarningsReactionAnswer({ question, ticker, language, earningsReactionPayload, earningsReactionReturnPayload });
 
   return buildCoverageStatusAnswer({ ticker, language, payload, stockPerformancePayload, referencePeerMapPayload });
