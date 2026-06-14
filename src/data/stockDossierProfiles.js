@@ -15851,6 +15851,642 @@ const stockDossierProfiles = {
         ]
       }
     }
+  },
+  ALAB: {
+    ticker: 'ALAB',
+    companyName: 'Astera Labs, Inc.',
+    exchange: 'NASDAQ',
+    logoUrl: buildStockLogoUrl('ALAB'),
+    overview:
+      'Astera Labs designs and manufactures semiconductor-based connectivity solutions for cloud and AI data center platforms, specializing in PCIe, CXL, and Ethernet technologies.',
+    category: 'Cloud & AI Connectivity',
+    analysisDate: '2026-06-13',
+    latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
+    marketSnapshot: {
+      currentPrice: null,
+      marketCap: null,
+      enterpriseValue: 'Not verified',
+      fiscalYearRevenueGuide: 'Not verified'
+    },
+    whyNow: {
+      reason: 'Astera Labs is scaling rapidly to meet AI data center requirements for high-bandwidth connectivity and smart fabric switches.',
+      verdict: 'Growth is robust with high gross margins, but the valuation multiple requires sustained near-triple-digit revenue growth and operating leverage.'
+    },
+    dossierVerdict: {
+      sourceType: 'curated',
+      asOf: '2026-06-13',
+      researchState: 'post_earnings_watch',
+      businessQuality: 'high',
+      valuationState: 'priced_for_perfection',
+      marketEvidence: 'constructive',
+      finalRead: 'Hyper-growth connectivity provider with demanding valuation.',
+      thesisShift: {
+        from: 'neutral',
+        to: 'neutral',
+        confidence: 'medium',
+        reason: 'Initial coverage setup.'
+      },
+      keySupport: [
+        'Q1 revenue grew 93% year over year to $308.4 million, driven by AI connectivity demand.',
+        'GAAP gross margin remained strong at 76.3% during early scaling.',
+        'Initial Scorpio AI fabric switch shipments support the portfolio expansion thesis.'
+      ],
+      keyRisk: [
+        'Valuation multiples capitalize significant forward hyper-growth.',
+        'Stock-based compensation remains high and requires dilution discipline.',
+        'Customer concentration remains a watch item.'
+      ]
+    },
+    quickFacts: [
+      { label: 'Business Model', value: 'Fabless Semiconductor' },
+      { label: 'Key Product', value: 'Aries PCIe/CXL Retimers, Scorpio Switches' },
+      { label: 'Growth Vector', value: 'AI cluster connectivity scaling' }
+    ],
+    marketEvidence: {
+      title: 'Initial market reception is constructive post-IPO and earnings.',
+      points: [
+        'The stock shows strong relative strength post-IPO, supported by high-growth earnings guides.',
+        'AI data center capital cycles remain supportive of connectivity components.'
+      ]
+    },
+    valueCore: {
+      ticker: 'ALAB',
+      value_core_type: 'Semiconductors',
+      company_stage_candidate: 'Scaling',
+      primary_value_driver: 'AI cluster scaling and PCIe/CXL design wins',
+      thesis_break_trigger: 'Deceleration in AI cluster buildouts or loss of market share in connectivity chips',
+      evidence_needed: [
+        'PCIe Gen 6 retimer market share',
+        'Scorpio switch customer adoption',
+        'Gross margin trends',
+        'SBC dilution'
+      ],
+      evidence_quality: 'Curated',
+      dossier_state: 'curated_profile_nasdaq_rebalance_2026_06',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'stockDossierProfiles.js'
+    },
+    visualPhaseOne: {
+      performanceGrid: {
+        source: 'Verified return series pending',
+        periods: [
+          { label: 'Today', value: null, note: 'Intraday return not verified' },
+          { label: '1 Week', value: null, note: 'Short-term return feed pending' },
+          { label: '1 Month', value: null, note: 'Monthly return feed pending' },
+          { label: '3 Months', value: null, note: 'Quarter return feed pending' },
+          { label: '6 Months', value: null, note: 'Half-year return feed pending' },
+          { label: '1 Year', value: null, note: 'Annual return feed pending' }
+        ]
+      },
+      signalScreens: [
+        {
+          title: 'High Growth Connectivity',
+          explanation: 'Q1 revenue grew 93% YoY to $308.4M, indicating leading connectivity growth.',
+          evidenceState: 'Curated'
+        }
+      ],
+      faq: {
+        overview: [
+          {
+            question: 'What does Astera Labs do?',
+            answer: 'Astera Labs provides connectivity solutions for cloud and AI data center platforms, including PCIe/CXL retimers and smart fabric switches.'
+          }
+        ],
+        businessCore: [],
+        marketEvidence: [],
+        valuation: [],
+        thesisRisk: [],
+        financialHealth: []
+      },
+      phaseTwo: {
+        valuation: {
+          posture: {
+            title: 'Premium multiples',
+            label: 'Valuation posture',
+            note: 'Multiples require high execution durability.'
+          },
+          metricCards: [
+            { label: 'GAAP Gross Margin', value: '76.3%', note: 'High semiconductor margin' },
+            { label: 'Revenue Growth', value: '93.0%', note: 'Q1 YoY revenue expansion' }
+          ],
+          tensionCards: [
+            { title: 'Growth vs multiple', state: 'High expectations', text: 'Multiple remains demanding and assumes sustained near-triple-digit growth.' },
+            { title: 'Peer context', state: 'Not verified', text: 'Consensus comparisons pending verification.' }
+          ],
+          checklist: [
+            'Sustained revenue growth above 50% for multiple years',
+            'FCF margins scale toward 25%-30%',
+            'SBC declines as a percentage of revenue'
+          ]
+        },
+        thesisRisk: {
+          lead: 'The primary risk is multiple compression if AI cluster capital expenditures moderate.',
+          riskMap: [
+            { label: 'Growth deceleration', severity: 'High', watch: 'Revenue growth below 40% or customer slowdown' },
+            { label: 'Customer concentration', severity: 'Medium', watch: 'Loss of major cloud customers' }
+          ],
+          evidenceNeeded: [
+            'Scorpio switch revenue mix',
+            'SBC dilution offset status'
+          ]
+        },
+        financialHealth: {
+          qualityRead: 'High revenue growth and strong gross margins, while FCF conversion is scaling but monitored alongside stock-based compensation.',
+          metricCards: [
+            { label: 'Revenue Growth', value: '93.0%', note: 'Q1 year-over-year growth' },
+            { label: 'FCF Margin', value: '21.7%', note: 'Q1 free cash flow margin' },
+            { label: 'Gross Margin', value: '76.3%', note: 'GAAP gross margin' },
+            { label: 'Cash + Securities', value: '$1.18B', note: 'Cash and short term investments' },
+            { label: 'Convertible Notes', value: '$0', note: 'No convertible debt' },
+            { label: 'SBC / Revenue', value: '15.8%', note: 'Stock-based compensation ratio' }
+          ],
+          qualityCards: [
+            { title: 'Scale and growth', state: 'Constructive', text: 'Q1 revenue grew 93% YoY to $308.4 million, driven by AI connectivity demand.' },
+            { title: 'FCF conversion', state: 'Constructive', text: 'FCF reached $67 million, demonstrating early profitability leverage.' },
+            { title: 'Dilution risk', state: 'Monitor', text: 'SBC remains material at roughly 15.8% of revenue, which needs ongoing dilution monitoring.' }
+          ]
+        }
+      }
+    }
+  },
+  CRWV: {
+    ticker: 'CRWV',
+    companyName: 'CoreWeave, Inc.',
+    exchange: 'NASDAQ',
+    logoUrl: buildStockLogoUrl('CRWV'),
+    overview:
+      'CoreWeave is a specialized cloud provider delivering GPU-accelerated computing resources for large-scale AI training, inference, and machine learning workloads.',
+    category: 'GPU Cloud Infrastructure Platform',
+    analysisDate: '2026-06-13',
+    latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
+    marketSnapshot: {
+      currentPrice: null,
+      marketCap: null,
+      enterpriseValue: 'Not verified',
+      fiscalYearRevenueGuide: '$12.0B-$13.0B'
+    },
+    whyNow: {
+      reason: 'CoreWeave is leading the GPU-specialized neocloud buildout, adding massive backlog from hyperscale and AI-native customers.',
+      verdict: 'Outstanding top-line scale and backlog of $100B, but capital expenditures are massive, leaving FCF negative with substantial debt risk.'
+    },
+    dossierVerdict: {
+      sourceType: 'curated',
+      asOf: '2026-06-13',
+      researchState: 'post_earnings_watch',
+      businessQuality: 'medium_high',
+      valuationState: 'speculative_growth',
+      marketEvidence: 'constructive',
+      finalRead: 'High-leverage neocloud GPU play with massive backlog and CapEx.',
+      thesisShift: {
+        from: 'neutral',
+        to: 'neutral',
+        confidence: 'medium',
+        reason: 'Initial coverage setup.'
+      },
+      keySupport: [
+        'Q1 revenue reached $2.08B, growing 112% YoY, confirming aggressive scale.',
+        'Backlog grew to nearly $100B in Q1 2026, up from $66.8B at the end of 2025.',
+        'Diversified customer wins including Meta and Anthropic.'
+      ],
+      keyRisk: [
+        'Massive capital expenditures ($7.7B in Q1) keep free cash flow negative.',
+        'Carrying nearly $25 billion in total debt to finance GPU purchases.',
+        'Risk of GPU supply-demand normalization over the next 24 months.'
+      ]
+    },
+    quickFacts: [
+      { label: 'Business Model', value: 'Specialized Cloud IaaS' },
+      { label: 'Key Asset', value: 'NVIDIA GPU clusters (H100/H200/Blackwell)' },
+      { label: 'Backlog', value: 'Nearly $100B as of Q1 2026' }
+    ],
+    marketEvidence: {
+      title: 'Outstanding momentum ahead of Nasdaq-100 index inclusion.',
+      points: [
+        'Shares exhibit constructive institutional support following the March 2025 IPO.',
+        'Nasdaq-100 inclusion in June 2026 acts as a passive demand catalyst.'
+      ]
+    },
+    valueCore: {
+      ticker: 'CRWV',
+      value_core_type: 'Cloud Infrastructure',
+      company_stage_candidate: 'Scaling',
+      primary_value_driver: 'GPU backlog conversion and customer diversification',
+      thesis_break_trigger: 'Customer optimization of GPU compute, or high debt servicing costs',
+      evidence_needed: [
+        'Quarterly backlog run-rate',
+        'Debt-to-EBITDA leverage',
+        'Average customer tenure',
+        'CapEx buildout cadence'
+      ],
+      evidence_quality: 'Curated',
+      dossier_state: 'curated_profile_nasdaq_rebalance_2026_06',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'stockDossierProfiles.js'
+    },
+    visualPhaseOne: {
+      performanceGrid: {
+        source: 'Verified return series pending',
+        periods: [
+          { label: 'Today', value: null, note: 'Intraday return not verified' },
+          { label: '1 Week', value: null, note: 'Short-term return feed pending' },
+          { label: '1 Month', value: null, note: 'Monthly return feed pending' },
+          { label: '3 Months', value: null, note: 'Quarter return feed pending' },
+          { label: '6 Months', value: null, note: 'Half-year return feed pending' },
+          { label: '1 Year', value: null, note: 'Annual return feed pending' }
+        ]
+      },
+      signalScreens: [
+        {
+          title: 'Hyper Scale GPU Cloud',
+          explanation: 'Guidance of $12B-$13B for FY2026 indicates rapid cloud infrastructure scale.',
+          evidenceState: 'Curated'
+        }
+      ],
+      faq: {
+        overview: [
+          {
+            question: 'What is CoreWeave?',
+            answer: 'CoreWeave is a neocloud provider specializing in GPU-accelerated infrastructure for AI, training, and inference.'
+          }
+        ],
+        businessCore: [],
+        marketEvidence: [],
+        valuation: [],
+        thesisRisk: [],
+        financialHealth: []
+      },
+      phaseTwo: {
+        valuation: {
+          posture: {
+            title: 'High leverage scaling',
+            label: 'Valuation posture',
+            note: 'Depends heavily on backlog conversion to EBITDA.'
+          },
+          metricCards: [
+            { label: 'Revenue Growth', value: '112.0%', note: 'Q1 year-over-year growth' },
+            { label: 'Adjusted EBITDA', value: '$1.16B', note: 'Q1 non-GAAP EBITDA' }
+          ],
+          tensionCards: [
+            { title: 'Leverage vs growth', state: 'High debt', text: 'Total debt of $25B is being used to build out infrastructure, requiring high asset utilization.' },
+            { title: 'Peer context', state: 'Not verified', text: 'Neocloud vs hyperscale valuation sets pending.' }
+          ],
+          checklist: [
+            'EBITDA growth scales to cover capital lease costs',
+            'Customer concentration continues to diversify',
+            'CapEx begins to moderate relative to operating cash flows'
+          ]
+        },
+        thesisRisk: {
+          lead: 'The primary risk is credit and leverage risk if GPU utilization drops below targets.',
+          riskMap: [
+            { label: 'GPU oversupply', severity: 'High', watch: 'Hyperscaler internal chip adoption' },
+            { label: 'Leverage stress', severity: 'High', watch: 'Debt servicing costs and covenants' }
+          ],
+          evidenceNeeded: [
+            'Average revenue per GPU compute hour',
+            'Utilization rates across datacenters'
+          ]
+        },
+        financialHealth: {
+          qualityRead: 'Stellar revenue scaling offset by massive capital expenditures for GPU clusters, resulting in high debt leverage and negative free cash flow.',
+          metricCards: [
+            { label: 'Revenue Growth', value: '112.0%', note: 'Q1 year-over-year growth' },
+            { label: 'FCF Margin', value: 'Negative', note: 'Capital intensive buildout' },
+            { label: 'Gross Margin', value: '71.7%', note: 'FY2025 gross margin proxy' },
+            { label: 'Cash + Securities', value: '$2.27B', note: 'Cash and equivalents' },
+            { label: 'Convertible Notes', value: 'Not verified', note: 'Substantial private/secured debt' },
+            { label: 'SBC / Revenue', value: 'Not verified', note: 'Post-IPO compensation structure pending' }
+          ],
+          qualityCards: [
+            { title: 'Scale and growth', state: 'Constructive', text: 'Q1 revenue reached $2.08B, growing 112% YoY, with FY2026 guide of $12B-$13B.' },
+            { title: 'Capital intensity', state: 'Monitor', text: 'Negative free cash flow driven by massive CapEx of $7.70B in Q1 2026 alone.' },
+            { title: 'Debt leverage', state: 'Monitor', text: 'Carried nearly $25 billion in total debt to finance cluster acquisitions.' }
+          ]
+        }
+      }
+    }
+  },
+  RKLB: {
+    ticker: 'RKLB',
+    companyName: 'Rocket Lab USA, Inc.',
+    exchange: 'NASDAQ',
+    logoUrl: buildStockLogoUrl('RKLB'),
+    overview:
+      'Rocket Lab provides launch services and space systems solutions, including the Electron and Neutron launch vehicles, satellite components, and orbital spacecraft platforms.',
+    category: 'Space & Launch Systems',
+    analysisDate: '2026-06-13',
+    latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
+    marketSnapshot: {
+      currentPrice: null,
+      marketCap: null,
+      enterpriseValue: 'Not verified',
+      fiscalYearRevenueGuide: 'Not verified'
+    },
+    whyNow: {
+      reason: 'Rocket Lab is scaling launch cadence and expanding its Space Systems division, which represents a larger and higher-margin revenue mix.',
+      verdict: 'Strong growth and record backlog, but FCF remains negative due to heavy Neutron R&D spend and launch capital costs.'
+    },
+    dossierVerdict: {
+      sourceType: 'curated',
+      asOf: '2026-06-13',
+      researchState: 'post_earnings_watch',
+      businessQuality: 'medium',
+      valuationState: 'demanding',
+      marketEvidence: 'constructive',
+      finalRead: 'Durable commercial space player with high R&D reinvestment needs.',
+      thesisShift: {
+        from: 'neutral',
+        to: 'neutral',
+        confidence: 'medium',
+        reason: 'Initial coverage setup.'
+      },
+      keySupport: [
+        'Record Q1 revenue of $200.3 million, representing a 63.5% increase YoY.',
+        'Space Systems revenue grew 57.2% YoY, accounting for 68% of total mix.',
+        'Electron launch cadence remains robust, maintaining commercial launch leadership.'
+      ],
+      keyRisk: [
+        'FCF remains negative due to heavy Neutron development investments.',
+        'Launch operations carry high capital intensity and payload event risks.',
+        'Backlog conversion timeline is subject to defense and commercial customer schedules.'
+      ]
+    },
+    quickFacts: [
+      { label: 'Business Model', value: 'Launch & Satellites Services' },
+      { label: 'Core Products', value: 'Electron (small), Neutron (medium), Space Systems' },
+      { label: 'Q1 2026 Revenue Mix', value: '68% Space Systems / 32% Launch' }
+    ],
+    marketEvidence: {
+      title: 'Constructive relative strength backed by defense contract backlog.',
+      points: [
+        'The stock shows high relative strength as backlog conversion gains validation.',
+        'Defense contracts provide stable demand cushion against commercial launch lumpiness.'
+      ]
+    },
+    valueCore: {
+      ticker: 'RKLB',
+      value_core_type: 'Space Systems & Launch',
+      company_stage_candidate: 'Scaling',
+      primary_value_driver: 'Neutron development timeline and space systems contract wins',
+      thesis_break_trigger: 'Neutron development delays or launch failure events',
+      evidence_needed: [
+        'Neutron test launch date',
+        'Electron launch margin improvements',
+        'Space systems backlog growth',
+        'ATM share dilution rate'
+      ],
+      evidence_quality: 'Curated',
+      dossier_state: 'curated_profile_nasdaq_rebalance_2026_06',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'stockDossierProfiles.js'
+    },
+    visualPhaseOne: {
+      performanceGrid: {
+        source: 'Verified return series pending',
+        periods: [
+          { label: 'Today', value: null, note: 'Intraday return not verified' },
+          { label: '1 Week', value: null, note: 'Short-term return feed pending' },
+          { label: '1 Month', value: null, note: 'Monthly return feed pending' },
+          { label: '3 Months', value: null, note: 'Quarter return feed pending' },
+          { label: '6 Months', value: null, note: 'Half-year return feed pending' },
+          { label: '1 Year', value: null, note: 'Annual return feed pending' }
+        ]
+      },
+      signalScreens: [
+        {
+          title: 'Commercial Space Growth',
+          explanation: 'Q1 revenue grew 63.5% YoY, led by the space systems division.',
+          evidenceState: 'Curated'
+        }
+      ],
+      faq: {
+        overview: [
+          {
+            question: 'What does Rocket Lab do?',
+            answer: 'Rocket Lab provides launch services (Electron and Neutron rockets) and designs spacecraft platforms and satellite subsystems.'
+          }
+        ],
+        businessCore: [],
+        marketEvidence: [],
+        valuation: [],
+        thesisRisk: [],
+        financialHealth: []
+      },
+      phaseTwo: {
+        valuation: {
+          posture: {
+            title: 'High R&D capitalization',
+            label: 'Valuation posture',
+            note: 'Value is heavily weighted toward Neutron execution.'
+          },
+          metricCards: [
+            { label: 'Revenue Growth', value: '63.5%', note: 'Q1 year-over-year growth' },
+            { label: 'GAAP Gross Margin', value: '38.2%', note: 'GAAP aerospace margins' }
+          ],
+          tensionCards: [
+            { title: 'Reinvestment vs margin', state: 'Negative FCF', text: 'FCF is currently negative due to investments in the medium-lift Neutron rocket program.' },
+            { title: 'Peer context', state: 'Not verified', text: 'Space peer multiples pending verification.' }
+          ],
+          checklist: [
+            'Successful Neutron hot fire test and launch schedule preservation',
+            'Space Systems gross margins scale above 40%',
+            'Launch backlog conversion speeds up'
+          ]
+        },
+        thesisRisk: {
+          lead: 'The primary risk is launch failure and development delay for Neutron.',
+          riskMap: [
+            { label: 'Launch failures', severity: 'High', watch: 'Electron launch success rate' },
+            { label: 'Neutron delay', severity: 'High', watch: 'First test flight target date' }
+          ],
+          evidenceNeeded: [
+            'Space systems contract pipeline',
+            'Dilution count from ATM offerings'
+          ]
+        },
+        financialHealth: {
+          qualityRead: 'Growth is driven by space systems, but launch capital requirements and Neutron development keep free cash flow negative.',
+          metricCards: [
+            { label: 'Revenue Growth', value: '63.5%', note: 'Q1 year-over-year growth' },
+            { label: 'FCF Margin', value: 'Negative', note: 'Q1 FCF use of $77.4M' },
+            { label: 'Gross Margin', value: '38.2%', note: 'GAAP gross margin' },
+            { label: 'Cash + Securities', value: '$1.38B', note: 'Cash and equivalents' },
+            { label: 'Convertible Notes', value: 'Not verified', note: 'Convertible debt details pending' },
+            { label: 'SBC / Revenue', value: 'Not verified', note: 'Higher comp expenses noted' }
+          ],
+          qualityCards: [
+            { title: 'Scale and growth', state: 'Constructive', text: 'Q1 revenue hit a record $200.3 million, up 63.5% YoY, led by Space Systems.' },
+            { title: 'R&D investment', state: 'Monitor', text: 'FCF remains negative as capital is allocated to the next-gen Neutron rocket program.' },
+            { title: 'Liquidity buffer', state: 'Constructive', text: 'Ended Q1 with $1.38B in cash/investments and over $2.0B in total liquidity.' }
+          ]
+        }
+      }
+    }
+  },
+  TER: {
+    ticker: 'TER',
+    companyName: 'Teradyne, Inc.',
+    exchange: 'NASDAQ',
+    logoUrl: buildStockLogoUrl('TER'),
+    overview:
+      'Teradyne designs and manufactures automated test equipment for semiconductors, wireless products, and electronic systems, alongside industrial robotics and cobots.',
+    category: 'Semiconductor Test & Robotics',
+    analysisDate: '2026-06-13',
+    latestFiscalPeriod: 'Q1 2026 ended 2026-03-29',
+    marketSnapshot: {
+      currentPrice: null,
+      marketCap: null,
+      enterpriseValue: 'Not verified',
+      fiscalYearRevenueGuide: 'Not verified'
+    },
+    whyNow: {
+      reason: 'Teradyne is benefiting from a cyclical upturn in semiconductor testing demand, particularly for AI-related GPU and HBM components.',
+      verdict: 'High profitability and solid cash flow generation, though performance is tied to semiconductor capital spending cycles.'
+    },
+    dossierVerdict: {
+      sourceType: 'curated',
+      asOf: '2026-06-13',
+      researchState: 'post_earnings_watch',
+      businessQuality: 'high',
+      valuationState: 'priced_for_recovery',
+      marketEvidence: 'constructive',
+      finalRead: 'Quality semiconductor test player leveraged to AI testing cycles.',
+      thesisShift: {
+        from: 'neutral',
+        to: 'neutral',
+        confidence: 'medium',
+        reason: 'Initial coverage setup.'
+      },
+      keySupport: [
+        'Q1 revenue grew 87% YoY to $1.282 billion, showing strong cyclical demand.',
+        'GAAP gross margin reached 60.9%, demonstrating high pricing power.',
+        'Strong semiconductor testing demand driven by GPU and HBM complexity.'
+      ],
+      keyRisk: [
+        'Semiconductor capital equipment cycles carry high volatility.',
+        'Robotics division growth and margins remain a watch item.',
+        'Customer concentration in chip design leaders represents a structural risk.'
+      ]
+    },
+    quickFacts: [
+      { label: 'Business Model', value: 'Hardware Equipment Sale' },
+      { label: 'Core Segments', value: 'Semiconductor Test, System Test, Wireless Test, Robotics' },
+      { label: 'Q1 Operating Cash Flow', value: '$265 million' }
+    ],
+    marketEvidence: {
+      title: 'Cyclical recovery evidence is constructive with strong semiconductor demand.',
+      points: [
+        'Semiconductor testing demand shows strong cyclical recovery signals.',
+        'Advanced chip testing complexity serves as a secular tailwind.'
+      ]
+    },
+    valueCore: {
+      ticker: 'TER',
+      value_core_type: 'Semiconductor Testing & Robotics',
+      company_stage_candidate: 'Mature Growth',
+      primary_value_driver: 'AI chip complexity testing and robotics adoption',
+      thesis_break_trigger: 'Semiconductor cap-ex downturn or robotics margin pressure',
+      evidence_needed: [
+        'Robotics segment growth rate',
+        'Gross margin stability',
+        'Advanced packaging test mix',
+        'Share repurchase cadence'
+      ],
+      evidence_quality: 'Curated',
+      dossier_state: 'curated_profile_nasdaq_rebalance_2026_06',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'stockDossierProfiles.js'
+    },
+    visualPhaseOne: {
+      performanceGrid: {
+        source: 'Verified return series pending',
+        periods: [
+          { label: 'Today', value: null, note: 'Intraday return not verified' },
+          { label: '1 Week', value: null, note: 'Short-term return feed pending' },
+          { label: '1 Month', value: null, note: 'Monthly return feed pending' },
+          { label: '3 Months', value: null, note: 'Quarter return feed pending' },
+          { label: '6 Months', value: null, note: 'Half-year return feed pending' },
+          { label: '1 Year', value: null, note: 'Annual return feed pending' }
+        ]
+      },
+      signalScreens: [
+        {
+          title: 'Cyclical Semi Test',
+          explanation: 'Q1 revenue grew 87% YoY to $1.282B, showing sharp recovery.',
+          evidenceState: 'Curated'
+        }
+      ],
+      faq: {
+        overview: [
+          {
+            question: 'What does Teradyne test?',
+            answer: 'Teradyne provides testing systems for microprocessors, logic, RF, analog, memory, and system-on-chip devices.'
+          }
+        ],
+        businessCore: [],
+        marketEvidence: [],
+        valuation: [],
+        thesisRisk: [],
+        financialHealth: []
+      },
+      phaseTwo: {
+        valuation: {
+          posture: {
+            title: 'Cyclical pricing',
+            label: 'Valuation posture',
+            note: 'Multiples fluctuate with semiconductor capital cycles.'
+          },
+          metricCards: [
+            { label: 'Revenue Growth', value: '87.0%', note: 'Q1 year-over-year growth' },
+            { label: 'GAAP Gross Margin', value: '60.9%', note: 'Q1 GAAP gross margin' }
+          ],
+          tensionCards: [
+            { title: 'Cyclicality vs automation', state: 'Priced for recovery', text: 'Earning recovery is partly priced in, requiring robotics to offset semi volatility.' },
+            { title: 'Peer context', state: 'Not verified', text: 'Testing equipment peers multiple set pending.' }
+          ],
+          checklist: [
+            'Robotics growth scales to double-digits',
+            'Gross margins sustain above 58%-60%',
+            'Cyclical testing demand carries through to FY2027'
+          ]
+        },
+        thesisRisk: {
+          lead: 'The primary risk is cyclical deceleration in semiconductor equipment CapEx.',
+          riskMap: [
+            { label: 'Cyclical downturns', severity: 'High', watch: 'Major customer capital expenditure cuts' },
+            { label: 'Robotics margin compression', severity: 'Medium', watch: 'Robotics pricing pressure' }
+          ],
+          evidenceNeeded: [
+            'Advanced packaging test adoption rate',
+            'Free cash flow margins'
+          ]
+        },
+        financialHealth: {
+          qualityRead: 'Strong balance sheet with cyclical cash generation and robust gross margins, supported by low debt.',
+          metricCards: [
+            { label: 'Revenue Growth', value: '87.0%', note: 'Q1 year-over-year growth' },
+            { label: 'FCF Margin', value: 'Not verified', note: 'Capex-adjusted free cash flow not verified' },
+            { label: 'Gross Margin', value: '60.9%', note: 'GAAP gross margin' },
+            { label: 'Cash + Securities', value: '$241.9M', note: 'Cash and equivalents' },
+            { label: 'Convertible Notes', value: '$0', note: 'No material convertible debt' },
+            { label: 'SBC / Revenue', value: 'Not verified', note: 'Standard compensation equity mix' }
+          ],
+          qualityCards: [
+            { title: 'Scale and growth', state: 'Constructive', text: 'Q1 revenue surged 87% YoY to $1.282B, driven by AI component test demand.' },
+            { title: 'Cash generation', state: 'Constructive', text: 'Net cash from operating activities reached $265 million in Q1 2026.' },
+            { title: 'Cyclical cushion', state: 'Constructive', text: 'Maintains strong financial flexibility to manage semiconductor capital cycles.' }
+          ]
+        }
+      }
+    }
   }
 };
 
