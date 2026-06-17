@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState, useCallback } from 'react';
 import { Search, Crosshair, BarChart3, Clock, Database, Scale, ShieldAlert, Layers3, Lightbulb } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { canonicalizeTicker, getTickerLookupKeys } from '../data/tickerAliases.js';
 
 const API_BASE = (import.meta.env.VITE_KW_TERMINAL_API_BASE || 'https://kw-terminal-api.myfootballplaces.workers.dev').replace(/\/$/, '');
 
@@ -119,24 +120,27 @@ function formatAuditPercent(value, digits = 2, withSign = true) {
   return formatPercent(value, digits, withSign);
 }
 
-function normalizeEarningsGapSummaryPayload(payload) {
+function normalizeEarningsGapSummaryPayload(payload, displayTicker = null) {
   const rows = Array.isArray(payload?.quarter_log) ? payload.quarter_log : [];
   const measuredCount = payload?.coverage?.measured_gap_count ?? payload?.dossier_digest?.measured_gap_count ?? 0;
   const gapUpRate = ratioToPercent(payload?.earnings_summary?.gap_up_rate);
   const averageGapUp = ratioToPercent(payload?.earnings_summary?.average_gap_up);
   const averageGapDown = ratioToPercent(payload?.earnings_summary?.average_gap_down);
   const sameDayOc = averagePercent(rows.filter((row) => !row.exclusion_reasons?.length), 'same_day_oc');
+  const ticker = displayTicker || payload?.ticker;
 
   return {
     truth_layer_status: 'truth_layer_v1',
-    ticker: payload?.ticker,
+    ticker,
+    source_ticker: payload?.ticker,
     coverage: payload?.coverage,
     earnings_summary: payload?.earnings_summary,
     forward_returns: payload?.forward_returns,
     dossier_digest: payload?.dossier_digest,
     summary: {
       truth_layer_kind: 'earnings_gap_summary',
-      ticker: payload?.ticker,
+      ticker,
+      source_ticker: payload?.ticker,
       total_events: measuredCount,
       win_rate: gapUpRate,
       avg_gap_up_pct: averageGapUp,
@@ -572,7 +576,7 @@ export default function EventStudyPanel({ payload, eventStudySeed, onOpenStockDo
   });
 
   const fetchEventStudy = useCallback(async (symbolOverride, options = {}) => {
-    const nextSymbol = (symbolOverride ?? symbol).trim();
+    const nextSymbol = canonicalizeTicker(symbolOverride ?? symbol);
     if (!nextSymbol) return;
     if (!options.silent) {
       setSymbol(nextSymbol.toUpperCase());
@@ -584,17 +588,21 @@ export default function EventStudyPanel({ payload, eventStudySeed, onOpenStockDo
     }
 
     try {
-      const endpoint = `${API_BASE}/event-study/earnings-gap-summary?symbol=${nextSymbol.toUpperCase()}`;
-      const res = await fetch(endpoint);
-      const json = await res.json();
+      let lastError = null;
+      for (const lookupSymbol of getTickerLookupKeys(nextSymbol)) {
+        const endpoint = `${API_BASE}/event-study/earnings-gap-summary?symbol=${encodeURIComponent(lookupSymbol)}`;
+        const res = await fetch(endpoint);
+        const json = await res.json();
 
-      if (!res.ok) {
-        throw new Error(json.error || `Error ${res.status}`);
+        if (res.ok) {
+          setData(normalizeEarningsGapSummaryPayload(json, nextSymbol.toUpperCase()));
+          setHistoryRows([]);
+          setExpandedRows(new Set());
+          return;
+        }
+        lastError = json?.error || json?.dossier_digest?.reason || `Error ${res.status}`;
       }
-
-      setData(normalizeEarningsGapSummaryPayload(json));
-      setHistoryRows([]);
-      setExpandedRows(new Set());
+      throw new Error(lastError || 'Event study summary unavailable');
     } catch (err) {
       setError(err.message);
     } finally {

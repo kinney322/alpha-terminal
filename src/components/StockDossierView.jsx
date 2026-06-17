@@ -821,17 +821,26 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, refer
     setEventStudyLoading(true);
     setEventStudyError(null);
 
-    fetch(`${API_BASE}/event-study/earnings-gap-summary?symbol=${encodeURIComponent(tickerForSummary)}`, {
-      signal: controller.signal,
-      headers: { Accept: 'application/json' }
-    })
-      .then(async (response) => {
+    (async () => {
+      let lastError = null;
+      for (const lookupTicker of getTickerLookupKeys(tickerForSummary)) {
+        const response = await fetch(`${API_BASE}/event-study/earnings-gap-summary?symbol=${encodeURIComponent(lookupTicker)}`, {
+          signal: controller.signal,
+          headers: { Accept: 'application/json' }
+        });
         const json = await response.json();
-        if (!response.ok) {
-          throw new Error(json?.error || `Event study summary failed (${response.status})`);
+        if (response.ok) {
+          setEventStudySummary({
+            ...json,
+            ticker: tickerForSummary,
+            source_ticker: json?.ticker
+          });
+          return;
         }
-        setEventStudySummary(json);
-      })
+        lastError = json?.error || json?.dossier_digest?.reason || `Event study summary failed (${response.status})`;
+      }
+      throw new Error(lastError || 'Event study summary unavailable');
+    })()
       .catch((error) => {
         if (error.name === 'AbortError') return;
         setEventStudySummary(null);
