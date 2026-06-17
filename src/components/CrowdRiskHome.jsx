@@ -4,6 +4,7 @@ import { getStockDossierProfile } from '../data/stockDossierProfiles.js';
 import { resolveReferencePeerEcosystemSnapshot } from '../data/referencePeerMapAdapter.js';
 import { answerAskCrowdRiskQuestion, resolveAskCrowdRiskRequest, resolveEarningsReactionReturnRequest } from '../data/askCrowdRiskResponder.js';
 import { fetchEarningsGapSummaryPayload, fetchEarningsReactionReturnPayload } from '../data/payloadAdapter.js';
+import { canonicalizeTicker } from '../data/tickerAliases.js';
 
 const HOME_COPY = {
   en: {
@@ -95,7 +96,7 @@ const extractTicker = (item) => {
   return '';
 };
 
-const normalizeTicker = (value) => String(value || '').trim().toUpperCase();
+const normalizeTicker = canonicalizeTicker;
 
 const formatLabel = (value) => (
   String(value || '')

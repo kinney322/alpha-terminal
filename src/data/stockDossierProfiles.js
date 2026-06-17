@@ -1,4 +1,5 @@
 import { buildStockLogoUrl } from './stockLogoUrls';
+import { canonicalizeTicker } from './tickerAliases';
 
 const stockDossierProfiles = {
   DDOG: {
@@ -16491,5 +16492,5 @@ const stockDossierProfiles = {
 };
 
 export function getStockDossierProfile(ticker) {
-  return stockDossierProfiles[String(ticker || '').trim().toUpperCase()] || null;
+  return stockDossierProfiles[canonicalizeTicker(ticker)] || null;
 }

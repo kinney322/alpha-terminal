@@ -1,6 +1,7 @@
 import { getStockDossierProfile } from './stockDossierProfiles.js';
 import { resolveReferencePeerEcosystemSnapshot } from './referencePeerMapAdapter.js';
 import { resolveAskCrowdRiskCatalogEntry } from './askCrowdRiskAnswerCatalog.js';
+import { canonicalizeTicker } from './tickerAliases.js';
 
 const MACRO_TICKERS = new Set(['SPY', 'QQQ']);
 const NOT_VERIFIED_EN = 'CrowdRisk cannot answer this with verified data yet.';
@@ -12,7 +13,7 @@ const TICKER_STOPWORDS = new Set([
   'SHARE', 'SHARES', 'TARGET', 'THE', 'THESIS', 'TO', 'VALUATION', 'WEEK', 'WHAT', 'WOULD'
 ]);
 
-const normalizeTicker = (value) => String(value || '').trim().toUpperCase();
+const normalizeTicker = canonicalizeTicker;
 
 const hasChinese = (value) => /[\u3400-\u9fff]/.test(String(value || ''));
 

@@ -9,6 +9,7 @@ import CrowdRiskHome from './components/CrowdRiskHome.jsx';
 import MomentumUniverseSection from './components/MomentumUniverseSection.jsx';
 import { buildMomentumUniverseSyntheticDetail } from './components/dossierHelpers.js';
 import { fetchAndNormalizeRadarPayload, fetchReferencePeerMapPayload, fetchStockPerformancePayload } from './data/payloadAdapter.js';
+import { canonicalizeTicker } from './data/tickerAliases.js';
 
 const PRODUCT_MODE = import.meta.env.VITE_PRODUCT_MODE || 'crowdrisk';
 const RADAR_PAYLOAD_REFRESH_MS = 5 * 60 * 1000;
@@ -64,7 +65,7 @@ const scrollViewportToTop = () => {
   document.body.scrollTop = 0;
 };
 
-const normalizeTicker = (value) => String(value || '').trim().toUpperCase();
+const normalizeTicker = canonicalizeTicker;
 
 const resolveDossierDetail = (payload, ticker) => {
   const normalizedTicker = normalizeTicker(ticker);
@@ -185,7 +186,8 @@ function App() {
   }, [activeTab]);
 
   const handleOpenStockDossier = (ticker, eventDetail) => {
-    setDossierSeed({ ticker, eventDetail });
+    const canonicalTicker = normalizeTicker(ticker);
+    setDossierSeed({ ticker: canonicalTicker, eventDetail: eventDetail || resolveDossierDetail(payload, canonicalTicker) });
     setActiveTab(isCrowdRisk ? 'stock-dossier' : 'dossier');
     setIsMobileMenuOpen(false);
   };

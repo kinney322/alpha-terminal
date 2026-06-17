@@ -1,6 +1,7 @@
 import { buildStockLogoUrl } from '../data/stockLogoUrls.js';
+import { canonicalizeTicker } from '../data/tickerAliases.js';
 
-export const normalizeTicker = (t) => String(t || '').trim().toUpperCase();
+export const normalizeTicker = canonicalizeTicker;
 
 const formatSignedPct = (value) => {
   if (value === undefined || value === null || Number.isNaN(Number(value))) return 'Not Included';

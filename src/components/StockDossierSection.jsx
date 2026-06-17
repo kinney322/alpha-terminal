@@ -32,7 +32,7 @@ export default function StockDossierSection({ payload, stockPerformancePayload, 
 
   useEffect(() => {
     if (dossierSeed) {
-      setSelectedTicker(dossierSeed.ticker);
+      setSelectedTicker(normalizeTicker(dossierSeed.ticker));
       setSelectedEventDetail(dossierSeed.eventDetail);
     } else {
       setSelectedTicker(null);
@@ -122,7 +122,7 @@ export default function StockDossierSection({ payload, stockPerformancePayload, 
     if (document.activeElement instanceof HTMLElement) {
       document.activeElement.blur();
     }
-    setSelectedTicker(ticker);
+    setSelectedTicker(normalizeTicker(ticker));
     setSelectedEventDetail(eventDetail);
     window.setTimeout(scrollDossierToTop, 0);
   };

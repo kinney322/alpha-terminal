@@ -1,7 +1,8 @@
 import { getStockDossierProfile } from './stockDossierProfiles';
 import { resolvePeerEcosystemSnapshot } from './stockDossierPeerEcosystemSamples';
+import { canonicalizeTicker } from './tickerAliases';
 
-const normalizeTicker = (value) => String(value || '').trim().toUpperCase();
+const normalizeTicker = canonicalizeTicker;
 
 const formatLabel = (value) => (
   String(value || '')
@@ -82,4 +83,3 @@ export const resolveReferencePeerEcosystemSnapshot = (referencePeerMapPayload, t
     candidateAdditions
   };
 };
-
