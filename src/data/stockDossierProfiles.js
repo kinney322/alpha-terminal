@@ -9661,7 +9661,7 @@ const stockDossierProfiles = {
     ticker: 'BNY',
     companyName: 'The Bank of New York Mellon Corporation',
     exchange: 'NYSE',
-    logoUrl: buildStockLogoUrl('BK'),
+    logoUrl: buildStockLogoUrl('BNY'),
     overview: 'BNY Mellon is a global financial services institution specializing in custody, asset servicing, and investment management.',
     category: 'Custody & Asset Servicing',
     analysisDate: '2026-06-11',

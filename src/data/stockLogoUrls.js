@@ -23,6 +23,7 @@ const STOCK_LOGO_VERSION_BY_TICKER = {
   "BAC": 'batch-20260521',
   "BE": 'batch-20260521',
   "BK": 'batch-20260521',
+  "BNY": 'batch-20260521',
   "BKNG": 'batch-20260521',
   "BKR": 'batch-20260521',
   "BMY": 'batch-20260521',
