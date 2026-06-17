@@ -9657,8 +9657,8 @@ const stockDossierProfiles = {
       }
     }
   },
-  BK: {
-    ticker: 'BK',
+  BNY: {
+    ticker: 'BNY',
     companyName: 'The Bank of New York Mellon Corporation',
     exchange: 'NYSE',
     logoUrl: buildStockLogoUrl('BK'),
@@ -9686,7 +9686,7 @@ const stockDossierProfiles = {
       ]
     },
     valueCore: {
-      ticker: 'BK',
+      ticker: 'BNY',
       value_core_type: 'Custody & asset servicing bank',
       company_stage_candidate: 'Established services compounder',
       primary_value_driver: 'Assets under Custody / Administration (AUC/A) levels, asset servicing fee growth, and Net Interest Income',
@@ -9710,13 +9710,13 @@ const stockDossierProfiles = {
       faq: {
         overview: [
           {
-            question: 'What does BK do?',
+            question: 'What does BNY do?',
             answer: 'BNY Mellon is a custody bank. It safekeeps, clears, and services financial assets for institutional investors, corporations, and wealthy individuals.'
           }
         ],
         thesisRisk: [
           {
-            question: 'What would break the BK thesis?',
+            question: 'What would break the BNY thesis?',
             answer: 'The thesis weakens if global markets decline (reducing asset fee revenues), client deposits drop, or Net Interest Income declines due to rate cuts.'
           }
         ]

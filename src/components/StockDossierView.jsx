@@ -9,6 +9,7 @@ import {
 } from './dossierHelpers';
 import { getStockDossierProfile } from '../data/stockDossierProfiles';
 import { resolveReferencePeerEcosystemSnapshot } from '../data/referencePeerMapAdapter';
+import { getTickerLookupKeys } from '../data/tickerAliases';
 import StockLogo from './StockLogo';
 
 const API_BASE = 'https://kw-terminal-api.myfootballplaces.workers.dev';
@@ -146,9 +147,7 @@ const formatLiveMarketCap = (value) => {
 };
 
 const findStockPerformanceRow = (stockPerformancePayload, ticker) => {
-  const normalizedTicker = String(ticker || '').trim().toUpperCase();
-  if (!normalizedTicker) return null;
-  const row = stockPerformancePayload?.returns?.[normalizedTicker];
+  const row = getTickerLookupKeys(ticker).map((key) => stockPerformancePayload?.returns?.[key]).find(Boolean);
   return row && typeof row === 'object' && !Array.isArray(row) ? row : null;
 };
 
@@ -639,8 +638,7 @@ const STOCK_PERFORMANCE_PERIODS = [
 ];
 
 const buildLiveStockPerformanceGrid = (ticker, fallbackGrid, stockPerformancePayload) => {
-  const normalizedTicker = String(ticker || '').trim().toUpperCase();
-  const row = normalizedTicker ? stockPerformancePayload?.returns?.[normalizedTicker] : null;
+  const row = findStockPerformanceRow(stockPerformancePayload, ticker);
   if (!row || typeof row !== 'object' || Array.isArray(row)) {
     return fallbackGrid || null;
   }

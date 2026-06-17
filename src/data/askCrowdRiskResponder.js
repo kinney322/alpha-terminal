@@ -1,7 +1,7 @@
 import { getStockDossierProfile } from './stockDossierProfiles.js';
 import { resolveReferencePeerEcosystemSnapshot } from './referencePeerMapAdapter.js';
 import { resolveAskCrowdRiskCatalogEntry } from './askCrowdRiskAnswerCatalog.js';
-import { canonicalizeTicker } from './tickerAliases.js';
+import { canonicalizeTicker, getTickerLookupKeys } from './tickerAliases.js';
 
 const MACRO_TICKERS = new Set(['SPY', 'QQQ']);
 const NOT_VERIFIED_EN = 'CrowdRisk cannot answer this with verified data yet.';
@@ -14,6 +14,10 @@ const TICKER_STOPWORDS = new Set([
 ]);
 
 const normalizeTicker = canonicalizeTicker;
+
+const getRecordByTicker = (records, ticker) => (
+  getTickerLookupKeys(ticker).map((key) => records?.[key]).find(Boolean) || null
+);
 
 const hasChinese = (value) => /[\u3400-\u9fff]/.test(String(value || ''));
 
@@ -280,7 +284,9 @@ const getAvailableTickers = ({ payload, stockPerformancePayload, referencePeerMa
 ].filter(Boolean));
 
 const extractTicker = (question, payloads) => {
-  const tokens = String(question || '').toUpperCase().match(/\b[A-Z]{1,6}\b/g) || [];
+  const tokens = (String(question || '').toUpperCase().match(/\b[A-Z]{1,6}\b/g) || [])
+    .map(normalizeTicker)
+    .filter(Boolean);
   const available = getAvailableTickers(payloads);
   return tokens.find((token) => available.has(token) || MACRO_TICKERS.has(token))
     || tokens.find((token) => !TICKER_STOPWORDS.has(token))
@@ -526,10 +532,10 @@ const buildCoverageStatusAnswer = ({ ticker, language, payload, stockPerformance
     });
   }
 
-  const entries = referencePeerMapPayload?.ticker_index?.[ticker] || [];
+  const entries = getRecordByTicker(referencePeerMapPayload?.ticker_index, ticker) || [];
   const relationships = entries.map((entry) => entry.relationship).filter(Boolean);
   const isMomentum = (payload?.momentum_universe?.rankings || []).some((row) => normalizeTicker(row?.ticker) === ticker);
-  const hasReturns = Boolean(stockPerformancePayload?.returns?.[ticker]);
+  const hasReturns = Boolean(getRecordByTicker(stockPerformancePayload?.returns, ticker));
 
   if (relationships.includes('active_universe') || isMomentum || hasReturns) {
     return response({
@@ -812,7 +818,7 @@ const buildThesisRiskAnswer = ({ ticker, language }) => {
 };
 
 const buildMarketCapAnswer = ({ ticker, language, stockPerformancePayload }) => {
-  const row = stockPerformancePayload?.returns?.[ticker];
+  const row = getRecordByTicker(stockPerformancePayload?.returns, ticker);
   const capitalization = row?.capitalization;
   if (!capitalization || capitalization.status !== 'available') {
     return buildNotVerified({
@@ -944,7 +950,7 @@ const parseRequestedPerformancePeriods = (question) => {
 };
 
 const buildStockPerformanceAnswer = ({ question, ticker, language, stockPerformancePayload }) => {
-  const row = stockPerformancePayload?.returns?.[ticker];
+  const row = getRecordByTicker(stockPerformancePayload?.returns, ticker);
   if (!row) {
     return buildNotVerified({
       intent: 'stock_performance',
@@ -1084,7 +1090,7 @@ const buildValuationSnapshotAnswer = ({ ticker, language, stockPerformancePayloa
   const snapshot = {
     ...(profile.marketSnapshot || {})
   };
-  const liveRow = stockPerformancePayload?.returns?.[ticker];
+  const liveRow = getRecordByTicker(stockPerformancePayload?.returns, ticker);
   if (liveRow?.latest_price) snapshot.currentPrice = formatPrice(liveRow.latest_price);
   if (liveRow?.capitalization?.status === 'available' && liveRow.capitalization.market_cap) {
     snapshot.marketCap = formatCurrency(liveRow.capitalization.market_cap);

@@ -1,6 +1,6 @@
 import { getStockDossierProfile } from './stockDossierProfiles';
 import { resolvePeerEcosystemSnapshot } from './stockDossierPeerEcosystemSamples';
-import { canonicalizeTicker } from './tickerAliases';
+import { canonicalizeTicker, getTickerLookupKeys } from './tickerAliases';
 
 const normalizeTicker = canonicalizeTicker;
 
@@ -48,7 +48,9 @@ export const resolveReferencePeerEcosystemSnapshot = (referencePeerMapPayload, t
     return resolvePeerEcosystemSnapshot(normalizedTicker);
   }
 
-  const tickerEntries = referencePeerMapPayload.ticker_index?.[normalizedTicker] || [];
+  const tickerEntries = getTickerLookupKeys(normalizedTicker)
+    .map((key) => referencePeerMapPayload.ticker_index?.[key])
+    .find((entries) => Array.isArray(entries) && entries.length) || [];
   const activeEntry = tickerEntries.find((entry) => entry.relationship === 'active_universe') || tickerEntries[0];
   const ecosystem = referencePeerMapPayload.ecosystems?.[activeEntry?.ecosystem_id];
 
