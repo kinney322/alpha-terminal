@@ -1,5 +1,7 @@
 // src/data/payloadAdapter.js
 
+import { canonicalizeTicker, getTickerLookupKeys } from './tickerAliases.js';
+
 const API_BASE = 'https://kw-terminal-api.myfootballplaces.workers.dev';
 const V1_2_URL = `${API_BASE}/event-opportunity/radar-v1.2-latest`;
 const V1_1_URL = `${API_BASE}/event-opportunity/radar-v1.1-latest`;
@@ -194,7 +196,7 @@ export async function fetchEarningsGapSummaryPayload(ticker) {
 }
 
 export async function fetchEarningsReactionReturnPayload(request) {
-  const normalizedTicker = String(request?.ticker || '').trim().toUpperCase();
+  const normalizedTicker = canonicalizeTicker(request?.ticker);
   const horizon = Number(request?.horizon);
   if (!normalizedTicker) {
     throw new Error('Ticker is required for earnings reaction return');
@@ -203,31 +205,42 @@ export async function fetchEarningsReactionReturnPayload(request) {
     throw new Error('A valid R+N horizon is required for earnings reaction return');
   }
 
-  const params = new URLSearchParams({
-    symbol: normalizedTicker,
-    horizon: String(horizon),
-    metric: request?.metric || 'both'
-  });
+  let lastError = null;
 
-  if (request?.release_date) {
-    params.set('release_date', request.release_date);
-  } else if (request?.latest) {
-    params.set('latest', 'true');
-  } else {
-    if (request?.year) params.set('year', String(request.year));
-    if (request?.month) params.set('month', String(request.month));
-    if (request?.calendar_quarter) params.set('calendar_quarter', String(request.calendar_quarter));
+  for (const lookupTicker of getTickerLookupKeys(normalizedTicker)) {
+    const params = new URLSearchParams({
+      symbol: lookupTicker,
+      horizon: String(horizon),
+      metric: request?.metric || 'both'
+    });
+
+    if (request?.release_date) {
+      params.set('release_date', request.release_date);
+    } else if (request?.latest) {
+      params.set('latest', 'true');
+    } else {
+      if (request?.year) params.set('year', String(request.year));
+      if (request?.month) params.set('month', String(request.month));
+      if (request?.calendar_quarter) params.set('calendar_quarter', String(request.calendar_quarter));
+    }
+
+    const res = await fetch(`${EARNINGS_REACTION_RETURN_URL}?${params.toString()}`, { headers: { Accept: 'application/json' } });
+    const data = await res.json().catch(() => null);
+    if (!res.ok) {
+      lastError = data?.error || `Earnings reaction return unavailable for ${lookupTicker} (${res.status})`;
+      continue;
+    }
+    if (!isValidEarningsReactionReturnPayload(data)) {
+      lastError = `Earnings reaction return for ${lookupTicker} is not a valid verified schema`;
+      continue;
+    }
+
+    return {
+      ...data,
+      requested_ticker: normalizedTicker,
+      source_ticker: lookupTicker
+    };
   }
 
-  const res = await fetch(`${EARNINGS_REACTION_RETURN_URL}?${params.toString()}`, { headers: { Accept: 'application/json' } });
-  const data = await res.json().catch(() => null);
-  if (!res.ok) {
-    const reason = data?.error || `Earnings reaction return unavailable for ${normalizedTicker} (${res.status})`;
-    throw new Error(reason);
-  }
-  if (!isValidEarningsReactionReturnPayload(data)) {
-    throw new Error(`Earnings reaction return for ${normalizedTicker} is not a valid verified schema`);
-  }
-
-  return data;
+  throw new Error(lastError || `Earnings reaction return unavailable for ${normalizedTicker}`);
 }
