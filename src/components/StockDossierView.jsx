@@ -9,7 +9,7 @@ import {
 } from './dossierHelpers';
 import { getStockDossierProfile } from '../data/stockDossierProfiles';
 import { resolveReferencePeerEcosystemSnapshot } from '../data/referencePeerMapAdapter';
-import { getTickerLookupKeys } from '../data/tickerAliases';
+import { canonicalizeTicker, getTickerLookupKeys } from '../data/tickerAliases';
 import StockLogo from './StockLogo';
 
 const API_BASE = 'https://kw-terminal-api.myfootballplaces.workers.dev';
@@ -803,7 +803,7 @@ const buildEventStudyDetail = (eventDetail, dossierProfile = null) => {
 };
 
 const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, referencePeerMapPayload, onOpenEventStudy }) => {
-  const tickerForSummary = String(eventDetail?.ticker || '').trim().toUpperCase();
+  const tickerForSummary = canonicalizeTicker(eventDetail?.ticker);
   const [eventStudySummary, setEventStudySummary] = React.useState(null);
   const [eventStudyLoading, setEventStudyLoading] = React.useState(false);
   const [eventStudyError, setEventStudyError] = React.useState(null);

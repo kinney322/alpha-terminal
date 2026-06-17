@@ -32,8 +32,9 @@ export default function StockDossierSection({ payload, stockPerformancePayload, 
 
   useEffect(() => {
     if (dossierSeed) {
-      setSelectedTicker(normalizeTicker(dossierSeed.ticker));
-      setSelectedEventDetail(dossierSeed.eventDetail);
+      const canonicalTicker = normalizeTicker(dossierSeed.ticker);
+      setSelectedTicker(canonicalTicker);
+      setSelectedEventDetail(dossierSeed.eventDetail ? { ...dossierSeed.eventDetail, ticker: canonicalTicker } : null);
     } else {
       setSelectedTicker(null);
       setSelectedEventDetail(null);
@@ -122,8 +123,9 @@ export default function StockDossierSection({ payload, stockPerformancePayload, 
     if (document.activeElement instanceof HTMLElement) {
       document.activeElement.blur();
     }
-    setSelectedTicker(normalizeTicker(ticker));
-    setSelectedEventDetail(eventDetail);
+    const canonicalTicker = normalizeTicker(ticker);
+    setSelectedTicker(canonicalTicker);
+    setSelectedEventDetail(eventDetail ? { ...eventDetail, ticker: canonicalTicker } : null);
     window.setTimeout(scrollDossierToTop, 0);
   };
 

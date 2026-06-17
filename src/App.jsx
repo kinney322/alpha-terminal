@@ -78,7 +78,7 @@ const resolveDossierDetail = (payload, ticker) => {
     || details.find((detail) => detail.event_phase === 'pre_earnings')
     || details[0];
 
-  if (preferredDetail) return preferredDetail;
+  if (preferredDetail) return { ...preferredDetail, ticker: normalizedTicker };
 
   return buildMomentumUniverseSyntheticDetail(normalizedTicker, payload) || { ticker: normalizedTicker };
 };
