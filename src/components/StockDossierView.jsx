@@ -857,7 +857,7 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, refer
     ...eventDetail,
     company_name: eventDetail.company_name || dossierProfile.companyName,
     exchange: eventDetail.exchange || dossierProfile.exchange,
-    company_logo_url: eventDetail.company_logo_url || dossierProfile.logoUrl,
+    company_logo_url: dossierProfile.logoUrl || eventDetail.company_logo_url,
     business_summary: eventDetail.business_summary || dossierProfile.overview
   } : eventDetail;
 
@@ -902,7 +902,7 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, refer
   const ticker = tickerForSummary || enrichedEventDetail.ticker;
   const companyName = enrichedEventDetail.company_name || '';
   const exchange = enrichedEventDetail.exchange || enrichedEventDetail.market || '';
-  const companyLogoUrl = enrichedEventDetail.company_logo_url || enrichedEventDetail.logo_url || dossierProfile?.logoUrl || '';
+  const companyLogoUrl = dossierProfile?.logoUrl || enrichedEventDetail.company_logo_url || enrichedEventDetail.logo_url || '';
   const companyDisplayName = companyName || ticker;
   const tickerLine = exchange ? `${exchange}:${ticker} Stock Dossier` : `${ticker} Stock Dossier`;
   const compactTickerLine = exchange ? `${exchange}:${ticker}` : ticker;

@@ -139,10 +139,10 @@ export default function StockDossierSection({ payload, stockPerformancePayload, 
     return <StockDossierIndex payload={payload} onOpenTicker={handleOpenTicker} />;
   }
 
-  const companyLogoUrl = resolvedDetail?.company_logo_url
+  const companyLogoUrl = dossierProfile?.logoUrl
+    || resolvedDetail?.company_logo_url
     || resolvedDetail?.logo_url
     || resolvedDetail?.logoUrl
-    || dossierProfile?.logoUrl
     || buildStockLogoUrl(selectedTicker);
   const companyName = resolvedDetail?.company_name || dossierProfile?.companyName || selectedTicker;
   const exchange = resolvedDetail?.exchange || dossierProfile?.exchange || '';
