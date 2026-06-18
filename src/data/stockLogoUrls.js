@@ -139,6 +139,7 @@ const STOCK_LOGO_VERSION_BY_TICKER = {
   "SNOW": 'batch-20260521',
   "SNPS": 'batch-20260521',
   "SO": 'batch-20260521',
+  "SPCX": 'spacex-official-og-20260618',
   "SPG": 'batch-20260521',
   "STX": 'batch-20260521',
   "T": 'batch-20260521',
