@@ -7,6 +7,15 @@ const formatNumber = (value, suffix = '') => {
   return `${Math.round(num * 100) / 100}${suffix}`;
 };
 
+const formatUnavailableReason = (value) => {
+  if (!value) return 'Input history unavailable';
+  const normalized = String(value).replace(/_/g, ' ').trim().toLowerCase();
+  if (normalized === 'insufficient ohlcv history') return 'Insufficient OHLCV history';
+  if (normalized === 'missing ohlcv') return 'Missing OHLCV';
+  if (normalized === 'missing price') return 'Missing price history';
+  return normalized.replace(/\b\w/g, (char) => char.toUpperCase());
+};
+
 const SetupBadge = ({ setup }) => {
   if (!setup || setup.status === 'unavailable') {
     return <span className="crowdrisk-muted">—</span>;
@@ -17,6 +26,7 @@ const SetupBadge = ({ setup }) => {
 
 function MomentumUniverseSection({ payload, loading, error, onOpenStockDossier }) {
   const rankings = payload?.momentum_universe?.rankings || [];
+  const unavailableRows = payload?.momentum_universe?.unavailable || [];
 
   const openDossier = (row) => {
     const detail = buildMomentumUniverseSyntheticDetail(row.ticker, payload);
@@ -87,6 +97,41 @@ function MomentumUniverseSection({ payload, loading, error, onOpenStockDossier }
           <div className="crowdrisk-empty-state">No momentum universe rankings available.</div>
         )}
       </div>
+
+      {!!unavailableRows.length && (
+        <div className="momentum-unavailable-panel" aria-label="Momentum coverage not yet rankable">
+          <div className="momentum-unavailable-heading">
+            <div>
+              <p className="crowdrisk-kicker">Coverage Watch</p>
+              <h2>Not Yet Rankable</h2>
+              <p>Active coverage names that are not ranked because scanner inputs are not ready yet.</p>
+            </div>
+            <span>{unavailableRows.length} name{unavailableRows.length === 1 ? '' : 's'}</span>
+          </div>
+
+          <div className="momentum-unavailable-list">
+            {unavailableRows.map((row) => (
+              <div className="momentum-unavailable-row" key={row.ticker}>
+                <div>
+                  <strong>{row.ticker}</strong>
+                  <span>{row.industry_theme_label || row.industry_theme || row.theme || 'Unmapped'}</span>
+                </div>
+                <div>
+                  <span className="momentum-unavailable-label">Reason</span>
+                  <strong>{formatUnavailableReason(row.unavailable_reason || row.reason)}</strong>
+                </div>
+                <div>
+                  <span className="momentum-unavailable-label">Source</span>
+                  <strong>{row.source || 'momentum universe'}</strong>
+                </div>
+                <button type="button" onClick={() => openDossier(row)}>
+                  Open Dossier →
+                </button>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
     </section>
   );
 }

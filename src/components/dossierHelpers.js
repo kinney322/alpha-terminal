@@ -391,8 +391,53 @@ export const buildEvidenceBoard = (eventDetail, payload) => {
 
 export const buildMomentumUniverseSyntheticDetail = (ticker, payload) => {
   const ranking = (payload?.momentum_universe?.rankings || []).find(r => r.ticker === ticker);
-  if (!ranking) return null;
   const normalizedTicker = normalizeTicker(ticker);
+  if (!ranking) {
+    const unavailable = (payload?.momentum_universe?.unavailable || []).find(r => r.ticker === ticker);
+    if (!unavailable) return null;
+    return {
+      event_id: `${normalizedTicker}-MomentumUnavailable`,
+      ticker: normalizedTicker,
+      logoUrl: buildStockLogoUrl(normalizedTicker),
+      company_logo_url: buildStockLogoUrl(normalizedTicker),
+      event_phase: "off_cycle_universe",
+      event_category: "Momentum Universe",
+      status: "momentum_universe",
+      value_core: null,
+      trend_setup: { status: 'unavailable' },
+      momentum_evidence: {
+        status: 'unavailable',
+        industry_theme: unavailable.industry_theme,
+        industry_theme_label: unavailable.industry_theme_label,
+        universe_rank: null,
+        theme_rank: null,
+        universe_count: payload?.momentum_universe?.ranked_count,
+        unavailable_reason: unavailable.unavailable_reason || unavailable.reason,
+        source: unavailable.source,
+        evidence: {}
+      },
+      trust_layer: {
+        data_source: unavailable.source || "momentum_universe",
+        event_date_status: "not_applicable",
+        missing_fields: [unavailable.unavailable_reason || unavailable.reason || 'momentum_inputs']
+      },
+      fundamental_evidence: {
+        status: 'not_available',
+        knowledge_timestamp: null,
+        period_end_date: null,
+        vendor_source: null,
+        sector_compatible: null,
+        metrics: {}
+      },
+      thesis_lifecycle: {
+        reviewed: false,
+        review_state: {
+          reviewed: false,
+          reason: unavailable.unavailable_reason || unavailable.reason || 'Momentum inputs unavailable.'
+        }
+      }
+    };
+  }
   return {
     event_id: `${normalizedTicker}-MomentumUniverse`,
     ticker: normalizedTicker,
