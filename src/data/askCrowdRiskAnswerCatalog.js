@@ -74,6 +74,23 @@ export const ASK_CROWDRISK_ANSWER_CATALOG = [
     }
   },
   {
+    id: 'ipo_profile',
+    intent: 'ipo_profile',
+    label: 'IPO profile',
+    deterministic: true,
+    sources: ['stockDossierProfiles.js'],
+    requiredSlots: ['ticker'],
+    requiredFacts: ['listing_date', 'offer_price', 'initial_proceeds'],
+    verifiedRule: 'Ticker must have a curated Stock Dossier profile with ipoProfile facts.',
+    notVerifiedRule: 'Do not infer IPO pricing, listing date, or fundraising scale without curated ipoProfile facts.',
+    allowedJudgment: ['IPO context', 'listing evidence boundary'],
+    bannedWording: ['rating recommendation terms', 'target-price language', 'portfolio sizing language'],
+    trigger: {
+      enPatterns: [/\b(ipo|listing|listed|debut|offer\s*price|offering|proceeds|raised|fundraising)\b/],
+      zhTerms: ['上市日期', '上市', 'IPO', '集資', '集资', '定價', '定价', '發行價', '发行价', '招股', '首日']
+    }
+  },
+  {
     id: 'thesis_risk',
     intent: 'thesis_risk',
     label: 'Thesis risk',

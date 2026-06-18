@@ -16488,6 +16488,220 @@ const stockDossierProfiles = {
         }
       }
     }
+  },
+  SPCX: {
+    ticker: 'SPCX',
+    companyName: 'SpaceX',
+    exchange: 'NASDAQ',
+    logoUrl: buildStockLogoUrl('SPCX'),
+    overview:
+      'SpaceX designs, launches, and operates reusable rockets, spacecraft, Starlink satellite connectivity, and adjacent space-infrastructure services. The public-market story also includes optionality around AI infrastructure, X ecosystem distribution, and long-duration space platform ambitions.',
+    category: 'Space / Satellite Connectivity / AI Infrastructure',
+    analysisDate: '2026-06-18',
+    latestFiscalPeriod: 'Public reporting history insufficient',
+    marketSnapshot: {
+      currentPrice: null,
+      marketCap: null,
+      enterpriseValue: 'Not verified',
+      fiscalYearRevenueGuide: 'Not verified'
+    },
+    ipoProfile: {
+      status: 'available',
+      listingDate: '2026-06-12',
+      exchange: 'NASDAQ',
+      offerPrice: '$135',
+      initialSharesOffered: '555,555,555',
+      initialProceeds: '$75.0B',
+      underwriterOptionShares: '83.3M',
+      totalProceedsAfterGreenshoe: '$85.7B',
+      ipoValuation: '$1.77T',
+      sourceNote: 'Curated from MarketWatch IPO pricing report and WSJ greenshoe proceeds report; direct official filing not verified in this profile gate.'
+    },
+    whyNow: {
+      reason: 'SPCX is a newly public BOSS watchlist name with live market-cap and stock-performance coverage, but still has short public trading history and no canonical earnings event ledger.',
+      verdict: 'Early public-market evidence is highly attention-driven. CrowdRisk should track the company as a catalyst watch, not as a fully verified valuation case.'
+    },
+    dossierVerdict: {
+      sourceType: 'curated',
+      asOf: '2026-06-18',
+      researchState: 'catalyst_watch',
+      businessQuality: 'not_verified',
+      valuationState: 'insufficient_data',
+      marketEvidence: 'early_trading',
+      finalRead: 'High-attention SpaceX exposure with thin public-market evidence.',
+      thesisShift: {
+        from: 'coverage_pending',
+        to: 'catalyst_watch',
+        confidence: 'low',
+        reason: 'Initial curated profile after new-ticker onboarding.'
+      },
+      keySupport: [
+        'SpaceX combines launch systems, Starlink connectivity, spacecraft operations, and broader space-infrastructure optionality.',
+        'SPCX has live CrowdRisk market-cap, stock-performance, logo, and active-universe coverage.',
+        'Post-IPO trading attention confirms high market interest, but does not by itself verify valuation support.'
+      ],
+      keyRisk: [
+        'Public financial reporting history is still limited, so business quality and financial health remain insufficiently verified.',
+        'IPO valuation embeds demanding expectations around Starlink, launch cadence, AI infrastructure, and ecosystem expansion.',
+        'SPCX remains unrankable in Momentum Universe until enough OHLCV history is available.'
+      ]
+    },
+    quickFacts: [
+      { label: 'Business Model', value: 'Launch, satellite connectivity, spacecraft, and space infrastructure' },
+      { label: 'IPO Date', value: '2026-06-12' },
+      { label: 'IPO Offer Price', value: '$135' },
+      { label: 'Initial IPO Proceeds', value: '$75.0B' },
+      { label: 'Total IPO Proceeds', value: '$85.7B after greenshoe' }
+    ],
+    marketEvidence: {
+      title: 'Early public-market evidence is dominated by IPO attention and short-history constraints.',
+      points: [
+        'CrowdRisk stock-performance coverage is available, but longer-period returns are not fully meaningful until more public OHLCV history accumulates.',
+        'Momentum Universe intentionally classifies SPCX as not yet rankable because of insufficient OHLCV history.'
+      ]
+    },
+    valueCore: {
+      ticker: 'SPCX',
+      value_core_type: 'Space Infrastructure',
+      company_stage_candidate: 'New Public Listing',
+      primary_value_driver: 'Starlink scale, launch cadence, reusable rocket economics, and space / AI infrastructure optionality',
+      thesis_break_trigger: 'Public reporting fails to support the IPO valuation narrative, Starlink growth slows, launch execution weakens, or AI infrastructure expectations outrun verified evidence',
+      evidence_needed: [
+        'Public revenue and margin reporting',
+        'Starlink subscriber and ARPU trend',
+        'Launch cadence and reuse economics',
+        'Capex intensity and free cash flow path',
+        'Governance and key-person risk'
+      ],
+      evidence_quality: 'Curated',
+      dossier_state: 'curated_profile_spcx_initial_2026_06',
+      frontend_label: 'Curated',
+      coverage_status: 'Curated',
+      needs_human_review: false,
+      source: 'stockDossierProfiles.js'
+    },
+    visualPhaseOne: {
+      performanceGrid: {
+        source: 'stock-performance-latest',
+        periods: [
+          { label: 'Today', value: null, note: 'Live return available from stock-performance feed' },
+          { label: '1 Week', value: null, note: 'Short public history; not enough mature evidence' },
+          { label: '1 Month', value: null, note: 'Short public history; not enough mature evidence' },
+          { label: '3 Months', value: null, note: 'Short public history; not enough mature evidence' },
+          { label: '6 Months', value: null, note: 'Short public history; not enough mature evidence' },
+          { label: '1 Year', value: null, note: 'Short public history; not enough mature evidence' }
+        ]
+      },
+      signalScreens: [
+        {
+          title: 'New Public Space Infrastructure Exposure',
+          explanation: 'SPCX is newly public and combines launch systems, Starlink connectivity, spacecraft operations, and space / AI infrastructure optionality.',
+          evidenceState: 'Curated'
+        },
+        {
+          title: 'Short-History Momentum Constraint',
+          explanation: 'SPCX is active coverage but not yet rankable in Momentum Universe because public OHLCV history is insufficient.',
+          evidenceState: 'Verified'
+        }
+      ],
+      faq: {
+        overview: [
+          {
+            question: 'What does SpaceX do?',
+            answer: 'SpaceX operates reusable rockets, spacecraft, Starlink satellite connectivity, and broader space-infrastructure services.'
+          },
+          {
+            question: 'When did SPCX go public?',
+            answer: 'SPCX began trading on Nasdaq on 2026-06-12 at an IPO offer price of $135 per share.'
+          }
+        ],
+        businessCore: [
+          {
+            question: 'What evidence matters most for SPCX?',
+            answer: 'The key evidence is Starlink scale, launch cadence, reusable-rocket economics, capex intensity, free cash flow path, and whether AI infrastructure optionality becomes verified operating evidence.'
+          }
+        ],
+        marketEvidence: [
+          {
+            question: 'Why is SPCX not ranked in Momentum Universe yet?',
+            answer: 'SPCX is active coverage but not yet rankable because public OHLCV history is still too short.'
+          }
+        ],
+        valuation: [
+          {
+            question: 'Can CrowdRisk judge SPCX valuation yet?',
+            answer: 'Not fully. CrowdRisk has IPO price and market-cap context, but not enough verified public financial history for a full valuation range.'
+          }
+        ],
+        thesisRisk: [
+          {
+            question: 'What would weaken the SPCX thesis?',
+            answer: 'The thesis weakens if public reporting fails to support the IPO valuation narrative, Starlink growth slows, launch execution weakens, or AI infrastructure expectations outrun verified evidence.'
+          }
+        ],
+        financialHealth: [
+          {
+            question: 'Is SPCX financial health verified?',
+            answer: 'No. CrowdRisk needs public revenue, margin, cash-flow, capex, and dilution evidence before making a financial-health judgment.'
+          }
+        ]
+      },
+      phaseTwo: {
+        valuation: {
+          posture: {
+            title: 'Insufficient data',
+            label: 'Valuation posture',
+            note: 'IPO and market-cap facts are available, but full valuation support is not verified.'
+          },
+          metricCards: [
+            { label: 'IPO Offer Price', value: '$135', note: 'IPO pricing context' },
+            { label: 'Initial IPO Proceeds', value: '$75.0B', note: 'Initial offering size' },
+            { label: 'Total IPO Proceeds', value: '$85.7B', note: 'After greenshoe exercise' },
+            { label: 'IPO Valuation', value: '$1.77T', note: 'At IPO offer price' }
+          ],
+          tensionCards: [
+            { title: 'Story vs evidence', state: 'Demanding expectations', text: 'The public story includes Starlink, launch systems, AI infrastructure, and ecosystem optionality, but verified public financial history is still thin.' },
+            { title: 'Market cap vs valuation support', state: 'Insufficient data', text: 'Market cap is available, but CrowdRisk should not infer valuation support without public revenue, margin, and cash-flow evidence.' }
+          ],
+          checklist: [
+            'Verified public revenue and margin reporting',
+            'Starlink growth and profitability trend',
+            'Launch cadence and reuse economics',
+            'Capex intensity and free cash flow path'
+          ]
+        },
+        thesisRisk: {
+          lead: 'The primary risk is that market expectations run ahead of verified public-company evidence.',
+          riskMap: [
+            { label: 'Expectation gap', severity: 'High', watch: 'IPO valuation narrative vs public revenue, margin, and cash-flow evidence' },
+            { label: 'Execution concentration', severity: 'High', watch: 'Launch cadence, Starlink execution, and key-person / governance risk' },
+            { label: 'Short-history evidence', severity: 'Medium', watch: 'Insufficient OHLCV and no canonical earnings reaction rows' }
+          ],
+          evidenceNeeded: [
+            'Public revenue and segment disclosure',
+            'Starlink subscriber and ARPU metrics',
+            'Capex and free cash flow trend',
+            'First public earnings event ledger'
+          ]
+        },
+        financialHealth: {
+          qualityRead: 'SPCX financial health is not fully verified yet. CrowdRisk needs public revenue, margin, cash-flow, capex, debt, and dilution evidence before upgrading this read.',
+          metricCards: [
+            { label: 'Revenue Growth', value: 'Not verified', note: 'Public reporting history insufficient' },
+            { label: 'FCF Margin', value: 'Not verified', note: 'Free cash flow evidence pending' },
+            { label: 'Gross Margin', value: 'Not verified', note: 'Segment margin evidence pending' },
+            { label: 'Cash + Securities', value: 'Not verified', note: 'Balance-sheet evidence pending' },
+            { label: 'Convertible Notes', value: 'Not verified', note: 'Debt structure pending' },
+            { label: 'SBC / Revenue', value: 'Not verified', note: 'Dilution evidence pending' }
+          ],
+          qualityCards: [
+            { title: 'Public reporting history', state: 'Insufficient data', text: 'SPCX is newly public, so CrowdRisk should not infer financial quality from market attention alone.' },
+            { title: 'Capital intensity', state: 'Monitor', text: 'Space, satellite, and AI infrastructure ambitions may require large ongoing capital spending.' },
+            { title: 'Evidence gate', state: 'Pending', text: 'Financial-health confidence requires direct public reporting on revenue, margins, free cash flow, balance sheet, and dilution.' }
+          ]
+        }
+      }
+    }
   }
 };
 

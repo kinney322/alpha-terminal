@@ -631,6 +631,9 @@ const localizedBusinessOverview = ({ ticker, profile, overview, faqAnswer, langu
   if (language === 'zh' && ticker === 'DDOG') {
     return `${ticker} 是 ${profile.companyName || ticker}。它是一個雲端 observability 和 security software platform，工程和營運團隊用它監察 infrastructure、applications、logs、user experience 和 cloud-security workflows。`;
   }
+  if (language === 'zh' && ticker === 'SPCX') {
+    return `${ticker} 是 SpaceX。它的核心業務包括可重用火箭、太空船、Starlink 衛星通訊，以及更廣義的太空基建服務；市場同時會把 AI infrastructure、X 生態圈分發能力和長期太空平台想像放入故事之內。`;
+  }
   if (language === 'zh') return `${ticker} 是 ${profile.companyName || ticker}。${overview || faqAnswer}`;
   return `${ticker} is ${profile.companyName || ticker}${sentenceAfterName(profile.companyName)} ${overview || faqAnswer}`;
 };
@@ -639,10 +642,21 @@ const localizedThesisBreakTrigger = ({ ticker, breakTrigger, language }) => {
   if (language === 'zh' && ticker === 'DDOG') {
     return 'NRR 轉差、大客戶增長放慢，或者 FCF margin 持續受壓。';
   }
+  if (language === 'zh' && ticker === 'SPCX') {
+    return '公開財務數據未能支持 IPO 估值敘事、Starlink 增長放慢、發射執行轉弱，或者 AI infrastructure 期待明顯跑得快過已驗證證據。';
+  }
   return breakTrigger;
 };
 
 const localizedRiskWatch = ({ ticker, item, language }) => {
+  if (language === 'zh' && ticker === 'SPCX') {
+    const map = {
+      'Expectation gap': '期待差距：IPO 估值敘事要由公開收入、利潤率和現金流證據支持',
+      'Execution concentration': '執行集中度：留意發射節奏、Starlink 執行，以及 key-person / governance risk',
+      'Short-history evidence': '短歷史證據：OHLCV 歷史不足，而且未有 canonical earnings reaction rows'
+    };
+    return map[item.label] || `${item.label}：${item.watch}`;
+  }
   if (language !== 'zh' || ticker !== 'DDOG') return `${item.label}：${item.watch}`;
   const map = {
     'Growth deceleration': '收入增長放慢：收入增長跌穿 25% 或 RPO 支撐變弱',
@@ -738,13 +752,19 @@ const buildBusinessSummaryAnswer = ({ ticker, language }) => {
       { label: language === 'zh' ? '客戶基礎' : 'Customer base', value: customerBase || 'Not verified' }
     ],
     lines: language === 'zh'
-      ? [
+      ? (ticker === 'SPCX' ? [
+        localizedBusinessOverview({ ticker, profile, overview, faqAnswer, language }),
+        'CrowdRisk 目前把它看成新上市的太空基建 / 衛星通訊 / AI infrastructure optionality 公司，而不是一隻已經有完整公開財務證據的成熟覆蓋個股。',
+        '核心要看的不是單日股價，而是 Starlink 規模、發射節奏、可重用火箭經濟效益、capex intensity、自由現金流路徑，以及 AI infrastructure 敘事能否變成可驗證營運證據。',
+        '要繼續驗證這間公司的質素，應主要看：公開收入和利潤率、Starlink subscriber / ARPU、發射節奏和 reuse economics、capex 與自由現金流、governance 和 key-person risk。',
+        '這是業務證據整理，不是最終買賣決定。'
+      ] : [
         localizedBusinessOverview({ ticker, profile, overview, faqAnswer, language }),
         businessModel ? `CrowdRisk 目前把它看成 ${businessModel}，公司階段是 ${valueCore.company_stage_candidate || '未驗證'}。` : `CrowdRisk 目前的 business model 標籤未完整驗證。`,
         valueCore.primary_value_driver ? `核心要看的是：${valueCore.primary_value_driver}${customerBase ? `；客戶基礎目前標記為 ${customerBase}` : ''}${largeCustomers ? `，$100k+ ARR 客戶資料是 ${largeCustomers}` : ''}${nrr ? `，net retention 是 ${nrr}` : ''}。` : '核心價值驅動目前未完整驗證。',
         evidenceFocus.length ? `要繼續驗證這間公司的質素，應主要看：${evidenceFocus.join('、')}。` : '目前沒有足夠已整理證據清單。',
         '這是業務證據整理，不是最終買賣決定。'
-      ]
+      ])
       : [
         localizedBusinessOverview({ ticker, profile, overview, faqAnswer, language }),
         businessModel ? `CrowdRisk currently frames it as ${businessModel}, with company stage marked as ${valueCore.company_stage_candidate || 'not verified'}.` : 'CrowdRisk does not yet have a complete verified business-model label.',
@@ -799,19 +819,85 @@ const buildThesisRiskAnswer = ({ ticker, language }) => {
       { label: language === 'zh' ? '風險項目' : 'Risk items', value: riskItems.length ? riskItems.map((item) => item.label).join(', ') : 'Not verified' }
     ],
     lines: language === 'zh'
-      ? [
+      ? (ticker === 'SPCX' ? [
+        `${ticker} 的 thesis 主要不是看單日股價，而是看業務耐久度有沒有被公開數據支持。`,
+        displayedBreakTrigger ? `CrowdRisk 目前看到的打破 thesis 條件是：${displayedBreakTrigger}` : '目前打破 thesis 的條件未完整驗證。',
+        '主要風險監察包括：期待差距：IPO 估值敘事要由公開收入、利潤率和現金流證據支持；執行集中度：留意發射節奏、Starlink 執行，以及 key-person / governance risk；短歷史證據：OHLCV 歷史不足，而且未有 canonical earnings reaction rows。',
+        '要降低這個判斷的風險，需要繼續驗證：公開收入和分部披露、Starlink subscriber / ARPU、capex 與自由現金流、第一次公開 earnings event ledger。',
+        '這是風險和證據框架，不是最終買賣決定。'
+      ] : [
         `${ticker} 的 thesis 主要不是看單日股價，而是看業務耐久度有沒有變差。`,
         displayedBreakTrigger ? `CrowdRisk 目前看到的打破 thesis 條件是：${displayedBreakTrigger}` : (faqAnswer || '目前打破 thesis 的條件未完整驗證。'),
         riskItems.length ? `主要風險監察包括：${riskItems.map((item) => localizedRiskWatch({ ticker, item, language })).join('；')}。` : '目前沒有已整理風險清單。',
         evidenceItems.length ? `要降低這個判斷的風險，需要繼續驗證：${evidenceItems.join('、')}。` : '目前缺少已整理待驗證證據清單。',
         '這是風險和證據框架，不是最終買賣決定。'
-      ]
+      ])
       : [
         `${ticker}'s thesis is not mainly about one trading day. It depends on whether business durability weakens.`,
         breakTrigger ? `CrowdRisk's current break trigger is: ${withTerminalPeriod(breakTrigger)}` : (faqAnswer || 'The break trigger is not fully verified yet.'),
         riskItems.length ? `Main risk monitors include: ${riskItems.map((item) => `${item.label}: ${item.watch}`).join('; ')}.` : 'CrowdRisk does not yet have a structured risk map.',
         evidenceItems.length ? `To reduce thesis risk, keep verifying: ${evidenceItems.join(', ')}.` : 'CrowdRisk does not yet have a structured missing-evidence checklist.',
         'This is risk and evidence framing, not a final investment decision.'
+      ],
+    action: { type: 'open_dossier', label: language === 'zh' ? '打開股票檔案' : 'Open Dossier' }
+  });
+};
+
+const buildIpoProfileAnswer = ({ ticker, language }) => {
+  const profile = getStockDossierProfile(ticker);
+  const ipoProfile = profile?.ipoProfile;
+  if (!profile || !ipoProfile || ipoProfile.status !== 'available') {
+    return buildNotVerified({
+      intent: 'ipo_profile',
+      language,
+      ticker,
+      source: { feed: 'stockDossierProfiles.js' },
+      reason: language === 'zh'
+        ? 'CrowdRisk 目前沒有這隻股票的已整理 IPO / 上市資料。'
+        : 'CrowdRisk does not currently have curated IPO / listing facts for this ticker.'
+    });
+  }
+
+  const factsList = [
+    { label: language === 'zh' ? '上市日期' : 'Listing date', value: ipoProfile.listingDate || 'Not verified' },
+    { label: language === 'zh' ? '交易所' : 'Exchange', value: ipoProfile.exchange || profile.exchange || 'Not verified' },
+    { label: language === 'zh' ? 'IPO 定價' : 'IPO offer price', value: ipoProfile.offerPrice || 'Not verified' },
+    { label: language === 'zh' ? '初始集資規模' : 'Initial proceeds', value: ipoProfile.initialProceeds || 'Not verified' },
+    { label: language === 'zh' ? '總集資規模' : 'Total proceeds', value: ipoProfile.totalProceedsAfterGreenshoe || 'Not verified' }
+  ];
+
+  return response({
+    intent: 'ipo_profile',
+    language,
+    ticker,
+    verifiedStatus: 'verified',
+    source: {
+      feed: 'stockDossierProfiles.js',
+      profile: ticker,
+      source_note: ipoProfile.sourceNote || null
+    },
+    facts: {
+      listing_date: ipoProfile.listingDate || null,
+      exchange: ipoProfile.exchange || profile.exchange || null,
+      offer_price: ipoProfile.offerPrice || null,
+      initial_shares_offered: ipoProfile.initialSharesOffered || null,
+      initial_proceeds: ipoProfile.initialProceeds || null,
+      total_proceeds_after_greenshoe: ipoProfile.totalProceedsAfterGreenshoe || null,
+      ipo_valuation: ipoProfile.ipoValuation || null
+    },
+    factsList,
+    lines: language === 'zh'
+      ? [
+        `${ticker} 的 IPO 定價是每股 ${ipoProfile.offerPrice}，正式在 ${ipoProfile.exchange || profile.exchange || '交易所'} 以 ${ticker} 交易的日期是 ${ipoProfile.listingDate}。`,
+        `初始發行 ${ipoProfile.initialSharesOffered || '未驗證'} 股，初始集資約 ${ipoProfile.initialProceeds || '未驗證'}；承銷商行使 greenshoe 後，總集資規模報道為 ${ipoProfile.totalProceedsAfterGreenshoe || '未驗證'}。`,
+        ipoProfile.ipoValuation ? `IPO 定價對應估值約 ${ipoProfile.ipoValuation}。` : 'IPO 定價對應估值目前未整理。',
+        '這是上市資料整理，不是估值結論，也不是最終買賣決定。'
+      ]
+      : [
+        `${ticker}'s IPO offer price was ${ipoProfile.offerPrice} per share, and it began trading on ${ipoProfile.exchange || profile.exchange || 'the exchange'} under ${ticker} on ${ipoProfile.listingDate}.`,
+        `The initial offering covered ${ipoProfile.initialSharesOffered || 'not verified'} shares and raised about ${ipoProfile.initialProceeds || 'not verified'}; after the greenshoe option, reported total proceeds were ${ipoProfile.totalProceedsAfterGreenshoe || 'not verified'}.`,
+        ipoProfile.ipoValuation ? `The IPO price implied a valuation of about ${ipoProfile.ipoValuation}.` : 'The IPO valuation is not curated yet.',
+        'This is IPO / listing context, not a valuation conclusion or a final investment decision.'
       ],
     action: { type: 'open_dossier', label: language === 'zh' ? '打開股票檔案' : 'Open Dossier' }
   });
@@ -1745,6 +1831,7 @@ export const answerAskCrowdRiskQuestion = ({ question, locale = 'en', payload = 
   if (intent === 'peer_ecosystem') return buildPeerEcosystemAnswer({ ticker, language, referencePeerMapPayload });
   if (intent === 'coverage_status') return buildCoverageStatusAnswer({ ticker, language, payload, stockPerformancePayload, referencePeerMapPayload });
   if (intent === 'business_summary') return buildBusinessSummaryAnswer({ ticker, language });
+  if (intent === 'ipo_profile') return buildIpoProfileAnswer({ ticker, language });
   if (intent === 'thesis_risk') return buildThesisRiskAnswer({ ticker, language });
   if (intent === 'market_cap') return buildMarketCapAnswer({ ticker, language, stockPerformancePayload });
   if (intent === 'stock_performance') return buildStockPerformanceAnswer({ question, ticker, language, stockPerformancePayload });
