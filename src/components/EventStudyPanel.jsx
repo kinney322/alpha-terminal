@@ -79,6 +79,8 @@ function averagePercent(rows, field) {
 }
 
 const MARKET_DATA_EXCLUSION_REASONS = new Set([
+  'FUTURE_EVENT',
+  'MISSING_REACTION_DAY',
   'MISSING_PREVIOUS_CLOSE',
   'MISSING_REACTION_OPEN',
   'MISSING_REACTION_CLOSE'
@@ -120,20 +122,74 @@ function formatAuditPercent(value, digits = 2, withSign = true) {
   return formatPercent(value, digits, withSign);
 }
 
+function isMeasuredReadyQuarter(row) {
+  return row?.gap_return !== undefined &&
+    row?.gap_return !== null &&
+    !(Array.isArray(row?.exclusion_reasons) && row.exclusion_reasons.length > 0);
+}
+
+function latestVisibleEarningsRows(rows = []) {
+  const visibleRows = [];
+  const measuredRows = [];
+  let measuredWindowStarted = false;
+  for (const row of rows) {
+    if (!isMeasuredReadyQuarter(row)) {
+      if (!measuredWindowStarted) {
+        visibleRows.push(row);
+        continue;
+      }
+      break;
+    }
+    measuredWindowStarted = true;
+    visibleRows.push(row);
+    measuredRows.push(row);
+  }
+  return { visibleRows, measuredRows };
+}
+
 function normalizeEarningsGapSummaryPayload(payload, displayTicker = null) {
-  const rows = Array.isArray(payload?.quarter_log) ? payload.quarter_log : [];
-  const measuredCount = payload?.coverage?.measured_gap_count ?? payload?.dossier_digest?.measured_gap_count ?? 0;
-  const gapUpRate = ratioToPercent(payload?.earnings_summary?.gap_up_rate);
-  const averageGapUp = ratioToPercent(payload?.earnings_summary?.average_gap_up);
-  const averageGapDown = ratioToPercent(payload?.earnings_summary?.average_gap_down);
-  const sameDayOc = averagePercent(rows.filter((row) => !row.exclusion_reasons?.length), 'same_day_oc');
+  const fullRows = Array.isArray(payload?.audit_trail?.full_history_quarter_log)
+    ? payload.audit_trail.full_history_quarter_log
+    : Array.isArray(payload?.quarter_log)
+      ? payload.quarter_log
+      : [];
+  const { visibleRows: rows, measuredRows } = latestVisibleEarningsRows(fullRows);
+  const measuredCount = measuredRows.length;
+  const gapUpRows = measuredRows.filter((row) => Number(row.gap_return) > 0);
+  const gapDownRows = measuredRows.filter((row) => Number(row.gap_return) < 0);
+  const gapUpRate = measuredRows.length ? (gapUpRows.length / measuredRows.length) * 100 : null;
+  const averageGapUp = averagePercent(gapUpRows, 'gap_return');
+  const averageGapDown = averagePercent(gapDownRows, 'gap_return');
+  const sameDayOc = averagePercent(measuredRows, 'same_day_oc');
+  const sampleDates = measuredRows.map((row) => row.release_date).filter(Boolean).sort();
+  const fullHistoryMeasuredCount = fullRows.filter(isMeasuredReadyQuarter).length;
+  const fullHistoryExcludedCount = payload?.coverage?.full_history_excluded_count ??
+    payload?.coverage?.excluded_count ??
+    Math.max(fullRows.length - fullHistoryMeasuredCount, 0);
+  const coverage = {
+    ...(payload?.coverage || {}),
+    sample_window: payload?.coverage?.sample_window || 'latest_contiguous_verified_reaction',
+    quarters_analyzed: measuredCount,
+    measured_gap_count: measuredCount,
+    date_range: {
+      start: sampleDates[0] || payload?.coverage?.date_range?.start || null,
+      end: sampleDates[sampleDates.length - 1] || payload?.coverage?.date_range?.end || null
+    },
+    sample_excluded_count: 0,
+    full_history_quarters_available: payload?.coverage?.full_history_quarters_available ?? fullRows.length,
+    full_history_measured_gap_count: payload?.coverage?.full_history_measured_gap_count ?? fullHistoryMeasuredCount,
+    full_history_excluded_count: fullHistoryExcludedCount,
+    measured_outside_continuous_window: payload?.coverage?.measured_outside_continuous_window ??
+      Math.max(fullHistoryMeasuredCount - measuredCount, 0),
+    leading_pending_count: payload?.coverage?.leading_pending_count ?? Math.max(rows.length - measuredRows.length, 0)
+  };
   const ticker = displayTicker || payload?.ticker;
 
   return {
     truth_layer_status: 'truth_layer_v1',
     ticker,
     source_ticker: payload?.ticker,
-    coverage: payload?.coverage,
+    coverage,
     earnings_summary: payload?.earnings_summary,
     forward_returns: payload?.forward_returns,
     dossier_digest: payload?.dossier_digest,
@@ -636,6 +692,10 @@ export default function EventStudyPanel({ payload, eventStudySeed, onOpenStockDo
   const latestEarningsSnapshot = useMemo(() => getLatestEarningsSnapshot(historyRows), [historyRows]);
   const isTruthLayerData = data?.truth_layer_status === 'truth_layer_v1';
   const measuredReactionCount = data?.coverage?.measured_gap_count ?? data?.summary?.total_events ?? 0;
+  const truthSampleStart = data?.coverage?.date_range?.start;
+  const truthSampleEnd = data?.coverage?.date_range?.end;
+  const truthReadyWindowLabel = truthSampleStart && truthSampleEnd ? `${truthSampleStart} → ${truthSampleEnd}` : 'n/a';
+  const fullHistoryPendingCount = data?.coverage?.full_history_excluded_count ?? data?.coverage?.excluded_count ?? 0;
 
   const resolveDossierDetail = useCallback((ticker) => {
     const normalizedTicker = String(ticker || '').trim().toUpperCase();
@@ -836,19 +896,19 @@ export default function EventStudyPanel({ payload, eventStudySeed, onOpenStockDo
                     <>
                       <div className="earnings-snapshot-grid">
                         <div className="earnings-snapshot-metric">
-                          <span>Pending</span>
-                          <strong>{data.coverage?.excluded_count ?? 0}</strong>
+                          <span>Ready window</span>
+                          <strong>{truthReadyWindowLabel}</strong>
                         </div>
                         <div className="earnings-snapshot-metric">
-                          <span>As of</span>
-                          <strong>{data.coverage?.as_of_date ?? 'n/a'}</strong>
+                          <span>Full pending</span>
+                          <strong>{fullHistoryPendingCount}</strong>
                         </div>
                         <div className="earnings-snapshot-metric">
                           <span>Source</span>
                           <strong>v1</strong>
                         </div>
                       </div>
-                      <p>Event Study full page now reads the same Timing Truth Layer as Stock Dossier.</p>
+                      <p>Stats and visible rows use the latest continuous Ready window only; full-history fallback rows stay outside this sample.</p>
                     </>
                   ) : (
                     <>
