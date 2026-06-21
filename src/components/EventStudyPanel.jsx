@@ -86,6 +86,83 @@ const MARKET_DATA_EXCLUSION_REASONS = new Set([
   'MISSING_REACTION_CLOSE'
 ]);
 
+const DEFAULT_SAMPLE_FILTER = {
+  mode: 'max',
+  customStart: '',
+  customEnd: ''
+};
+
+const SAMPLE_FILTER_OPTIONS = [
+  { value: '1y', label: '1Y', years: 1 },
+  { value: '3y', label: '3Y', years: 3 },
+  { value: '5y', label: '5Y', years: 5 },
+  { value: 'max', label: 'Max' },
+  { value: 'custom', label: 'Custom' }
+];
+
+function getDateRange(rows = []) {
+  const dates = rows.map((row) => row?.release_date).filter(Boolean).sort();
+  return {
+    start: dates[0] || null,
+    end: dates[dates.length - 1] || null
+  };
+}
+
+function shiftDateByYears(dateString, years) {
+  if (!dateString) return null;
+  const [year, month, day] = dateString.split('-').map(Number);
+  if (!year || !month || !day) return null;
+  const date = new Date(Date.UTC(year + years, month - 1, day));
+  return date.toISOString().slice(0, 10);
+}
+
+function clampDate(dateString, minDate, maxDate) {
+  if (!dateString) return '';
+  if (minDate && dateString < minDate) return minDate;
+  if (maxDate && dateString > maxDate) return maxDate;
+  return dateString;
+}
+
+function filterMeasuredRowsBySampleWindow(rows = [], sampleFilter = DEFAULT_SAMPLE_FILTER) {
+  const mode = sampleFilter?.mode || 'max';
+  if (mode === 'max') return rows;
+
+  const fullRange = getDateRange(rows);
+  if (!fullRange.start || !fullRange.end) return rows;
+
+  let startDate = fullRange.start;
+  let endDate = fullRange.end;
+
+  const preset = SAMPLE_FILTER_OPTIONS.find((option) => option.value === mode);
+  if (preset?.years) {
+    startDate = shiftDateByYears(fullRange.end, -preset.years) || fullRange.start;
+  } else if (mode === 'custom') {
+    startDate = sampleFilter.customStart || fullRange.start;
+    endDate = sampleFilter.customEnd || fullRange.end;
+  }
+
+  const boundedStart = clampDate(startDate, fullRange.start, fullRange.end);
+  const boundedEnd = clampDate(endDate, fullRange.start, fullRange.end);
+  const normalizedStart = boundedStart && boundedEnd && boundedStart > boundedEnd ? boundedEnd : boundedStart;
+  const normalizedEnd = boundedStart && boundedEnd && boundedStart > boundedEnd ? boundedStart : boundedEnd;
+
+  return rows.filter((row) => {
+    if (!row?.release_date) return false;
+    return row.release_date >= normalizedStart && row.release_date <= normalizedEnd;
+  });
+}
+
+function getSampleFilterLabel(sampleFilter = DEFAULT_SAMPLE_FILTER) {
+  const mode = sampleFilter?.mode || 'max';
+  if (mode === 'custom') {
+    if (sampleFilter.customStart && sampleFilter.customEnd) {
+      return `${sampleFilter.customStart} → ${sampleFilter.customEnd}`;
+    }
+    return 'Custom';
+  }
+  return SAMPLE_FILTER_OPTIONS.find((option) => option.value === mode)?.label || 'Max';
+}
+
 function getAuditRowState(row) {
   const reasons = Array.isArray(row?.exclusion_reasons) ? row.exclusion_reasons : [];
   if (!reasons.length) {
@@ -167,14 +244,17 @@ function latestVisibleEarningsRows(rows = [], asOfDate = null) {
   return { visibleRows, measuredRows, hiddenLeadingRows };
 }
 
-function normalizeEarningsGapSummaryPayload(payload, displayTicker = null) {
+function normalizeEarningsGapSummaryPayload(payload, displayTicker = null, sampleFilter = DEFAULT_SAMPLE_FILTER) {
   const fullRows = Array.isArray(payload?.audit_trail?.full_history_quarter_log)
     ? payload.audit_trail.full_history_quarter_log
     : Array.isArray(payload?.quarter_log)
       ? payload.quarter_log
       : [];
   const asOfDate = payload?.coverage?.as_of_date || null;
-  const { visibleRows: rows, measuredRows, hiddenLeadingRows } = latestVisibleEarningsRows(fullRows, asOfDate);
+  const { visibleRows, measuredRows: continuousMeasuredRows, hiddenLeadingRows } = latestVisibleEarningsRows(fullRows, asOfDate);
+  const leadingPendingRows = visibleRows.filter((row) => !isMeasuredReadyQuarter(row));
+  const measuredRows = filterMeasuredRowsBySampleWindow(continuousMeasuredRows, sampleFilter);
+  const rows = [...leadingPendingRows, ...measuredRows];
   const measuredCount = measuredRows.length;
   const gapUpRows = measuredRows.filter((row) => Number(row.gap_return) > 0);
   const gapDownRows = measuredRows.filter((row) => Number(row.gap_return) < 0);
@@ -182,7 +262,8 @@ function normalizeEarningsGapSummaryPayload(payload, displayTicker = null) {
   const averageGapUp = averagePercent(gapUpRows, 'gap_return');
   const averageGapDown = averagePercent(gapDownRows, 'gap_return');
   const sameDayOc = averagePercent(measuredRows, 'same_day_oc');
-  const sampleDates = measuredRows.map((row) => row.release_date).filter(Boolean).sort();
+  const sampleDateRange = getDateRange(measuredRows);
+  const continuousReadyDateRange = getDateRange(continuousMeasuredRows);
   const fullHistoryMeasuredCount = fullRows.filter(isMeasuredReadyQuarter).length;
   const fullHistoryExcludedCount = payload?.coverage?.full_history_excluded_count ??
     payload?.coverage?.excluded_count ??
@@ -193,15 +274,23 @@ function normalizeEarningsGapSummaryPayload(payload, displayTicker = null) {
     quarters_analyzed: measuredCount,
     measured_gap_count: measuredCount,
     date_range: {
-      start: sampleDates[0] || payload?.coverage?.date_range?.start || null,
-      end: sampleDates[sampleDates.length - 1] || payload?.coverage?.date_range?.end || null
+      start: sampleDateRange.start,
+      end: sampleDateRange.end
+    },
+    continuous_ready_date_range: continuousReadyDateRange,
+    active_sample_filter: {
+      mode: sampleFilter?.mode || 'max',
+      label: getSampleFilterLabel(sampleFilter),
+      custom_start: sampleFilter?.customStart || null,
+      custom_end: sampleFilter?.customEnd || null
     },
     sample_excluded_count: 0,
+    sample_filtered_out_count: Math.max(continuousMeasuredRows.length - measuredCount, 0),
     full_history_quarters_available: payload?.coverage?.full_history_quarters_available ?? fullRows.length,
     full_history_measured_gap_count: payload?.coverage?.full_history_measured_gap_count ?? fullHistoryMeasuredCount,
     full_history_excluded_count: fullHistoryExcludedCount,
     measured_outside_continuous_window: payload?.coverage?.measured_outside_continuous_window ??
-      Math.max(fullHistoryMeasuredCount - measuredCount, 0),
+      Math.max(fullHistoryMeasuredCount - continuousMeasuredRows.length, 0),
     leading_pending_count: payload?.coverage?.leading_pending_count ?? Math.max(rows.length - measuredRows.length, 0),
     hidden_leading_pending_count: payload?.coverage?.hidden_leading_pending_count ?? hiddenLeadingRows.length
   };
@@ -633,7 +722,9 @@ function MobileAuditCard({ row, index }) {
 export default function EventStudyPanel({ payload, eventStudySeed, onOpenStockDossier }) {
   const [symbol, setSymbol] = useState('');
   const [loading, setLoading] = useState(false);
-  const [data, setData] = useState(null);
+  const [rawEarningsPayload, setRawEarningsPayload] = useState(null);
+  const [dataTicker, setDataTicker] = useState(null);
+  const [sampleFilter, setSampleFilter] = useState(DEFAULT_SAMPLE_FILTER);
   const [error, setError] = useState(null);
 
   const [historyRows, setHistoryRows] = useState([]);
@@ -662,7 +753,8 @@ export default function EventStudyPanel({ payload, eventStudySeed, onOpenStockDo
     setLoading(true);
     setError(null);
     if (!options.keepPrevious) {
-      setData(null);
+      setRawEarningsPayload(null);
+      setDataTicker(null);
     }
 
     try {
@@ -673,7 +765,9 @@ export default function EventStudyPanel({ payload, eventStudySeed, onOpenStockDo
         const json = await res.json();
 
         if (res.ok) {
-          setData(normalizeEarningsGapSummaryPayload(json, nextSymbol.toUpperCase()));
+          setRawEarningsPayload(json);
+          setDataTicker(nextSymbol.toUpperCase());
+          setSampleFilter(DEFAULT_SAMPLE_FILTER);
           setHistoryRows([]);
           setExpandedRows(new Set());
           return;
@@ -709,15 +803,45 @@ export default function EventStudyPanel({ payload, eventStudySeed, onOpenStockDo
     return () => media.removeEventListener('change', update);
   }, []);
 
+  const data = useMemo(
+    () => rawEarningsPayload ? normalizeEarningsGapSummaryPayload(rawEarningsPayload, dataTicker, sampleFilter) : null,
+    [rawEarningsPayload, dataTicker, sampleFilter]
+  );
+
+  useEffect(() => {
+    setExpandedRows(new Set());
+  }, [sampleFilter, dataTicker]);
+
   const decisionModel = useMemo(() => getDecisionModel(data?.summary), [data]);
   const mergedDetails = useMemo(() => mergeHistoryIntoDetails(data?.details ?? [], historyRows), [data?.details, historyRows]);
   const latestEarningsSnapshot = useMemo(() => getLatestEarningsSnapshot(historyRows), [historyRows]);
   const isTruthLayerData = data?.truth_layer_status === 'truth_layer_v1';
   const measuredReactionCount = data?.coverage?.measured_gap_count ?? data?.summary?.total_events ?? 0;
-  const truthSampleStart = data?.coverage?.date_range?.start;
-  const truthSampleEnd = data?.coverage?.date_range?.end;
-  const truthReadyWindowLabel = truthSampleStart && truthSampleEnd ? `${truthSampleStart} → ${truthSampleEnd}` : 'n/a';
-  const fullHistoryPendingCount = data?.coverage?.full_history_excluded_count ?? data?.coverage?.excluded_count ?? 0;
+  const continuousReadyRange = data?.coverage?.continuous_ready_date_range || {};
+  const activeSampleLabel = data?.coverage?.active_sample_filter?.label || getSampleFilterLabel(sampleFilter);
+
+  const updateSampleFilterMode = useCallback((mode) => {
+    setSampleFilter((current) => {
+      if (mode !== 'custom') {
+        return { ...DEFAULT_SAMPLE_FILTER, mode };
+      }
+      const start = current.customStart || continuousReadyRange.start || '';
+      const end = current.customEnd || continuousReadyRange.end || '';
+      return {
+        mode: 'custom',
+        customStart: clampDate(start, continuousReadyRange.start, continuousReadyRange.end),
+        customEnd: clampDate(end, continuousReadyRange.start, continuousReadyRange.end)
+      };
+    });
+  }, [continuousReadyRange.end, continuousReadyRange.start]);
+
+  const updateCustomSampleDate = useCallback((field, value) => {
+    setSampleFilter((current) => ({
+      ...current,
+      mode: 'custom',
+      [field]: clampDate(value, continuousReadyRange.start, continuousReadyRange.end)
+    }));
+  }, [continuousReadyRange.end, continuousReadyRange.start]);
 
   const resolveDossierDetail = useCallback((ticker) => {
     const normalizedTicker = String(ticker || '').trim().toUpperCase();
@@ -892,6 +1016,45 @@ export default function EventStudyPanel({ payload, eventStudySeed, onOpenStockDo
               <div className="panel-header">
                 <BarChart3 size={18} className="text-accent" />
                 <span>Historical Evidence</span>
+                {isTruthLayerData && (
+                  <div className="event-study-sample-filter" aria-label="Historical evidence sample window">
+                    <div className="event-study-sample-filter__controls">
+                      {SAMPLE_FILTER_OPTIONS.map((option) => (
+                        <button
+                          type="button"
+                          key={option.value}
+                          className={`event-study-sample-filter__button ${sampleFilter.mode === option.value ? 'event-study-sample-filter__button--active' : ''}`}
+                          onClick={() => updateSampleFilterMode(option.value)}
+                        >
+                          {option.label}
+                        </button>
+                      ))}
+                    </div>
+                    {sampleFilter.mode === 'custom' && (
+                      <div className="event-study-sample-filter__custom">
+                        <input
+                          type="date"
+                          value={sampleFilter.customStart}
+                          min={continuousReadyRange.start || undefined}
+                          max={continuousReadyRange.end || undefined}
+                          onInput={(event) => updateCustomSampleDate('customStart', event.target.value)}
+                          onChange={(event) => updateCustomSampleDate('customStart', event.target.value)}
+                          aria-label="Custom sample start date"
+                        />
+                        <span>to</span>
+                        <input
+                          type="date"
+                          value={sampleFilter.customEnd}
+                          min={continuousReadyRange.start || undefined}
+                          max={continuousReadyRange.end || undefined}
+                          onInput={(event) => updateCustomSampleDate('customEnd', event.target.value)}
+                          onChange={(event) => updateCustomSampleDate('customEnd', event.target.value)}
+                          aria-label="Custom sample end date"
+                        />
+                      </div>
+                    )}
+                  </div>
+                )}
                 <span className="badge panel-badge radar-panel-badge">Why This Matters</span>
               </div>
 
@@ -915,23 +1078,7 @@ export default function EventStudyPanel({ payload, eventStudySeed, onOpenStockDo
                   <span className="event-study-evidence-card__eyebrow">{isTruthLayerData ? 'Truth Coverage' : 'Latest Earnings Snapshot'}</span>
                   <strong>{isTruthLayerData ? `${measuredReactionCount} measured` : latestEarningsSnapshot?.eventDate ?? 'n/a'}</strong>
                   {isTruthLayerData ? (
-                    <>
-                      <div className="earnings-snapshot-grid">
-                        <div className="earnings-snapshot-metric">
-                          <span>Ready window</span>
-                          <strong>{truthReadyWindowLabel}</strong>
-                        </div>
-                        <div className="earnings-snapshot-metric">
-                          <span>Full pending</span>
-                          <strong>{fullHistoryPendingCount}</strong>
-                        </div>
-                        <div className="earnings-snapshot-metric">
-                          <span>Source</span>
-                          <strong>v1</strong>
-                        </div>
-                      </div>
-                      <p>Stats and visible rows use the latest continuous Ready window only; full-history fallback rows stay outside this sample.</p>
-                    </>
+                    <p>Sample: {activeSampleLabel}</p>
                   ) : (
                     <>
                       <div className="earnings-snapshot-grid">
