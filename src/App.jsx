@@ -269,6 +269,7 @@ function App() {
         payload={payload}
         eventStudySeed={eventStudySeed}
         onOpenStockDossier={handleOpenStockDossier}
+        locale={locale}
       />
     ),
     'momentum-universe': (

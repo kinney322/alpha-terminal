@@ -240,7 +240,7 @@ const PostEarningsBaseRatePanel = ({ eventDetail }) => {
         )}
       </div>
       <div style={{ marginTop: '12px', fontSize: '0.85em', color: 'var(--text-muted)' }}>
-        5D = five trading days after the earnings event. Continuation/Reversal is a legacy post-event drift measure and is not the Timing Truth Layer reaction gap.
+        5D = five trading days after the earnings event. Continuation/Reversal is a legacy post-event drift measure and should be read separately from reaction-day gap data.
       </div>
     </div>
   );

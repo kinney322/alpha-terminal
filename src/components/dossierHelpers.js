@@ -358,7 +358,7 @@ export const buildEvidenceBoard = (eventDetail, payload) => {
     evidenceList.push({
       evidence: 'Event Study',
       signal: `Legacy drift ${formatSignedPct(eventStudy.median_t10_return_pct)} (N=${eventStudy.similar_reaction_sample_size || eventStudy.sample_size})`,
-      interpretation: 'Legacy historical post-event profile; use Timing Truth Layer fields where available.',
+      interpretation: 'Legacy historical post-event profile; read it separately from reaction-day gap fields where available.',
       coverage: 'Available',
       priority: 3
     });

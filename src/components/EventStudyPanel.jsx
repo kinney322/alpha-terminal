@@ -13,11 +13,18 @@ function formatPercent(value, digits = 2, withSign = false) {
   return `${prefix}${numeric.toFixed(digits)}%`;
 }
 
-function formatCount(value) {
+function formatCount(value, locale = 'en') {
   if (value === undefined || value === null || value === '') return '—';
   const numeric = Number(value);
   if (Number.isNaN(numeric)) return '—';
-  return `${numeric}次`;
+  return locale === 'zh' ? `${numeric} 個季度` : `${numeric}`;
+}
+
+function formatMeasuredCount(value, locale = 'en') {
+  if (value === undefined || value === null || value === '') return '—';
+  const numeric = Number(value);
+  if (Number.isNaN(numeric)) return '—';
+  return locale === 'zh' ? `${numeric} 個季度` : `${numeric} measured`;
 }
 
 function formatDecimal(value, digits = 2) {
@@ -100,6 +107,339 @@ const SAMPLE_FILTER_OPTIONS = [
   { value: 'custom', label: 'Custom' }
 ];
 
+const EVENT_STUDY_COPY = {
+  en: {
+    panelTitle: 'Earnings Reaction Study Matrix',
+    tickerLabel: 'Ticker',
+    tickerPlaceholder: 'e.g. NVDA, SPY',
+    categoryLabel: 'Category',
+    categoryAria: 'Event study category',
+    categoryValue: 'Earnings',
+    unavailableError: 'Event study summary unavailable',
+    submitIdle: 'Run study',
+    submitLoading: 'Running...',
+    pillars: [
+      {
+        eyebrow: '1. Edge',
+        title: 'Start with verified reaction samples',
+        body: 'Use only reaction-day aligned gap and forward-return data.'
+      },
+      {
+        eyebrow: '2. Crowding',
+        title: 'Then check whether pre-event run-up is stretched',
+        body: 'A stronger pre-5 run-up raises the risk that good news is already priced in.'
+      },
+      {
+        eyebrow: '3. Risk',
+        title: 'Size the trade from gap and intraday risk',
+        body: 'Gap return and same-day open-to-close movement drive position sizing, not direction alone.'
+      }
+    ],
+    linkedObject: 'Linked research object',
+    openStockDossier: 'Open Stock Dossier',
+    longPayoff: 'Long Payoff',
+    shortPayoff: 'Short Payoff',
+    positionSizing: 'Position Sizing',
+    baseRateSuffix: 'base rate',
+    avgGapDownSuffix: 'avg gap down',
+    preEventRunupSuffix: 'pre-event run-up',
+    gapUpRate: 'Gap-up rate',
+    legacyWinRate: 'Legacy +10D win rate',
+    avgGapDown: 'Avg Gap Down',
+    pre5Runup: 'Pre -5D run-up',
+    sameDayOc: 'Same-day O/C',
+    legacyVolatility: 'Legacy +1D volatility',
+    maxDrawdown5d: '5D max drawdown',
+    validSample: 'Valid sample',
+    reactionDayFootnote: 'based on verified reaction day',
+    legacyFootnote: 'older calculation path',
+    nullGapDownFootnote: 'null means no measured gap-down rows',
+    priceInFootnote: 'higher values need a price-in check',
+    reactionOpenCloseFootnote: 'reaction open to close',
+    stopFootnote: 'used to define stops and risk budget',
+    lowSampleFootnote: 'reduce confidence below 8 events',
+    historicalEvidence: 'Historical Evidence',
+    whyThisMatters: 'Why This Matters',
+    baseRate: 'Base Rate',
+    averageGapUp: 'Average Gap Up',
+    crowding: 'Crowding',
+    riskBudget: 'Risk Budget',
+    truthCoverage: 'Truth Coverage',
+    measured: 'measured',
+    latestEarningsSnapshot: 'Latest Earnings Snapshot',
+    noValue: 'n/a',
+    surprise: 'Surprise',
+    sampleLabel: 'Sample',
+    sampleWindowAria: 'Historical evidence sample window',
+    customSampleStartAria: 'Custom sample start date',
+    customSampleEndAria: 'Custom sample end date',
+    maxFilter: 'Max',
+    customFilter: 'Custom',
+    gap: 'Gap',
+    gapColumn: 'Gap (%)',
+    baseRateBodyTruth: 'First check whether verified reactions consistently gap up. Without a sample, do not force a directional conclusion.',
+    baseRateBodyLegacy: 'First check whether this event type has a historical edge. Without edge, do not force a directional conclusion.',
+    averageGapUpBodyTruth: 'Gap return uses reaction open divided by previous close, not release-date guessing.',
+    averageGapUpBodyLegacy: 'The larger the run-up, the more you need to separate healthy positioning from sell-the-news risk.',
+    riskBudgetBodyTruth: 'Same-day open-to-close movement shows reaction-day intraday risk and should be separated from gap risk.',
+    riskBudgetBodyLegacy: 'High volatility means position sizing matters more than forcing a direction.',
+    snapshotFallback: 'The frontend can display EST / ACT / Surprise when the backend provides those fields.',
+    tradeSetupTitle: 'Trade Setup Matrix',
+    tradeSetupBadge: 'Cross-Sectional Edge',
+    primaryBucket: 'Primary Bucket',
+    singleFactor: 'Single Factor',
+    crossSetup: 'Cross Setup',
+    sampleCount: 'Sample',
+    winRate: 'Win rate',
+    legacyPlus10: 'Legacy +10D',
+    legacyPlus1: 'Legacy +1D',
+    legacyPlus1Volatility: 'Legacy +1D volatility',
+    maxDrawdown5dShort: 'Max DD 5D',
+    highRunup: 'High Run-up',
+    weakSurprise: 'Weak Surprise',
+    highSurprise: 'High Surprise',
+    positiveSurprise: 'Positive Surprise',
+    negativeSurprise: 'Negative Surprise',
+    lowRunup: 'Low Run-up',
+    highSurpriseLowRunup: 'High Surprise + Low Run-up',
+    highRunupWeakNegativeSurprise: 'High Run-up + Weak/Negative Surprise',
+    veryLowSample: 'Very Low Sample',
+    lowSampleBadge: 'Low Sample',
+    auditTitleTruth: 'Earnings Reaction Truth Audit',
+    auditTitleLegacy: 'Legacy Historical Matrix',
+    releaseDate: 'Release Date',
+    reactionDay: 'Reaction Day',
+    sameDayOcColumn: 'Same-day O/C (%)',
+    status: 'Status',
+    releaseReaction: 'Release / Reaction',
+    result: 'Result',
+    preEarningsRunup: 'Pre-Earnings Run-up',
+    postReactionDrift: 'Post-Reaction Drift',
+    eventDate: 'Event Date',
+    sentiment: 'Sentiment',
+    sentimentGapUp: 'Gap Up',
+    sentimentGapDown: 'Gap Down',
+    sentimentPending: 'Pending',
+    sentimentBeat: 'Beat',
+    sentimentMiss: 'Miss',
+    sentimentInline: 'Inline',
+    ready: 'Ready',
+    pending: 'Pending',
+    pendingData: 'Pending data',
+    excluded: 'Excluded',
+    readyDetail: 'Reaction price data available.',
+    pendingDetail: 'Previous close, reaction open, or reaction close is not available yet.',
+    issueSingular: 'issue',
+    issuePlural: 'issues',
+    to: 'to',
+    decisionTruthTitle: 'Reaction-day aligned earnings response',
+    decisionTruthSummary: 'This page uses verified earnings timing and reaction-day prices instead of estimating reaction day from older date offsets.',
+    confidenceMedium: 'Medium confidence',
+    confidenceLow: 'Low confidence',
+    confidencePending: 'Pending data',
+    riskHighVolatility: 'High volatility',
+    riskMediumVolatility: 'Medium volatility',
+    riskLowSample: 'Low sample',
+    noVerifiedRows: 'No statistically usable verified reaction rows yet',
+    legacyDecisionBalancedTitle: 'Two-sided wait for pricing mismatch',
+    legacyDecisionBalancedSummary: 'This event sample is better for comparing long and short payoff than assuming one fixed direction.',
+    legacyDecisionExpansionTitle: 'Continuation bias, but compare short payoff first',
+    legacyDecisionExpansionSummary: 'The historical base rate is positive. Treat it as a long baseline, then check crowding and event-day volatility for short payoff.',
+    legacyDecisionCompressionTitle: 'Fade risk rises, but keep a squeeze scenario',
+    legacyDecisionCompressionSummary: 'Pre-event crowding and post-event volatility are elevated, strengthening the fade setup. If market expectations are too low, short squeeze risk remains.',
+    confidenceHigh: 'High confidence',
+    riskHigh: 'High risk',
+    riskMedium: 'Medium risk',
+    riskLow: 'Low risk',
+    flagLowSample: 'Small sample; conclusion is directional only.',
+    flagHighRunup: 'Pre-event run-up is elevated; avoid chasing.',
+    flagHighVolatility: 'Event-day volatility is high; reduce position size.',
+    flagDeepDrawdown: 'Historical max drawdown is deep; define stop first.',
+    flagWeakWinRate: 'Win-rate edge is unclear; rely on price and risk control.',
+    legacyLongStrong: 'Historical win rate and run-up structure are friendlier for long setups, preferably after an event-window pullback.',
+    legacyLongMedium: 'Long still has base-rate support, but needs a better entry instead of chasing the win rate.',
+    legacyLongWeak: 'Long lacks a clear statistical edge. Use it only if price is washed out or expectations are too low.',
+    legacyShortVolatile: 'Crowding and volatility raise short payoff, especially for sell-the-news or reflexive fade setups.',
+    legacyShortWeakWinRate: 'History is more favorable to short setups, but watch post-event squeeze risk.',
+    legacyShortWeak: 'Short has no natural edge unless pre-event crowding or options pricing is stretched.',
+    legacySizingHighRisk: 'Event risk is high. Use smaller size, split entries and exits, and avoid one-shot sizing.',
+    legacySizingMediumRisk: 'Tradable, but position size should be below normal and event-day failure conditions should be defined first.',
+    legacySizingLowRisk: 'Volatility and drawdown are manageable. Focus on entry quality and payoff ratio.',
+    longPayoffSupportive: 'Verified quarters lean toward gap-up reactions, but confidence should improve as backfill expands.',
+    longPayoffWeak: 'The verified gap-up rate is not strong enough on its own. Pair this with fundamentals and valuation.',
+    shortPayoffSupportive: 'Gap-down or failed reactions are elevated. Check for high expectations or sell-the-news risk.',
+    shortPayoffWeak: 'There is not enough verified gap-down evidence to justify a standalone short thesis.',
+    sizingText: (avgGapUp, sameDayOc) => `Average reaction gap up ${avgGapUp}; same-day open-to-close ${sameDayOc}. Size around gap risk instead of old date-offset assumptions.`
+  },
+  zh: {
+    panelTitle: '財報反應回測',
+    tickerLabel: '股票代號',
+    tickerPlaceholder: '例如 MU、NVDA、SPY',
+    categoryLabel: '事件分類',
+    categoryAria: '事件研究分類',
+    categoryValue: '財報',
+    unavailableError: '事件研究摘要暫時無法取得',
+    submitIdle: '執行回測',
+    submitLoading: '回測中...',
+    pillars: [
+      {
+        eyebrow: '1. 優勢',
+        title: '先看核實樣本',
+        body: '只採用已對齊反應日的財報樣本，避免用錯公布日。'
+      },
+      {
+        eyebrow: '2. 擁擠度',
+        title: '再看事件前升幅是否過熱',
+        body: 'Pre-5 升幅越高，越要懷疑好消息是否已被提前定價。'
+      },
+      {
+        eyebrow: '3. 風險',
+        title: '最後用高低開與即日波幅決定倉位',
+        body: '反應日高低開與開收表現，決定倉位大小，不只是方向判斷。'
+      }
+    ],
+    linkedObject: '連結研究對象',
+    openStockDossier: '打開股票檔案',
+    longPayoff: '做多勝算',
+    shortPayoff: '做空勝算',
+    positionSizing: '倉位風險',
+    baseRateSuffix: '向上機率',
+    avgGapDownSuffix: '平均低開',
+    preEventRunupSuffix: '事件前升幅',
+    gapUpRate: '高開機率',
+    legacyWinRate: '舊版 +10D 勝率',
+    avgGapDown: '平均低開',
+    pre5Runup: 'Pre -5D 升幅',
+    sameDayOc: '即日開收',
+    legacyVolatility: '舊版 +1D 波動',
+    maxDrawdown5d: '5D 最大回撤',
+    validSample: '核實樣本',
+    reactionDayFootnote: '按核實反應日計算',
+    legacyFootnote: '舊版計算口徑',
+    nullGapDownFootnote: '空值代表沒有可統計的低開樣本',
+    priceInFootnote: '越高越要檢查是否已被定價',
+    reactionOpenCloseFootnote: '反應日開市至收市',
+    stopFootnote: '用來定義止損與風險預算',
+    lowSampleFootnote: '少於 8 次時要降低信任度',
+    historicalEvidence: '歷史樣本',
+    whyThisMatters: '為何重要',
+    baseRate: '向上機率',
+    averageGapUp: '平均高開',
+    crowding: '擁擠度',
+    riskBudget: '即日波幅',
+    truthCoverage: '核實樣本',
+    measured: '已核實反應',
+    latestEarningsSnapshot: '最新財報快照',
+    noValue: '不適用',
+    surprise: '驚喜幅度',
+    sampleLabel: '統計範圍',
+    sampleWindowAria: '歷史樣本統計範圍',
+    customSampleStartAria: '自訂樣本開始日期',
+    customSampleEndAria: '自訂樣本結束日期',
+    maxFilter: '全部',
+    customFilter: '自訂',
+    gap: '開市跳空',
+    gapColumn: '開市跳空 (%)',
+    baseRateBodyTruth: '先判斷核實反應是否經常高開。樣本不足時，不應硬推方向。',
+    baseRateBodyLegacy: '先判斷這類事件過去是否有優勢。沒有優勢，就不要急著討論方向。',
+    averageGapUpBodyTruth: '高開幅度用反應日開市價對上一日收市價計算，不用公布日猜測。',
+    averageGapUpBodyLegacy: '事件前升幅越大，越要分清健康部署與利好出貨風險。',
+    riskBudgetBodyTruth: '即日開收表現反映反應日內部風險，應與高低開分開看。',
+    riskBudgetBodyLegacy: '高波動代表不能用大倉位硬賭方向，應先決定可承受的跳空風險。',
+    snapshotFallback: '如果後端提供 EST / ACT / Surprise，前端就會顯示。',
+    tradeSetupTitle: '交易設定矩陣',
+    tradeSetupBadge: '橫截面優勢',
+    primaryBucket: '主要分組',
+    singleFactor: '單一因子',
+    crossSetup: '交叉設定',
+    sampleCount: '樣本數',
+    winRate: '勝率',
+    legacyPlus10: '舊版 +10D',
+    legacyPlus1: '舊版 +1D',
+    legacyPlus1Volatility: '舊版 +1D 波動',
+    maxDrawdown5dShort: '5D 最大回撤',
+    highRunup: '高升幅',
+    weakSurprise: '低驚喜',
+    highSurprise: '高驚喜',
+    positiveSurprise: '正面驚喜',
+    negativeSurprise: '負面驚喜',
+    lowRunup: '低升幅',
+    highSurpriseLowRunup: '高驚喜 + 低升幅',
+    highRunupWeakNegativeSurprise: '高升幅 + 低或負面驚喜',
+    veryLowSample: '樣本極少',
+    lowSampleBadge: '樣本偏少',
+    auditTitleTruth: '財報反應核對明細',
+    auditTitleLegacy: '舊版歷史矩陣',
+    releaseDate: '公布日',
+    reactionDay: '反應日',
+    sameDayOcColumn: '即日開收 (%)',
+    status: '狀態',
+    releaseReaction: '公布日 / 反應日',
+    result: '結果',
+    preEarningsRunup: '財報前升幅',
+    postReactionDrift: '反應後漂移',
+    eventDate: '事件日期',
+    sentiment: '結果分類',
+    sentimentGapUp: '高開',
+    sentimentGapDown: '低開',
+    sentimentPending: '待補',
+    sentimentBeat: '高於預期',
+    sentimentMiss: '低於預期',
+    sentimentInline: '符合預期',
+    ready: '核實完成',
+    pending: '待補',
+    pendingData: '待補行情',
+    excluded: '排除',
+    readyDetail: '反應日價格齊備。',
+    pendingDetail: '上一日收市、反應日開市或反應日收市資料仍未齊。',
+    issueSingular: '個問題',
+    issuePlural: '個問題',
+    to: '至',
+    decisionTruthTitle: '按反應日重建財報反應',
+    decisionTruthSummary: '這一頁只讀已核實的財報事件與反應特徵，不再用舊版事件日期偏移推估反應日。',
+    confidenceMedium: '中信度',
+    confidenceLow: '低信度',
+    confidencePending: '待補資料',
+    riskHighVolatility: '高波動',
+    riskMediumVolatility: '中波動',
+    riskLowSample: '低樣本',
+    noVerifiedRows: '尚無可統計的已驗證反應樣本',
+    legacyDecisionBalancedTitle: '雙邊等待定價錯配',
+    legacyDecisionBalancedSummary: '這組事件資料更適合比較多空兩邊賠率，而不是直接預設單一方向。',
+    legacyDecisionExpansionTitle: '偏向順勢，但先比對做空賠率',
+    legacyDecisionExpansionSummary: '歷史基準率偏正向，但應先視為做多基線，再用擁擠度與事件日波動檢查做空是否更有賠率。',
+    legacyDecisionCompressionTitle: '偏向反身性回吐，但保留擠壓劇本',
+    legacyDecisionCompressionSummary: '事件前擁擠度與事後波動偏高，回吐劇本變強；但若市場預期過低，仍要保留對做空不利的擠壓情境。',
+    confidenceHigh: '高信度',
+    riskHigh: '高風險',
+    riskMedium: '中風險',
+    riskLow: '低風險',
+    flagLowSample: '樣本偏少，結論僅供參考',
+    flagHighRunup: '事件前偷步偏高，須防追價',
+    flagHighVolatility: '事件日波動大，倉位需縮小',
+    flagDeepDrawdown: '歷史最大回撤偏深，停損要先定義',
+    flagWeakWinRate: '勝率優勢不明顯，應依賴價位與風控',
+    legacyLongStrong: '歷史勝率與升幅結構對做多較友善，適合等事件前後回調再接。',
+    legacyLongMedium: '做多仍有基準率支撐，但需要更好的入場位，不能用勝率硬追。',
+    legacyLongWeak: '做多缺乏明確統計優勢，若要做，必須依賴價格錯殺或預期過低的情境。',
+    legacyShortVolatile: '偷步與波動偏高，做空賠率提升，特別要盯利好出貨或反身性回吐。',
+    legacyShortWeakWinRate: '歷史結果對做空較有利，但要留意事件後擠壓風險。',
+    legacyShortWeak: '做空沒有天然優勢，除非看到事件前擁擠或期權定價過滿。',
+    legacySizingHighRisk: '事件風險偏大，適合縮倉位、分批進出，避免單點重押。',
+    legacySizingMediumRisk: '可做，但倉位應低於平時，並先定義事件日失敗條件。',
+    legacySizingLowRisk: '波動與回撤仍在可控區間，可以把焦點放在入場質素與賠率。',
+    longPayoffSupportive: '核實樣本偏向財報後高開，但仍要等資料補齊後再提高信任度。',
+    longPayoffWeak: '目前高開機率不足以單獨支持順勢結論，應搭配基本面與估值檢查。',
+    shortPayoffSupportive: '低開或反應失效比例偏高，需檢查是否存在預期過高或利好出貨風險。',
+    shortPayoffWeak: '目前沒有足夠低開證據支持單獨做空判斷。',
+    sizingText: (avgGapUp, sameDayOc) => `財報後平均高開 ${avgGapUp}；即日開收 ${sameDayOc}。倉位應以高低開風險，而不是舊日期偏移判斷。`
+  }
+};
+
+function getEventStudyCopy(locale = 'en') {
+  return EVENT_STUDY_COPY[locale] || EVENT_STUDY_COPY.en;
+}
+
 function getDateRange(rows = []) {
   const dates = rows.map((row) => row?.release_date).filter(Boolean).sort();
   return {
@@ -152,51 +492,63 @@ function filterMeasuredRowsBySampleWindow(rows = [], sampleFilter = DEFAULT_SAMP
   });
 }
 
-function getSampleFilterLabel(sampleFilter = DEFAULT_SAMPLE_FILTER) {
+function getSampleFilterLabel(sampleFilter = DEFAULT_SAMPLE_FILTER, copy = getEventStudyCopy()) {
   const mode = sampleFilter?.mode || 'max';
   if (mode === 'custom') {
     if (sampleFilter.customStart && sampleFilter.customEnd) {
       return `${sampleFilter.customStart} → ${sampleFilter.customEnd}`;
     }
-    return 'Custom';
+    return copy.customFilter;
   }
-  return SAMPLE_FILTER_OPTIONS.find((option) => option.value === mode)?.label || 'Max';
+  if (mode === 'max') return copy.maxFilter;
+  return SAMPLE_FILTER_OPTIONS.find((option) => option.value === mode)?.label || copy.maxFilter;
 }
 
-function getAuditRowState(row) {
+function getAuditRowState(row, copy = getEventStudyCopy()) {
   const reasons = Array.isArray(row?.exclusion_reasons) ? row.exclusion_reasons : [];
   if (!reasons.length) {
     return {
-      status: 'Ready',
+      status: copy.ready,
       tone: 'ready',
-      displayValue: 'Ready',
-      detail: 'Reaction price data available.'
+      displayValue: copy.ready,
+      detail: copy.readyDetail
     };
   }
 
   const marketDataOnly = reasons.every((reason) => MARKET_DATA_EXCLUSION_REASONS.has(reason));
   if (marketDataOnly) {
     return {
-      status: 'Pending data',
+      status: copy.pendingData,
       tone: 'pending',
-      displayValue: 'Pending data',
-      detail: 'Previous close, reaction open, or reaction close is not available yet.'
+      displayValue: copy.pendingData,
+      detail: copy.pendingDetail
     };
   }
 
   return {
-    status: 'Excluded',
+    status: copy.excluded,
     tone: 'excluded',
-    displayValue: `${reasons.length} issue${reasons.length === 1 ? '' : 's'}`,
+    displayValue: `${reasons.length} ${reasons.length === 1 ? copy.issueSingular : copy.issuePlural}`,
     detail: reasons.join(', ')
   };
 }
 
-function formatAuditPercent(value, digits = 2, withSign = true) {
+function formatAuditPercent(value, digits = 2, withSign = true, copy = getEventStudyCopy()) {
   if (value === undefined || value === null || value === '') {
-    return <span className="audit-pending-value">Pending</span>;
+    return <span className="audit-pending-value">{copy.pending}</span>;
   }
   return formatPercent(value, digits, withSign);
+}
+
+function formatSentimentLabel(sentiment, copy = getEventStudyCopy()) {
+  const normalized = String(sentiment || '').toLowerCase();
+  if (normalized === 'gap up') return copy.sentimentGapUp;
+  if (normalized === 'gap down') return copy.sentimentGapDown;
+  if (normalized === 'pending') return copy.sentimentPending;
+  if (normalized === 'beat') return copy.sentimentBeat;
+  if (normalized === 'miss') return copy.sentimentMiss;
+  if (normalized === 'inline' || normalized === 'in line') return copy.sentimentInline;
+  return sentiment || copy.pending;
 }
 
 function isMeasuredReadyQuarter(row) {
@@ -371,7 +723,7 @@ function getLatestEarningsSnapshot(rows = []) {
   };
 }
 
-function getDecisionModel(summary) {
+function getDecisionModel(summary, copy = getEventStudyCopy()) {
   if (!summary) return null;
 
   if (summary.truth_layer_kind === 'earnings_gap_summary') {
@@ -382,21 +734,24 @@ function getDecisionModel(summary) {
 
     return {
       posture: 'truth_layer',
-      title: '以 reaction_day 對齊財報反應',
-      summaryText: '這一頁只讀 earnings_event_truth_v1 與 earnings_reaction_features，不再用 legacy event_date 偏移推估反應日。',
-      confidence: sample >= 8 ? '中信度' : sample > 0 ? '低信度' : '待補資料',
-      risk: Math.abs(avgGapUp) >= 10 ? '高波動' : Math.abs(avgGapUp) >= 3 ? '中波動' : '低樣本',
-      flags: sample === 0 ? ['尚無可統計的 verified reaction rows'] : [],
+      title: copy.decisionTruthTitle,
+      summaryText: copy.decisionTruthSummary,
+      confidence: sample >= 8 ? copy.confidenceMedium : sample > 0 ? copy.confidenceLow : copy.confidencePending,
+      risk: Math.abs(avgGapUp) >= 10 ? copy.riskHighVolatility : Math.abs(avgGapUp) >= 3 ? copy.riskMediumVolatility : copy.riskLowSample,
+      flags: sample === 0 ? [copy.noVerifiedRows] : [],
       longPayoff:
         gapUpRate >= 55
-          ? '已驗證季度偏向 gap-up reaction，但樣本數仍需隨 backfill 擴充後再提高信任度。'
-          : '目前 verified gap-up rate 不足以單獨支持順勢結論，應搭配基本面與估值檢查。',
+          ? copy.longPayoffSupportive
+          : copy.longPayoffWeak,
       shortPayoff:
         gapUpRate <= 45
-          ? 'gap-down 或無效反應比例偏高，需檢查是否存在預期過高或 sell-the-news 風險。'
-          : '目前沒有足夠 verified gap-down evidence 支持單獨做空判斷。',
+          ? copy.shortPayoffSupportive
+          : copy.shortPayoffWeak,
       sizingText:
-        `Reaction gap 平均上行 ${Number.isFinite(avgGapUp) ? formatPercent(avgGapUp, 2, true) : '—'}；same-day open-to-close ${Number.isFinite(sameDayOc) ? formatPercent(sameDayOc, 2, true) : '—'}，倉位應以 gap risk 而不是舊日期偏移判斷。`,
+        copy.sizingText(
+          Number.isFinite(avgGapUp) ? formatPercent(avgGapUp, 2, true) : '—',
+          Number.isFinite(sameDayOc) ? formatPercent(sameDayOc, 2, true) : '—'
+        ),
     };
   }
 
@@ -408,28 +763,28 @@ function getDecisionModel(summary) {
   const drawdownAbs = Math.abs(maxDrawdown);
 
   let posture = 'balanced';
-  let title = '雙邊等待定價錯配';
-  let summaryText = '這組事件資料更適合拿來比較多空兩邊的賠率差，而不是直接預設單一方向。';
+  let title = copy.legacyDecisionBalancedTitle;
+  let summaryText = copy.legacyDecisionBalancedSummary;
 
   if ((winRate >= 58 && runup <= 2.5) || (winRate >= 65 && maxDrawdown > -5)) {
     posture = 'expansion';
-    title = '偏向順勢，但先比對 short 賠率';
-    summaryText = '歷史 base rate 偏正向，但你應該把它視為 long baseline，再拿 crowding 與事件日波動去檢查 short 是否更有賠率。';
+    title = copy.legacyDecisionExpansionTitle;
+    summaryText = copy.legacyDecisionExpansionSummary;
   } else if ((winRate <= 45 && runup >= 1.5) || (runup >= 3 && volatility >= 4)) {
     posture = 'compression';
-    title = '偏向反身性回吐，但保留 squeeze 劇本';
-    summaryText = '事件前擁擠度與事後波動偏高，代表 fade 劇本變強；但若市場預期過低，也要保留 squeeze 對 short 不利的情境。';
+    title = copy.legacyDecisionCompressionTitle;
+    summaryText = copy.legacyDecisionCompressionSummary;
   }
 
-  const confidence = sample >= 20 ? '高信度' : sample >= 10 ? '中信度' : '低信度';
-  const risk = volatility >= 5 || drawdownAbs >= 7 ? '高風險' : volatility >= 3 || drawdownAbs >= 4 ? '中風險' : '低風險';
+  const confidence = sample >= 20 ? copy.confidenceHigh : sample >= 10 ? copy.confidenceMedium : copy.confidenceLow;
+  const risk = volatility >= 5 || drawdownAbs >= 7 ? copy.riskHigh : volatility >= 3 || drawdownAbs >= 4 ? copy.riskMedium : copy.riskLow;
 
   const flags = [];
-  if (sample < 8) flags.push('樣本偏少，結論僅供參考');
-  if (runup >= 3) flags.push('事件前偷步偏高，須防追價');
-  if (volatility >= 4) flags.push('事件日波動大，倉位需縮小');
-  if (drawdownAbs >= 5) flags.push('歷史最大回撤偏深，停損要先定義');
-  if (winRate > 45 && winRate < 55) flags.push('勝率優勢不明顯，應依賴價位與風控');
+  if (sample < 8) flags.push(copy.flagLowSample);
+  if (runup >= 3) flags.push(copy.flagHighRunup);
+  if (volatility >= 4) flags.push(copy.flagHighVolatility);
+  if (drawdownAbs >= 5) flags.push(copy.flagDeepDrawdown);
+  if (winRate > 45 && winRate < 55) flags.push(copy.flagWeakWinRate);
 
   return {
     posture,
@@ -440,22 +795,22 @@ function getDecisionModel(summary) {
     flags,
     longPayoff:
       winRate >= 58 && runup <= 2.5
-        ? '歷史勝率與 run-up 結構對 long 較友善，適合等事件前後 pullback 再接。'
+        ? copy.legacyLongStrong
         : winRate >= 50
-          ? 'long 仍有 base rate 支撐，但需要更好的 entry，不能用勝率硬追。'
-          : 'long 缺乏明確統計優勢，若要做，必須依賴價格錯殺或預期過低的情境。',
+          ? copy.legacyLongMedium
+          : copy.legacyLongWeak,
     shortPayoff:
       runup >= 3 || volatility >= 4
-        ? '偷步與波動偏高，short payoff 提升，特別要盯 sell-the-news 或反身性回吐。'
+        ? copy.legacyShortVolatile
         : winRate <= 45
-          ? '歷史結果對 short 較有利，但要留意事件後 squeeze 風險。'
-          : 'short 沒有天然優勢，除非看到 pre-event crowding 或 options 定價過滿。',
+          ? copy.legacyShortWeakWinRate
+          : copy.legacyShortWeak,
     sizingText:
       volatility >= 5 || drawdownAbs >= 7
-        ? '事件風險偏大，適合縮倉位、分批進出，避免單點重押。'
+        ? copy.legacySizingHighRisk
         : volatility >= 3 || drawdownAbs >= 4
-          ? '可做，但倉位應低於平時，並先定義 event-day 失敗條件。'
-          : '波動與回撤仍在可控區間，可以把焦點放在 entry quality 與 payoff ratio。',
+          ? copy.legacySizingMediumRisk
+          : copy.legacySizingLowRisk,
   };
 }
 
@@ -469,7 +824,7 @@ function DecisionMetricCard({ label, value, tone = 'neutral', footnote }) {
   );
 }
 
-function BucketCard({ title, bucket, compact = false }) {
+function BucketCard({ title, bucket, compact = false, copy = getEventStudyCopy() }) {
   if (!bucket) return null;
   const { count, win_rate, avg_t10, avg_t1, avg_max_dd_5, avg_t1_abs_volatility, sample_warning } = bucket;
 
@@ -477,36 +832,36 @@ function BucketCard({ title, bucket, compact = false }) {
     <div className={`bucket-card ${sample_warning ? 'bucket-card--warning' : ''}`}>
       <div className="bucket-card__header">
         <span className="bucket-card__title">{title}</span>
-        {sample_warning === 'very_low_sample' && <span className="bucket-badge bucket-badge--red">Very Low Sample</span>}
-        {sample_warning === 'low_sample' && <span className="bucket-badge bucket-badge--amber">Low Sample</span>}
+        {sample_warning === 'very_low_sample' && <span className="bucket-badge bucket-badge--red">{copy.veryLowSample}</span>}
+        {sample_warning === 'low_sample' && <span className="bucket-badge bucket-badge--amber">{copy.lowSampleBadge}</span>}
       </div>
       <div className="bucket-card__metrics">
         <div className="bucket-metric">
-          <span>樣本數</span>
+          <span>{copy.sampleCount}</span>
           <strong>{count ?? 0}</strong>
         </div>
         <div className="bucket-metric">
-          <span>勝率</span>
+          <span>{copy.winRate}</span>
           <strong>{win_rate != null ? `${win_rate}%` : '—'}</strong>
         </div>
         <div className="bucket-metric">
-          <span>Legacy +10D</span>
+          <span>{copy.legacyPlus10}</span>
           <strong className={avg_t10 > 0 ? 'text-success' : avg_t10 < 0 ? 'text-danger' : ''}>{avg_t10 != null ? `${avg_t10}%` : '—'}</strong>
         </div>
         {compact ? (
           <>
             <div className="bucket-metric">
-              <span>Legacy +1D</span>
+              <span>{copy.legacyPlus1}</span>
               <strong className={avg_t1 > 0 ? 'text-success' : avg_t1 < 0 ? 'text-danger' : ''}>{avg_t1 != null ? `${avg_t1}%` : '—'}</strong>
             </div>
             <div className="bucket-metric">
-              <span>5D DD</span>
+              <span>{copy.maxDrawdown5dShort}</span>
               <strong className="text-danger">{avg_max_dd_5 != null ? `${avg_max_dd_5}%` : '—'}</strong>
             </div>
           </>
         ) : (
           <div className="bucket-metric">
-            <span>Legacy +1D 波動</span>
+            <span>{copy.legacyPlus1Volatility}</span>
             <strong>{avg_t1_abs_volatility != null ? `${avg_t1_abs_volatility}%` : '—'}</strong>
           </div>
         )}
@@ -515,7 +870,7 @@ function BucketCard({ title, bucket, compact = false }) {
   );
 }
 
-function BestSetupHintCard({ hint }) {
+function BestSetupHintCard({ hint, copy = getEventStudyCopy() }) {
   if (!hint) return null;
 
   const { label, title, confidence, reason, primary_bucket, sample_warning } = hint;
@@ -536,20 +891,20 @@ function BestSetupHintCard({ hint }) {
         </div>
         {sample_warning && (
           <span className="hint-sample-badge">
-            {sample_warning === 'very_low_sample' ? 'Very Low Sample' : 'Low Sample'}
+            {sample_warning === 'very_low_sample' ? copy.veryLowSample : copy.lowSampleBadge}
           </span>
         )}
       </div>
       <p className="best-setup-hint-card__reason">{reason}</p>
       <div className="best-setup-hint-card__footer">
-        <span>Primary Bucket:</span>
+        <span>{copy.primaryBucket || 'Primary Bucket'}:</span>
         <code className="mono">{primary_bucket}</code>
       </div>
     </div>
   );
 }
 
-function TradeSetupMatrix({ conditionalSummary }) {
+function TradeSetupMatrix({ conditionalSummary, copy = getEventStudyCopy() }) {
   if (!conditionalSummary) return null;
   const {
     thresholds,
@@ -565,34 +920,34 @@ function TradeSetupMatrix({ conditionalSummary }) {
     <div className="glass-panel w-full event-study-workbench">
       <div className="panel-header">
         <Database size={18} className="text-accent" />
-        <span>條件化交易框架 (Trade Setup Matrix)</span>
-        <span className="badge panel-badge radar-panel-badge">Cross-Sectional Edge</span>
+        <span>{copy.tradeSetupTitle}</span>
+        <span className="badge panel-badge radar-panel-badge">{copy.tradeSetupBadge}</span>
       </div>
 
       <div className="trade-setup-matrix">
         {thresholds && (
           <div className="trade-setup-thresholds">
-            <span><strong>High Run-up</strong> &ge; {thresholds.high_runup_threshold}%</span>
-            <span><strong>Weak Surprise</strong> &le; {thresholds.weak_surprise_threshold}%</span>
-            <span><strong>High Surprise</strong> &ge; {thresholds.high_surprise_threshold}%</span>
+            <span><strong>{copy.highRunup}</strong> &ge; {thresholds.high_runup_threshold}%</span>
+            <span><strong>{copy.weakSurprise}</strong> &le; {thresholds.weak_surprise_threshold}%</span>
+            <span><strong>{copy.highSurprise}</strong> &ge; {thresholds.high_surprise_threshold}%</span>
           </div>
         )}
 
         <div>
-          <h4 style={{ fontSize: '0.85rem', color: 'var(--eink-gold-deep)', textTransform: 'uppercase', marginBottom: '0.8rem', fontWeight: 700 }}>Single Factor (單一維度)</h4>
+          <h4 style={{ fontSize: '0.85rem', color: 'var(--eink-gold-deep)', textTransform: 'uppercase', marginBottom: '0.8rem', fontWeight: 700 }}>{copy.singleFactor}</h4>
           <div className="bucket-grid">
-            <BucketCard title="Positive Surprise" bucket={positive_surprise} />
-            <BucketCard title="Negative Surprise" bucket={negative_surprise} />
-            <BucketCard title="High Run-up" bucket={high_runup} />
-            <BucketCard title="Low Run-up" bucket={low_runup} />
+            <BucketCard title={copy.positiveSurprise} bucket={positive_surprise} copy={copy} />
+            <BucketCard title={copy.negativeSurprise} bucket={negative_surprise} copy={copy} />
+            <BucketCard title={copy.highRunup} bucket={high_runup} copy={copy} />
+            <BucketCard title={copy.lowRunup} bucket={low_runup} copy={copy} />
           </div>
         </div>
 
         <div>
-          <h4 style={{ fontSize: '0.85rem', color: 'var(--eink-gold-deep)', textTransform: 'uppercase', marginBottom: '0.8rem', fontWeight: 700 }}>Cross Setup (多因子情境)</h4>
+          <h4 style={{ fontSize: '0.85rem', color: 'var(--eink-gold-deep)', textTransform: 'uppercase', marginBottom: '0.8rem', fontWeight: 700 }}>{copy.crossSetup}</h4>
           <div className="bucket-grid">
-            <BucketCard title="High Surprise + Low Run-up" bucket={high_surprise_low_runup} compact />
-            <BucketCard title="High Run-up + Weak/Negative Surprise" bucket={high_runup_negative_or_weak_surprise} compact />
+            <BucketCard title={copy.highSurpriseLowRunup} bucket={high_surprise_low_runup} compact copy={copy} />
+            <BucketCard title={copy.highRunupWeakNegativeSurprise} bucket={high_runup_negative_or_weak_surprise} compact copy={copy} />
           </div>
         </div>
       </div>
@@ -600,15 +955,15 @@ function TradeSetupMatrix({ conditionalSummary }) {
   );
 }
 
-function MobileAuditCard({ row, index }) {
+function MobileAuditCard({ row, index, copy = getEventStudyCopy() }) {
   if (row.truth_layer_kind === 'earnings_gap_summary') {
-    const auditState = getAuditRowState(row);
+    const auditState = getAuditRowState(row, copy);
     return (
       <article className="event-audit-card" key={`${row.release_date}-${index}`}>
         <div className="event-audit-card__header">
           <div>
-            <span className="event-audit-card__eyebrow">Release / Reaction</span>
-            <strong className="mono text-accent">{row.release_date} → {row.reaction_day || 'Pending'}</strong>
+            <span className="event-audit-card__eyebrow">{copy.releaseReaction}</span>
+            <strong className="mono text-accent">{row.release_date} → {row.reaction_day || copy.pending}</strong>
           </div>
           <span className={`audit-status-pill audit-status-pill--${auditState.tone}`}>
             {auditState.status}
@@ -619,43 +974,43 @@ function MobileAuditCard({ row, index }) {
           <div className="event-audit-card__metric">
             <span>Pre-5</span>
             <strong className={row.pre_5_return_pct > 0 ? 'text-success' : row.pre_5_return_pct < 0 ? 'text-danger' : ''}>
-              {formatAuditPercent(row.pre_5_return_pct)}
+              {formatAuditPercent(row.pre_5_return_pct, 2, true, copy)}
             </strong>
           </div>
           <div className="event-audit-card__metric">
             <span>Pre-1</span>
             <strong className={row.pre_1_return_pct > 0 ? 'text-success' : row.pre_1_return_pct < 0 ? 'text-danger' : ''}>
-              {formatAuditPercent(row.pre_1_return_pct)}
+              {formatAuditPercent(row.pre_1_return_pct, 2, true, copy)}
             </strong>
           </div>
           <div className="event-audit-card__metric">
-            <span>Gap</span>
+            <span>{copy.gap}</span>
             <strong className={row.gap_return_pct > 0 ? 'text-success' : row.gap_return_pct < 0 ? 'text-danger' : ''}>
-              {formatAuditPercent(row.gap_return_pct)}
+              {formatAuditPercent(row.gap_return_pct, 2, true, copy)}
             </strong>
           </div>
           <div className="event-audit-card__metric">
-            <span>Same-day O/C</span>
+            <span>{copy.sameDayOc}</span>
             <strong className={row.same_day_oc_pct > 0 ? 'text-success' : row.same_day_oc_pct < 0 ? 'text-danger' : ''}>
-              {formatAuditPercent(row.same_day_oc_pct)}
+              {formatAuditPercent(row.same_day_oc_pct, 2, true, copy)}
             </strong>
           </div>
           <div className="event-audit-card__metric">
             <span>R+1</span>
-            <strong>{formatAuditPercent(row.r_plus_1_pct)}</strong>
+            <strong>{formatAuditPercent(row.r_plus_1_pct, 2, true, copy)}</strong>
           </div>
           <div className="event-audit-card__metric">
             <span>R+5</span>
-            <strong>{formatAuditPercent(row.r_plus_5_pct)}</strong>
+            <strong>{formatAuditPercent(row.r_plus_5_pct, 2, true, copy)}</strong>
           </div>
           <div className="event-audit-card__metric">
             <span>R+10</span>
-            <strong>{formatAuditPercent(row.r_plus_10_pct)}</strong>
+            <strong>{formatAuditPercent(row.r_plus_10_pct, 2, true, copy)}</strong>
           </div>
         </div>
 
         <div className="event-audit-card__footer">
-          <span>Status</span>
+          <span>{copy.status}</span>
           <strong>{auditState.detail}</strong>
         </div>
       </article>
@@ -666,11 +1021,11 @@ function MobileAuditCard({ row, index }) {
     <article className="event-audit-card" key={`${row.event_date}-${index}`}>
       <div className="event-audit-card__header">
         <div>
-          <span className="event-audit-card__eyebrow">Event Date</span>
+          <span className="event-audit-card__eyebrow">{copy.eventDate}</span>
           <strong className="mono text-accent">{row.event_date}</strong>
         </div>
         <span className={`badge ${row.sentiment.toLowerCase() === 'beat' ? 'active' : row.sentiment.toLowerCase() === 'miss' ? 'inactive' : 'pending'}`}>
-          {row.sentiment}
+          {formatSentimentLabel(row.sentiment, copy)}
         </span>
       </div>
 
@@ -692,34 +1047,34 @@ function MobileAuditCard({ row, index }) {
           <strong>{formatDecimal(row.actual_eps)}</strong>
         </div>
         <div className="event-audit-card__metric">
-          <span>Surprise</span>
+          <span>{copy.surprise}</span>
           <strong className={Number(row.surprise_percent) >= 0 ? 'text-success' : 'text-danger'}>
             {formatPercent(row.surprise_percent, 2, true)}
           </strong>
         </div>
         <div className="event-audit-card__metric">
-          <span>Legacy +1D</span>
+          <span>{copy.legacyPlus1}</span>
           <strong className={row.t1_return > 0 ? 'text-success' : 'text-danger'}>{row.t1_return}</strong>
         </div>
         <div className="event-audit-card__metric">
-          <span>Max DD 5D</span>
+          <span>{copy.maxDrawdown5dShort}</span>
           <strong className="text-danger">{row.max_dd_5}</strong>
         </div>
         <div className="event-audit-card__metric">
-          <span>Legacy +10D</span>
+          <span>{copy.legacyPlus10}</span>
           <strong className={row.t10_return > 0 ? 'text-success' : 'text-danger'}>{row.t10_return}</strong>
         </div>
       </div>
 
       <div className="event-audit-card__footer">
-        <span>Result</span>
+            <span>{copy.result}</span>
         {row.win ? <strong className="text-success">W</strong> : <strong className="text-danger">L</strong>}
       </div>
     </article>
   );
 }
 
-export default function EventStudyPanel({ payload, eventStudySeed, onOpenStockDossier }) {
+export default function EventStudyPanel({ payload, eventStudySeed, onOpenStockDossier, locale = 'en' }) {
   const [symbol, setSymbol] = useState('');
   const [loading, setLoading] = useState(false);
   const [rawEarningsPayload, setRawEarningsPayload] = useState(null);
@@ -743,6 +1098,7 @@ export default function EventStudyPanel({ payload, eventStudySeed, onOpenStockDo
     if (typeof window === 'undefined') return false;
     return window.matchMedia('(max-width: 767px)').matches;
   });
+  const copy = useMemo(() => getEventStudyCopy(locale), [locale]);
 
   const fetchEventStudy = useCallback(async (symbolOverride, options = {}) => {
     const nextSymbol = canonicalizeTicker(symbolOverride ?? symbol);
@@ -774,13 +1130,13 @@ export default function EventStudyPanel({ payload, eventStudySeed, onOpenStockDo
         }
         lastError = json?.error || json?.dossier_digest?.reason || `Error ${res.status}`;
       }
-      throw new Error(lastError || 'Event study summary unavailable');
+      throw new Error(lastError || copy.unavailableError);
     } catch (err) {
       setError(err.message);
     } finally {
       setLoading(false);
     }
-  }, [symbol]);
+  }, [copy.unavailableError, symbol]);
 
   const handleSubmit = useCallback((e) => {
     e?.preventDefault();
@@ -812,13 +1168,22 @@ export default function EventStudyPanel({ payload, eventStudySeed, onOpenStockDo
     setExpandedRows(new Set());
   }, [sampleFilter, dataTicker]);
 
-  const decisionModel = useMemo(() => getDecisionModel(data?.summary), [data]);
+  const decisionModel = useMemo(() => getDecisionModel(data?.summary, copy), [data, copy]);
   const mergedDetails = useMemo(() => mergeHistoryIntoDetails(data?.details ?? [], historyRows), [data?.details, historyRows]);
   const latestEarningsSnapshot = useMemo(() => getLatestEarningsSnapshot(historyRows), [historyRows]);
   const isTruthLayerData = data?.truth_layer_status === 'truth_layer_v1';
   const measuredReactionCount = data?.coverage?.measured_gap_count ?? data?.summary?.total_events ?? 0;
   const continuousReadyRange = data?.coverage?.continuous_ready_date_range || {};
-  const activeSampleLabel = data?.coverage?.active_sample_filter?.label || getSampleFilterLabel(sampleFilter);
+  const activeSampleLabel = getSampleFilterLabel(
+    data?.coverage?.active_sample_filter
+      ? {
+        mode: data.coverage.active_sample_filter.mode,
+        customStart: data.coverage.active_sample_filter.custom_start || sampleFilter.customStart,
+        customEnd: data.coverage.active_sample_filter.custom_end || sampleFilter.customEnd
+      }
+      : sampleFilter,
+    copy
+  );
 
   const updateSampleFilterMode = useCallback((mode) => {
     setSampleFilter((current) => {
@@ -870,30 +1235,29 @@ export default function EventStudyPanel({ payload, eventStudySeed, onOpenStockDo
       <div className="glass-panel w-full event-study-workbench">
         <div className="panel-header">
           <Crosshair size={18} className="text-accent" />
-          <span>財報反應研究矩陣 (Reaction Study Matrix)</span>
-          <span className="badge panel-badge radar-panel-badge">Timing Truth Layer</span>
+          <span>{copy.panelTitle}</span>
         </div>
 
         <div>
           <form onSubmit={handleSubmit} className="event-study-toolbar">
             <div style={{ flex: 1 }}>
-              <label style={{ display: 'block', fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: '0.5rem' }}>股票代號 (Ticker)</label>
+              <label style={{ display: 'block', fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: '0.5rem' }}>{copy.tickerLabel}</label>
               <input
                 className="event-study-input"
                 type="text"
                 value={symbol}
                 onChange={(e) => setSymbol(e.target.value)}
-                placeholder="e.g. NVDA, SPY"
+                placeholder={copy.tickerPlaceholder}
               />
             </div>
             <div style={{ flex: 1 }}>
-              <label style={{ display: 'block', fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: '0.5rem' }}>事件分類 (Category)</label>
+              <label style={{ display: 'block', fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: '0.5rem' }}>{copy.categoryLabel}</label>
               <div
                 className="event-study-input"
-                aria-label="Event study category"
+                aria-label={copy.categoryAria}
                 style={{ display: 'flex', alignItems: 'center' }}
               >
-                財報 (Earnings)
+                {copy.categoryValue}
               </div>
             </div>
             <button
@@ -902,25 +1266,25 @@ export default function EventStudyPanel({ payload, eventStudySeed, onOpenStockDo
               className="event-study-submit"
             >
               {loading ? <Clock size={16} /> : <Search size={16} />}
-              {loading ? '回測中...' : '執行回測'}
+              {loading ? copy.submitLoading : copy.submitIdle}
             </button>
           </form>
 
           <div className="decision-pillar-grid">
             <div className="decision-pillar-card">
-              <span className="decision-pillar-card__eyebrow">1. Edge</span>
-              <strong>先看 verified reaction 樣本</strong>
-              <p>只使用 truth-layer reaction_day 對齊後的 gap 與 forward return。</p>
+              <span className="decision-pillar-card__eyebrow">{copy.pillars[0].eyebrow}</span>
+              <strong>{copy.pillars[0].title}</strong>
+              <p>{copy.pillars[0].body}</p>
             </div>
             <div className="decision-pillar-card">
-              <span className="decision-pillar-card__eyebrow">2. Crowding</span>
-              <strong>再看事件前偷步有沒有過熱</strong>
-              <p>Pre-5 run-up 越高，越要懷疑好消息是否早已被 price in。</p>
+              <span className="decision-pillar-card__eyebrow">{copy.pillars[1].eyebrow}</span>
+              <strong>{copy.pillars[1].title}</strong>
+              <p>{copy.pillars[1].body}</p>
             </div>
             <div className="decision-pillar-card">
-              <span className="decision-pillar-card__eyebrow">3. Risk</span>
-              <strong>最後才看可承受的波動與回撤</strong>
-              <p>Gap return 與 same-day open-to-close 決定倉位大小，不只是方向判斷。</p>
+              <span className="decision-pillar-card__eyebrow">{copy.pillars[2].eyebrow}</span>
+              <strong>{copy.pillars[2].title}</strong>
+              <p>{copy.pillars[2].body}</p>
             </div>
           </div>
 
@@ -943,45 +1307,45 @@ export default function EventStudyPanel({ payload, eventStudySeed, onOpenStockDo
             {onOpenStockDossier && (
               <div className="event-study-dossier-link">
                 <div>
-                  <span>Linked research object</span>
+                  <span>{copy.linkedObject}</span>
                   <strong>{String(data?.ticker || data?.summary?.ticker || symbol || '').toUpperCase()} Stock Dossier</strong>
                 </div>
                 <button type="button" onClick={handleOpenCurrentDossier}>
-                  Open Stock Dossier
+                  {copy.openStockDossier}
                 </button>
               </div>
             )}
 
             <div className="event-study-decision-grid">
-              <BestSetupHintCard hint={data?.best_setup_hint} />
+              <BestSetupHintCard hint={data?.best_setup_hint} copy={copy} />
 
               <div className="decision-trading-grid">
                 <div className="decision-trading-card decision-trading-card--long">
-                  <span className="decision-trading-card__eyebrow">Long Payoff</span>
-                  <strong>{formatPercent(data.summary.win_rate, 0)} base rate</strong>
+                  <span className="decision-trading-card__eyebrow">{copy.longPayoff}</span>
+                  <strong>{formatPercent(data.summary.win_rate, 0)} {copy.baseRateSuffix}</strong>
                   <p>{decisionModel?.longPayoff}</p>
                   <DecisionMetricCard
-                    label={isTruthLayerData ? 'Gap-up rate' : 'Legacy +10D win rate'}
+                    label={isTruthLayerData ? copy.gapUpRate : copy.legacyWinRate}
                     value={formatPercent(data.summary.win_rate, 0)}
                     tone={data.summary.win_rate >= 50 ? 'positive' : 'negative'}
-                    footnote={isTruthLayerData ? '基於 verified reaction_day' : 'legacy endpoint, not truth layer'}
+                    footnote={isTruthLayerData ? copy.reactionDayFootnote : copy.legacyFootnote}
                   />
                 </div>
 
                 <div className="decision-trading-card decision-trading-card--short">
-                  <span className="decision-trading-card__eyebrow">Short Payoff</span>
-                  <strong>{formatPercent(isTruthLayerData ? data.summary.avg_gap_down_pct : data.summary.avg_drift_m5, 2, true)} {isTruthLayerData ? 'avg gap down' : 'pre-event run-up'}</strong>
+                  <span className="decision-trading-card__eyebrow">{copy.shortPayoff}</span>
+                  <strong>{formatPercent(isTruthLayerData ? data.summary.avg_gap_down_pct : data.summary.avg_drift_m5, 2, true)} {isTruthLayerData ? copy.avgGapDownSuffix : copy.preEventRunupSuffix}</strong>
                   <p>{decisionModel?.shortPayoff}</p>
                   <DecisionMetricCard
-                    label={isTruthLayerData ? 'Avg Gap Down' : 'Pre -5D run-up'}
+                    label={isTruthLayerData ? copy.avgGapDown : copy.pre5Runup}
                     value={formatPercent(isTruthLayerData ? data.summary.avg_gap_down_pct : data.summary.avg_drift_m5, 2, true)}
                     tone={isTruthLayerData ? 'negative' : data.summary.avg_drift_m5 > 0 ? 'warning' : 'positive'}
-                    footnote={isTruthLayerData ? 'null means no measured gap-down rows' : '越高越要檢查是否 price in'}
+                    footnote={isTruthLayerData ? copy.nullGapDownFootnote : copy.priceInFootnote}
                   />
                 </div>
 
                 <div className="decision-trading-card decision-trading-card--risk">
-                  <span className="decision-trading-card__eyebrow">Position Sizing</span>
+                  <span className="decision-trading-card__eyebrow">{copy.positionSizing}</span>
                   <strong>
                     {isTruthLayerData
                       ? `${formatPercent(data.summary.avg_gap_up_pct, 2, true)} / ${formatPercent(data.summary.avg_same_day_oc_pct, 2, true)}`
@@ -990,22 +1354,22 @@ export default function EventStudyPanel({ payload, eventStudySeed, onOpenStockDo
                   <p>{decisionModel?.sizingText}</p>
                   <div className="decision-mini-metrics">
                     <DecisionMetricCard
-                      label={isTruthLayerData ? 'Same-day O/C' : 'Legacy +1D volatility'}
+                      label={isTruthLayerData ? copy.sameDayOc : copy.legacyVolatility}
                       value={formatPercent(data.summary.avg_t1_abs_volatility)}
                       tone="warning"
-                      footnote={isTruthLayerData ? 'reaction open to close' : 'legacy endpoint, not truth layer'}
+                      footnote={isTruthLayerData ? copy.reactionOpenCloseFootnote : copy.legacyFootnote}
                     />
                     <DecisionMetricCard
-                      label="5D 最大回撤"
+                      label={copy.maxDrawdown5d}
                       value={formatPercent(data.summary.avg_max_dd_5, 2, true)}
                       tone="negative"
-                      footnote="用來定義 stop 與 risk budget"
+                      footnote={copy.stopFootnote}
                     />
                     <DecisionMetricCard
-                      label="有效事件樣本"
-                      value={formatCount(data.summary.total_events)}
+                      label={copy.validSample}
+                      value={formatCount(data.summary.total_events, locale)}
                       tone="neutral"
-                      footnote="少於 8 次時要降低信任度"
+                      footnote={copy.lowSampleFootnote}
                     />
                   </div>
                 </div>
@@ -1015,9 +1379,9 @@ export default function EventStudyPanel({ payload, eventStudySeed, onOpenStockDo
             <div className="glass-panel w-full event-study-workbench event-study-evidence">
               <div className="panel-header">
                 <BarChart3 size={18} className="text-accent" />
-                <span>Historical Evidence</span>
+                <span>{copy.historicalEvidence}</span>
                 {isTruthLayerData && (
-                  <div className="event-study-sample-filter" aria-label="Historical evidence sample window">
+                  <div className="event-study-sample-filter" aria-label={copy.sampleWindowAria || 'Historical evidence sample window'}>
                     <div className="event-study-sample-filter__controls">
                       {SAMPLE_FILTER_OPTIONS.map((option) => (
                         <button
@@ -1026,7 +1390,11 @@ export default function EventStudyPanel({ payload, eventStudySeed, onOpenStockDo
                           className={`event-study-sample-filter__button ${sampleFilter.mode === option.value ? 'event-study-sample-filter__button--active' : ''}`}
                           onClick={() => updateSampleFilterMode(option.value)}
                         >
-                          {option.label}
+                          {option.value === 'max'
+                            ? copy.maxFilter
+                            : option.value === 'custom'
+                              ? copy.customFilter
+                              : option.label}
                         </button>
                       ))}
                     </div>
@@ -1039,9 +1407,9 @@ export default function EventStudyPanel({ payload, eventStudySeed, onOpenStockDo
                           max={continuousReadyRange.end || undefined}
                           onInput={(event) => updateCustomSampleDate('customStart', event.target.value)}
                           onChange={(event) => updateCustomSampleDate('customStart', event.target.value)}
-                          aria-label="Custom sample start date"
+                          aria-label={copy.customSampleStartAria}
                         />
-                        <span>to</span>
+                        <span>{copy.to}</span>
                         <input
                           type="date"
                           value={sampleFilter.customEnd}
@@ -1049,36 +1417,36 @@ export default function EventStudyPanel({ payload, eventStudySeed, onOpenStockDo
                           max={continuousReadyRange.end || undefined}
                           onInput={(event) => updateCustomSampleDate('customEnd', event.target.value)}
                           onChange={(event) => updateCustomSampleDate('customEnd', event.target.value)}
-                          aria-label="Custom sample end date"
+                          aria-label={copy.customSampleEndAria}
                         />
                       </div>
                     )}
                   </div>
                 )}
-                <span className="badge panel-badge radar-panel-badge">Why This Matters</span>
+                <span className="badge panel-badge radar-panel-badge">{copy.whyThisMatters}</span>
               </div>
 
               <div className="event-study-evidence-grid">
                 <div className="event-study-evidence-card">
-                  <span className="event-study-evidence-card__eyebrow">Base Rate</span>
+                  <span className="event-study-evidence-card__eyebrow">{copy.baseRate}</span>
                   <strong>{formatPercent(data.summary.win_rate, 0)}</strong>
-                  <p>{isTruthLayerData ? '先回答 verified reaction 是否穩定 gap up。沒有樣本，就不要急著討論方向。' : '先回答「這事件 historically 有沒有 edge」。沒有 edge，就不要急著討論方向。'}</p>
+                  <p>{isTruthLayerData ? copy.baseRateBodyTruth : copy.baseRateBodyLegacy}</p>
                 </div>
                 <div className="event-study-evidence-card">
-                  <span className="event-study-evidence-card__eyebrow">{isTruthLayerData ? 'Average Gap Up' : 'Crowding'}</span>
+                  <span className="event-study-evidence-card__eyebrow">{isTruthLayerData ? copy.averageGapUp : copy.crowding}</span>
                   <strong>{formatPercent(isTruthLayerData ? data.summary.avg_gap_up_pct : data.summary.avg_drift_m5, 2, true)}</strong>
-                  <p>{isTruthLayerData ? 'Gap return 只用 reaction_open / previous_close - 1，不使用 release_date 猜測。' : '偷步越大，越要分辨是健康提前佈局，還是過熱後等著 sell-the-news。'}</p>
+                  <p>{isTruthLayerData ? copy.averageGapUpBodyTruth : copy.averageGapUpBodyLegacy}</p>
                 </div>
                 <div className="event-study-evidence-card">
-                  <span className="event-study-evidence-card__eyebrow">Risk Budget</span>
+                  <span className="event-study-evidence-card__eyebrow">{copy.riskBudget}</span>
                   <strong>{formatPercent(data.summary.avg_t1_abs_volatility)}</strong>
-                  <p>{isTruthLayerData ? 'Same-day open-to-close 顯示 reaction day 內部波動，應與 gap risk 分開看。' : '高波動代表不能拿大倉位硬賭方向，應先決定你能承受的 gap risk。'}</p>
+                  <p>{isTruthLayerData ? copy.riskBudgetBodyTruth : copy.riskBudgetBodyLegacy}</p>
                 </div>
                 <div className="event-study-evidence-card event-study-evidence-card--earnings">
-                  <span className="event-study-evidence-card__eyebrow">{isTruthLayerData ? 'Truth Coverage' : 'Latest Earnings Snapshot'}</span>
-                  <strong>{isTruthLayerData ? `${measuredReactionCount} measured` : latestEarningsSnapshot?.eventDate ?? 'n/a'}</strong>
+                  <span className="event-study-evidence-card__eyebrow">{isTruthLayerData ? copy.truthCoverage : copy.latestEarningsSnapshot}</span>
+                  <strong>{isTruthLayerData ? formatMeasuredCount(measuredReactionCount, locale) : latestEarningsSnapshot?.eventDate ?? copy.noValue}</strong>
                   {isTruthLayerData ? (
-                    <p>Sample: {activeSampleLabel}</p>
+                    <p>{copy.sampleLabel}: {activeSampleLabel}</p>
                   ) : (
                     <>
                       <div className="earnings-snapshot-grid">
@@ -1091,11 +1459,11 @@ export default function EventStudyPanel({ payload, eventStudySeed, onOpenStockDo
                           <strong>{formatDecimal(latestEarningsSnapshot?.actual)}</strong>
                         </div>
                         <div className="earnings-snapshot-metric">
-                          <span>Surprise</span>
+                          <span>{copy.surprise}</span>
                           <strong>{formatPercent(latestEarningsSnapshot?.surprise, 2, true)}</strong>
                         </div>
                       </div>
-                      <p>目前前端已支援顯示 EST / ACT / Surprise；若 backend payload 尚未提供，這裡會先顯示 `n/a`。</p>
+                      <p>{copy.snapshotFallback}</p>
                     </>
                   )}
                 </div>
@@ -1103,17 +1471,16 @@ export default function EventStudyPanel({ payload, eventStudySeed, onOpenStockDo
             </div>
 
 
-            <TradeSetupMatrix conditionalSummary={data?.conditional_summary} />
+            <TradeSetupMatrix conditionalSummary={data?.conditional_summary} copy={copy} />
 
             <div className="glass-panel w-full event-study-workbench">
               <div className="panel-header">
                 <BarChart3 size={18} className="text-accent" />
-                <span>{isTruthLayerData ? 'Earnings Reaction Truth Audit' : 'Legacy Historical Matrix'}</span>
-                <span className="badge panel-badge radar-panel-badge">{isTruthLayerData ? 'Truth Layer v1' : 'Legacy Audit Trail'}</span>
+                <span>{isTruthLayerData ? copy.auditTitleTruth : copy.auditTitleLegacy}</span>
               </div>
               {isMobile ? (
                 <div className="event-audit-card-list">
-                  {mergedDetails.map((row, i) => <MobileAuditCard row={row} index={i} key={i} />)}
+                  {mergedDetails.map((row, i) => <MobileAuditCard row={row} index={i} key={i} copy={copy} />)}
                 </div>
               ) : (
                 <div style={{ overflowX: 'auto' }}>
@@ -1121,35 +1488,35 @@ export default function EventStudyPanel({ payload, eventStudySeed, onOpenStockDo
                     <table className="data-table">
                       <thead>
                         <tr>
-                          <th>Release Date</th>
-                          <th>Reaction Day</th>
+                          <th>{copy.releaseDate}</th>
+                          <th>{copy.reactionDay}</th>
                           <th style={{ textAlign: 'right' }}>Pre-5 (%)</th>
                           <th style={{ textAlign: 'right' }}>Pre-1 (%)</th>
-                          <th style={{ textAlign: 'right' }}>Gap (%)</th>
-                          <th style={{ textAlign: 'right' }}>Same-day O/C (%)</th>
+                          <th style={{ textAlign: 'right' }}>{copy.gapColumn}</th>
+                          <th style={{ textAlign: 'right' }}>{copy.sameDayOcColumn}</th>
                           <th style={{ textAlign: 'right' }}>R+1 (%)</th>
                           <th style={{ textAlign: 'right' }}>R+5 (%)</th>
                           <th style={{ textAlign: 'right' }}>R+10 (%)</th>
-                          <th>Status</th>
+                          <th>{copy.status}</th>
                           <th></th>
                         </tr>
                       </thead>
                       <tbody>
                         {mergedDetails.map((row, i) => {
                           const isExpanded = expandedRows.has(i);
-                          const auditState = getAuditRowState(row);
+                          const auditState = getAuditRowState(row, copy);
                           return (
                             <React.Fragment key={i}>
                               <tr onClick={() => toggleRow(i)} style={{ cursor: 'pointer' }}>
                                 <td className="mono text-accent">{row.release_date}</td>
                                 <td className="mono">{row.reaction_day || '—'}</td>
-                                <td style={{ textAlign: 'right' }} className={row.pre_5_return_pct > 0 ? 'text-success' : row.pre_5_return_pct < 0 ? 'text-danger' : ''}>{formatAuditPercent(row.pre_5_return_pct)}</td>
-                                <td style={{ textAlign: 'right' }} className={row.pre_1_return_pct > 0 ? 'text-success' : row.pre_1_return_pct < 0 ? 'text-danger' : ''}>{formatAuditPercent(row.pre_1_return_pct)}</td>
-                                <td style={{ textAlign: 'right', fontWeight: 'bold' }} className={row.gap_return_pct > 0 ? 'text-success' : row.gap_return_pct < 0 ? 'text-danger' : ''}>{formatAuditPercent(row.gap_return_pct)}</td>
-                                <td style={{ textAlign: 'right' }} className={row.same_day_oc_pct > 0 ? 'text-success' : row.same_day_oc_pct < 0 ? 'text-danger' : ''}>{formatAuditPercent(row.same_day_oc_pct)}</td>
-                                <td style={{ textAlign: 'right' }}>{formatAuditPercent(row.r_plus_1_pct)}</td>
-                                <td style={{ textAlign: 'right' }}>{formatAuditPercent(row.r_plus_5_pct)}</td>
-                                <td style={{ textAlign: 'right' }}>{formatAuditPercent(row.r_plus_10_pct)}</td>
+                                <td style={{ textAlign: 'right' }} className={row.pre_5_return_pct > 0 ? 'text-success' : row.pre_5_return_pct < 0 ? 'text-danger' : ''}>{formatAuditPercent(row.pre_5_return_pct, 2, true, copy)}</td>
+                                <td style={{ textAlign: 'right' }} className={row.pre_1_return_pct > 0 ? 'text-success' : row.pre_1_return_pct < 0 ? 'text-danger' : ''}>{formatAuditPercent(row.pre_1_return_pct, 2, true, copy)}</td>
+                                <td style={{ textAlign: 'right', fontWeight: 'bold' }} className={row.gap_return_pct > 0 ? 'text-success' : row.gap_return_pct < 0 ? 'text-danger' : ''}>{formatAuditPercent(row.gap_return_pct, 2, true, copy)}</td>
+                                <td style={{ textAlign: 'right' }} className={row.same_day_oc_pct > 0 ? 'text-success' : row.same_day_oc_pct < 0 ? 'text-danger' : ''}>{formatAuditPercent(row.same_day_oc_pct, 2, true, copy)}</td>
+                                <td style={{ textAlign: 'right' }}>{formatAuditPercent(row.r_plus_1_pct, 2, true, copy)}</td>
+                                <td style={{ textAlign: 'right' }}>{formatAuditPercent(row.r_plus_5_pct, 2, true, copy)}</td>
+                                <td style={{ textAlign: 'right' }}>{formatAuditPercent(row.r_plus_10_pct, 2, true, copy)}</td>
                                 <td className="audit-status-cell">
                                   <span className={`audit-status-pill audit-status-pill--${auditState.tone}`} title={auditState.detail}>
                                     {auditState.displayValue}
@@ -1162,29 +1529,29 @@ export default function EventStudyPanel({ payload, eventStudySeed, onOpenStockDo
                                   <td colSpan="11" style={{ padding: '16px', background: 'var(--bg-layer-2)', borderBottom: '1px solid var(--border-color)' }}>
                                     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '16px' }}>
                                       <div>
-                                        <h4 style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: '8px', textTransform: 'uppercase' }}>Pre-Earnings Run-up</h4>
+	                                        <h4 style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: '8px', textTransform: 'uppercase' }}>{copy.preEarningsRunup}</h4>
                                         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', rowGap: '8px' }}>
-                                          <span>Pre-10:</span><strong style={{ textAlign: 'right' }}>{formatAuditPercent(row.pre_10_return_pct)}</strong>
-                                          <span>Pre-5:</span><strong style={{ textAlign: 'right' }}>{formatAuditPercent(row.pre_5_return_pct)}</strong>
-                                          <span>Pre-1:</span><strong style={{ textAlign: 'right' }}>{formatAuditPercent(row.pre_1_return_pct)}</strong>
+	                                          <span>Pre-10:</span><strong style={{ textAlign: 'right' }}>{formatAuditPercent(row.pre_10_return_pct, 2, true, copy)}</strong>
+	                                          <span>Pre-5:</span><strong style={{ textAlign: 'right' }}>{formatAuditPercent(row.pre_5_return_pct, 2, true, copy)}</strong>
+	                                          <span>Pre-1:</span><strong style={{ textAlign: 'right' }}>{formatAuditPercent(row.pre_1_return_pct, 2, true, copy)}</strong>
                                         </div>
                                       </div>
                                       <div>
-                                        <h4 style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: '8px', textTransform: 'uppercase' }}>Reaction Day</h4>
+	                                        <h4 style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: '8px', textTransform: 'uppercase' }}>{copy.reactionDay}</h4>
                                         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', rowGap: '8px' }}>
-                                          <span>Gap:</span><strong style={{ textAlign: 'right' }}>{formatAuditPercent(row.gap_return_pct)}</strong>
-                                          <span>Same-day O/C:</span><strong style={{ textAlign: 'right' }}>{formatAuditPercent(row.same_day_oc_pct)}</strong>
-                                          <span>Status:</span><strong style={{ textAlign: 'right' }}>{auditState.status}</strong>
+	                                          <span>{copy.gap}:</span><strong style={{ textAlign: 'right' }}>{formatAuditPercent(row.gap_return_pct, 2, true, copy)}</strong>
+	                                          <span>{copy.sameDayOc}:</span><strong style={{ textAlign: 'right' }}>{formatAuditPercent(row.same_day_oc_pct, 2, true, copy)}</strong>
+	                                          <span>{copy.status}:</span><strong style={{ textAlign: 'right' }}>{auditState.status}</strong>
                                         </div>
                                       </div>
                                       <div>
-                                        <h4 style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: '8px', textTransform: 'uppercase' }}>Post-Reaction Drift</h4>
+	                                        <h4 style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: '8px', textTransform: 'uppercase' }}>{copy.postReactionDrift}</h4>
                                         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', rowGap: '8px' }}>
-                                          <span>R+1:</span><strong style={{ textAlign: 'right' }}>{formatAuditPercent(row.r_plus_1_pct)}</strong>
-                                          <span>R+3:</span><strong style={{ textAlign: 'right' }}>{formatAuditPercent(row.r_plus_3_pct)}</strong>
-                                          <span>R+5:</span><strong style={{ textAlign: 'right' }}>{formatAuditPercent(row.r_plus_5_pct)}</strong>
-                                          <span>R+10:</span><strong style={{ textAlign: 'right' }}>{formatAuditPercent(row.r_plus_10_pct)}</strong>
-                                          <span>R+30:</span><strong style={{ textAlign: 'right' }}>{formatAuditPercent(row.r_plus_30_pct)}</strong>
+	                                          <span>R+1:</span><strong style={{ textAlign: 'right' }}>{formatAuditPercent(row.r_plus_1_pct, 2, true, copy)}</strong>
+	                                          <span>R+3:</span><strong style={{ textAlign: 'right' }}>{formatAuditPercent(row.r_plus_3_pct, 2, true, copy)}</strong>
+	                                          <span>R+5:</span><strong style={{ textAlign: 'right' }}>{formatAuditPercent(row.r_plus_5_pct, 2, true, copy)}</strong>
+	                                          <span>R+10:</span><strong style={{ textAlign: 'right' }}>{formatAuditPercent(row.r_plus_10_pct, 2, true, copy)}</strong>
+	                                          <span>R+30:</span><strong style={{ textAlign: 'right' }}>{formatAuditPercent(row.r_plus_30_pct, 2, true, copy)}</strong>
                                         </div>
                                       </div>
                                     </div>
@@ -1200,17 +1567,17 @@ export default function EventStudyPanel({ payload, eventStudySeed, onOpenStockDo
                     <table className="data-table">
                       <thead>
                         <tr>
-                          <th>Event Date</th>
-                          <th>Sentiment</th>
+                          <th>{copy.eventDate}</th>
+                          <th>{copy.sentiment}</th>
                           <th style={{ textAlign: 'right' }}>Pre -10D (%)</th>
                           <th style={{ textAlign: 'right' }}>Pre -5D (%)</th>
                           <th style={{ textAlign: 'right' }}>EST</th>
                           <th style={{ textAlign: 'right' }}>ACT</th>
-                          <th style={{ textAlign: 'right' }}>Surprise (%)</th>
-                          <th style={{ textAlign: 'right' }}>Legacy +1D (%)</th>
-                          <th style={{ textAlign: 'right' }}>Max DD 5D (%)</th>
-                          <th style={{ textAlign: 'right' }}>Legacy +10D (%)</th>
-                          <th style={{ textAlign: 'center' }}>Result</th>
+                          <th style={{ textAlign: 'right' }}>{copy.surprise} (%)</th>
+                          <th style={{ textAlign: 'right' }}>{copy.legacyPlus1} (%)</th>
+                          <th style={{ textAlign: 'right' }}>{copy.maxDrawdown5dShort} (%)</th>
+                          <th style={{ textAlign: 'right' }}>{copy.legacyPlus10} (%)</th>
+                          <th style={{ textAlign: 'center' }}>{copy.result}</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -1219,7 +1586,7 @@ export default function EventStudyPanel({ payload, eventStudySeed, onOpenStockDo
                             <td className="mono text-accent">{row.event_date}</td>
                             <td>
                               <span className={`badge ${row.sentiment.toLowerCase() === 'beat' ? 'active' : row.sentiment.toLowerCase() === 'miss' ? 'inactive' : 'pending'}`}>
-                                {row.sentiment}
+                                {formatSentimentLabel(row.sentiment, copy)}
                               </span>
                             </td>
                             <td style={{ textAlign: 'right' }} className={row.drift_m10 > 0 ? 'text-success' : 'text-danger'}>{row.drift_m10}</td>
