@@ -5,7 +5,7 @@ import OpportunityXRayCard from './OpportunityXRayCard';
 import { fetchPreopenCatalystRadarPayload } from '../data/payloadAdapter';
 import './CatalystRadar.css';
 
-const CatalystRadarShell = ({ payload, loading, error, onOpenStockDossier }) => {
+const CatalystRadarShell = ({ payload, loading, error, onOpenStockDossier, locale = 'en' }) => {
   const [selectedEventId, setSelectedEventId] = useState(null);
   const [selectedEventDetailOverride, setSelectedEventDetailOverride] = useState(null);
   const [selectedXRayRow, setSelectedXRayRow] = useState(null);
@@ -46,11 +46,11 @@ const CatalystRadarShell = ({ payload, loading, error, onOpenStockDossier }) => 
   };
 
   if (loading) {
-    return <div className="fade-in" style={{padding: '40px', color: 'var(--text-muted)'}}>Loading Radar Data...</div>;
+    return <div className="fade-in" style={{padding: '40px', color: 'var(--text-muted)'}}>{locale === 'zh' ? '正在載入財報雷達...' : 'Loading Radar Data...'}</div>;
   }
 
   if (error) {
-    return <div className="fade-in" style={{padding: '40px', color: '#dc2626'}}>Error: {error}</div>;
+    return <div className="fade-in" style={{padding: '40px', color: '#dc2626'}}>{locale === 'zh' ? '錯誤' : 'Error'}: {error}</div>;
   }
 
   return (
@@ -61,6 +61,7 @@ const CatalystRadarShell = ({ payload, loading, error, onOpenStockDossier }) => 
           preopenPayload={preopenPayload}
           selectedEventId={selectedEventId} 
           onSelectEvent={handleSelectEvent} 
+          locale={locale}
         />
       </div>
       
@@ -76,6 +77,7 @@ const CatalystRadarShell = ({ payload, loading, error, onOpenStockDossier }) => 
               <OpportunityXRayCard
                 row={selectedXRayRow}
                 onClose={handleCloseDetail}
+                locale={locale}
               />
             ) : (
               <SelectedCatalystIntelligence
@@ -84,6 +86,7 @@ const CatalystRadarShell = ({ payload, loading, error, onOpenStockDossier }) => 
                 peerReadthroughCases={payload.peer_readthrough_cases || {}}
                 onClose={handleCloseDetail}
                 onOpenStockDossier={onOpenStockDossier}
+                locale={locale}
               />
             )}
           </aside>

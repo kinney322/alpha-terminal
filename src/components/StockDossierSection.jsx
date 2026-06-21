@@ -6,14 +6,50 @@ import { buildDossierRecords, normalizeTicker } from './dossierHelpers';
 import { getStockDossierProfile } from '../data/stockDossierProfiles';
 import { buildStockLogoUrl } from '../data/stockLogoUrls';
 
-const DOSSIER_SECTIONS = [
-  { id: 'company-overview', label: 'Company Overview' },
-  { id: 'valuation-core', label: 'Valuation Core' },
-  { id: 'momentum', label: 'Momentum' },
-  { id: 'market-evidence', label: 'Market Evidence' },
-  { id: 'scenario-range', label: 'Scenario Range' },
-  { id: 'thesis-risk-monitor', label: 'Thesis Risk Monitor' }
-];
+const DOSSIER_SECTION_COPY = {
+  en: {
+    sections: [
+      { id: 'company-overview', label: 'Company Overview' },
+      { id: 'valuation-core', label: 'Valuation Core' },
+      { id: 'momentum', label: 'Momentum' },
+      { id: 'market-evidence', label: 'Market Evidence' },
+      { id: 'scenario-range', label: 'Scenario Range' },
+      { id: 'thesis-risk-monitor', label: 'Thesis Risk Monitor' }
+    ],
+    loading: 'Loading Dossier Data...',
+    error: 'Error',
+    back: 'Back to Dossier Index',
+    stockDossier: 'Stock Dossier',
+    researchState: 'Research State',
+    dossierSections: 'Dossier Sections',
+    noData: 'No dossier data available.',
+    postEarningsWatch: 'Post-Earnings Watch',
+    momentumCandidate: 'Momentum Candidate',
+    catalystWatch: 'Catalyst Watch'
+  },
+  zh: {
+    sections: [
+      { id: 'company-overview', label: '公司概覽' },
+      { id: 'valuation-core', label: '估值核心' },
+      { id: 'momentum', label: '動能' },
+      { id: 'market-evidence', label: '市場證據' },
+      { id: 'scenario-range', label: '情境區間' },
+      { id: 'thesis-risk-monitor', label: '論點風險' }
+    ],
+    loading: '正在載入股票檔案...',
+    error: '錯誤',
+    back: '返回股票檔案列表',
+    stockDossier: '股票檔案',
+    researchState: '研究狀態',
+    dossierSections: '檔案章節',
+    noData: '暫無股票檔案資料。',
+    postEarningsWatch: '財報後觀察',
+    momentumCandidate: '動能候選',
+    catalystWatch: '催化觀察'
+  }
+};
+
+const DOSSIER_SECTIONS = DOSSIER_SECTION_COPY.en.sections;
 
 const scrollDossierToTop = () => {
   document.querySelector('.stock-dossier-section')?.scrollIntoView({ block: 'start' });
@@ -25,7 +61,9 @@ const scrollDossierToTop = () => {
   window.scrollTo(0, 0);
 };
 
-export default function StockDossierSection({ payload, stockPerformancePayload, referencePeerMapPayload, loading, error, dossierSeed, onClearSeed, onOpenEventStudy }) {
+export default function StockDossierSection({ payload, stockPerformancePayload, referencePeerMapPayload, loading, error, dossierSeed, onClearSeed, onOpenEventStudy, locale = 'en' }) {
+  const copy = DOSSIER_SECTION_COPY[locale] || DOSSIER_SECTION_COPY.en;
+  const sectionLabels = copy.sections || DOSSIER_SECTIONS;
   const [selectedTicker, setSelectedTicker] = useState(null);
   const [selectedEventDetail, setSelectedEventDetail] = useState(null);
   const [activeSection, setActiveSection] = useState(DOSSIER_SECTIONS[0].id);
@@ -112,11 +150,11 @@ export default function StockDossierSection({ payload, stockPerformancePayload, 
   }, [selectedTicker, resolvedDetail]);
 
   if (loading) {
-    return <div className="fade-in" style={{padding: '40px', color: 'var(--text-muted)'}}>Loading Dossier Data...</div>;
+    return <div className="fade-in" style={{padding: '40px', color: 'var(--text-muted)'}}>{copy.loading}</div>;
   }
 
   if (error) {
-    return <div className="fade-in" style={{padding: '40px', color: '#dc2626'}}>Error: {error}</div>;
+    return <div className="fade-in" style={{padding: '40px', color: '#dc2626'}}>{copy.error}: {error}</div>;
   }
 
   const handleOpenTicker = (ticker, eventDetail) => {
@@ -136,7 +174,7 @@ export default function StockDossierSection({ payload, stockPerformancePayload, 
   };
 
   if (!selectedTicker) {
-    return <StockDossierIndex payload={payload} onOpenTicker={handleOpenTicker} />;
+    return <StockDossierIndex payload={payload} onOpenTicker={handleOpenTicker} locale={locale} />;
   }
 
   const companyLogoUrl = dossierProfile?.logoUrl
@@ -148,10 +186,10 @@ export default function StockDossierSection({ payload, stockPerformancePayload, 
   const exchange = resolvedDetail?.exchange || dossierProfile?.exchange || '';
   const tickerLine = exchange ? `${exchange}:${normalizeTicker(selectedTicker)}` : normalizeTicker(selectedTicker);
   const researchState = resolvedDetail?.event_phase === 'post_earnings'
-    ? 'Post-Earnings Watch'
+    ? copy.postEarningsWatch
     : resolvedDetail?.status === 'momentum_universe' || resolvedDetail?.event_phase === 'off_cycle_universe'
-      ? 'Momentum Candidate'
-      : 'Catalyst Watch';
+      ? copy.momentumCandidate
+      : copy.catalystWatch;
 
   return (
     <div className="stock-dossier-section fade-in">
@@ -160,7 +198,7 @@ export default function StockDossierSection({ payload, stockPerformancePayload, 
           onClick={handleBackToIndex}
           className="stock-dossier-back-button"
         >
-          <span>←</span> Back to Dossier Index
+          <span>←</span> {copy.back}
         </button>
       </div>
 
@@ -176,16 +214,16 @@ export default function StockDossierSection({ payload, stockPerformancePayload, 
             />
             <div>
               <strong>{companyName}</strong>
-              <span>{tickerLine} Stock Dossier</span>
+              <span>{tickerLine} {copy.stockDossier}</span>
             </div>
           </div>
           <div className="stock-dossier-side-state">
-            <span>Research State</span>
+            <span>{copy.researchState}</span>
             <strong>{researchState}</strong>
           </div>
-          <p className="crowdrisk-kicker">Dossier Sections</p>
+          <p className="crowdrisk-kicker">{copy.dossierSections}</p>
           <nav className="stock-dossier-side-links">
-            {DOSSIER_SECTIONS.map((section, index) => (
+            {sectionLabels.map((section, index) => (
               <a
                 key={section.id}
                 href={`#${section.id}`}
@@ -207,9 +245,10 @@ export default function StockDossierSection({ payload, stockPerformancePayload, 
               stockPerformancePayload={stockPerformancePayload}
               referencePeerMapPayload={referencePeerMapPayload}
               onOpenEventStudy={onOpenEventStudy}
+              locale={locale}
             />
           ) : (
-            <div style={{ color: 'var(--text-muted)' }}>No dossier data available.</div>
+            <div style={{ color: 'var(--text-muted)' }}>{copy.noData}</div>
           )}
         </div>
       </div>

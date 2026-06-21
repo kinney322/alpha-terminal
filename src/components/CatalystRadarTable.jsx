@@ -1,5 +1,30 @@
 import { AlertOctagon, ChevronRight, Radar, Sparkles } from 'lucide-react';
 
+const CATALYST_TABLE_COPY = {
+  en: {
+    eyebrow: 'Pre-Earnings Opportunity Scanner',
+    title: 'Catalyst Radar',
+    summary: 'Long and short setup scores sit side by side so the highest-mismatch events surface first.',
+    ticker: 'Ticker',
+    eventDate: 'Event Date',
+    direction: 'Direction',
+    scoreMatrix: 'Dual Score Matrix',
+    conviction: 'Conviction',
+    tags: 'Tags'
+  },
+  zh: {
+    eyebrow: '財報前機會掃描',
+    title: '財報雷達',
+    summary: '把做多與做空設定同場比較，優先找出錯配較大的事件標的。',
+    ticker: '股票',
+    eventDate: '事件日期',
+    direction: '方向',
+    scoreMatrix: '多空分數',
+    conviction: '信心分',
+    tags: '標籤'
+  }
+};
+
 function priorityTag(tag) {
   if (tag === 'God-tier Short Setup') return 'critical';
   if (tag === 'Euphoric Run-up') return 'warning';
@@ -42,16 +67,17 @@ function RadarBadge({ tag }) {
   );
 }
 
-export default function CatalystRadarTable({ rows, selectedTicker, onSelect }) {
+export default function CatalystRadarTable({ rows, selectedTicker, onSelect, locale = 'en' }) {
+  const copy = CATALYST_TABLE_COPY[locale] || CATALYST_TABLE_COPY.en;
   return (
     <div className="catalyst-radar">
       <div className="catalyst-radar__header">
         <div>
-          <p className="catalyst-radar__eyebrow">Pre-Earnings Opportunity Scanner</p>
-          <h3 className="catalyst-radar__title">Catalyst Radar</h3>
+          <p className="catalyst-radar__eyebrow">{copy.eyebrow}</p>
+          <h3 className="catalyst-radar__title">{copy.title}</h3>
         </div>
         <p className="catalyst-radar__summary">
-          以多空雙引擎同場角力，優先放大最具錯配與反身性的事件標的。
+          {copy.summary}
         </p>
       </div>
 
@@ -59,12 +85,12 @@ export default function CatalystRadarTable({ rows, selectedTicker, onSelect }) {
         <table className="catalyst-radar__table">
           <thead>
             <tr>
-              <th>Ticker</th>
-              <th>Event Date</th>
-              <th>Direction</th>
-              <th>Dual Score Matrix</th>
-              <th>Conviction</th>
-              <th>Tags</th>
+              <th>{copy.ticker}</th>
+              <th>{copy.eventDate}</th>
+              <th>{copy.direction}</th>
+              <th>{copy.scoreMatrix}</th>
+              <th>{copy.conviction}</th>
+              <th>{copy.tags}</th>
               <th />
             </tr>
           </thead>
@@ -95,7 +121,7 @@ export default function CatalystRadarTable({ rows, selectedTicker, onSelect }) {
                   <td>
                     <div className="conviction-stack">
                       <strong>{row.conviction}</strong>
-                      <span>Conviction</span>
+                      <span>{copy.conviction}</span>
                     </div>
                   </td>
                   <td>

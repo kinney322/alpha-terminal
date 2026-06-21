@@ -2,13 +2,184 @@ import React, { useState } from 'react';
 import { buildMomentumUniverseSyntheticDetail } from './dossierHelpers';
 import CatalystRadarTable from './CatalystRadarTable';
 
-const CompletedEarningsRefreshStatus = ({ refresh }) => {
+const RADAR_COPY = {
+  en: {
+    loadingUnavailable: 'Completed earnings refresh status unavailable',
+    refreshCaughtUp: 'Completed earnings refresh: all caught up',
+    completedRefresh: 'Completed earnings refresh',
+    pending: 'Pending',
+    reactionClosePending: 'Reaction close pending',
+    vendorPending: 'Vendor EPS/surprise pending',
+    pricePending: 'Price backfill pending',
+    more: 'more',
+    radarTitle: 'Catalyst Radar',
+    preEarnings: 'Pre-Earnings',
+    eventDay: 'Event Day',
+    postEarnings: 'Post-Earnings',
+    momentum: 'Momentum',
+    tracked: 'Tracked',
+    betweenCatalysts: 'Between Catalysts',
+    allScannerRanking: 'All Scanner Ranking',
+    momentumWatch: 'Momentum Watch',
+    allScannerBody: (shown, total) => `Current radar ranking (${shown}/${total} rows), grouped by industry/theme and ranked by momentum score, 200D setup, Z-score, and relative strength. Includes off-cycle thesis rows.`,
+    momentumWatchBody: (shown) => `Filtered momentum watch list (${shown} rows). Momentum ranking highlights unusual price/relative-strength conditions for investigation.`,
+    allThemes: 'All Themes',
+    continuation: 'Continuation',
+    reversal: 'Reversal',
+    peadWatch: 'PEAD Watch',
+    pullbacks: 'Pullbacks',
+    topOpportunities: 'Top Opportunities',
+    riskAlerts: 'Risk Alerts',
+    searchPlaceholder: 'Search ticker across all catalyst events',
+    clear: 'Clear',
+    ticker: 'Ticker',
+    result: 'Result',
+    reaction: 'Reaction',
+    current: 'Current',
+    baseRate: 'Base Rate',
+    quality: 'Quality',
+    thesisState: 'Thesis State',
+    reason: 'Reason',
+    review: 'Review',
+    lastSeen: 'Last Seen',
+    industryTheme: 'Industry / Theme',
+    regime: 'Regime',
+    scannerScore: 'Scanner Score',
+    setup200d: '200D Setup',
+    relativeStrength: 'Relative Strength',
+    cautions: 'Cautions',
+    phase: 'Phase',
+    bias: 'Bias',
+    riskFlags: 'Risk Flags',
+    score: 'Score',
+    noBetween: 'No between-catalyst thesis watches.',
+    noBetweenBody: 'This means no reviewed thesis notes are currently retained outside the active earnings window.',
+    noMomentum: 'No momentum evidence rows.',
+    noMomentumBody: 'The backend has not published a momentum watch list yet.',
+    noTracked: 'No tracked catalyst setups.',
+    noPullbacks: 'No trend pullback setups.',
+    noData: 'No data available for this view.',
+    datePending: 'Date Pending',
+    notIncluded: 'Not Included',
+    unavailable: 'Unavailable',
+    post: 'Post',
+    scannerScoreSmall: 'Scanner score',
+    marketDataOnly: 'Market data only',
+    bandDays: 'Band days',
+    newsNotChecked: 'News not checked',
+    coveragePending: 'Coverage Pending',
+    reviewed: 'Reviewed',
+    reviewPending: 'Review Pending',
+    contextPending: 'Context Pending',
+    unknown: 'Unknown',
+    pendingRefresh: 'Pending data refresh.',
+    waitingReactionClose: 'Waiting for reaction close.',
+    waitingVendorData: 'Waiting for EPS/surprise vendor data.',
+    waitingPriceBackfill: 'Waiting for price backfill.',
+    pendingRefreshTitle: (ticker) => `${ticker} is pending completed-earnings refresh.`,
+    eventDate: 'Event Date',
+    foundElsewhere: (ticker) => `Found ${ticker} in Catalyst Radar, but not in this view.`,
+    trySwitch: (view) => `Try switching to ${view}.`,
+    switchTo: (view) => `Switch to ${view}`,
+    trackedElsewhere: (ticker) => `${ticker} is tracked, but not active in the current catalyst view.`,
+    openTracked: 'Open Tracked to review saved notes.',
+    switchToTracked: 'Switch to Tracked',
+    noSearchMatch: (query) => `No active catalyst event found for "${query}".`,
+    noSearchMatchBody: 'It may be outside the current earnings reaction window, between catalyst cycles, or not in the current scanner universe.'
+  },
+  zh: {
+    loadingUnavailable: '已完成財報刷新狀態暫時無法取得',
+    refreshCaughtUp: '已完成財報刷新：全部已更新',
+    completedRefresh: '已完成財報刷新',
+    pending: '待補',
+    reactionClosePending: '反應日收市待補',
+    vendorPending: 'EPS / 驚喜數據待補',
+    pricePending: '價格回補待完成',
+    more: '更多',
+    radarTitle: '財報雷達',
+    preEarnings: '財報前',
+    eventDay: '公布日',
+    postEarnings: '財報後',
+    momentum: '動能',
+    tracked: '已追蹤',
+    betweenCatalysts: '催化空窗',
+    allScannerRanking: '全部動能排名',
+    momentumWatch: '動能觀察',
+    allScannerBody: (shown, total) => `目前顯示 ${shown}/${total} 條排名，按主題分組，綜合動能分數、200D 結構、Z-score 與相對強度排序，包含催化空窗名單。`,
+    momentumWatchBody: (shown) => `目前顯示 ${shown} 條動能觀察名單，用來找出價格或相對強度異常的研究對象。`,
+    allThemes: '全部主題',
+    continuation: '延續',
+    reversal: '反轉',
+    peadWatch: '財報後漂移',
+    pullbacks: '回調觀察',
+    topOpportunities: '主要機會',
+    riskAlerts: '風險警示',
+    searchPlaceholder: '搜尋所有催化事件股票代號',
+    clear: '清除',
+    ticker: '股票',
+    result: '結果',
+    reaction: '反應',
+    current: '目前',
+    baseRate: '基準機率',
+    quality: '質素',
+    thesisState: '論點狀態',
+    reason: '原因',
+    review: '覆核',
+    lastSeen: '最後出現',
+    industryTheme: '行業 / 主題',
+    regime: '狀態',
+    scannerScore: '掃描分數',
+    setup200d: '200D 結構',
+    relativeStrength: '相對強度',
+    cautions: '注意事項',
+    phase: '階段',
+    bias: '方向',
+    riskFlags: '風險標籤',
+    score: '分數',
+    noBetween: '暫無催化空窗論點觀察。',
+    noBetweenBody: '代表目前沒有已覆核論點留在活躍財報窗口之外。',
+    noMomentum: '暫無動能證據列。',
+    noMomentumBody: '後端尚未發布動能觀察名單。',
+    noTracked: '暫無已追蹤催化設定。',
+    noPullbacks: '暫無回調觀察設定。',
+    noData: '此檢視暫無資料。',
+    datePending: '日期待補',
+    notIncluded: '未納入',
+    unavailable: '不可用',
+    post: '財報後',
+    scannerScoreSmall: '掃描分數',
+    marketDataOnly: '只有市場數據',
+    bandDays: '上軌天數',
+    newsNotChecked: '新聞未核對',
+    coveragePending: '覆蓋待補',
+    reviewed: '已覆核',
+    reviewPending: '待覆核',
+    contextPending: '背景待補',
+    unknown: '未知',
+    pendingRefresh: '資料刷新待完成。',
+    waitingReactionClose: '等待反應日收市。',
+    waitingVendorData: '等待 EPS / 驚喜數據。',
+    waitingPriceBackfill: '等待價格回補。',
+    pendingRefreshTitle: (ticker) => `${ticker} 正等待已完成財報刷新。`,
+    eventDate: '事件日期',
+    foundElsewhere: (ticker) => `已在財報雷達找到 ${ticker}，但不在目前檢視。`,
+    trySwitch: (view) => `可切換到 ${view}。`,
+    switchTo: (view) => `切換到 ${view}`,
+    trackedElsewhere: (ticker) => `${ticker} 已追蹤，但不在目前催化檢視。`,
+    openTracked: '打開已追蹤名單查看記錄。',
+    switchToTracked: '切換到已追蹤',
+    noSearchMatch: (query) => `找不到 "${query}" 的活躍催化事件。`,
+    noSearchMatchBody: '可能不在目前財報反應窗口、處於催化空窗，或未納入目前掃描範圍。'
+  }
+};
+
+const CompletedEarningsRefreshStatus = ({ refresh, copy }) => {
   if (!refresh) return null;
 
   if (refresh.status === 'unavailable') {
     return (
       <div className="completed-refresh-status completed-refresh-status--unavailable">
-        Completed earnings refresh status unavailable
+        {copy.loadingUnavailable}
       </div>
     );
   }
@@ -17,7 +188,7 @@ const CompletedEarningsRefreshStatus = ({ refresh }) => {
   if (pendingCount === 0) {
     return (
       <div className="completed-refresh-status">
-        Completed earnings refresh: all caught up
+        {copy.refreshCaughtUp}
       </div>
     );
   }
@@ -34,19 +205,19 @@ const CompletedEarningsRefreshStatus = ({ refresh }) => {
   return (
     <div className="completed-refresh-status">
       <div className="completed-refresh-status__header">
-        <strong>Completed earnings refresh</strong> (Pending: {pendingCount})
+        <strong>{copy.completedRefresh}</strong> ({copy.pending}: {pendingCount})
       </div>
       <div className="completed-refresh-status__metrics">
-        {t1Pending > 0 && <span className="completed-refresh-status__metric">Reaction close pending: {t1Pending}</span>}
-        {vendorPending > 0 && <span className="completed-refresh-status__metric">Vendor EPS/surprise pending: {vendorPending}</span>}
-        {pricePending > 0 && <span className="completed-refresh-status__metric">Price backfill pending: {pricePending}</span>}
+        {t1Pending > 0 && <span className="completed-refresh-status__metric">{copy.reactionClosePending}: {t1Pending}</span>}
+        {vendorPending > 0 && <span className="completed-refresh-status__metric">{copy.vendorPending}: {vendorPending}</span>}
+        {pricePending > 0 && <span className="completed-refresh-status__metric">{copy.pricePending}: {pricePending}</span>}
       </div>
       {displaySample.length > 0 && (
         <div className="completed-refresh-status__chips">
           {displaySample.map((s, idx) => (
             <span key={idx} className="quality-pill">{s.ticker}</span>
           ))}
-          {extraCount > 0 && <span className="quality-pill">+{extraCount} more</span>}
+          {extraCount > 0 && <span className="quality-pill">+{extraCount} {copy.more}</span>}
         </div>
       )}
     </div>
@@ -98,20 +269,20 @@ const findSearchContext = (query, payload, currentListIds, activeTab, listType) 
   return { type: 'no_match', query: normQuery };
 };
 
-const SearchEmptyState = ({ context, onSwitch }) => {
+const SearchEmptyState = ({ context, onSwitch, copy }) => {
   if (!context) return null;
 
   if (context.type === 'pending_refresh') {
     const { ticker, pending_reason_primary, event_date } = context.data;
-    let reasonText = 'Pending data refresh.';
-    if (pending_reason_primary === 'market_not_closed_yet') reasonText = 'Waiting for reaction close.';
-    else if (['missing_actual', 'missing_surprise', 'vendor_unavailable'].includes(pending_reason_primary)) reasonText = 'Waiting for EPS/surprise vendor data.';
-    else if (pending_reason_primary === 'missing_t1_close') reasonText = 'Waiting for price backfill.';
+    let reasonText = copy.pendingRefresh || 'Pending data refresh.';
+    if (pending_reason_primary === 'market_not_closed_yet') reasonText = copy.waitingReactionClose || 'Waiting for reaction close.';
+    else if (['missing_actual', 'missing_surprise', 'vendor_unavailable'].includes(pending_reason_primary)) reasonText = copy.waitingVendorData || 'Waiting for EPS/surprise vendor data.';
+    else if (pending_reason_primary === 'missing_t1_close') reasonText = copy.waitingPriceBackfill || 'Waiting for price backfill.';
 
     return (
       <div className="radar-search-empty">
-        <div className="radar-search-empty__title">{ticker} is pending completed-earnings refresh.</div>
-        <div className="radar-search-empty__body">{reasonText} (Event Date: {event_date || 'Unknown'})</div>
+        <div className="radar-search-empty__title">{copy.pendingRefreshTitle ? copy.pendingRefreshTitle(ticker) : `${ticker} is pending completed-earnings refresh.`}</div>
+        <div className="radar-search-empty__body">{reasonText} ({copy.eventDate || 'Event Date'}: {event_date || copy.unknown})</div>
       </div>
     );
   }
@@ -119,11 +290,11 @@ const SearchEmptyState = ({ context, onSwitch }) => {
   if (context.type === 'other_view') {
     return (
       <div className="radar-search-empty">
-        <div className="radar-search-empty__title">Found {context.ticker} in Catalyst Radar, but not in this view.</div>
-        <div className="radar-search-empty__body">Try switching to {context.suggest}.</div>
+        <div className="radar-search-empty__title">{copy.foundElsewhere ? copy.foundElsewhere(context.ticker) : `Found ${context.ticker} in Catalyst Radar, but not in this view.`}</div>
+        <div className="radar-search-empty__body">{copy.trySwitch ? copy.trySwitch(context.suggest) : `Try switching to ${context.suggest}.`}</div>
         {context.action && (
           <button className="radar-search-empty__action" onClick={() => onSwitch(context.action)}>
-            Switch to {context.suggest}
+            {copy.switchTo ? copy.switchTo(context.suggest) : `Switch to ${context.suggest}`}
           </button>
         )}
       </div>
@@ -133,11 +304,11 @@ const SearchEmptyState = ({ context, onSwitch }) => {
   if (context.type === 'tracked') {
     return (
       <div className="radar-search-empty">
-        <div className="radar-search-empty__title">{context.ticker} is tracked, but not active in the current catalyst view.</div>
-        <div className="radar-search-empty__body">Open Tracked to review saved notes.</div>
+        <div className="radar-search-empty__title">{copy.trackedElsewhere ? copy.trackedElsewhere(context.ticker) : `${context.ticker} is tracked, but not active in the current catalyst view.`}</div>
+        <div className="radar-search-empty__body">{copy.openTracked || 'Open Tracked to review saved notes.'}</div>
         {context.action && (
           <button className="radar-search-empty__action" onClick={() => onSwitch(context.action)}>
-            Switch to Tracked
+            {copy.switchToTracked || 'Switch to Tracked'}
           </button>
         )}
       </div>
@@ -146,8 +317,8 @@ const SearchEmptyState = ({ context, onSwitch }) => {
 
   return (
     <div className="radar-search-empty">
-      <div className="radar-search-empty__title">No active catalyst event found for "{context.query}".</div>
-      <div className="radar-search-empty__body">It may be outside the current earnings reaction window, between catalyst cycles, or not in the current scanner universe.</div>
+      <div className="radar-search-empty__title">{copy.noSearchMatch ? copy.noSearchMatch(context.query) : `No active catalyst event found for "${context.query}".`}</div>
+      <div className="radar-search-empty__body">{copy.noSearchMatchBody || 'It may be outside the current earnings reaction window, between catalyst cycles, or not in the current scanner universe.'}</div>
     </div>
   );
 };
@@ -166,7 +337,8 @@ const firstFiniteNumber = (...values) => {
   return null;
 };
 
-const RadarMasterView = ({ payload, preopenPayload, selectedEventId, onSelectEvent }) => {
+const RadarMasterView = ({ payload, preopenPayload, selectedEventId, onSelectEvent, locale = 'en' }) => {
+  const copy = RADAR_COPY[locale] || RADAR_COPY.en;
   const [activeTab, setActiveTab] = useState('pre_earnings'); // pre_earnings, event_day, post_earnings, momentum, tracked, between_catalysts
   const [listType, setListType] = useState('top_opportunities'); // top_opportunities, top_risk_alerts
   const [searchQuery, setSearchQuery] = useState('');
@@ -220,7 +392,7 @@ const RadarMasterView = ({ payload, preopenPayload, selectedEventId, onSelectEve
         if (b.key === 'unmapped') return -1;
         return a.key.localeCompare(b.key);
       });
-      return [{ key: 'all', count: payload?.momentum_universe?.ranked_count || momentumSourceListIds.length, label: 'All Themes' }, ...groups];
+      return [{ key: 'all', count: payload?.momentum_universe?.ranked_count || momentumSourceListIds.length, label: copy.allThemes }, ...groups];
     } else {
       const groupStats = new Map();
       momentumSourceListIds.forEach(eventId => {
@@ -241,7 +413,7 @@ const RadarMasterView = ({ payload, preopenPayload, selectedEventId, onSelectEve
           return a.key.localeCompare(b.key);
         });
 
-      return [{ key: 'all', count: momentumSourceListIds.length, label: 'All Themes' }, ...groups];
+      return [{ key: 'all', count: momentumSourceListIds.length, label: copy.allThemes }, ...groups];
     }
   })();
 
@@ -278,18 +450,18 @@ const RadarMasterView = ({ payload, preopenPayload, selectedEventId, onSelectEve
   };
 
   const formatShortDate = (value) => {
-    if (!value) return 'Date Pending';
+    if (!value) return copy.datePending;
     try {
       const d = new Date(value);
-      if (isNaN(d.getTime())) return 'Date Pending';
+      if (isNaN(d.getTime())) return copy.datePending;
       return d.toISOString().split('T')[0];
     } catch (e) {
-      return 'Date Pending';
+      return copy.datePending;
     }
   };
 
   const formatSignedPct = (value) => {
-    if (value === undefined || value === null || Number.isNaN(Number(value))) return 'Not Included';
+    if (value === undefined || value === null || Number.isNaN(Number(value))) return copy.notIncluded;
     const n = Number(value);
     return `${n > 0 ? '+' : ''}${n.toFixed(1)}%`;
   };
@@ -307,7 +479,7 @@ const RadarMasterView = ({ payload, preopenPayload, selectedEventId, onSelectEve
     const current = Number(reaction.current_post_return);
 
     if (!direction || Number.isNaN(t1) || Number.isNaN(current)) {
-      return { label: 'Unavailable', tone: 'neutral' };
+      return { label: copy.unavailable, tone: 'neutral' };
     }
 
     const currentTone = current > 0 ? 'bullish' : current < 0 ? 'bearish' : 'neutral';
@@ -442,7 +614,7 @@ const RadarMasterView = ({ payload, preopenPayload, selectedEventId, onSelectEve
       eventId,
       eventDetail: item,
       ticker: item?.ticker || eventId,
-      eventDate: item?.event_date || item?.catalyst_date || 'Date Pending',
+      eventDate: item?.event_date || item?.catalyst_date || copy.datePending,
       preferredDirection,
       longScore: longScore ?? 0,
       shortScore: shortScore ?? 0,
@@ -480,58 +652,58 @@ const RadarMasterView = ({ payload, preopenPayload, selectedEventId, onSelectEve
       data-preopen-feed-source={hasDedicatedPreopenPayload ? 'dedicated' : 'canonical-fallback'}
     >
       <div className="radar-header">
-        <h2>Catalyst Radar</h2>
+        <h2>{copy.radarTitle}</h2>
         <div className="radar-tabs">
           <button 
             className={activeTab === 'pre_earnings' ? 'active' : ''} 
             onClick={() => { setActiveTab('pre_earnings'); setListType('top_opportunities'); setMomentumGroupFilter('all'); }}
           >
-            Pre-Earnings
+            {copy.preEarnings}
           </button>
           <button 
             className={activeTab === 'event_day' ? 'active' : ''} 
             onClick={() => { setActiveTab('event_day'); setListType('top_opportunities'); setMomentumGroupFilter('all'); }}
           >
-            Event Day
+            {copy.eventDay}
           </button>
           <button 
             className={activeTab === 'post_earnings' ? 'active' : ''} 
             onClick={() => { setActiveTab('post_earnings'); setListType('top_opportunities'); setMomentumGroupFilter('all'); }}
           >
-            Post-Earnings
+            {copy.postEarnings}
           </button>
           <button 
             className={activeTab === 'momentum' ? 'active' : ''} 
             onClick={() => { setActiveTab('momentum'); setListType('all_scanner_ranking'); setMomentumGroupFilter('all'); }}
           >
-            Momentum
+            {copy.momentum}
           </button>
           <button 
             className={activeTab === 'tracked' ? 'active' : ''} 
             onClick={() => setActiveTab('tracked')}
           >
-            Tracked
+            {copy.tracked}
           </button>
           <button 
             className={activeTab === 'between_catalysts' ? 'active' : ''} 
             onClick={() => setActiveTab('between_catalysts')}
           >
-            Between Catalysts
+            {copy.betweenCatalysts}
           </button>
         </div>
       </div>
 
       {isPostEarnings && (
-        <CompletedEarningsRefreshStatus refresh={payload?.meta?.completed_earnings_refresh} />
+        <CompletedEarningsRefreshStatus refresh={payload?.meta?.completed_earnings_refresh} copy={copy} />
       )}
 
       {isMomentum && (
         <div className="momentum-board-note">
-          <strong>{isMomentumAllRanking ? 'All Scanner Ranking' : 'Momentum Watch'}</strong>
+          <strong>{isMomentumAllRanking ? copy.allScannerRanking : copy.momentumWatch}</strong>
           <span>
             {isMomentumAllRanking
-              ? `Current radar ranking (${baseListIds.length}/${momentumSourceListIds.length} rows), grouped by industry/theme and ranked by momentum score, 200D setup, Z-score, and relative strength. Includes off-cycle thesis rows.`
-              : `Filtered momentum watch list (${baseListIds.length} rows). Momentum ranking highlights unusual price/relative-strength conditions for investigation.`}
+              ? copy.allScannerBody(baseListIds.length, momentumSourceListIds.length)
+              : copy.momentumWatchBody(baseListIds.length)}
           </span>
         </div>
       )}
@@ -542,13 +714,13 @@ const RadarMasterView = ({ payload, preopenPayload, selectedEventId, onSelectEve
             className={listType !== 'momentum_watch' ? 'active' : ''}
             onClick={() => { setListType('all_scanner_ranking'); setMomentumGroupFilter('all'); }}
           >
-            All Scanner Ranking
+            {copy.allScannerRanking}
           </button>
           <button
             className={listType === 'momentum_watch' ? 'active' : ''}
             onClick={() => { setListType('momentum_watch'); setMomentumGroupFilter('all'); }}
           >
-            Momentum Watch
+            {copy.momentumWatch}
           </button>
         </div>
       )}
@@ -575,22 +747,22 @@ const RadarMasterView = ({ payload, preopenPayload, selectedEventId, onSelectEve
               <button 
                 className={listType === 'top_opportunities' ? 'active' : ''} 
                 onClick={() => setListType('top_opportunities')}
-              >Continuation</button>
+              >{copy.continuation}</button>
               <button 
                 className={listType === 'top_risk_alerts' ? 'active' : ''} 
                 onClick={() => setListType('top_risk_alerts')}
-              >Reversal</button>
+              >{copy.reversal}</button>
               <button 
                 className={listType === 'pead_watch' ? 'active' : ''} 
                 onClick={() => setListType('pead_watch')}
               >
-                PEAD Watch
+                {copy.peadWatch}
               </button>
               <button 
                 className={listType === 'trend_pullbacks' ? 'active' : ''} 
                 onClick={() => setListType('trend_pullbacks')}
               >
-                Pullbacks
+                {copy.pullbacks}
               </button>
             </>
           ) : (
@@ -599,13 +771,13 @@ const RadarMasterView = ({ payload, preopenPayload, selectedEventId, onSelectEve
                 className={listType === 'top_opportunities' ? 'active' : ''} 
                 onClick={() => setListType('top_opportunities')}
               >
-                Top Opportunities
+                {copy.topOpportunities}
               </button>
               <button 
                 className={listType === 'top_risk_alerts' ? 'active' : ''} 
                 onClick={() => setListType('top_risk_alerts')}
               >
-                Risk Alerts
+                {copy.riskAlerts}
               </button>
             </>
           )}
@@ -618,11 +790,11 @@ const RadarMasterView = ({ payload, preopenPayload, selectedEventId, onSelectEve
           type="search"
           value={searchQuery}
           onChange={(event) => setSearchQuery(event.target.value)}
-          placeholder="Search ticker across all catalyst events"
+          placeholder={copy.searchPlaceholder}
         />
         {isSearchMode && (
           <button className="radar-search-clear" onClick={() => setSearchQuery('')}>
-            Clear
+            {copy.clear}
           </button>
         )}
       </div>
@@ -632,6 +804,7 @@ const RadarMasterView = ({ payload, preopenPayload, selectedEventId, onSelectEve
           rows={catalystRows}
           selectedTicker={selectedEventId ? catalystRows.find(row => row.eventId === selectedEventId)?.ticker : null}
           onSelect={(row) => onSelectEvent(row.eventId, row.eventDetail, row)}
+          locale={locale}
         />
       ) : (
 
@@ -639,37 +812,37 @@ const RadarMasterView = ({ payload, preopenPayload, selectedEventId, onSelectEve
         <table className="radar-table radar-master-table">
           <thead>
             <tr>
-              <th>Ticker</th>
+              <th>{copy.ticker}</th>
               {isPostEarnings ? (
                 <>
-                  <th>Result</th>
-                  <th>Reaction</th>
-                  <th>Current</th>
-                  <th>Base Rate</th>
-                  <th>Quality</th>
+                  <th>{copy.result}</th>
+                  <th>{copy.reaction}</th>
+                  <th>{copy.current}</th>
+                  <th>{copy.baseRate}</th>
+                  <th>{copy.quality}</th>
                 </>
               ) : isBetweenCatalysts ? (
                 <>
-                  <th>Thesis State</th>
-                  <th>Reason</th>
-                  <th>Review</th>
-                  <th>Last Seen</th>
+                  <th>{copy.thesisState}</th>
+                  <th>{copy.reason}</th>
+                  <th>{copy.review}</th>
+                  <th>{copy.lastSeen}</th>
                 </>
               ) : isMomentum ? (
                 <>
-                  <th>Industry / Theme</th>
-                  <th>Regime</th>
-                  <th>Scanner Score</th>
-                  <th>200D Setup</th>
-                  <th>Relative Strength</th>
-                  <th>Cautions</th>
+                  <th>{copy.industryTheme}</th>
+                  <th>{copy.regime}</th>
+                  <th>{copy.scannerScore}</th>
+                  <th>{copy.setup200d}</th>
+                  <th>{copy.relativeStrength}</th>
+                  <th>{copy.cautions}</th>
                 </>
               ) : (
                 <>
-                  <th>Phase</th>
-                  <th>Bias</th>
-                  <th>Risk Flags</th>
-                  <th>Score</th>
+                  <th>{copy.phase}</th>
+                  <th>{copy.bias}</th>
+                  <th>{copy.riskFlags}</th>
+                  <th>{copy.score}</th>
                 </>
               )}
             </tr>
@@ -682,22 +855,23 @@ const RadarMasterView = ({ payload, preopenPayload, selectedEventId, onSelectEve
                     <SearchEmptyState 
                       context={findSearchContext(searchQuery, payload, filteredListIds, activeTab, listType)}
                       onSwitch={handleSwitchView}
+                      copy={copy}
                     />
                   ) : activeTab === 'between_catalysts' ? (
                     <div style={{ padding: '20px' }}>
-                      <div style={{ fontWeight: 'bold', marginBottom: '8px', fontSize: '1.05em' }}>No between-catalyst thesis watches.</div>
-                      <div style={{ color: 'var(--text-muted)' }}>This means no reviewed thesis notes are currently retained outside the active earnings window.</div>
+                      <div style={{ fontWeight: 'bold', marginBottom: '8px', fontSize: '1.05em' }}>{copy.noBetween}</div>
+                      <div style={{ color: 'var(--text-muted)' }}>{copy.noBetweenBody}</div>
                     </div>
                   ) : activeTab === 'momentum' ? (
                     <div style={{ padding: '20px' }}>
-                      <div style={{ fontWeight: 'bold', marginBottom: '8px', fontSize: '1.05em' }}>No momentum evidence rows.</div>
-                      <div style={{ color: 'var(--text-muted)' }}>The backend has not published a momentum watch list yet.</div>
+                      <div style={{ fontWeight: 'bold', marginBottom: '8px', fontSize: '1.05em' }}>{copy.noMomentum}</div>
+                      <div style={{ color: 'var(--text-muted)' }}>{copy.noMomentumBody}</div>
                     </div>
                   ) : activeTab === 'tracked'
-                    ? 'No tracked catalyst setups.'
+                    ? copy.noTracked
                     : isPostEarnings && listType === 'trend_pullbacks'
-                      ? 'No trend pullback setups.'
-                      : 'No data available for this view.'}
+                      ? copy.noPullbacks
+                      : copy.noData}
                 </td>
               </tr>
             ) : (
@@ -739,7 +913,7 @@ const RadarMasterView = ({ payload, preopenPayload, selectedEventId, onSelectEve
                                 {formatResultLabel(item.trend_setup.stage)}
                               </span>
                               <div className="post-result-subline">
-                                Score: {item.trend_setup.score || 'Not Included'} | {item.trend_setup.supply_chain_stage ? formatResultLabel(item.trend_setup.supply_chain_stage) : 'Context Pending'}
+                                {copy.score}: {item.trend_setup.score || copy.notIncluded} | {item.trend_setup.supply_chain_stage ? formatResultLabel(item.trend_setup.supply_chain_stage) : copy.contextPending}
                               </div>
                             </>
                           ) : (
@@ -761,7 +935,7 @@ const RadarMasterView = ({ payload, preopenPayload, selectedEventId, onSelectEve
                             <span>
                               {item.trading_days_to_event !== undefined && item.trading_days_to_event !== null
                                 ? `Day ${item.trading_days_to_event > 0 ? `+${item.trading_days_to_event}` : item.trading_days_to_event}`
-                                : 'Post'}
+                                : copy.post}
                             </span>
                           </div>
                         </td>
@@ -792,18 +966,18 @@ const RadarMasterView = ({ payload, preopenPayload, selectedEventId, onSelectEve
                           <span className={`quality-pill momentum-regime-pill ${getMomentumToneClass(momentum.regime)}`}>
                             {formatResultLabel(momentum.regime)}
                           </span>
-                          <div className="post-result-subline">{momentum.evidence_status === 'market_data_only' ? 'Market data only' : formatResultLabel(momentum.evidence_status)}</div>
+                          <div className="post-result-subline">{momentum.evidence_status === 'market_data_only' ? copy.marketDataOnly : formatResultLabel(momentum.evidence_status)}</div>
                         </td>
                         <td>
                           <div className="metric-stack">
-                            <strong>{momentum.score ?? 'Not Included'}</strong>
-                            <span>Scanner score</span>
+                            <strong>{momentum.score ?? copy.notIncluded}</strong>
+                            <span>{copy.scannerScoreSmall}</span>
                           </div>
                         </td>
                         <td>
                           <div className="metric-stack">
                             <strong>MA200 {formatSignedPct(momentumEvidence.ma200_slope_pct)}</strong>
-                            <span>Z {momentumEvidence.zscore_200d != null ? Number(momentumEvidence.zscore_200d).toFixed(2) : 'Not Included'} · Band days {momentumEvidence.days_above_upper_band_60d ?? 'Not Included'}</span>
+                            <span>Z {momentumEvidence.zscore_200d != null ? Number(momentumEvidence.zscore_200d).toFixed(2) : copy.notIncluded} · {copy.bandDays} {momentumEvidence.days_above_upper_band_60d ?? copy.notIncluded}</span>
                           </div>
                         </td>
                         <td>
@@ -816,7 +990,7 @@ const RadarMasterView = ({ payload, preopenPayload, selectedEventId, onSelectEve
                           {(momentum.caution_flags || []).slice(0, 3).map((flag, idx) => (
                             <span key={idx} className="quality-pill">{flag}</span>
                           ))}
-                          {momentum.news_checked === false && <span className="quality-pill">News not checked</span>}
+                          {momentum.news_checked === false && <span className="quality-pill">{copy.newsNotChecked}</span>}
                         </td>
                       </>
                     ) : isBetweenCatalysts ? (
@@ -825,10 +999,10 @@ const RadarMasterView = ({ payload, preopenPayload, selectedEventId, onSelectEve
                           <span className="quality-pill">{formatResultLabel(item.thesis_lifecycle?.status || 'Unknown')}</span>
                         </td>
                         <td>
-                          {item.off_cycle_reason?.labels?.length > 0 ? item.off_cycle_reason.labels.map((l, i) => <span key={i} className="quality-pill">{formatResultLabel(l)}</span>) : 'Coverage Pending'}
+                          {item.off_cycle_reason?.labels?.length > 0 ? item.off_cycle_reason.labels.map((l, i) => <span key={i} className="quality-pill">{formatResultLabel(l)}</span>) : copy.coveragePending}
                         </td>
                         <td>
-                          {item.thesis_lifecycle?.review_state?.reviewed ? 'Reviewed' : 'Review Pending'}
+                          {item.thesis_lifecycle?.review_state?.reviewed ? copy.reviewed : copy.reviewPending}
                         </td>
                         <td>
                           <div style={{ fontSize: '0.85em', color: 'var(--text-muted)' }}>

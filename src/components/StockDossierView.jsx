@@ -270,14 +270,14 @@ const RatioReturnValue = ({ value, digits = 1 }) => {
   return <span className={`dossier-return-value tone-${returnToneClass(value)}`}>{formatted}</span>;
 };
 
-const SummaryMetric = ({ label, summary, value }) => (
+const SummaryMetric = ({ label, summary, value, countLabel = 'measured' }) => (
   <div className="dossier-event-summary-metric">
     <span>{label}</span>
     <strong>
       {summary ? (
         <>
           <RatioReturnValue value={value ?? summary.avg_return} />
-          <small>{summary.count ?? 0} measured</small>
+          <small>{summary.count ?? 0} {countLabel}</small>
         </>
       ) : (
         <em className="dossier-pending-value">Pending</em>
@@ -691,6 +691,254 @@ const DOSSIER_INTERNAL_TABS = [
   { id: 'financial-health', label: 'Financial Health' }
 ];
 
+const STOCK_DOSSIER_COPY = {
+  en: {
+    tabs: DOSSIER_INTERNAL_TABS,
+    stockDossier: 'Stock Dossier',
+    asOf: 'As of',
+    curated: 'Curated',
+    snapshot: 'Snapshot',
+    whyNow: 'Why now',
+    coreVerdict: 'Dossier core verdict',
+    primaryRead: 'Primary read',
+    context: 'Context',
+    evidenceFocus: 'Evidence focus',
+    keyStatistics: 'Key Statistics',
+    snapshotMetrics: 'Snapshot metrics',
+    executiveHighlights: 'Executive Highlights',
+    highlights: 'Highlights',
+    stockPerformance: 'Stock Performance',
+    returnPending: 'Return feed pending',
+    signalScreens: 'Signal Screens / Evidence Tags',
+    screenEvidence: 'Screen evidence, not a conclusion',
+    marketEvidence: 'Market Evidence',
+    evidenceOverview: 'Evidence overview',
+    businessCore: 'Business Core',
+    businessCoreQuestion: 'What creates company value?',
+    evidenceToMonitor: 'Evidence to monitor',
+    measuredQuarters: 'Measured quarters',
+    gapUpRate: 'Gap-up rate',
+    postGap3: 'Post-gap 3D avg',
+    postGap10: 'Post-gap 10D avg',
+    postGap30: 'Post-gap 30D avg',
+    pending: 'Pending',
+    notVerified: 'Not verified',
+    valuation: 'Valuation',
+    valuationPosture: 'Valuation posture',
+    whatNeedTrue: 'What would need to be true?',
+    evidenceChecklist: 'Evidence checklist',
+    thesisRisk: 'Thesis Risk',
+    thesisRiskQuestion: 'What could weaken the dossier read?',
+    riskPosture: 'Risk posture',
+    durabilityMonitor: 'Business durability monitor',
+    reduceRisk: 'Evidence needed to reduce risk',
+    watchSignals: 'Watch signals',
+    financialHealth: 'Financial Health',
+    financialHealthQuestion: 'Quality of growth and cash generation',
+    qualityOfGrowth: 'Quality of growth',
+    growthPlusFcf: 'Growth plus FCF, with SBC still monitored',
+    financialHealthPending: 'Financial health needs cash-flow, dilution, and balance-sheet context.',
+    stockOverview: 'Stock Overview',
+    finalRead: 'Final Read',
+    atGlance: 'At a glance',
+    priceTrend: 'Price Trend',
+    recentTrend: 'Recent trend',
+    researchMap: 'Research Map',
+    researchMapBody: 'Quality, valuation, trend, and evidence',
+    caseSummary: 'Case Summary',
+    caseWorking: 'What has to keep working?',
+    supportsCase: 'What supports the case',
+    breaksCase: 'What can break the case',
+    companyOverview: 'Company Overview',
+    companyOverviewQuestion: 'Business, customers, and competitive position',
+    howMoney: 'How it makes money',
+    customerQuality: 'Customer quality',
+    businessQuality: 'Business quality',
+    peerCompetition: 'Peer competition',
+    operatingNotes: 'Operating notes',
+    operatingNotesBody: 'Business engine, cash-flow quality, and competitive position',
+    valueCore: 'Value Core',
+    humanReview: 'Human Review',
+    valuationCore: 'Valuation Core',
+    valuationCoreQuestion: 'Does the price still leave a medium-term research margin?',
+    forwardValuationRange: 'Forward Valuation Range',
+    forecastMultiple: 'Forecast metric x valuation multiple range',
+    valuationMap: 'Valuation map',
+    currentVsRange: 'Current price vs model range',
+    range: 'Range',
+    current: 'Current',
+    median: 'Median',
+    bull: 'Bull',
+    bear: 'Bear',
+    revenueGrowth: 'Revenue growth',
+    appliedMultiple: 'Applied multiple',
+    impliedEv: 'Implied EV',
+    netCash: 'Net cash',
+    equityValue: 'Equity value',
+    upsideDownside: 'Upside / downside',
+    researchJudgment: 'Research Judgment',
+    missingEvidence: 'Missing Evidence',
+    momentum: 'Momentum',
+    structureExecution: 'Structure & Execution',
+    unavailable: 'Unavailable',
+    noTechnicalSetup: 'No technical setup context provided.',
+    strengthRead: 'Strength read',
+    executionMap: 'Execution map',
+    latestPricePending: 'Latest price pending',
+    latest: 'Latest',
+    breakout: 'Breakout',
+    target: 'Target',
+    breakoutArea: 'Breakout Area',
+    targetZone: 'Target Zone',
+    potentialUpside: 'Potential Upside',
+    holdZone: 'Hold Zone',
+    supportArea: 'Support Area',
+    invalidBelow: 'Invalid Below',
+    eventStudyConnection: 'Event Study connection',
+    loadingEarningsSummary: 'Loading earnings-event summary...',
+    eventStudyDetail: 'Event Study Detail',
+    openEventStudy: (ticker) => `Open ${ticker} Event Study`,
+    earningsSummary: 'Earnings summary',
+    sampleNotIncluded: 'Sample not included',
+    gapEvidencePending: 'Verified earnings gap evidence is pending.',
+    scenarioRange: 'Scenario Range',
+    scenarioQuestion: 'Bull / base / bear path: what must be true?',
+    scenarioModelNote: 'References the Valuation Core forward model; valuation range and median return are model-derived, not formal targets.',
+    impliedOutcome: 'Implied outcome',
+    scenarioTrigger: 'Scenario trigger',
+    thesisRiskMonitor: 'Thesis Risk Monitor',
+    mediumTermRiskQuestion: 'What would weaken the medium-term dossier?',
+    fundamentalTriggers: 'Fundamental risk triggers',
+    marketTriggers: 'Price / market evidence triggers'
+  },
+  zh: {
+    tabs: [
+      { id: 'overview', label: '概覽' },
+      { id: 'business-core', label: '業務核心' },
+      { id: 'market-evidence', label: '市場證據' },
+      { id: 'valuation', label: '估值' },
+      { id: 'thesis-risk', label: '論點風險' },
+      { id: 'financial-health', label: '財務健康' }
+    ],
+    stockDossier: '股票檔案',
+    asOf: '截至',
+    curated: '已整理',
+    snapshot: '快照',
+    whyNow: '為何現在要看',
+    coreVerdict: '檔案核心判斷',
+    primaryRead: '主要判斷',
+    context: '背景',
+    evidenceFocus: '證據焦點',
+    keyStatistics: '主要數據',
+    snapshotMetrics: '快照指標',
+    executiveHighlights: '重點摘要',
+    highlights: '摘要',
+    stockPerformance: '股價表現',
+    returnPending: '回報資料待補',
+    signalScreens: '篩選信號 / 證據標籤',
+    screenEvidence: '篩選證據，不是結論',
+    marketEvidence: '市場證據',
+    evidenceOverview: '證據概覽',
+    businessCore: '業務核心',
+    businessCoreQuestion: '公司價值由甚麼創造？',
+    evidenceToMonitor: '需要監察的證據',
+    measuredQuarters: '已核實季度',
+    gapUpRate: '高開機率',
+    postGap3: '高開後 3 日平均',
+    postGap10: '高開後 10 日平均',
+    postGap30: '高開後 30 日平均',
+    pending: '待補',
+    notVerified: '未核實',
+    valuation: '估值',
+    valuationPosture: '估值狀態',
+    whatNeedTrue: '需要哪些條件成立？',
+    evidenceChecklist: '證據清單',
+    thesisRisk: '論點風險',
+    thesisRiskQuestion: '甚麼會削弱這份檔案的判斷？',
+    riskPosture: '風險狀態',
+    durabilityMonitor: '業務耐久度監察',
+    reduceRisk: '降低風險需要的證據',
+    watchSignals: '觀察信號',
+    financialHealth: '財務健康',
+    financialHealthQuestion: '增長質素與現金生成能力',
+    qualityOfGrowth: '增長質素',
+    growthPlusFcf: '增長加 FCF，同時監察 SBC',
+    financialHealthPending: '財務健康需要現金流、攤薄與資產負債表背景。',
+    stockOverview: '股票概覽',
+    finalRead: '最終判斷',
+    atGlance: '一眼概覽',
+    priceTrend: '價格趨勢',
+    recentTrend: '近期趨勢',
+    researchMap: '研究地圖',
+    researchMapBody: '質素、估值、趨勢與證據',
+    caseSummary: '個案摘要',
+    caseWorking: '哪些條件要繼續成立？',
+    supportsCase: '支持個案的因素',
+    breaksCase: '會破壞個案的因素',
+    companyOverview: '公司概覽',
+    companyOverviewQuestion: '業務、客戶與競爭位置',
+    howMoney: '如何賺錢',
+    customerQuality: '客戶質素',
+    businessQuality: '業務質素',
+    peerCompetition: '同業競爭',
+    operatingNotes: '營運筆記',
+    operatingNotesBody: '業務引擎、現金流質素與競爭位置',
+    valueCore: '價值核心',
+    humanReview: '人手覆核',
+    valuationCore: '估值核心',
+    valuationCoreQuestion: '現價是否仍有中期研究空間？',
+    forwardValuationRange: '前瞻估值區間',
+    forecastMultiple: '預測指標 x 估值倍數區間',
+    valuationMap: '估值地圖',
+    currentVsRange: '現價相對模型區間',
+    range: '區間',
+    current: '現價',
+    median: '中位數',
+    bull: '樂觀',
+    bear: '悲觀',
+    revenueGrowth: '收入增長',
+    appliedMultiple: '套用倍數',
+    impliedEv: '隱含企業價值',
+    netCash: '淨現金',
+    equityValue: '股權價值',
+    upsideDownside: '上行 / 下行',
+    researchJudgment: '研究判斷',
+    missingEvidence: '缺少證據',
+    momentum: '動能',
+    structureExecution: '結構與執行',
+    unavailable: '不可用',
+    noTechnicalSetup: '暫無技術結構背景。',
+    strengthRead: '強度判斷',
+    executionMap: '執行地圖',
+    latestPricePending: '最新價格待補',
+    latest: '最新',
+    breakout: '突破',
+    target: '目標',
+    breakoutArea: '突破區',
+    targetZone: '目標區',
+    potentialUpside: '潛在上行',
+    holdZone: '守位區',
+    supportArea: '支持區',
+    invalidBelow: '跌穿失效',
+    eventStudyConnection: '事件研究連結',
+    loadingEarningsSummary: '正在載入財報事件摘要...',
+    eventStudyDetail: '事件研究詳情',
+    openEventStudy: (ticker) => `打開 ${ticker} 事件研究`,
+    earningsSummary: '財報摘要',
+    sampleNotIncluded: '樣本未納入',
+    gapEvidencePending: '已核實財報高低開證據待補。',
+    scenarioRange: '情境區間',
+    scenarioQuestion: '樂觀 / 基準 / 悲觀路徑需要甚麼成立？',
+    scenarioModelNote: '引用估值核心的前瞻模型；估值區間與中位回報屬模型推算，不是正式目標價。',
+    impliedOutcome: '隱含結果',
+    scenarioTrigger: '情境觸發條件',
+    thesisRiskMonitor: '論點風險監察',
+    mediumTermRiskQuestion: '甚麼會削弱中期檔案判斷？',
+    fundamentalTriggers: '基本面風險觸發',
+    marketTriggers: '價格 / 市場證據觸發'
+  }
+};
+
 const PeerPill = ({ peer, currentTicker }) => {
   const isCurrent = String(peer.ticker || '').toUpperCase() === String(currentTicker || '').toUpperCase();
   return (
@@ -802,7 +1050,8 @@ const buildEventStudyDetail = (eventDetail, dossierProfile = null) => {
   };
 };
 
-const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, referencePeerMapPayload, onOpenEventStudy }) => {
+const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, referencePeerMapPayload, onOpenEventStudy, locale = 'en' }) => {
+  const copy = STOCK_DOSSIER_COPY[locale] || STOCK_DOSSIER_COPY.en;
   const tickerForSummary = canonicalizeTicker(eventDetail?.ticker);
   const [eventStudySummary, setEventStudySummary] = React.useState(null);
   const [eventStudyLoading, setEventStudyLoading] = React.useState(false);
@@ -913,7 +1162,7 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, refer
   const exchange = enrichedEventDetail.exchange || enrichedEventDetail.market || '';
   const companyLogoUrl = dossierProfile?.logoUrl || enrichedEventDetail.company_logo_url || enrichedEventDetail.logo_url || '';
   const companyDisplayName = companyName || ticker;
-  const tickerLine = exchange ? `${exchange}:${ticker} Stock Dossier` : `${ticker} Stock Dossier`;
+  const tickerLine = exchange ? `${exchange}:${ticker} ${copy.stockDossier}` : `${ticker} ${copy.stockDossier}`;
   const compactTickerLine = exchange ? `${exchange}:${ticker}` : ticker;
   const industryTheme = stockOverview.theme || momentum.industry_theme_label || momentum.industry_theme || enrichedEventDetail.trend_setup?.supply_chain_stage || '';
   const researchState = isMomentumUniverse ? 'Momentum Candidate'
@@ -996,14 +1245,14 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, refer
   const valuationResearchGroups = buildValuationResearchGroups(valuationCore, marketSnapshot);
   const forwardValuationRange = buildForwardValuationRange(valuationCore, marketSnapshot);
   const forwardMethodRows = forwardValuationRange ? [
-    ['Valuation method', forwardValuationRange.valuationMethod],
-    ['Current guide', 'FY2026 Revenue Guide'],
-    ['Model horizon', forwardValuationRange.forwardModelHorizon],
-    ['Forecast metric', `FY2028 model ${forwardValuationRange.forecastMetric}`],
-    ['Multiple range', forwardValuationRange.multipleRange],
-    ['Data type', forwardValuationRange.dataType],
-    ['Confidence', forwardValuationRange.confidence],
-    ['Missing evidence', forwardValuationRange.missingEvidence.join('; ')]
+    [locale === 'zh' ? '估值方法' : 'Valuation method', forwardValuationRange.valuationMethod],
+    [locale === 'zh' ? '目前指引' : 'Current guide', 'FY2026 Revenue Guide'],
+    [locale === 'zh' ? '模型年期' : 'Model horizon', forwardValuationRange.forwardModelHorizon],
+    [locale === 'zh' ? '預測指標' : 'Forecast metric', `FY2028 model ${forwardValuationRange.forecastMetric}`],
+    [locale === 'zh' ? '倍數區間' : 'Multiple range', forwardValuationRange.multipleRange],
+    [locale === 'zh' ? '資料類型' : 'Data type', forwardValuationRange.dataType],
+    [locale === 'zh' ? '信心度' : 'Confidence', forwardValuationRange.confidence],
+    [copy.missingEvidence, forwardValuationRange.missingEvidence.join('; ')]
   ] : [];
   const forwardRangePrimary = forwardValuationRange ? [
     { label: 'Implied Price Range', value: forwardValuationRange.impliedPriceRange, tone: 'primary' },
@@ -1013,13 +1262,13 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, refer
   ] : [];
   const forwardRangeInputs = forwardValuationRange ? [
     ['FY2026 Revenue Guide', forwardValuationRange.fy26RevenueGuide],
-    ['FY2028 Model Revenue Range', forwardValuationRange.forecastMetricRange],
-    ['Valuation Multiple Range', forwardValuationRange.multipleRange],
-    ['Implied EV Range', forwardValuationRange.impliedEvRange],
-    ['Net Cash Adjustment', formatBillionValue(forwardValuationRange.netCashAdjustment)],
-    ['Implied Equity Value Range', forwardValuationRange.impliedEquityValueRange],
-    ['Current Price', marketSnapshotValue(marketSnapshot, 'currentPrice')],
-    ['Share Count', forwardValuationRange.shareCountDisplay]
+    [locale === 'zh' ? 'FY2028 模型收入區間' : 'FY2028 Model Revenue Range', forwardValuationRange.forecastMetricRange],
+    [locale === 'zh' ? '估值倍數區間' : 'Valuation Multiple Range', forwardValuationRange.multipleRange],
+    [locale === 'zh' ? '隱含 EV 區間' : 'Implied EV Range', forwardValuationRange.impliedEvRange],
+    [locale === 'zh' ? '淨現金調整' : 'Net Cash Adjustment', formatBillionValue(forwardValuationRange.netCashAdjustment)],
+    [locale === 'zh' ? '隱含股權價值區間' : 'Implied Equity Value Range', forwardValuationRange.impliedEquityValueRange],
+    [locale === 'zh' ? '現價' : 'Current Price', marketSnapshotValue(marketSnapshot, 'currentPrice')],
+    [locale === 'zh' ? '股數' : 'Share Count', forwardValuationRange.shareCountDisplay]
   ] : [];
   const forwardRangeVisual = forwardValuationRange ? (() => {
     const impliedPrices = forwardValuationRange.scenarios
@@ -1311,19 +1560,19 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, refer
                 className="dossier-tab-shell__logo"
               />
               <div>
-                <p className="crowdrisk-kicker">Stock Dossier</p>
+                <p className="crowdrisk-kicker">{copy.stockDossier}</p>
                 <h2>{companyDisplayName}</h2>
                 <span>{compactTickerLine}</span>
               </div>
             </div>
             <div className="dossier-hero-pills">
-              {dossierProfile?.analysisDate && <span>As of {dossierProfile.analysisDate}</span>}
-              <span>{valueCore.coverageStatus || 'Curated'}</span>
+              {dossierProfile?.analysisDate && <span>{copy.asOf} {dossierProfile.analysisDate}</span>}
+              <span>{valueCore.coverageStatus || copy.curated}</span>
             </div>
           </div>
 
           <div className="dossier-internal-tabs" role="tablist" aria-label={`${ticker} Stock Dossier tabs`}>
-            {DOSSIER_INTERNAL_TABS.map((tab) => (
+            {copy.tabs.map((tab) => (
               <button
                 key={tab.id}
                 type="button"
@@ -1342,36 +1591,36 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, refer
               <section className="dossier-visual-cockpit" aria-label={`${ticker} dossier snapshot`}>
                 <div className="dossier-visual-cockpit__header">
                   <div>
-                    <h3>Snapshot</h3>
+                    <h3>{copy.snapshot}</h3>
                   </div>
                 </div>
 
                 <div className="dossier-visual-cockpit__grid">
                   <article className="dossier-cockpit-card dossier-cockpit-card--wide">
                     <div className="dossier-cockpit-card__heading">
-                      <span>Why now</span>
-                      <em>Dossier core verdict</em>
+                      <span>{copy.whyNow}</span>
+                      <em>{copy.coreVerdict}</em>
                     </div>
                     <strong>{dossierProfile?.whyNow?.reason || renderedVerdict.reason}</strong>
                     <p style={{ marginTop: '0.5rem', opacity: 0.9 }}>{dossierProfile?.whyNow?.verdict || renderedVerdict.verdict}</p>
                   </article>
 
                   <article className="dossier-cockpit-card">
-                    <span>Primary read</span>
+                    <span>{copy.primaryRead}</span>
                     <strong>{primaryRead}</strong>
-                    <p>Context: {researchState}. Check whether evidence still supports this read.</p>
+                    <p>{copy.context}: {researchState}. {locale === 'zh' ? '檢查證據是否仍支持這個判斷。' : 'Check whether evidence still supports this read.'}</p>
                   </article>
 
                   <article className="dossier-cockpit-card">
-                    <span>Evidence focus</span>
+                    <span>{copy.evidenceFocus}</span>
                     <strong>{valueCore.valueCoreType}</strong>
                     <p>{evidenceFocus}.</p>
                   </article>
 
                   <article className="dossier-cockpit-card dossier-cockpit-card--wide">
                     <div className="dossier-cockpit-card__heading">
-                      <span>Key Statistics</span>
-                      <em>Snapshot metrics</em>
+                      <span>{copy.keyStatistics}</span>
+                      <em>{copy.snapshotMetrics}</em>
                     </div>
                     <div className="dossier-overview-key-stat-grid">
                       {overviewKeyStatistics.map((stat) => (
@@ -1388,8 +1637,8 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, refer
 
                   <article className="dossier-cockpit-card dossier-cockpit-card--wide">
                     <div className="dossier-cockpit-card__heading">
-                      <span>Executive Highlights</span>
-                      <em>Highlights</em>
+                      <span>{copy.executiveHighlights}</span>
+                      <em>{copy.highlights}</em>
                     </div>
                     <div className="dossier-overview-highlight-grid">
                       {overviewHighlightCards.map((card) => (
@@ -1405,15 +1654,15 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, refer
 
                   <article className="dossier-cockpit-card dossier-cockpit-card--wide" data-stock-performance-feed-source={stockPerformanceFeedSource}>
                     <div className="dossier-cockpit-card__heading">
-                      <span>Stock Performance</span>
-                      <em>{performanceGrid?.source || 'Verified return series pending'}</em>
+                      <span>{copy.stockPerformance}</span>
+                      <em>{performanceGrid?.source || copy.returnPending}</em>
                     </div>
                     <div className="dossier-stock-performance-grid">
                       {performanceRows.map((period) => (
                         <div key={period.label} className={`dossier-performance-cell tone-${performanceTone(period.value)}`}>
                           <span>{period.label}</span>
                           <strong>{formatPerformanceReturn(period.value)}</strong>
-                          <em>{period.note || 'Return feed pending'}</em>
+                          <em>{period.note || copy.returnPending}</em>
                         </div>
                       ))}
                     </div>
@@ -1421,8 +1670,8 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, refer
 
                   <article className="dossier-cockpit-card">
                     <div className="dossier-cockpit-card__heading">
-                      <span>Signal Screens / Evidence Tags</span>
-                      <em>Screen evidence, not a conclusion</em>
+                      <span>{copy.signalScreens}</span>
+                      <em>{copy.screenEvidence}</em>
                     </div>
                     <div className="dossier-signal-tag-list">
                       {signalScreens.map((signal) => (
@@ -1439,8 +1688,8 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, refer
 
                   <article className="dossier-cockpit-card dossier-cockpit-card--evidence-board">
                     <div className="dossier-cockpit-card__heading">
-                      <span>Market Evidence</span>
-                      <em>Evidence overview</em>
+                      <span>{copy.marketEvidence}</span>
+                      <em>{copy.evidenceOverview}</em>
                     </div>
                     <strong>{momentumStrengthRead}</strong>
                     <p>{marketEvidence.title}</p>
@@ -1470,8 +1719,8 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, refer
             {activeInternalTab === 'business-core' && (
               <section className="dossier-tab-content" aria-label={`${ticker} Business Core`}>
                 <div className="dossier-tab-content__header">
-                  <p className="crowdrisk-kicker">Business Core</p>
-                  <h3>What creates company value?</h3>
+                  <p className="crowdrisk-kicker">{copy.businessCore}</p>
+                  <h3>{copy.businessCoreQuestion}</h3>
                 </div>
                 <div className="dossier-valuation-verdict dossier-business-core-grid">
                   {businessCoreRows.map((row) => (
@@ -1483,7 +1732,7 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, refer
                 </div>
                 {valueCore.evidenceNeeded.length > 0 && (
                   <div className="dossier-business-evidence">
-                    <span>Evidence to monitor</span>
+                    <span>{copy.evidenceToMonitor}</span>
                     <div className="dossier-evidence-chip-list">
                       {valueCore.evidenceNeeded.map((item) => (
                         <em key={item}>{item}</em>
@@ -1498,7 +1747,7 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, refer
             {activeInternalTab === 'market-evidence' && (
               <section className="dossier-tab-content" aria-label={`${ticker} Market Evidence`}>
                 <div className="dossier-tab-content__header">
-                  <p className="crowdrisk-kicker">Market Evidence</p>
+                  <p className="crowdrisk-kicker">{copy.marketEvidence}</p>
                   <h3>{marketEvidence.title}</h3>
                 </div>
                 <div className="dossier-market-visual-grid" aria-label={`${ticker} market evidence visual cards`}>
@@ -1512,18 +1761,18 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, refer
                 </div>
                 <div className="dossier-event-study-summary-strip" aria-label={`${ticker} earnings event summary`}>
                   <div>
-                    <span>Measured quarters</span>
+                    <span>{copy.measuredQuarters}</span>
                     <strong>
-                      {measuredGapCount ?? <em className="dossier-pending-value">Pending</em>}
+                      {measuredGapCount ?? <em className="dossier-pending-value">{copy.pending}</em>}
                     </strong>
                   </div>
                   <div>
-                    <span>Gap-up rate</span>
-                    <strong>{formatRatioReturn(eventStudyDigest?.gap_up_rate) || <em className="dossier-pending-value">Pending</em>}</strong>
+                    <span>{copy.gapUpRate}</span>
+                    <strong>{formatRatioReturn(eventStudyDigest?.gap_up_rate) || <em className="dossier-pending-value">{copy.pending}</em>}</strong>
                   </div>
-                  <SummaryMetric label="Post-gap 3D avg" summary={forwardGapUps?.r_plus_3} />
-                  <SummaryMetric label="Post-gap 10D avg" summary={forwardGapUps?.r_plus_10} />
-                  <SummaryMetric label="Post-gap 30D avg" summary={forwardGapUps?.r_plus_30} />
+                  <SummaryMetric label={copy.postGap3} summary={forwardGapUps?.r_plus_3} countLabel={locale === 'zh' ? '個季度' : 'measured'} />
+                  <SummaryMetric label={copy.postGap10} summary={forwardGapUps?.r_plus_10} countLabel={locale === 'zh' ? '個季度' : 'measured'} />
+                  <SummaryMetric label={copy.postGap30} summary={forwardGapUps?.r_plus_30} countLabel={locale === 'zh' ? '個季度' : 'measured'} />
                 </div>
                 <div className="dossier-reaction-quality-grid">
                   {latestReactionRows.map((row) => (
@@ -1541,11 +1790,11 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, refer
             {activeInternalTab === 'valuation' && (
               <section className="dossier-tab-content" aria-label={`${ticker} Valuation`}>
                 <div className="dossier-tab-content__header">
-                  <p className="crowdrisk-kicker">Valuation</p>
+                  <p className="crowdrisk-kicker">{copy.valuation}</p>
                   <h3>{valuationTab.posture?.title || valuationCore.topVerdict.valuationState}</h3>
                 </div>
                 <div className="dossier-phase2-lead">
-                  <span>{valuationTab.posture?.label || 'Valuation posture'}</span>
+                  <span>{valuationTab.posture?.label || copy.valuationPosture}</span>
                   <strong>{valuationCore.topVerdict.valuationState}</strong>
                   <p>{valuationTab.posture?.note || valuationCore.topVerdict.why}</p>
                 </div>
@@ -1569,8 +1818,8 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, refer
                 </div>
                 <div className="dossier-phase2-checklist">
                   <div>
-                    <span>What would need to be true?</span>
-                    <strong>Evidence checklist</strong>
+                    <span>{copy.whatNeedTrue}</span>
+                    <strong>{copy.evidenceChecklist}</strong>
                   </div>
                   <ul>
                     {valuationChecklist.map((item) => (
@@ -1585,12 +1834,12 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, refer
             {activeInternalTab === 'thesis-risk' && (
               <section className="dossier-tab-content" aria-label={`${ticker} Thesis Risk`}>
                 <div className="dossier-tab-content__header">
-                  <p className="crowdrisk-kicker">Thesis Risk</p>
-                  <h3>What could weaken the dossier read?</h3>
+                  <p className="crowdrisk-kicker">{copy.thesisRisk}</p>
+                  <h3>{copy.thesisRiskQuestion}</h3>
                 </div>
                 <div className="dossier-phase2-lead">
-                  <span>Risk posture</span>
-                  <strong>Business durability monitor</strong>
+                  <span>{copy.riskPosture}</span>
+                  <strong>{copy.durabilityMonitor}</strong>
                   <p>{thesisRiskTab.lead || valueCore.thesisBreakTrigger}</p>
                 </div>
                 <div className="dossier-risk-map-grid">
@@ -1606,8 +1855,8 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, refer
                 </div>
                 <div className="dossier-phase2-checklist">
                   <div>
-                    <span>Evidence needed to reduce risk</span>
-                    <strong>Watch signals</strong>
+                    <span>{copy.reduceRisk}</span>
+                    <strong>{copy.watchSignals}</strong>
                   </div>
                   <ul>
                     {thesisRiskEvidence.map((item) => (
@@ -1622,13 +1871,13 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, refer
             {activeInternalTab === 'financial-health' && (
               <section className="dossier-tab-content" aria-label={`${ticker} Financial Health`}>
                 <div className="dossier-tab-content__header">
-                  <p className="crowdrisk-kicker">Financial Health</p>
-                  <h3>Quality of growth and cash generation</h3>
+                  <p className="crowdrisk-kicker">{copy.financialHealth}</p>
+                  <h3>{copy.financialHealthQuestion}</h3>
                 </div>
                 <div className="dossier-phase2-lead">
-                  <span>Quality of growth</span>
-                  <strong>Growth plus FCF, with SBC still monitored</strong>
-                  <p>{financialHealthTab.qualityRead || 'Financial health needs cash-flow, dilution, and balance-sheet context.'}</p>
+                  <span>{copy.qualityOfGrowth}</span>
+                  <strong>{copy.growthPlusFcf}</strong>
+                  <p>{financialHealthTab.qualityRead || copy.financialHealthPending}</p>
                 </div>
                 <div className="dossier-phase2-metric-grid dossier-phase2-metric-grid--six">
                   {financialHealthMetricCards.map((card) => (
@@ -1663,7 +1912,7 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, refer
       <section className="dossier-hero-card">
         <div className="dossier-hero-main">
           <div className="dossier-hero-identity">
-            <p className="crowdrisk-kicker">Stock Overview</p>
+            <p className="crowdrisk-kicker">{copy.stockOverview}</p>
             <h2>{companyDisplayName}</h2>
             <p className="dossier-ticker-line">{tickerLine}</p>
             <div className="dossier-hero-pills">
@@ -1675,7 +1924,7 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, refer
           <p className="dossier-profile-line">{stockOverview.profileLine}</p>
 
           <div className="dossier-hero-read" aria-label={`${ticker} executive summary`}>
-            <span>Final Read</span>
+            <span>{copy.finalRead}</span>
             <strong>{renderedVerdict.verdict}</strong>
             <p>{valuationGate}. {breakPoint}</p>
           </div>
@@ -1693,7 +1942,7 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, refer
         </div>
 
         <div className="dossier-snapshot-board" aria-label={`${ticker} dossier snapshot`}>
-          <p className="crowdrisk-kicker">At a glance</p>
+          <p className="crowdrisk-kicker">{copy.atGlance}</p>
           <div className="dossier-snapshot-list">
             {snapshotRows.map((row) => (
               <div key={row.label} className={`dossier-snapshot-row tone-${row.tone}`}>
@@ -1706,8 +1955,8 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, refer
             {sparklinePath && (
               <div className="dossier-mini-chart">
                 <div>
-                  <span>Price Trend</span>
-                  <strong>Recent trend</strong>
+                  <span>{copy.priceTrend}</span>
+                  <strong>{copy.recentTrend}</strong>
                 </div>
                 <svg viewBox="0 0 220 74" role="img" aria-label={`${ticker} price trend`}>
                   <path d={sparklinePath} />
@@ -1716,8 +1965,8 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, refer
             )}
             <div className="dossier-radar-panel" aria-label={`${ticker} quick situation map`}>
               <div className="dossier-radar-heading">
-                <span>Research Map</span>
-                <strong>Quality, valuation, trend, and evidence</strong>
+                <span>{copy.researchMap}</span>
+                <strong>{copy.researchMapBody}</strong>
               </div>
               <div className="dossier-research-bars">
                 {radarAxes.map((axis) => (
@@ -1735,7 +1984,7 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, refer
         </div>
 
         <div className="dossier-why-now">
-          <span>Why now</span>
+          <span>{copy.whyNow}</span>
           <strong>{renderedVerdict.reason}</strong>
           {renderedVerdict.thesisShift && <p>{renderedVerdict.thesisShift}</p>}
         </div>
@@ -1753,10 +2002,10 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, refer
         <section className="card dossier-visual-cockpit" aria-label={`${ticker} stock performance`}>
           <div className="dossier-visual-cockpit__header">
             <div>
-              <p className="crowdrisk-kicker">Market Evidence</p>
-              <h3>Stock Performance</h3>
+              <p className="crowdrisk-kicker">{copy.marketEvidence}</p>
+              <h3>{copy.stockPerformance}</h3>
             </div>
-            <span>{performanceGrid.source || 'Verified return series pending'}</span>
+            <span>{performanceGrid.source || copy.returnPending}</span>
           </div>
 
           <div className="dossier-stock-performance-grid" data-stock-performance-feed-source={stockPerformanceFeedSource}>
@@ -1764,7 +2013,7 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, refer
               <div key={period.label} className={`dossier-performance-cell tone-${performanceTone(period.value)}`}>
                 <span>{period.label}</span>
                 <strong>{formatPerformanceReturn(period.value)}</strong>
-                <em>{period.note || 'Return feed pending'}</em>
+                <em>{period.note || copy.returnPending}</em>
               </div>
             ))}
           </div>
@@ -1775,36 +2024,36 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, refer
         <section id="overview" className="card dossier-visual-cockpit" aria-label={`${ticker} dossier snapshot`}>
           <div className="dossier-visual-cockpit__header">
             <div>
-              <p className="crowdrisk-kicker">Overview</p>
-              <h3>Snapshot</h3>
+              <p className="crowdrisk-kicker">{copy.tabs[0]?.label || 'Overview'}</p>
+              <h3>{copy.snapshot}</h3>
             </div>
             <span>{valueCore.frontendLabel}</span>
           </div>
 
           <div className="dossier-visual-cockpit__grid">
             <article className="dossier-cockpit-card">
-              <span>Company identity / stage</span>
+              <span>{locale === 'zh' ? '公司身份 / 階段' : 'Company identity / stage'}</span>
               <strong>{companyDisplayName}</strong>
               <p>{valueCore.companyStage}. {industryTheme ? formatLabel(industryTheme) : 'Business classification pending'}.</p>
             </article>
 
             <article className="dossier-cockpit-card">
-              <span>Business Core</span>
+              <span>{copy.businessCore}</span>
               <strong>{valueCore.valueCoreType}</strong>
               <p>{valueCore.primaryValueDriver}</p>
             </article>
 
             <article className="dossier-cockpit-card dossier-cockpit-card--wide" data-stock-performance-feed-source={stockPerformanceFeedSource}>
               <div className="dossier-cockpit-card__heading">
-                <span>Stock Performance</span>
-                <em>{performanceGrid?.source || 'Verified return series pending'}</em>
+                <span>{copy.stockPerformance}</span>
+                <em>{performanceGrid?.source || copy.returnPending}</em>
               </div>
               <div className="dossier-stock-performance-grid">
                 {performanceRows.map((period) => (
                   <div key={period.label} className={`dossier-performance-cell tone-${performanceTone(period.value)}`}>
                     <span>{period.label}</span>
                     <strong>{formatPerformanceReturn(period.value)}</strong>
-                    <em>{period.note || 'Return feed pending'}</em>
+                    <em>{period.note || copy.returnPending}</em>
                   </div>
                 ))}
               </div>
@@ -1812,8 +2061,8 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, refer
 
             <article className="dossier-cockpit-card">
               <div className="dossier-cockpit-card__heading">
-                <span>Signal Screens / Evidence Tags</span>
-                <em>Screen evidence, not a conclusion</em>
+                <span>{copy.signalScreens}</span>
+                <em>{copy.screenEvidence}</em>
               </div>
               <div className="dossier-signal-tag-list">
                 {signalScreens.map((signal) => (
@@ -1829,7 +2078,7 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, refer
             </article>
 
             <article className="dossier-cockpit-card">
-              <span>Market Evidence</span>
+              <span>{copy.marketEvidence}</span>
               <strong>{momentumStrengthRead}</strong>
               <p>{marketEvidence.title}</p>
             </article>
@@ -1842,13 +2091,13 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, refer
       {(renderedVerdict.support.length > 0 || renderedVerdict.risks.length > 0) && (
         <section id="case-summary" className="card dossier-case-summary" aria-label={`${ticker} verdict summary`}>
           <div>
-            <p className="crowdrisk-kicker">Case Summary</p>
-            <h3>What has to keep working?</h3>
+            <p className="crowdrisk-kicker">{copy.caseSummary}</p>
+            <h3>{copy.caseWorking}</h3>
           </div>
           <div className="dossier-verdict-grid">
             {renderedVerdict.support.length > 0 && (
               <div>
-                <em>What supports the case</em>
+                <em>{copy.supportsCase}</em>
                 <ul>
                   {renderedVerdict.support.map((item) => (
                     <li key={item}>{item}</li>
@@ -1858,7 +2107,7 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, refer
             )}
             {renderedVerdict.risks.length > 0 && (
               <div>
-                <em>What can break the case</em>
+                <em>{copy.breaksCase}</em>
                 <ul>
                   {renderedVerdict.risks.map((item) => (
                     <li key={item}>{item}</li>
@@ -1873,8 +2122,8 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, refer
       {dossierProfile && (
         <section id="company-overview" className="dossier-company-overview-card card">
           <div className="dossier-company-overview">
-            <p className="crowdrisk-kicker">Company Overview</p>
-            <h3>Business, customers, and competitive position</h3>
+            <p className="crowdrisk-kicker">{copy.companyOverview}</p>
+            <h3>{copy.companyOverviewQuestion}</h3>
             <p>{stockOverview.profileLine}</p>
             <div className="dossier-quick-facts">
               {stockOverview.quickFacts.map((fact) => (
@@ -1886,30 +2135,30 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, refer
             </div>
             <div className="dossier-overview-lens-grid">
               <article>
-                <span>How it makes money</span>
+                <span>{copy.howMoney}</span>
                 <strong>{stockOverview.theme}</strong>
                 <p>{dossierProfile.sections?.[0]?.points?.[0] || stockOverview.profileLine}</p>
               </article>
               <article>
-                <span>Customer quality</span>
+                <span>{copy.customerQuality}</span>
                 <strong>{stockOverview.quickFacts.find(fact => fact.label.includes('$100k'))?.value || stockOverview.quickFacts.find(fact => fact.label.includes('Customer'))?.value || 'Pending'}</strong>
                 <p>{stockOverview.quickFacts.find(fact => fact.label.includes('Net Retention'))?.value ? `Net retention remains ${stockOverview.quickFacts.find(fact => fact.label.includes('Net Retention')).value}, so customer expansion stays central to the dossier.` : 'Customer quality needs retention, expansion, and concentration evidence.'}</p>
               </article>
               <article>
-                <span>Business quality</span>
+                <span>{copy.businessQuality}</span>
                 <strong>{valuationCore.topVerdict.businessQuality}</strong>
                 <p>{valuationCore.topVerdict.why}</p>
               </article>
               <article>
-                <span>Peer competition</span>
+                <span>{copy.peerCompetition}</span>
                 <strong>{dossierProfile.sections?.find(section => section.id === 'competitive-position')?.title || 'Peer context pending'}</strong>
                 <p>{dossierProfile.sections?.find(section => section.id === 'competitive-position')?.points?.[1] || 'Competition and peer positioning need company-specific coverage.'}</p>
               </article>
             </div>
             {dossierProfile.sections?.length > 0 && (
               <div className="dossier-profile-section-heading">
-                <span>Operating notes</span>
-                <strong>Business engine, cash-flow quality, and competitive position</strong>
+                <span>{copy.operatingNotes}</span>
+                <strong>{copy.operatingNotesBody}</strong>
               </div>
             )}
             {dossierProfile.sections?.length > 0 && (
@@ -1939,7 +2188,7 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, refer
           </div>
           <div className="dossier-hero-pills">
             <span>{valueCore.frontendLabel}</span>
-            {valueCore.needsHumanReview && <span>Human Review</span>}
+            {valueCore.needsHumanReview && <span>{copy.humanReview}</span>}
           </div>
         </div>
 
@@ -1954,7 +2203,7 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, refer
 
         {visualPhaseOne && valueCore.evidenceNeeded.length > 0 && (
           <div className="dossier-business-evidence">
-            <span>Evidence to monitor</span>
+            <span>{copy.evidenceToMonitor}</span>
             <div className="dossier-evidence-chip-list">
               {valueCore.evidenceNeeded.map((item) => (
                 <em key={item}>{item}</em>
@@ -1970,26 +2219,26 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, refer
       <div id="valuation-core" className="card dossier-valuation-core" style={{ marginBottom: '24px' }}>
         <div className="dossier-valuation-core__header">
           <div>
-            <p className="crowdrisk-kicker">Valuation Core</p>
-            <h3>Does the price still leave a medium-term research margin?</h3>
+            <p className="crowdrisk-kicker">{copy.valuationCore}</p>
+            <h3>{copy.valuationCoreQuestion}</h3>
           </div>
         </div>
 
         <div className="dossier-valuation-verdict">
           <div>
-            <span>Business Quality</span>
+            <span>{copy.businessQuality}</span>
             <strong>{valuationCore.topVerdict.businessQuality}</strong>
           </div>
           <div>
-            <span>Valuation State</span>
+            <span>{locale === 'zh' ? '估值狀態' : 'Valuation State'}</span>
             <strong>{valuationCore.topVerdict.valuationState}</strong>
           </div>
           <div>
-            <span>Base Case Support</span>
+            <span>{locale === 'zh' ? '基準情境支持' : 'Base Case Support'}</span>
             <strong>{valuationCore.topVerdict.baseCaseSupport}</strong>
           </div>
           <div>
-            <span>Margin of Safety</span>
+            <span>{locale === 'zh' ? '安全邊際' : 'Margin of Safety'}</span>
             <strong>{valuationCore.topVerdict.marginOfSafety}</strong>
           </div>
         </div>
@@ -2003,8 +2252,8 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, refer
           <section className="dossier-forward-valuation-range" aria-label={`${ticker} forward valuation range`}>
             <div className="dossier-forward-range-header">
               <div>
-                <span>Forward Valuation Range</span>
-                <h4>Forecast metric x valuation multiple range</h4>
+                <span>{copy.forwardValuationRange}</span>
+                <h4>{copy.forecastMultiple}</h4>
               </div>
             </div>
             <div className="dossier-forward-fiscal-note">
@@ -2023,11 +2272,11 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, refer
               <div className="dossier-forward-range-visual" aria-label={`${ticker} implied valuation range visual`}>
                 <div className="dossier-forward-range-visual__head">
                   <div>
-                    <span>Valuation map</span>
-                    <strong>Current price vs model range</strong>
+                    <span>{copy.valuationMap}</span>
+                    <strong>{copy.currentVsRange}</strong>
                   </div>
                   <div>
-                    <span>Range</span>
+                    <span>{copy.range}</span>
                     <strong>{formatWholePrice(forwardRangeVisual.low)} - {formatWholePrice(forwardRangeVisual.high)}</strong>
                   </div>
                 </div>
@@ -2042,10 +2291,10 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, refer
                   <i className="marker-median" />
                 </div>
                 <div className="dossier-forward-range-legend">
-                  <span>Bear {formatWholePrice(forwardRangeVisual.low)}</span>
-                  <span>Current {formatWholePrice(forwardRangeVisual.current)}</span>
-                  <span>Median {formatWholePrice(forwardRangeVisual.median)}</span>
-                  <span>Bull {formatWholePrice(forwardRangeVisual.high)}</span>
+                  <span>{copy.bear} {formatWholePrice(forwardRangeVisual.low)}</span>
+                  <span>{copy.current} {formatWholePrice(forwardRangeVisual.current)}</span>
+                  <span>{copy.median} {formatWholePrice(forwardRangeVisual.median)}</span>
+                  <span>{copy.bull} {formatWholePrice(forwardRangeVisual.high)}</span>
                 </div>
               </div>
             )}
@@ -2089,27 +2338,27 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, refer
                       <dd>{formatBillionValue(scenario.fy27Revenue)} / {formatBillionValue(scenario.fy28Revenue)}</dd>
                     </div>
                     <div>
-                      <dt>Revenue growth</dt>
+                      <dt>{copy.revenueGrowth}</dt>
                       <dd>{scenario.revenueGrowth || 'Pending'}</dd>
                     </div>
                     <div>
-                      <dt>Applied multiple</dt>
+                      <dt>{copy.appliedMultiple}</dt>
                       <dd>{formatScenarioMultiple(scenario.evRevenueMultiple, 'EV / Rev')} / {formatScenarioMultiple(scenario.evFcfMultiple, 'EV / FCF')}</dd>
                     </div>
                     <div>
-                      <dt>Implied EV</dt>
+                      <dt>{copy.impliedEv}</dt>
                       <dd>{formatBillionValue(scenario.impliedEv)}</dd>
                     </div>
                     <div>
-                      <dt>Net cash</dt>
+                      <dt>{copy.netCash}</dt>
                       <dd>{formatBillionValue(forwardValuationRange.netCashAdjustment)}</dd>
                     </div>
                     <div>
-                      <dt>Equity value</dt>
+                      <dt>{copy.equityValue}</dt>
                       <dd>{formatBillionValue(scenario.impliedEquityValue)}</dd>
                     </div>
                     <div>
-                      <dt>Upside / downside</dt>
+                      <dt>{copy.upsideDownside}</dt>
                       <dd>{formatScenarioPct(scenario.upsideDownside)}</dd>
                     </div>
                   </dl>
@@ -2151,7 +2400,7 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, refer
 
         <div className="dossier-valuation-judgment">
           <div>
-            <h4>Research Judgment</h4>
+            <h4>{copy.researchJudgment}</h4>
             <ul>
               {valuationCore.researchJudgment.map((item) => (
                 <li key={item}>{item}</li>
@@ -2159,7 +2408,7 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, refer
             </ul>
           </div>
           <div>
-            <h4>Missing Evidence</h4>
+            <h4>{copy.missingEvidence}</h4>
             <ul>
               {valuationCore.missingEvidence.map((item) => (
                 <li key={item}>{item}</li>
@@ -2171,13 +2420,13 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, refer
       </div>
 
       <div id="momentum" className="card dossier-scenario-card" style={{ marginBottom: '24px' }}>
-        <p className="crowdrisk-kicker">Momentum</p>
+        <p className="crowdrisk-kicker">{copy.momentum}</p>
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '12px' }}>
-          <h3 style={{ margin: 0 }}>Structure & Execution</h3>
+          <h3 style={{ margin: 0 }}>{copy.structureExecution}</h3>
           {(() => {
             const ts = enrichedEventDetail.trend_setup?.technical_setup || {};
             const hasSetup = ts.status && ts.status !== 'unavailable';
-            const label = ts.status_label_en || ts.status_label_zh || ts.daily_action || 'Unavailable';
+            const label = (locale === 'zh' ? ts.status_label_zh : ts.status_label_en) || ts.status_label_en || ts.status_label_zh || ts.daily_action || copy.unavailable;
             return <span className={hasSetup ? 'momentum-setup-badge' : 'crowdrisk-muted'}>{label}</span>;
           })()}
         </div>
@@ -2186,14 +2435,14 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, refer
             {(() => {
               const ts = enrichedEventDetail.trend_setup?.technical_setup || {};
               const hasSetup = ts.status && ts.status !== 'unavailable';
-              const sentence = ts.setup_sentence_en || ts.setup_sentence_zh || 'No technical setup context provided.';
+              const sentence = (locale === 'zh' ? ts.setup_sentence_zh : ts.setup_sentence_en) || ts.setup_sentence_en || ts.setup_sentence_zh || copy.noTechnicalSetup;
               return <p className={hasSetup ? '' : 'crowdrisk-muted'}>{sentence}</p>;
             })()}
           </div>
           {momentumStrengthRows.length > 0 && (
             <div className="dossier-momentum-strength-panel" aria-label={`${ticker} momentum strength`}>
               <div className="dossier-momentum-strength-head">
-                <span>Strength read</span>
+                <span>{copy.strengthRead}</span>
                 <strong>{momentumStrengthRead}</strong>
               </div>
               <div className="dossier-momentum-strength-grid">
@@ -2250,8 +2499,8 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, refer
                  {visualLow !== null && visualHigh !== null && visualHigh > visualLow && (
                    <div className="dossier-momentum-zone-visual">
                      <div className="dossier-momentum-zone-head">
-                       <span>Execution map</span>
-                       <strong>{latestPrice ? `Latest ${formatTechnicalPrice(latestPrice)}` : 'Latest price pending'}</strong>
+                       <span>{copy.executionMap}</span>
+                       <strong>{latestPrice ? `${copy.latest} ${formatTechnicalPrice(latestPrice)}` : copy.latestPricePending}</strong>
                      </div>
                      <div
                        className="dossier-momentum-zone-track"
@@ -2269,17 +2518,17 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, refer
                      </div>
                      <div className="dossier-momentum-zone-legend">
                        <span>{formatTechnicalPrice(visualLow)}</span>
-                       <span>Breakout</span>
-                       <span>Target</span>
+                       <span>{copy.breakout}</span>
+                       <span>{copy.target}</span>
                        <span>{formatTechnicalPrice(visualHigh)}</span>
                      </div>
                    </div>
                  )}
                  <div className="dossier-market-strip" style={{ marginTop: '16px', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))' }}>
-                   {breakout && <div><span>Breakout Area</span><strong>{breakout}</strong></div>}
-                   {target && <div><span>Target Zone</span><strong>{target}</strong></div>}
-                   {potentialUpside && <div><span>Potential Upside</span><strong>{potentialUpside}</strong></div>}
-                   {hold && <div><span>Hold Zone</span><strong>{hold}</strong></div>}
+                   {breakout && <div><span>{copy.breakoutArea}</span><strong>{breakout}</strong></div>}
+                   {target && <div><span>{copy.targetZone}</span><strong>{target}</strong></div>}
+                   {potentialUpside && <div><span>{copy.potentialUpside}</span><strong>{potentialUpside}</strong></div>}
+                   {hold && <div><span>{copy.holdZone}</span><strong>{hold}</strong></div>}
                    {hasTypedLevels ? (
                      typedLevels.map((lvl, index) => {
                        // Hide deep context support if we already have a primary execution level
@@ -2296,8 +2545,8 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, refer
                      })
                    ) : (
                      <>
-                       {fallbackSupport && <div><span>Support Area</span><strong>{fallbackSupport}</strong></div>}
-                       {fallbackInvalid && <div><span>Invalid Below</span><strong>{fallbackInvalid}</strong></div>}
+                       {fallbackSupport && <div><span>{copy.supportArea}</span><strong>{fallbackSupport}</strong></div>}
+                       {fallbackInvalid && <div><span>{copy.invalidBelow}</span><strong>{fallbackInvalid}</strong></div>}
                      </>
                    )}
                  </div>
@@ -2308,8 +2557,8 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, refer
       </div>
 
       <div id="market-evidence" className="card dossier-market-evidence-card" style={{ marginBottom: '24px' }}>
-        <p className="crowdrisk-kicker">Market Evidence</p>
-        <h3>Event Study connection: {marketEvidence.title}</h3>
+        <p className="crowdrisk-kicker">{copy.marketEvidence}</p>
+        <h3>{copy.eventStudyConnection}: {marketEvidence.title}</h3>
         {marketEvidenceCards.length > 0 && (
           <div className="dossier-market-visual-grid" aria-label={`${ticker} market evidence visual cards`}>
             {marketEvidenceCards.map((item) => (
@@ -2323,21 +2572,21 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, refer
         )}
         <div className="dossier-event-study-summary-strip" aria-label={`${ticker} earnings event summary`}>
           <div>
-            <span>Measured quarters</span>
+            <span>{copy.measuredQuarters}</span>
             <strong>
-              {measuredGapCount ?? <em className="dossier-pending-value">Pending</em>}
+              {measuredGapCount ?? <em className="dossier-pending-value">{copy.pending}</em>}
               {eventStudyCoverage?.excluded_count !== undefined && <small>{eventStudyCoverage.excluded_count} excluded</small>}
             </strong>
           </div>
           <div>
-            <span>Gap-up rate</span>
+            <span>{copy.gapUpRate}</span>
             <strong>
-              {formatRatioReturn(eventStudyDigest?.gap_up_rate) || <em className="dossier-pending-value">Pending</em>}
+              {formatRatioReturn(eventStudyDigest?.gap_up_rate) || <em className="dossier-pending-value">{copy.pending}</em>}
             </strong>
           </div>
-          <SummaryMetric label="Post-gap 3D avg" summary={forwardGapUps?.r_plus_3} />
-          <SummaryMetric label="Post-gap 10D avg" summary={forwardGapUps?.r_plus_10} />
-          <SummaryMetric label="Post-gap 30D avg" summary={forwardGapUps?.r_plus_30} />
+          <SummaryMetric label={copy.postGap3} summary={forwardGapUps?.r_plus_3} countLabel={locale === 'zh' ? '個季度' : 'measured'} />
+          <SummaryMetric label={copy.postGap10} summary={forwardGapUps?.r_plus_10} countLabel={locale === 'zh' ? '個季度' : 'measured'} />
+          <SummaryMetric label={copy.postGap30} summary={forwardGapUps?.r_plus_30} countLabel={locale === 'zh' ? '個季度' : 'measured'} />
         </div>
         <div className="dossier-event-evidence-visual" aria-label={`${ticker} earnings evidence visual`}>
           {eventEvidenceVisuals.map((item) => (
@@ -2362,11 +2611,11 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, refer
         {eventStudyDigest?.summary_line && (
           <p className="dossier-event-study-summary-line">{eventStudyDigest.summary_line}</p>
         )}
-        {eventStudyLoading && <p className="dossier-event-study-status">Loading earnings-event summary...</p>}
+        {eventStudyLoading && <p className="dossier-event-study-status">{copy.loadingEarningsSummary}</p>}
         {eventStudyError && <p className="dossier-event-study-status dossier-event-study-status--error">{eventStudyError}</p>}
         <div className="dossier-event-study-detail">
           <div className="dossier-event-study-copy">
-            <span>Event Study Detail</span>
+            <span>{copy.eventStudyDetail}</span>
             <strong>{eventStudyDetail.title}</strong>
             <p>{eventStudyDetail.interpretation}</p>
             {onOpenEventStudy && (
@@ -2375,7 +2624,7 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, refer
                 className="dossier-section-link-button"
                 onClick={() => onOpenEventStudy(ticker)}
               >
-                Open {ticker} Event Study
+                {copy.openEventStudy(ticker)}
               </button>
             )}
             <ul>
@@ -2386,11 +2635,11 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, refer
           </div>
           <div className="dossier-event-study-board" aria-label={`${ticker} event study evidence`}>
             <div className="dossier-event-study-meta">
-              <span>Earnings summary</span>
+              <span>{copy.earningsSummary}</span>
               <strong>
                 {measuredGapCount !== null
                   ? `N=${measuredGapCount}`
-                  : 'Sample not included'}
+                  : copy.sampleNotIncluded}
               </strong>
             </div>
             <div className="dossier-event-study-metrics">
@@ -2403,7 +2652,7 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, refer
             </div>
             <ul className="dossier-event-study-notes">
               {[
-                eventStudyDigest?.summary_line || 'Verified earnings gap evidence is pending.'
+                eventStudyDigest?.summary_line || copy.gapEvidencePending
               ].map((note) => (
                 <li key={note}>{note}</li>
               ))}
@@ -2415,10 +2664,10 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, refer
 
       {valuationCore.scenarios && (
         <div id="scenario-range" className="card dossier-scenario-card">
-          <p className="crowdrisk-kicker">Scenario Range</p>
-          <h3>Bull / base / bear path: what must be true?</h3>
+          <p className="crowdrisk-kicker">{copy.scenarioRange}</p>
+          <h3>{copy.scenarioQuestion}</h3>
           <p className="dossier-scenario-model-note">
-            References the Valuation Core forward model; valuation range and median return are model-derived, not formal targets.
+            {copy.scenarioModelNote}
           </p>
           <div className="dossier-scenario-grid">
             {valuationCore.scenarios.map((scenario) => (
@@ -2427,11 +2676,11 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, refer
                 <p>{scenario.text}</p>
                 <dl>
                   <div>
-                    <dt>Implied outcome</dt>
+                    <dt>{copy.impliedOutcome}</dt>
                     <dd>{scenario.impliedOutcome || (scenario.label.includes('Bull') ? 'Premium multiple can persist if growth and margins stay exceptional.' : scenario.label.includes('Bear') ? 'Downside becomes valuation-led if growth or dilution evidence worsens.' : 'Expected return is capped unless execution improves faster than the multiple compresses.')}</dd>
                   </div>
                   <div>
-                    <dt>Upside / downside</dt>
+                    <dt>{copy.upsideDownside}</dt>
                     <dd>{scenario.upsideDownside || 'Not modeled in current payload'}</dd>
                   </div>
                   <div>
@@ -2439,7 +2688,7 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, refer
                     <dd>{scenario.threeYearIrr || 'Pending'}</dd>
                   </div>
                   <div>
-                    <dt>Scenario trigger</dt>
+                    <dt>{copy.scenarioTrigger}</dt>
                     <dd>{scenario.trigger || scenario.mustBeTrue || 'Needs updated growth, margin, multiple, and event-follow-through evidence.'}</dd>
                   </div>
                 </dl>
@@ -2451,17 +2700,17 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, refer
 
       {/* 6. Thesis Risk Monitor */}
       <div id="thesis-risk-monitor" className="card dossier-pulse-watch dossier-kill-card" style={{ marginBottom: '24px' }}>
-        <p className="crowdrisk-kicker">Thesis Risk Monitor</p>
-        <h3>What would weaken the medium-term dossier?</h3>
+        <p className="crowdrisk-kicker">{copy.thesisRiskMonitor}</p>
+        <h3>{copy.mediumTermRiskQuestion}</h3>
         <div className="dossier-risk-monitor-grid">
           <div>
-            <span>Fundamental risk triggers</span>
+            <span>{copy.fundamentalTriggers}</span>
             <ul>
               {(valuationCore.killData || killSwitch).map((item, i) => <li key={i}>{item}</li>)}
             </ul>
           </div>
           <div>
-            <span>Price / market evidence triggers</span>
+            <span>{copy.marketTriggers}</span>
             <ul>
               {priceTrendRisk.map((item, i) => <li key={i}>{item}</li>)}
             </ul>

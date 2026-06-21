@@ -262,6 +262,7 @@ function App() {
         loading={loading}
         error={error}
         onOpenStockDossier={handleOpenStockDossier}
+        locale={locale}
       />
     ),
     'event-study': (
@@ -278,6 +279,7 @@ function App() {
         loading={loading}
         error={error}
         onOpenStockDossier={handleOpenStockDossier}
+        locale={locale}
       />
     ),
     'stock-dossier': (
@@ -290,6 +292,7 @@ function App() {
         dossierSeed={dossierSeed}
         onClearSeed={() => setDossierSeed(null)}
         onOpenEventStudy={handleOpenEventStudy}
+        locale={locale}
       />
     )
   };
