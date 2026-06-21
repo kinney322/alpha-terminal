@@ -128,14 +128,34 @@ function isMeasuredReadyQuarter(row) {
     !(Array.isArray(row?.exclusion_reasons) && row.exclusion_reasons.length > 0);
 }
 
-function latestVisibleEarningsRows(rows = []) {
+function isPrimarySourceReleaseDate(row) {
+  if (row?.release_date_is_primary_source === true) return true;
+  if (!row?.source_url) return false;
+  const reasons = Array.isArray(row?.exclusion_reasons) ? row.exclusion_reasons : [];
+  return !reasons.includes('SEC_FILING_DATE_FALLBACK_NOT_ORIGINAL_EARNINGS_RELEASE');
+}
+
+function canDisplayLeadingPendingRow(row, asOfDate) {
+  return Boolean(
+    row?.release_date &&
+    (!asOfDate || row.release_date <= asOfDate) &&
+    isPrimarySourceReleaseDate(row)
+  );
+}
+
+function latestVisibleEarningsRows(rows = [], asOfDate = null) {
   const visibleRows = [];
   const measuredRows = [];
+  const hiddenLeadingRows = [];
   let measuredWindowStarted = false;
   for (const row of rows) {
     if (!isMeasuredReadyQuarter(row)) {
       if (!measuredWindowStarted) {
-        visibleRows.push(row);
+        if (canDisplayLeadingPendingRow(row, asOfDate)) {
+          visibleRows.push(row);
+        } else {
+          hiddenLeadingRows.push(row);
+        }
         continue;
       }
       break;
@@ -144,7 +164,7 @@ function latestVisibleEarningsRows(rows = []) {
     visibleRows.push(row);
     measuredRows.push(row);
   }
-  return { visibleRows, measuredRows };
+  return { visibleRows, measuredRows, hiddenLeadingRows };
 }
 
 function normalizeEarningsGapSummaryPayload(payload, displayTicker = null) {
@@ -153,7 +173,8 @@ function normalizeEarningsGapSummaryPayload(payload, displayTicker = null) {
     : Array.isArray(payload?.quarter_log)
       ? payload.quarter_log
       : [];
-  const { visibleRows: rows, measuredRows } = latestVisibleEarningsRows(fullRows);
+  const asOfDate = payload?.coverage?.as_of_date || null;
+  const { visibleRows: rows, measuredRows, hiddenLeadingRows } = latestVisibleEarningsRows(fullRows, asOfDate);
   const measuredCount = measuredRows.length;
   const gapUpRows = measuredRows.filter((row) => Number(row.gap_return) > 0);
   const gapDownRows = measuredRows.filter((row) => Number(row.gap_return) < 0);
@@ -181,7 +202,8 @@ function normalizeEarningsGapSummaryPayload(payload, displayTicker = null) {
     full_history_excluded_count: fullHistoryExcludedCount,
     measured_outside_continuous_window: payload?.coverage?.measured_outside_continuous_window ??
       Math.max(fullHistoryMeasuredCount - measuredCount, 0),
-    leading_pending_count: payload?.coverage?.leading_pending_count ?? Math.max(rows.length - measuredRows.length, 0)
+    leading_pending_count: payload?.coverage?.leading_pending_count ?? Math.max(rows.length - measuredRows.length, 0),
+    hidden_leading_pending_count: payload?.coverage?.hidden_leading_pending_count ?? hiddenLeadingRows.length
   };
   const ticker = displayTicker || payload?.ticker;
 
