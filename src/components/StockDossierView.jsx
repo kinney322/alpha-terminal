@@ -11,6 +11,7 @@ import { getStockDossierProfile } from '../data/stockDossierProfiles';
 import { resolveReferencePeerEcosystemSnapshot } from '../data/referencePeerMapAdapter';
 import { canonicalizeTicker, getTickerLookupKeys } from '../data/tickerAliases';
 import StockLogo from './StockLogo';
+import { displayLabel } from './displayLabelHelpers.js';
 
 const API_BASE = 'https://kw-terminal-api.myfootballplaces.workers.dev';
 
@@ -20,13 +21,7 @@ const formatPct = (value) => {
   return `${n > 0 ? '+' : ''}${n.toFixed(1)}%`;
 };
 
-const formatLabel = (value) => {
-  if (!value) return 'Not Included';
-  return String(value)
-    .replace(/([a-z])([A-Z])/g, '$1 $2')
-    .replace(/_/g, ' ')
-    .replace(/\b\w/g, c => c.toUpperCase());
-};
+const formatLabel = (value, locale = 'en') => displayLabel(value, locale, locale === 'zh' ? '未納入' : 'Not Included');
 
 const formatValuationMetric = (metric) => {
   if (metric.value === undefined || metric.value === null || Number.isNaN(Number(metric.value))) return 'Pending';
@@ -1196,7 +1191,7 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, refer
     {
       label: 'Momentum Score',
       value: momentumScore === null ? 'Pending' : `${momentumScore}/100`,
-      detail: momentum.regime ? formatLabel(momentum.regime) : formatLabel(momentumRanking?.regime),
+      detail: momentum.regime ? formatLabel(momentum.regime, locale) : formatLabel(momentumRanking?.regime, locale),
       tone: metricTone(momentumScore, 70)
     },
     {
@@ -1208,7 +1203,7 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, refer
     {
       label: 'Theme Rank',
       value: formatRank(momentum.theme_rank ?? momentumRanking?.theme_rank),
-      detail: momentum.industry_theme_label || momentumRanking?.industry_theme_label || 'Theme',
+      detail: displayLabel(momentum.industry_theme_label || momentumRanking?.industry_theme_label, locale, locale === 'zh' ? '主題' : 'Theme'),
       tone: toNumeric(momentum.theme_rank ?? momentumRanking?.theme_rank) === 1 ? 'positive' : 'neutral'
     },
     {
@@ -1917,7 +1912,7 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, refer
             <p className="dossier-ticker-line">{tickerLine}</p>
             <div className="dossier-hero-pills">
               <span>{researchState}</span>
-              {industryTheme && <span>{formatLabel(industryTheme)}</span>}
+              {industryTheme && <span>{formatLabel(industryTheme, locale)}</span>}
             </div>
           </div>
 
@@ -1933,7 +1928,7 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, refer
             <div className="dossier-market-strip" aria-label={`${ticker} market snapshot`}>
               {Object.entries(marketSnapshot).map(([key, value]) => (
                 <div key={key}>
-                  <span>{formatLabel(key)}</span>
+                  <span>{formatLabel(key, locale)}</span>
                   <strong>{value}</strong>
                 </div>
               ))}
@@ -2034,7 +2029,7 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, refer
             <article className="dossier-cockpit-card">
               <span>{locale === 'zh' ? '公司身份 / 階段' : 'Company identity / stage'}</span>
               <strong>{companyDisplayName}</strong>
-              <p>{valueCore.companyStage}. {industryTheme ? formatLabel(industryTheme) : 'Business classification pending'}.</p>
+              <p>{valueCore.companyStage}. {industryTheme ? formatLabel(industryTheme, locale) : (locale === 'zh' ? '業務分類待補' : 'Business classification pending')}.</p>
             </article>
 
             <article className="dossier-cockpit-card">
@@ -2538,7 +2533,7 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, refer
                        const formattedPrice = lvl.price ? formatTechnicalPrice(lvl.price) : formatTechnicalZone(lvl.area);
                        return formattedPrice ? (
                          <div key={`${lvl.type}-${lvl.source || 'level'}-${index}`}>
-                           <span>{lvl.label_en || formatLabel(lvl.type)}</span>
+                           <span>{(locale === 'zh' ? lvl.label_zh : lvl.label_en) || lvl.label_en || formatLabel(lvl.type, locale)}</span>
                            <strong>{formattedPrice}</strong>
                          </div>
                        ) : null;

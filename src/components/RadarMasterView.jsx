@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { buildMomentumUniverseSyntheticDetail } from './dossierHelpers';
 import CatalystRadarTable from './CatalystRadarTable';
+import { displayLabel } from './displayLabelHelpers.js';
 
 const RADAR_COPY = {
   en: {
@@ -323,9 +324,9 @@ const SearchEmptyState = ({ context, onSwitch, copy }) => {
   );
 };
 
-const formatResultLabel = (value) => {
-  if (!value) return 'Unknown';
-  return value.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+const formatResultLabel = (value, locale = 'en') => {
+  if (!value) return locale === 'zh' ? '未知' : 'Unknown';
+  return displayLabel(value, locale, '');
 };
 
 const firstFiniteNumber = (...values) => {
@@ -363,10 +364,10 @@ const RadarMasterView = ({ payload, preopenPayload, selectedEventId, onSelectEve
   const getMomentumGroupLabel = (item) => {
     const label = item?.momentum_evidence?.industry_theme_label ||
                   item?.momentum_evidence?.evidence?.industry_theme_label;
-    if (label) return label;
+    if (label) return displayLabel(label, locale, label);
     const key = getMomentumGroupKey(item);
-    if (key === 'unmapped') return 'Unmapped';
-    return formatResultLabel(key);
+    if (key === 'unmapped') return displayLabel('unmapped', locale, 'Unmapped');
+    return formatResultLabel(key, locale);
   };
 
   const isMomentumAllRanking = activeTab === 'momentum' && listType !== 'momentum_watch';
@@ -385,7 +386,7 @@ const RadarMasterView = ({ payload, preopenPayload, selectedEventId, onSelectEve
       const counts = payload?.momentum_universe?.theme_counts || {};
       const groups = Object.entries(counts).map(([key, count]) => {
         const sample = (payload?.momentum_universe?.rankings || []).find(r => r.industry_theme === key);
-        const label = sample?.industry_theme_label || formatResultLabel(key);
+        const label = displayLabel(sample?.industry_theme_label || key, locale, formatResultLabel(key, locale));
         return { key, count, label };
       }).sort((a, b) => {
         if (a.key === 'unmapped') return 1;
@@ -529,7 +530,7 @@ const RadarMasterView = ({ payload, preopenPayload, selectedEventId, onSelectEve
     const labels = [];
 
     if (baseRate?.sample_warning) {
-      labels.push(formatResultLabel(baseRate.sample_warning));
+      labels.push(formatResultLabel(baseRate.sample_warning, locale));
     } else if ((baseRate?.similar_reaction_sample_size ?? 0) > 0) {
       labels.push('Comparable');
     }
@@ -620,7 +621,7 @@ const RadarMasterView = ({ payload, preopenPayload, selectedEventId, onSelectEve
       shortScore: shortScore ?? 0,
       conviction: firstFiniteNumber(item?.conviction, item?.attention_score?.conviction, attentionScore, 0) ?? 0,
       tags,
-      headlineTag: item?.headline_tag || item?.setup_label || formatResultLabel(item?.thesis_lifecycle?.phase || item?.event_phase || 'Watchlist'),
+      headlineTag: item?.headline_tag || item?.setup_label || formatResultLabel(item?.thesis_lifecycle?.phase || item?.event_phase || 'Watchlist', locale),
       historicalLongEdge: firstFiniteNumber(item?.historical_edge?.long_edge, item?.post_earnings_base_rate?.continuation_rate),
       historicalShortEdge: firstFiniteNumber(item?.historical_edge?.short_edge, item?.post_earnings_base_rate?.reversal_rate),
       longSetupFit: firstFiniteNumber(item?.setup_fit?.long_setup, longScore),
@@ -910,10 +911,10 @@ const RadarMasterView = ({ payload, preopenPayload, selectedEventId, onSelectEve
                           {isPullbacksView && item.trend_setup?.status === 'available' ? (
                             <>
                               <span className={`bias-indicator badge-${item.trend_setup.stage}`}>
-                                {formatResultLabel(item.trend_setup.stage)}
+                                {formatResultLabel(item.trend_setup.stage, locale)}
                               </span>
                               <div className="post-result-subline">
-                                {copy.score}: {item.trend_setup.score || copy.notIncluded} | {item.trend_setup.supply_chain_stage ? formatResultLabel(item.trend_setup.supply_chain_stage) : copy.contextPending}
+                                {copy.score}: {item.trend_setup.score || copy.notIncluded} | {item.trend_setup.supply_chain_stage ? formatResultLabel(item.trend_setup.supply_chain_stage, locale) : copy.contextPending}
                               </div>
                             </>
                           ) : (
@@ -922,7 +923,7 @@ const RadarMasterView = ({ payload, preopenPayload, selectedEventId, onSelectEve
                                 {peadDisplay.label}
                               </span>
                               <div className="post-result-subline">
-                                {formatResultLabel(reaction.surprise_label)} {formatSignedPct(reaction.surprise_percent)}
+                                {formatResultLabel(reaction.surprise_label, locale)} {formatSignedPct(reaction.surprise_percent)}
                               </div>
                             </>
                           )}
@@ -960,13 +961,13 @@ const RadarMasterView = ({ payload, preopenPayload, selectedEventId, onSelectEve
                       <>
                         <td>
                           <span className="quality-pill">{getMomentumGroupLabel(item)}</span>
-                          <div className="post-result-subline">{formatResultLabel(item.event_phase || 'unknown')}</div>
+                          <div className="post-result-subline">{formatResultLabel(item.event_phase || 'unknown', locale)}</div>
                         </td>
                         <td>
                           <span className={`quality-pill momentum-regime-pill ${getMomentumToneClass(momentum.regime)}`}>
-                            {formatResultLabel(momentum.regime)}
+                            {formatResultLabel(momentum.regime, locale)}
                           </span>
-                          <div className="post-result-subline">{momentum.evidence_status === 'market_data_only' ? copy.marketDataOnly : formatResultLabel(momentum.evidence_status)}</div>
+                          <div className="post-result-subline">{momentum.evidence_status === 'market_data_only' ? copy.marketDataOnly : formatResultLabel(momentum.evidence_status, locale)}</div>
                         </td>
                         <td>
                           <div className="metric-stack">
@@ -996,10 +997,10 @@ const RadarMasterView = ({ payload, preopenPayload, selectedEventId, onSelectEve
                     ) : isBetweenCatalysts ? (
                       <>
                         <td>
-                          <span className="quality-pill">{formatResultLabel(item.thesis_lifecycle?.status || 'Unknown')}</span>
+                          <span className="quality-pill">{formatResultLabel(item.thesis_lifecycle?.status || 'Unknown', locale)}</span>
                         </td>
                         <td>
-                          {item.off_cycle_reason?.labels?.length > 0 ? item.off_cycle_reason.labels.map((l, i) => <span key={i} className="quality-pill">{formatResultLabel(l)}</span>) : copy.coveragePending}
+                          {item.off_cycle_reason?.labels?.length > 0 ? item.off_cycle_reason.labels.map((l, i) => <span key={i} className="quality-pill">{formatResultLabel(l, locale)}</span>) : copy.coveragePending}
                         </td>
                         <td>
                           {item.thesis_lifecycle?.review_state?.reviewed ? copy.reviewed : copy.reviewPending}

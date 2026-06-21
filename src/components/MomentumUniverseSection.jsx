@@ -1,4 +1,5 @@
 import { buildMomentumUniverseSyntheticDetail } from './dossierHelpers.js';
+import { displayLabel } from './displayLabelHelpers.js';
 
 const MOMENTUM_COPY = {
   en: {
@@ -136,7 +137,7 @@ function MomentumUniverseSection({ payload, loading, error, onOpenStockDossier, 
                 <td>
                   <strong>{row.ticker}</strong>
                 </td>
-                <td>{row.industry_theme_label || row.primary_theme || row.industry_theme || row.theme || copy.unmapped}</td>
+                <td>{displayLabel(row.industry_theme_label || row.primary_theme || row.industry_theme || row.theme, locale, copy.unmapped)}</td>
                 <td>{formatNumber(row.scanner_score || row.leaderboard_score)}</td>
                 <td>{formatNumber(row.relative_strength_percentile, '%')}</td>
                 <td>{formatNumber(row.price ? `$${row.price}` : null)}</td>
@@ -175,7 +176,7 @@ function MomentumUniverseSection({ payload, loading, error, onOpenStockDossier, 
               <div className="momentum-unavailable-row" key={row.ticker}>
                 <div>
                   <strong>{row.ticker}</strong>
-                  <span>{row.industry_theme_label || row.industry_theme || row.theme || copy.unmapped}</span>
+                  <span>{displayLabel(row.industry_theme_label || row.industry_theme || row.theme, locale, copy.unmapped)}</span>
                 </div>
                 <div>
                   <span className="momentum-unavailable-label">{copy.reason}</span>

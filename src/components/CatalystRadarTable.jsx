@@ -1,4 +1,5 @@
 import { AlertOctagon, ChevronRight, Radar, Sparkles } from 'lucide-react';
+import { displayLabel } from './displayLabelHelpers.js';
 
 const CATALYST_TABLE_COPY = {
   en: {
@@ -52,7 +53,7 @@ function DualScoreBar({ longScore, shortScore }) {
   );
 }
 
-function RadarBadge({ tag }) {
+function RadarBadge({ tag, locale = 'en' }) {
   const tone = priorityTag(tag);
   const icon =
     tone === 'critical' ? <AlertOctagon size={12} /> :
@@ -62,7 +63,7 @@ function RadarBadge({ tag }) {
   return (
     <span className={`radar-badge radar-badge--${tone}`}>
       {icon}
-      {tag}
+      {displayLabel(tag, locale, tag)}
     </span>
   );
 }
@@ -106,13 +107,13 @@ export default function CatalystRadarTable({ rows, selectedTicker, onSelect, loc
                   <td>
                     <div className="catalyst-radar__ticker-cell">
                       <strong>{row.ticker}</strong>
-                      <span>{row.headlineTag || row.preferredDirection}</span>
+                      <span>{displayLabel(row.headlineTag || row.preferredDirection, locale, row.headlineTag || row.preferredDirection)}</span>
                     </div>
                   </td>
                   <td className="catalyst-radar__mono">{row.eventDate}</td>
                   <td>
                     <span className={`direction-pill direction-pill--${row.preferredDirection.toLowerCase()}`}>
-                      {row.preferredDirection}
+                      {displayLabel(row.preferredDirection, locale, row.preferredDirection)}
                     </span>
                   </td>
                   <td>
@@ -126,7 +127,7 @@ export default function CatalystRadarTable({ rows, selectedTicker, onSelect, loc
                   </td>
                   <td>
                     <div className="radar-badge-group">
-                      {row.tags?.map((tag) => <RadarBadge key={`${row.ticker}-${tag}`} tag={tag} />)}
+                      {row.tags?.map((tag) => <RadarBadge key={`${row.ticker}-${tag}`} tag={tag} locale={locale} />)}
                     </div>
                   </td>
                   <td className="catalyst-radar__arrow">

@@ -2,6 +2,7 @@ import React, { useMemo } from 'react';
 import { buildDossierRecords } from './dossierHelpers';
 import StockLogo from './StockLogo';
 import { getStockDossierProfile } from '../data/stockDossierProfiles';
+import { displayLabel } from './displayLabelHelpers.js';
 
 const DOSSIER_INDEX_COPY = {
   en: {
@@ -40,7 +41,7 @@ const DOSSIER_INDEX_COPY = {
   }
 };
 
-const formatLabel = (val, fallback = 'Not Included') => val ? val.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase()) : fallback;
+const formatLabel = (val, fallback = 'Not Included', locale = 'en') => displayLabel(val, locale, fallback);
 
 const translateDossierStatus = (value, locale) => {
   if (locale !== 'zh' || !value) return value;
@@ -118,7 +119,7 @@ export default function StockDossierIndex({ payload, onOpenTicker, locale = 'en'
                     </div>
                   </td>
                   <td>
-                    {rec.derivedState.theme ? <span className="quality-pill">{formatLabel(rec.derivedState.theme, copy.notIncluded)}</span> : <span style={{color: 'var(--text-muted)'}}>{copy.sectorNA}</span>}
+                    {rec.derivedState.theme ? <span className="quality-pill">{formatLabel(rec.derivedState.theme, copy.notIncluded, locale)}</span> : <span style={{color: 'var(--text-muted)'}}>{copy.sectorNA}</span>}
                   </td>
                   <td>
                     <span className="quality-pill" style={{ background: 'var(--bg-highlight, #f1f5f9)', color: 'var(--text-main)' }}>{translateDossierStatus(rec.derivedState.researchState, locale)}</span>

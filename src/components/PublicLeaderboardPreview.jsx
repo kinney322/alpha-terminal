@@ -1,25 +1,10 @@
 import { useState, useEffect } from 'react';
 import { buildMomentumUniverseSyntheticDetail } from './dossierHelpers.js';
-
-const ZH_LABELS = {
-  retail: '零售',
-  semiconductors: '半導體',
-  ai_compute: 'AI 算力',
-  cybersecurity: '網絡安全',
-  software_saas: 'SaaS 軟件',
-  cloud_ai_platform: '雲端 AI 平台',
-  financials: '金融',
-  healthcare: '醫療',
-  energy: '能源',
-  industrials: '工業',
-  consumer: '消費'
-};
+import { displayLabel } from './displayLabelHelpers.js';
 
 const formatLabel = (val, locale = 'en') => {
   if (!val) return '';
-  const key = String(val).trim().toLowerCase().replace(/\s+/g, '_');
-  if (locale === 'zh' && ZH_LABELS[key]) return ZH_LABELS[key];
-  return String(val).replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+  return displayLabel(val, locale, '');
 };
 
 const LEADERBOARD_COPY = {
