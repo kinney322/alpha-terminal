@@ -20,7 +20,7 @@ const DOSSIER_INDEX_COPY = {
     empty: 'No research objects available.',
     companyPending: 'Company Pending',
     sectorNA: 'Sector N/A',
-    openDossier: 'Open Dossier'
+    openDossier: 'View Dossier'
   },
   zh: {
     notIncluded: '未納入',
@@ -37,7 +37,7 @@ const DOSSIER_INDEX_COPY = {
     empty: '暫無研究對象。',
     companyPending: '公司資料待補',
     sectorNA: '行業未分類',
-    openDossier: '打開股票檔案'
+    openDossier: '查看股票檔案'
   }
 };
 

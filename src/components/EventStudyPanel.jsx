@@ -116,7 +116,7 @@ const EVENT_STUDY_COPY = {
     categoryAria: 'Event study category',
     categoryValue: 'Earnings',
     unavailableError: 'Event study summary unavailable',
-    submitIdle: 'Run study',
+    submitIdle: 'Run analysis',
     submitLoading: 'Running...',
     pillars: [
       {
@@ -279,7 +279,7 @@ const EVENT_STUDY_COPY = {
     categoryAria: '事件研究分類',
     categoryValue: '財報',
     unavailableError: '事件研究摘要暫時無法取得',
-    submitIdle: '執行回測',
+    submitIdle: '開始回測',
     submitLoading: '回測中...',
     pillars: [
       {
@@ -299,7 +299,7 @@ const EVENT_STUDY_COPY = {
       }
     ],
     linkedObject: '連結研究對象',
-    openStockDossier: '打開股票檔案',
+    openStockDossier: '查看股票檔案',
     longPayoff: '做多勝算',
     shortPayoff: '做空勝算',
     positionSizing: '倉位風險',

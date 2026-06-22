@@ -34,8 +34,8 @@ const CROWDRISK_APP_COPY = {
     tickerSearchError: 'Enter a ticker'
   },
   zh: {
-    slogan: '跟蹤趨勢，發現機會。',
-    sloganParts: ['跟蹤趨勢。', '發現機會。'],
+    slogan: '追蹤趨勢，發現機會。',
+    sloganParts: ['追蹤趨勢。', '發現機會。'],
     themeLabel: '主題',
     lightTheme: '淺色',
     darkTheme: '深色',
