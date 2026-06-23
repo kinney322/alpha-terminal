@@ -10,7 +10,7 @@ const formatLabel = (val, locale = 'en') => {
 const LEADERBOARD_COPY = {
   en: {
     title: 'Repricing Research Queue',
-    subtitle: 'Ranked research tasks. Open the Dossier for assumptions before treating any range as actionable.',
+    subtitle: 'Ranked research tasks. View the Dossier for assumptions before treating any range as actionable.',
     loading: 'Loading leaderboard...',
     error: 'Leaderboard unavailable',
     empty: 'No tickers currently in this list.',

@@ -136,7 +136,7 @@ const EVENT_STUDY_COPY = {
       }
     ],
     linkedObject: 'Linked research object',
-    openStockDossier: 'Open Stock Dossier',
+    openStockDossier: 'View Stock Dossier',
     longPayoff: 'Long Payoff',
     shortPayoff: 'Short Payoff',
     positionSizing: 'Position Sizing',

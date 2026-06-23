@@ -83,7 +83,7 @@ const RADAR_COPY = {
     trySwitch: (view) => `Try switching to ${view}.`,
     switchTo: (view) => `Switch to ${view}`,
     trackedElsewhere: (ticker) => `${ticker} is tracked, but not active in the current catalyst view.`,
-    openTracked: 'Open Tracked to review saved notes.',
+    openTracked: 'View Tracked to review saved notes.',
     switchToTracked: 'Switch to Tracked',
     noSearchMatch: (query) => `No active catalyst event found for "${query}".`,
     noSearchMatchBody: 'It may be outside the current earnings reaction window, between catalyst cycles, or not in the current scanner universe.'
@@ -167,7 +167,7 @@ const RADAR_COPY = {
     trySwitch: (view) => `可切換到 ${view}。`,
     switchTo: (view) => `切換到 ${view}`,
     trackedElsewhere: (ticker) => `${ticker} 已追蹤，但不在目前催化檢視。`,
-    openTracked: '打開已追蹤名單查看記錄。',
+    openTracked: '查看已追蹤名單記錄。',
     switchToTracked: '切換到已追蹤',
     noSearchMatch: (query) => `找不到 "${query}" 的活躍催化事件。`,
     noSearchMatchBody: '可能不在目前財報反應窗口、處於催化空窗，或未納入目前掃描範圍。'
@@ -306,7 +306,7 @@ const SearchEmptyState = ({ context, onSwitch, copy }) => {
     return (
       <div className="radar-search-empty">
         <div className="radar-search-empty__title">{copy.trackedElsewhere ? copy.trackedElsewhere(context.ticker) : `${context.ticker} is tracked, but not active in the current catalyst view.`}</div>
-        <div className="radar-search-empty__body">{copy.openTracked || 'Open Tracked to review saved notes.'}</div>
+        <div className="radar-search-empty__body">{copy.openTracked || 'View Tracked to review saved notes.'}</div>
         {context.action && (
           <button className="radar-search-empty__action" onClick={() => onSwitch(context.action)}>
             {copy.switchToTracked || 'Switch to Tracked'}

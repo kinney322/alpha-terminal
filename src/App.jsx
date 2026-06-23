@@ -332,7 +332,7 @@ function App() {
             <form
               className="crowdrisk-ticker-search"
               onSubmit={handleTickerSearchSubmit}
-              aria-label="Open Stock Dossier by ticker"
+              aria-label="View Stock Dossier by ticker"
             >
               <input
                 type="search"

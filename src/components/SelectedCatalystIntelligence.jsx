@@ -883,7 +883,7 @@ const SelectedCatalystIntelligence = ({ eventDetail, payload, peerReadthroughCas
                 onClose();
               }}
             >
-              Open Stock Dossier
+              View Stock Dossier
             </button>
           )}
           <button className="close-btn" onClick={onClose}>×</button>

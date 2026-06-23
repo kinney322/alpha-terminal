@@ -10,9 +10,9 @@ const HOME_COPY = {
   en: {
     queue: "Today's Research Queue",
     title: "Today's Repricing Queue",
-    body: 'Ranked names that need research attention now. Open the Dossier to judge valuation, momentum, and missing evidence before acting.',
+    body: 'Ranked names that need research attention now. View the Dossier to judge valuation, momentum, and missing evidence before acting.',
     askLabel: 'Ask CrowdRisk',
-    askButton: 'Ask',
+    askButton: 'Generate Brief',
     summaryKicker: 'Ask CrowdRisk Answer',
     valuationRange: 'Valuation-implied range',
     momentumRange: 'Momentum-implied range',
@@ -20,14 +20,14 @@ const HOME_COPY = {
     state: 'State',
     nextAction: 'Next action',
     openDossier: 'View Dossier',
-    openEventStudy: 'Open Event Study',
-    openMomentum: 'Open Momentum Universe',
+    openEventStudy: 'View Event Study',
+    openMomentum: 'View Momentum Universe',
     notAvailable: 'Not available',
     notComputable: 'Not computable',
     researchQueue: 'Research Queue',
     needsValidation: 'Needs Validation',
     needsDossierReview: 'Needs Dossier Review',
-    availableInDossier: 'Open Dossier for assumptions',
+    availableInDossier: 'View Dossier assumptions',
     stats: ['Radar hits', 'PEAD watch', 'Momentum ranks'],
     lifecycle: 'Earnings Lifecycle',
     lifecycleTitle: 'Pre, event day, and post-earnings work in one flow.',
@@ -52,8 +52,8 @@ const HOME_COPY = {
     state: '狀態',
     nextAction: '下一步',
     openDossier: '查看股票檔案',
-    openEventStudy: '打開事件研究',
-    openMomentum: '打開動能宇宙',
+    openEventStudy: '查看事件研究',
+    openMomentum: '查看動能宇宙',
     notAvailable: '暫無',
     notComputable: '未能計算',
     researchQueue: '研究隊列',
@@ -501,7 +501,7 @@ function CrowdRiskHome({ payload, loading, error, stockPerformancePayload, refer
           <p className="crowdrisk-kicker">{copy.lifecycle}</p>
           <h2>{copy.lifecycleTitle}</h2>
           <button type="button" onClick={() => onNavigate('earnings-radar')}>
-            {locale === 'zh' ? '打開財報雷達' : 'Open Earnings Radar'}
+            {locale === 'zh' ? '查看財報雷達' : 'View Earnings Radar'}
           </button>
         </div>
         <div className="crowdrisk-card-grid three">

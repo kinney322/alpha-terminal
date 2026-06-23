@@ -448,7 +448,7 @@ const buildResearchQueueAnswer = ({ language, payload }) => {
     lines: language === 'zh'
       ? [
         `今日 CrowdRisk 研究隊列可以先看：${topLine.join('；')}。`,
-        '白話講，這是用現有 radar / momentum feed 做研究路由，幫你決定先打開哪些股票檔案。',
+        '白話講，這是用現有 radar / momentum feed 做研究路由，幫你決定先查看哪些股票檔案。',
         '這不是最終買賣決定。'
       ]
       : [
@@ -456,7 +456,7 @@ const buildResearchQueueAnswer = ({ language, payload }) => {
         'Plainly, this is research routing from the existing radar / momentum feeds, meant to decide what to inspect first.',
         'This is not a final investment decision.'
       ],
-    action: { type: 'open_momentum', label: language === 'zh' ? '打開動能宇宙' : 'Open Momentum Universe' }
+    action: { type: 'open_momentum', label: language === 'zh' ? '查看動能宇宙' : 'View Momentum Universe' }
   });
 };
 
@@ -512,7 +512,7 @@ const buildPeerEcosystemAnswer = ({ ticker, language, referencePeerMapPayload })
         referenceOnly.length ? `Direct / Reference Peers, meaning comparison names for peer and ecosystem context: ${referenceOnly.join(', ')}. These names do not automatically have Stock Dossiers, market-cap coverage, or full research coverage.` : 'No verified direct or reference peer context is available.',
         candidates.length ? `Candidate names not yet included: ${candidates.join(', ')}. Adding them to CrowdRisk requires separate approval and data coverage.` : 'No candidate names are listed.'
       ],
-    action: { type: 'open_dossier', label: language === 'zh' ? '打開股票檔案' : 'Open Dossier' }
+    action: { type: 'open_dossier', label: language === 'zh' ? '查看股票檔案' : 'View Dossier' }
   });
 };
 
@@ -556,7 +556,7 @@ const buildCoverageStatusAnswer = ({ ticker, language, payload, stockPerformance
       lines: language === 'zh'
         ? [`${ticker} 已納入 CrowdRisk 公司覆蓋。`, '如果相關資料可用，它可以出現在股票檔案、動能名單或股價走勢摘要。']
         : [`${ticker} is covered by CrowdRisk.`, 'When the relevant data is available, it can appear in the Stock Dossier, momentum list, or price-action summary.'],
-      action: { type: 'open_dossier', label: language === 'zh' ? '打開股票檔案' : 'Open Dossier' }
+      action: { type: 'open_dossier', label: language === 'zh' ? '查看股票檔案' : 'View Dossier' }
     });
   }
 
@@ -772,7 +772,7 @@ const buildBusinessSummaryAnswer = ({ ticker, language }) => {
         evidenceFocus.length ? `To keep validating this business read, focus on: ${evidenceFocus.join(', ')}.` : 'CrowdRisk does not yet have a complete evidence checklist.',
         'This is business evidence, not a final investment decision.'
       ],
-    action: { type: 'open_dossier', label: language === 'zh' ? '打開股票檔案' : 'Open Dossier' }
+    action: { type: 'open_dossier', label: language === 'zh' ? '查看股票檔案' : 'View Dossier' }
   });
 };
 
@@ -839,7 +839,7 @@ const buildThesisRiskAnswer = ({ ticker, language }) => {
         evidenceItems.length ? `To reduce thesis risk, keep verifying: ${evidenceItems.join(', ')}.` : 'CrowdRisk does not yet have a structured missing-evidence checklist.',
         'This is risk and evidence framing, not a final investment decision.'
       ],
-    action: { type: 'open_dossier', label: language === 'zh' ? '打開股票檔案' : 'Open Dossier' }
+    action: { type: 'open_dossier', label: language === 'zh' ? '查看股票檔案' : 'View Dossier' }
   });
 };
 
@@ -899,7 +899,7 @@ const buildIpoProfileAnswer = ({ ticker, language }) => {
         ipoProfile.ipoValuation ? `The IPO price implied a valuation of about ${ipoProfile.ipoValuation}.` : 'The IPO valuation is not curated yet.',
         'This is IPO / listing context, not a valuation conclusion or a final investment decision.'
       ],
-    action: { type: 'open_dossier', label: language === 'zh' ? '打開股票檔案' : 'Open Dossier' }
+    action: { type: 'open_dossier', label: language === 'zh' ? '查看股票檔案' : 'View Dossier' }
   });
 };
 
@@ -962,7 +962,7 @@ const buildMarketCapAnswer = ({ ticker, language, stockPerformancePayload }) => 
         'Plainly, market cap will move with the next CrowdRisk refresh when price changes; the share count itself refreshes only when company filing / SEC-source data is updated, not second by second.',
         'This is market-cap data, not a cheap-or-expensive valuation conclusion.'
       ],
-    action: { type: 'open_dossier', label: language === 'zh' ? '打開股票檔案' : 'Open Dossier' }
+    action: { type: 'open_dossier', label: language === 'zh' ? '查看股票檔案' : 'View Dossier' }
   });
 };
 
@@ -1111,7 +1111,7 @@ const buildStockPerformanceAnswer = ({ question, ticker, language, stockPerforma
         asOfLine,
         'Plainly, this is a snapshot of price action across periods. It is not proof of company quality, a valuation conclusion, or a final investment decision.'
       ]),
-    action: { type: 'open_dossier', label: language === 'zh' ? '打開股票檔案' : 'Open Dossier' }
+    action: { type: 'open_dossier', label: language === 'zh' ? '查看股票檔案' : 'View Dossier' }
   });
 };
 
@@ -1155,7 +1155,7 @@ const buildMomentumRankAnswer = ({ ticker, language, payload }) => {
         rsDisplay ? `Relative strength is ${rsDisplay}.` : 'The relative strength percentile is not verified.',
         'Plainly, this is a research signal from price trend and relative strength. It is not proof of company quality, a valuation conclusion, or a final investment decision.'
       ],
-    action: { type: 'open_momentum', label: language === 'zh' ? '打開動能宇宙' : 'Open Momentum Universe' }
+    action: { type: 'open_momentum', label: language === 'zh' ? '查看動能宇宙' : 'View Momentum Universe' }
   });
 };
 
@@ -1250,7 +1250,7 @@ const buildValuationSnapshotAnswer = ({ ticker, language, stockPerformancePayloa
         buildExpectationEvidenceLine(ticker, language, valuationCore),
         `Plainly, the question is not only whether ${ticker} is good. It is whether ${ticker} can be good enough to exceed what the market already believes. If it merely meets expectations, valuation tolerance may stay low; if growth, NRR, or FCF margin slows, repricing risk rises. This is not a final investment decision.`
       ],
-    action: { type: 'open_dossier', label: language === 'zh' ? '打開股票檔案' : 'Open Dossier' }
+    action: { type: 'open_dossier', label: language === 'zh' ? '查看股票檔案' : 'View Dossier' }
   });
 };
 
@@ -1333,7 +1333,7 @@ const buildFinancialHealthAnswer = ({ ticker, language }) => {
     facts,
     factsList,
     lines: language === 'zh' ? linesZh : linesEn,
-    action: { type: 'open_dossier', label: language === 'zh' ? '打開股票檔案' : 'Open Dossier' }
+    action: { type: 'open_dossier', label: language === 'zh' ? '查看股票檔案' : 'View Dossier' }
   });
 };
 
@@ -1611,7 +1611,7 @@ const buildDynamicEarningsReactionAnswer = ({ question, ticker, language, earnin
           : `The return is measured from the pre-earnings close to the close of the ${formatOrdinal(horizon)} trading day after the release.`,
         'This reflects how the stock traded after earnings, not a final investment decision.'
       ],
-    action: { type: 'open_event_study', label: language === 'zh' ? '打開事件研究' : 'Open Event Study' }
+    action: { type: 'open_event_study', label: language === 'zh' ? '查看事件研究' : 'View Event Study' }
   });
 };
 
@@ -1664,7 +1664,7 @@ const buildDynamicEarningsReactionNotVerifiedAnswer = ({ question, ticker, langu
         'This is a data-boundary answer, not a final investment decision.'
       ],
     notVerifiedReason: reasonText,
-    action: { type: 'open_event_study', label: language === 'zh' ? '打開事件研究' : 'Open Event Study' }
+    action: { type: 'open_event_study', label: language === 'zh' ? '查看事件研究' : 'View Event Study' }
   });
 };
 
@@ -1810,7 +1810,7 @@ const buildEarningsReactionAnswer = ({ question, ticker, language, earningsReact
           : `The return is measured from the pre-earnings close to the close of the ${formatOrdinal(horizon)} trading day after the release.`,
         'This reflects how the stock traded after earnings, not a final investment decision.'
       ],
-    action: { type: 'open_event_study', label: language === 'zh' ? '打開事件研究' : 'Open Event Study' }
+    action: { type: 'open_event_study', label: language === 'zh' ? '查看事件研究' : 'View Event Study' }
   });
 };
 
