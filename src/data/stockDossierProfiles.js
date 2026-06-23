@@ -147,6 +147,10 @@ const stockDossierProfiles = {
           {
             question: 'Why does DDOG matter in AI/cloud operations?',
             answer: 'AI and cloud workloads can increase infrastructure complexity. That makes monitoring, security visibility, and operational telemetry more important evidence to track.'
+          },
+          {
+            question: 'Who can affect DDOG’s market readthrough?',
+            answer: 'DDOG should be read beside direct observability peers such as DT and ESTC, cloud and data-platform names such as SNOW and MDB, security-adjacent platforms such as CRWD and ZS, and hyperscaler/cloud-spend proxies such as MSFT, AMZN, and GOOGL. Peer earnings do not replace DDOG’s own analysis, but they help show whether the setup is company-specific or part of a broader software, cloud, or security budget cycle.'
           }
         ],
         businessCore: [
