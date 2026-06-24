@@ -934,79 +934,172 @@ const STOCK_DOSSIER_COPY = {
   }
 };
 
-const PeerPill = ({ peer, currentTicker }) => {
-  const isCurrent = String(peer.ticker || '').toUpperCase() === String(currentTicker || '').toUpperCase();
+const READTHROUGH_LABEL_OVERRIDES = {
+  AMZN: 'Amazon',
+  CRM: 'Salesforce',
+  CRWD: 'CrowdStrike',
+  DT: 'Dynatrace',
+  ESTC: 'Elastic',
+  GOOGL: 'Alphabet',
+  MDB: 'MongoDB',
+  MSFT: 'Microsoft',
+  ORCL: 'Oracle',
+  SNOW: 'Snowflake',
+  WDAY: 'Workday',
+  ZS: 'Zscaler'
+};
+
+const DDOG_READTHROUGH_GROUPS = [
+  {
+    title: 'Cloud software budget',
+    signal: 'Budget pressure',
+    peers: ['SNOW', 'MDB', 'CRM', 'WDAY'],
+    primaryPeers: ['SNOW', 'CRM', 'WDAY'],
+    read: 'Shows whether enterprise buyers are still expanding software and data-platform budgets.',
+    strong: 'Strong usage, RPO, or guide supports DDOG demand durability.',
+    weak: 'Weak guides point to budget pressure or delayed cloud expansion.'
+  },
+  {
+    title: 'Observability / security demand',
+    signal: 'Demand support',
+    peers: ['DT', 'ESTC', 'CRWD', 'ZS'],
+    primaryPeers: ['DT', 'ESTC'],
+    read: 'Checks whether monitoring, security, and operational visibility demand is broad or company-specific.',
+    strong: 'Strong peers support sector demand and platform expansion.',
+    weak: 'Weak peers raise risk that demand is slowing, unless DDOG is clearly taking share.'
+  },
+  {
+    title: 'Hyperscaler workload / cloud spend',
+    signal: 'Cloud workload risk',
+    peers: ['MSFT', 'AMZN', 'GOOGL', 'ORCL'],
+    primaryPeers: ['MSFT', 'AMZN', 'GOOGL'],
+    read: 'Cloud workload growth affects usage demand for monitoring and infrastructure tooling.',
+    strong: 'Strong cloud growth supports DDOG usage volume and customer expansion.',
+    weak: 'Cloud optimization or slower workload growth can pressure DDOG consumption.'
+  },
+  {
+    title: 'Share shift / company-specific read',
+    signal: 'Share gain check',
+    peers: ['DT', 'ESTC'],
+    primaryPeers: ['DT', 'ESTC'],
+    read: 'Separates broad sector movement from DDOG-specific execution or share gain.',
+    strong: 'DDOG strong while direct peers are weak may suggest share gain.',
+    weak: 'DDOG weak with weak peers suggests sector pressure, not only company execution.'
+  }
+];
+
+const normalizeReadthroughTicker = (ticker) => String(ticker || '').trim().toUpperCase();
+
+const buildPeerLookup = (ecosystem) => {
+  const peers = [
+    ...(ecosystem?.activeCoverage || []),
+    ...(ecosystem?.referencePeers || []),
+    ...(ecosystem?.candidateAdditions || [])
+  ];
+  return peers.reduce((lookup, peer) => {
+    const key = normalizeReadthroughTicker(peer.ticker);
+    if (key) lookup[key] = peer;
+    return lookup;
+  }, {});
+};
+
+const labelForReadthroughTicker = (ticker, peerLookup) => {
+  const key = normalizeReadthroughTicker(ticker);
+  return peerLookup[key]?.label || getStockDossierProfile(key)?.companyName || READTHROUGH_LABEL_OVERRIDES[key] || key;
+};
+
+const buildReadthroughGroups = (ecosystem, ticker) => {
+  const normalizedTicker = normalizeReadthroughTicker(ticker);
+  const peerLookup = buildPeerLookup(ecosystem);
+  if (normalizedTicker === 'DDOG') {
+    return DDOG_READTHROUGH_GROUPS.map((group) => ({
+      ...group,
+      peers: group.peers.map((peerTicker) => ({
+        ticker: peerTicker,
+        label: labelForReadthroughTicker(peerTicker, peerLookup),
+        isPrimary: (group.primaryPeers || []).includes(peerTicker)
+      }))
+    }));
+  }
+
+  const fallbackPeers = [
+    ...(ecosystem?.activeCoverage || []),
+    ...(ecosystem?.referencePeers || []),
+    ...(ecosystem?.candidateAdditions || [])
+  ].slice(0, 8).map((peer) => ({
+    ticker: peer.ticker,
+    label: peer.label
+  }));
+
+  if (!fallbackPeers.length) return [];
+  return [
+    {
+      title: 'Peer earnings context',
+      signal: 'Sector context',
+      peers: fallbackPeers,
+      read: 'Use peer earnings, guidance, and price reaction to judge whether the setup is company-specific or sector-wide.',
+      strong: 'Strong peer evidence can support demand, sentiment, or valuation context.',
+      weak: 'Weak peer evidence can flag sector pressure before the current company reports.'
+    }
+  ];
+};
+
+const ReadthroughGroup = ({ group }) => {
+  if (!group.peers.length) return null;
   return (
-    <span className={`dossier-peer-pill dossier-peer-pill--${peer.status || 'active'}${isCurrent ? ' is-current' : ''}`}>
-      <strong>{peer.ticker}</strong>
-      <em>{peer.label}</em>
-      <small>{peer.layer}</small>
-    </span>
+    <article className="dossier-readthrough-insight">
+      <div className="dossier-readthrough-insight__head">
+        <div>
+          {group.signal && <em>{group.signal}</em>}
+          <span>{group.title}</span>
+        </div>
+      </div>
+      <p>{group.read}</p>
+      <div className="dossier-readthrough-scenarios">
+        <div>
+          <strong>Strong peer print</strong>
+          <span>{group.strong}</span>
+        </div>
+        <div>
+          <strong>Weak peer print</strong>
+          <span>{group.weak}</span>
+        </div>
+      </div>
+      <div className="dossier-readthrough-peer-list" aria-label={`${group.title} peers`}>
+        {group.peers.map((peer) => (
+          <span key={`${group.title}-${peer.ticker}`} className={peer.isPrimary ? 'is-primary' : undefined}>
+            <strong>{peer.ticker}</strong>
+            <em>{peer.label}</em>
+          </span>
+        ))}
+      </div>
+    </article>
   );
 };
 
 const PeerEcosystemPanel = ({ ecosystem, ticker }) => {
   if (!ecosystem) return null;
-  const candidateCount = ecosystem.candidateAdditions?.length || 0;
+  const groups = buildReadthroughGroups(ecosystem, ticker);
+  if (!groups.length) return null;
 
   return (
     <article className="dossier-cockpit-card dossier-cockpit-card--wide dossier-peer-ecosystem-panel">
       <div className="dossier-cockpit-card__heading">
-        <span>Peer Ecosystem</span>
-        <em>{ecosystem.ecosystemName}</em>
+        <span>Peer Readthrough</span>
+        <em>Industry context</em>
       </div>
-      <div className="dossier-peer-ecosystem-layout">
-        <div className="dossier-peer-position-card">
-          <span>Position</span>
-          <strong>{ecosystem.position.layer}</strong>
-          <p>{ecosystem.position.role}</p>
-        </div>
-        <div className="dossier-peer-groups">
-          <div className="dossier-peer-group">
-            <div>
-              <span>Covered Ecosystem</span>
-              <em>CrowdRisk universe</em>
-            </div>
-            <div className="dossier-peer-pill-row">
-              <PeerPill
-                peer={{
-                  ticker,
-                  label: 'Current dossier',
-                  layer: ecosystem.position.layer,
-                  status: 'active'
-                }}
-                currentTicker={ticker}
-              />
-              {ecosystem.activeCoverage.map((peer) => (
-                <PeerPill key={`${peer.status}-${peer.ticker}`} peer={peer} currentTicker={ticker} />
-              ))}
-            </div>
-          </div>
-          <div className="dossier-peer-group">
-            <div>
-              <span>Direct / Reference Peers</span>
-              <em>Context only</em>
-            </div>
-            <div className="dossier-peer-pill-row">
-              {ecosystem.referencePeers.map((peer) => (
-                <PeerPill key={`${peer.status}-${peer.ticker}`} peer={peer} currentTicker={ticker} />
-              ))}
-            </div>
-          </div>
-          {candidateCount > 0 && (
-            <div className="dossier-peer-group">
-              <div>
-                <span>Potential additions</span>
-                <em>Not active</em>
-              </div>
-              <div className="dossier-peer-pill-row">
-                {ecosystem.candidateAdditions.map((peer) => (
-                  <PeerPill key={`${peer.status}-${peer.ticker}`} peer={peer} currentTicker={ticker} />
-                ))}
-              </div>
-            </div>
-          )}
-        </div>
+      <p className="dossier-peer-readthrough-subtitle">
+        Use peer prints to decide whether {ticker}&apos;s move is sector-wide, demand-led, or company-specific.
+      </p>
+      <div className="dossier-readthrough-summary">
+        <strong>{ticker}</strong>
+        <span>{ecosystem.ecosystemName}</span>
+        <em>Core lanes: software budget, observability demand, cloud workloads, and share shift.</em>
+      </div>
+      <div className="dossier-readthrough-insight-grid">
+        {groups.map((group) => (
+          <ReadthroughGroup key={group.title} group={group} />
+        ))}
       </div>
     </article>
   );
