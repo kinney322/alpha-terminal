@@ -1705,6 +1705,22 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, refer
                     <p>{evidenceFocus}.</p>
                   </article>
 
+                  <article className="dossier-cockpit-card dossier-cockpit-card--wide" data-stock-performance-feed-source={stockPerformanceFeedSource}>
+                    <div className="dossier-cockpit-card__heading">
+                      <span>{copy.stockPerformance}</span>
+                      <em>{performanceGrid?.source || copy.returnPending}</em>
+                    </div>
+                    <div className="dossier-stock-performance-grid">
+                      {performanceRows.map((period) => (
+                        <div key={period.label} className={`dossier-performance-cell tone-${performanceTone(period.value)}`}>
+                          <span>{period.label}</span>
+                          <strong>{formatPerformanceReturn(period.value)}</strong>
+                          <em>{period.note || copy.returnPending}</em>
+                        </div>
+                      ))}
+                    </div>
+                  </article>
+
                   <article className="dossier-cockpit-card dossier-cockpit-card--wide">
                     <div className="dossier-cockpit-card__heading">
                       <span>{copy.keyStatistics}</span>
@@ -1735,22 +1751,6 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, refer
                           <strong>{card.value}</strong>
                           <em>{card.state}</em>
                           <p>{card.note}</p>
-                        </div>
-                      ))}
-                    </div>
-                  </article>
-
-                  <article className="dossier-cockpit-card dossier-cockpit-card--wide" data-stock-performance-feed-source={stockPerformanceFeedSource}>
-                    <div className="dossier-cockpit-card__heading">
-                      <span>{copy.stockPerformance}</span>
-                      <em>{performanceGrid?.source || copy.returnPending}</em>
-                    </div>
-                    <div className="dossier-stock-performance-grid">
-                      {performanceRows.map((period) => (
-                        <div key={period.label} className={`dossier-performance-cell tone-${performanceTone(period.value)}`}>
-                          <span>{period.label}</span>
-                          <strong>{formatPerformanceReturn(period.value)}</strong>
-                          <em>{period.note || copy.returnPending}</em>
                         </div>
                       ))}
                     </div>
