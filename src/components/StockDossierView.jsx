@@ -623,28 +623,19 @@ const performanceTone = (value) => {
   return 'neutral';
 };
 
-const STOCK_PERFORMANCE_PERIODS = [
-  { label: 'Today', key: 'today' },
-  { label: '1 Week', key: 'one_week' },
-  { label: '1 Month', key: 'one_month' },
-  { label: '3 Months', key: 'three_month' },
-  { label: '6 Months', key: 'six_month' },
-  { label: '1 Year', key: 'one_year' }
-];
-
-const buildLiveStockPerformanceGrid = (ticker, fallbackGrid, stockPerformancePayload) => {
+const buildLiveStockPerformanceGrid = (ticker, fallbackGrid, stockPerformancePayload, copy) => {
   const row = findStockPerformanceRow(stockPerformancePayload, ticker);
   if (!row || typeof row !== 'object' || Array.isArray(row)) {
     return fallbackGrid || null;
   }
 
   const asOfDate = row.as_of_date || stockPerformancePayload?.meta?.as_of_date || null;
-  const asOfLabel = asOfDate ? `as of ${asOfDate}` : 'Return feed available';
+  const asOfLabel = asOfDate ? copy.asOfDate(asOfDate) : copy.returnFeedAvailable;
 
   return {
     source: asOfLabel,
     feedSource: 'dedicated',
-    periods: STOCK_PERFORMANCE_PERIODS.map((period) => ({
+    periods: copy.stockPerformancePeriods.map((period) => ({
       label: period.label,
       value: toNumeric(row[period.key]),
       note: asOfLabel
@@ -700,10 +691,94 @@ const STOCK_DOSSIER_COPY = {
     evidenceFocus: 'Evidence focus',
     keyStatistics: 'Key Statistics',
     snapshotMetrics: 'Snapshot metrics',
+    currentPrice: 'Current Price',
+    latestMarketSnapshot: 'Latest market snapshot',
+    marketCap: 'Market Cap',
+    sharesAsOf: (date) => `Shares as of ${date}`,
+    evRevenue: 'EV / Revenue',
+    valuationMultiple: 'Valuation multiple',
+    latestVerifiedPeriod: 'Latest verified period',
+    fcfMargin: 'FCF Margin',
+    cashFlowQuality: 'Cash-flow quality',
+    relativeStrength: 'Relative Strength',
+    percentile: 'Percentile',
     executiveHighlights: 'Executive Highlights',
     highlights: 'Highlights',
+    businessEngineVerify: 'Business engine to verify first.',
+    trendPrefix: 'Trend',
+    eventSample: (count) => `Event sample N=${count}`,
+    eventSamplePending: 'Event sample pending',
+    marketEvidenceContextNote: 'Momentum and event evidence are supportive context, not proof of valuation.',
+    marginOfSafety: (value) => `Margin of safety: ${value}`,
+    valuationPressureHigh: 'Valuation pressure remains high.',
+    breakTriggerMonitor: 'Break trigger monitor',
+    durabilityEvidenceWeakens: 'Track whether business durability evidence weakens.',
+    financialHealthGrowthFcf: (growth, fcfMargin) => `${growth} revenue growth / ${fcfMargin} FCF margin`,
+    cashSecurities: (value) => `Cash + securities ${value}`,
+    sbcRevenue: (value) => `SBC / Revenue ${value}`,
     stockPerformance: 'Stock Performance',
+    stockPerformancePeriods: [
+      { label: 'Today', key: 'today' },
+      { label: '1 Week', key: 'one_week' },
+      { label: '1 Month', key: 'one_month' },
+      { label: '3 Months', key: 'three_month' },
+      { label: '6 Months', key: 'six_month' },
+      { label: '1 Year', key: 'one_year' }
+    ],
+    asOfDate: (date) => `as of ${date}`,
+    returnFeedAvailable: 'Return feed available',
     returnPending: 'Return feed pending',
+    peerReadthrough: 'Peer Readthrough',
+    peerReadthroughContext: 'Industry context',
+    peerReadthroughSubtitle: (ticker) => `Use peer prints to decide whether ${ticker}'s move is sector-wide, demand-led, or company-specific.`,
+    peerReadthroughSummary: 'Core lanes: software budget, observability demand, cloud workloads, and share shift.',
+    strongPeerPrint: 'Strong peer print',
+    weakPeerPrint: 'Weak peer print',
+    ddogReadthroughGroups: [
+      {
+        title: 'Cloud software budget',
+        signal: 'Budget pressure',
+        peers: ['SNOW', 'MDB', 'CRM', 'WDAY'],
+        primaryPeers: ['SNOW', 'CRM', 'WDAY'],
+        read: 'Shows whether enterprise buyers are still expanding software and data-platform budgets.',
+        strong: 'Strong usage, RPO, or guide supports DDOG demand durability.',
+        weak: 'Weak guides point to budget pressure or delayed cloud expansion.'
+      },
+      {
+        title: 'Observability / security demand',
+        signal: 'Demand support',
+        peers: ['DT', 'ESTC', 'CRWD', 'ZS'],
+        primaryPeers: ['DT', 'ESTC'],
+        read: 'Checks whether monitoring, security, and operational visibility demand is broad or company-specific.',
+        strong: 'Strong peers support sector demand and platform expansion.',
+        weak: 'Weak peers raise risk that demand is slowing, unless DDOG is clearly taking share.'
+      },
+      {
+        title: 'Hyperscaler workload / cloud spend',
+        signal: 'Cloud workload risk',
+        peers: ['MSFT', 'AMZN', 'GOOGL', 'ORCL'],
+        primaryPeers: ['MSFT', 'AMZN', 'GOOGL'],
+        read: 'Cloud workload growth affects usage demand for monitoring and infrastructure tooling.',
+        strong: 'Strong cloud growth supports DDOG usage volume and customer expansion.',
+        weak: 'Cloud optimization or slower workload growth can pressure DDOG consumption.'
+      },
+      {
+        title: 'Share shift / company-specific read',
+        signal: 'Share gain check',
+        peers: ['DT', 'ESTC'],
+        primaryPeers: ['DT', 'ESTC'],
+        read: 'Separates broad sector movement from DDOG-specific execution or share gain.',
+        strong: 'DDOG strong while direct peers are weak may suggest share gain.',
+        weak: 'DDOG weak with weak peers suggests sector pressure, not only company execution.'
+      }
+    ],
+    peerEarningsContext: {
+      title: 'Peer earnings context',
+      signal: 'Sector context',
+      read: 'Use peer earnings, guidance, and price reaction to judge whether the setup is company-specific or sector-wide.',
+      strong: 'Strong peer evidence can support demand, sentiment, or valuation context.',
+      weak: 'Weak peer evidence can flag sector pressure before the current company reports.'
+    },
     signalScreens: 'Signal Screens / Evidence Tags',
     screenEvidence: 'Screen evidence, not a conclusion',
     marketEvidence: 'Market Evidence',
@@ -826,10 +901,94 @@ const STOCK_DOSSIER_COPY = {
     evidenceFocus: '證據焦點',
     keyStatistics: '主要數據',
     snapshotMetrics: '快照指標',
+    currentPrice: '現價',
+    latestMarketSnapshot: '最新市場快照',
+    marketCap: '市值',
+    sharesAsOf: (date) => `股數截至 ${date}`,
+    evRevenue: 'EV / 收入',
+    valuationMultiple: '估值倍數',
+    latestVerifiedPeriod: '最新已核實期間',
+    fcfMargin: 'FCF 利潤率',
+    cashFlowQuality: '現金流質素',
+    relativeStrength: '相對強度',
+    percentile: '百分位',
     executiveHighlights: '重點摘要',
     highlights: '摘要',
+    businessEngineVerify: '先核實業務引擎。',
+    trendPrefix: '趨勢',
+    eventSample: (count) => `事件樣本 N=${count}`,
+    eventSamplePending: '事件樣本待補',
+    marketEvidenceContextNote: '動能與事件證據只作支持脈絡，不是估值結論。',
+    marginOfSafety: (value) => `安全邊際：${value}`,
+    valuationPressureHigh: '估值壓力仍然高。',
+    breakTriggerMonitor: '破局觸發監察',
+    durabilityEvidenceWeakens: '追蹤業務耐久度證據是否轉弱。',
+    financialHealthGrowthFcf: (growth, fcfMargin) => `${growth} 收入增長 / ${fcfMargin} FCF 利潤率`,
+    cashSecurities: (value) => `現金及證券 ${value}`,
+    sbcRevenue: (value) => `SBC / 收入 ${value}`,
     stockPerformance: '股價表現',
+    stockPerformancePeriods: [
+      { label: '今日', key: 'today' },
+      { label: '1 星期', key: 'one_week' },
+      { label: '1 個月', key: 'one_month' },
+      { label: '3 個月', key: 'three_month' },
+      { label: '6 個月', key: 'six_month' },
+      { label: '1 年', key: 'one_year' }
+    ],
+    asOfDate: (date) => `截至 ${date}`,
+    returnFeedAvailable: '回報資料可用',
     returnPending: '回報資料待補',
+    peerReadthrough: '同業傳導',
+    peerReadthroughContext: '行業脈絡',
+    peerReadthroughSubtitle: (ticker) => `用同業業績判斷 ${ticker} 的股價反應是行業共振、需求帶動，還是公司自身因素。`,
+    peerReadthroughSummary: '核心路徑：軟件預算、可觀測性需求、雲端工作量、份額轉移。',
+    strongPeerPrint: '同業業績強',
+    weakPeerPrint: '同業業績弱',
+    ddogReadthroughGroups: [
+      {
+        title: '雲端軟件預算',
+        signal: '預算壓力',
+        peers: ['SNOW', 'MDB', 'CRM', 'WDAY'],
+        primaryPeers: ['SNOW', 'CRM', 'WDAY'],
+        read: '觀察企業客戶是否仍在擴大軟件與數據平台預算。',
+        strong: '用量、RPO 或指引強，支持 DDOG 需求仍有韌性。',
+        weak: '指引轉弱，可能反映預算壓力或雲端擴張延後。'
+      },
+      {
+        title: '可觀測性 / 安全需求',
+        signal: '需求支持',
+        peers: ['DT', 'ESTC', 'CRWD', 'ZS'],
+        primaryPeers: ['DT', 'ESTC'],
+        read: '判斷監控、安全與營運可視化需求，是整個行業轉強還是 DDOG 自身因素。',
+        strong: '同業強勁，支持行業需求與平台擴張仍在。',
+        weak: '同業轉弱，會提高需求放慢風險，除非 DDOG 明顯搶到份額。'
+      },
+      {
+        title: '雲端工作量 / 雲支出',
+        signal: '雲端工作量風險',
+        peers: ['MSFT', 'AMZN', 'GOOGL', 'ORCL'],
+        primaryPeers: ['MSFT', 'AMZN', 'GOOGL'],
+        read: '雲端工作量增長會影響監控和基建工具的使用需求。',
+        strong: '雲增長強，支持 DDOG 使用量和客戶擴張。',
+        weak: '雲優化或工作量增長放慢，可能壓抑 DDOG 用量。'
+      },
+      {
+        title: '份額轉移 / 公司自身判斷',
+        signal: '份額轉移檢查',
+        peers: ['DT', 'ESTC'],
+        primaryPeers: ['DT', 'ESTC'],
+        read: '分辨股價反應是行業因素，還是 DDOG 自身執行和搶份額。',
+        strong: '直接同業弱而 DDOG 強，可能反映 DDOG 搶到份額。',
+        weak: 'DDOG 弱、同業也弱，較可能是行業壓力，不只是公司執行問題。'
+      }
+    ],
+    peerEarningsContext: {
+      title: '同業業績脈絡',
+      signal: '行業脈絡',
+      read: '用同業業績、指引和股價反應，判斷這個 setup 是公司自身因素還是行業因素。',
+      strong: '同業證據強，可支持需求、情緒或估值脈絡。',
+      weak: '同業證據弱，可能在本公司公布前先提示行業壓力。'
+    },
     signalScreens: '篩選信號 / 證據標籤',
     screenEvidence: '篩選證據，不是結論',
     marketEvidence: '市場證據',
@@ -949,45 +1108,6 @@ const READTHROUGH_LABEL_OVERRIDES = {
   ZS: 'Zscaler'
 };
 
-const DDOG_READTHROUGH_GROUPS = [
-  {
-    title: 'Cloud software budget',
-    signal: 'Budget pressure',
-    peers: ['SNOW', 'MDB', 'CRM', 'WDAY'],
-    primaryPeers: ['SNOW', 'CRM', 'WDAY'],
-    read: 'Shows whether enterprise buyers are still expanding software and data-platform budgets.',
-    strong: 'Strong usage, RPO, or guide supports DDOG demand durability.',
-    weak: 'Weak guides point to budget pressure or delayed cloud expansion.'
-  },
-  {
-    title: 'Observability / security demand',
-    signal: 'Demand support',
-    peers: ['DT', 'ESTC', 'CRWD', 'ZS'],
-    primaryPeers: ['DT', 'ESTC'],
-    read: 'Checks whether monitoring, security, and operational visibility demand is broad or company-specific.',
-    strong: 'Strong peers support sector demand and platform expansion.',
-    weak: 'Weak peers raise risk that demand is slowing, unless DDOG is clearly taking share.'
-  },
-  {
-    title: 'Hyperscaler workload / cloud spend',
-    signal: 'Cloud workload risk',
-    peers: ['MSFT', 'AMZN', 'GOOGL', 'ORCL'],
-    primaryPeers: ['MSFT', 'AMZN', 'GOOGL'],
-    read: 'Cloud workload growth affects usage demand for monitoring and infrastructure tooling.',
-    strong: 'Strong cloud growth supports DDOG usage volume and customer expansion.',
-    weak: 'Cloud optimization or slower workload growth can pressure DDOG consumption.'
-  },
-  {
-    title: 'Share shift / company-specific read',
-    signal: 'Share gain check',
-    peers: ['DT', 'ESTC'],
-    primaryPeers: ['DT', 'ESTC'],
-    read: 'Separates broad sector movement from DDOG-specific execution or share gain.',
-    strong: 'DDOG strong while direct peers are weak may suggest share gain.',
-    weak: 'DDOG weak with weak peers suggests sector pressure, not only company execution.'
-  }
-];
-
 const normalizeReadthroughTicker = (ticker) => String(ticker || '').trim().toUpperCase();
 
 const buildPeerLookup = (ecosystem) => {
@@ -1008,11 +1128,11 @@ const labelForReadthroughTicker = (ticker, peerLookup) => {
   return peerLookup[key]?.label || getStockDossierProfile(key)?.companyName || READTHROUGH_LABEL_OVERRIDES[key] || key;
 };
 
-const buildReadthroughGroups = (ecosystem, ticker) => {
+const buildReadthroughGroups = (ecosystem, ticker, copy) => {
   const normalizedTicker = normalizeReadthroughTicker(ticker);
   const peerLookup = buildPeerLookup(ecosystem);
   if (normalizedTicker === 'DDOG') {
-    return DDOG_READTHROUGH_GROUPS.map((group) => ({
+    return copy.ddogReadthroughGroups.map((group) => ({
       ...group,
       peers: group.peers.map((peerTicker) => ({
         ticker: peerTicker,
@@ -1034,17 +1154,17 @@ const buildReadthroughGroups = (ecosystem, ticker) => {
   if (!fallbackPeers.length) return [];
   return [
     {
-      title: 'Peer earnings context',
-      signal: 'Sector context',
+      title: copy.peerEarningsContext.title,
+      signal: copy.peerEarningsContext.signal,
       peers: fallbackPeers,
-      read: 'Use peer earnings, guidance, and price reaction to judge whether the setup is company-specific or sector-wide.',
-      strong: 'Strong peer evidence can support demand, sentiment, or valuation context.',
-      weak: 'Weak peer evidence can flag sector pressure before the current company reports.'
+      read: copy.peerEarningsContext.read,
+      strong: copy.peerEarningsContext.strong,
+      weak: copy.peerEarningsContext.weak
     }
   ];
 };
 
-const ReadthroughGroup = ({ group }) => {
+const ReadthroughGroup = ({ group, copy }) => {
   if (!group.peers.length) return null;
   return (
     <article className="dossier-readthrough-insight">
@@ -1057,11 +1177,11 @@ const ReadthroughGroup = ({ group }) => {
       <p>{group.read}</p>
       <div className="dossier-readthrough-scenarios">
         <div>
-          <strong>Strong peer print</strong>
+          <strong>{copy.strongPeerPrint}</strong>
           <span>{group.strong}</span>
         </div>
         <div>
-          <strong>Weak peer print</strong>
+          <strong>{copy.weakPeerPrint}</strong>
           <span>{group.weak}</span>
         </div>
       </div>
@@ -1077,28 +1197,28 @@ const ReadthroughGroup = ({ group }) => {
   );
 };
 
-const PeerEcosystemPanel = ({ ecosystem, ticker }) => {
+const PeerEcosystemPanel = ({ ecosystem, ticker, copy }) => {
   if (!ecosystem) return null;
-  const groups = buildReadthroughGroups(ecosystem, ticker);
+  const groups = buildReadthroughGroups(ecosystem, ticker, copy);
   if (!groups.length) return null;
 
   return (
     <article className="dossier-cockpit-card dossier-cockpit-card--wide dossier-peer-ecosystem-panel">
       <div className="dossier-cockpit-card__heading">
-        <span>Peer Readthrough</span>
-        <em>Industry context</em>
+        <span>{copy.peerReadthrough}</span>
+        <em>{copy.peerReadthroughContext}</em>
       </div>
       <p className="dossier-peer-readthrough-subtitle">
-        Use peer prints to decide whether {ticker}&apos;s move is sector-wide, demand-led, or company-specific.
+        {copy.peerReadthroughSubtitle(ticker)}
       </p>
       <div className="dossier-readthrough-summary">
         <strong>{ticker}</strong>
         <span>{ecosystem.ecosystemName}</span>
-        <em>Core lanes: software budget, observability demand, cloud workloads, and share shift.</em>
+        <em>{copy.peerReadthroughSummary}</em>
       </div>
       <div className="dossier-readthrough-insight-grid">
         {groups.map((group) => (
-          <ReadthroughGroup key={group.title} group={group} />
+          <ReadthroughGroup key={group.title} group={group} copy={copy} />
         ))}
       </div>
     </article>
@@ -1454,7 +1574,7 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, refer
     { label: 'Evidence Quality', value: valueCore.evidenceQuality },
     { label: 'Coverage', value: valueCore.frontendLabel }
   ];
-  const performanceGrid = buildLiveStockPerformanceGrid(tickerForSummary, visualPhaseOne?.performanceGrid, stockPerformancePayload);
+  const performanceGrid = buildLiveStockPerformanceGrid(tickerForSummary, visualPhaseOne?.performanceGrid, stockPerformancePayload, copy);
   const peerEcosystem = resolveReferencePeerEcosystemSnapshot(referencePeerMapPayload, tickerForSummary);
   const performanceRows = performanceGrid?.periods || [];
   const stockPerformanceFeedSource = performanceGrid?.feedSource === 'dedicated'
@@ -1561,74 +1681,74 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, refer
     ];
     const overviewKeyStatistics = [
       {
-        label: 'Current Price',
+        label: copy.currentPrice,
         value: marketSnapshotValue(marketSnapshot, 'currentPrice'),
-        note: 'Latest market snapshot'
+        note: copy.latestMarketSnapshot
       },
       {
-        label: 'Market Cap',
+        label: copy.marketCap,
         value: marketSnapshotValue(marketSnapshot, 'marketCap'),
         note: liveCapitalization?.sharesOutstandingAsOf
-          ? `Shares as of ${liveCapitalization.sharesOutstandingAsOf}`
-          : 'Equity value'
+          ? copy.sharesAsOf(liveCapitalization.sharesOutstandingAsOf)
+          : copy.equityValue
       },
       {
-        label: 'EV / Revenue',
+        label: copy.evRevenue,
         value: valuationMetricValue(valuationCore, 'ev_revenue'),
-        note: 'Valuation multiple'
+        note: copy.valuationMultiple
       },
       {
-        label: 'Revenue Growth',
+        label: copy.revenueGrowth,
         value: valuationMetricValue(valuationCore, 'revenue_growth'),
-        note: dossierProfile?.latestFiscalPeriod || 'Latest verified period'
+        note: dossierProfile?.latestFiscalPeriod || copy.latestVerifiedPeriod
       },
       {
-        label: 'FCF Margin',
+        label: copy.fcfMargin,
         value: valuationMetricValue(valuationCore, 'fcf_margin'),
-        note: 'Cash-flow quality'
+        note: copy.cashFlowQuality
       },
       {
-        label: 'Relative Strength',
+        label: copy.relativeStrength,
         value: formatPercentile(momentumRanking?.relative_strength_percentile),
-        note: metrics.relative_strength_vs_spy_63d !== undefined ? `${formatPct(metrics.relative_strength_vs_spy_63d)} vs SPY 63D` : 'Percentile'
+        note: metrics.relative_strength_vs_spy_63d !== undefined ? `${formatPct(metrics.relative_strength_vs_spy_63d)} vs SPY 63D` : copy.percentile
       }
     ];
     const overviewMarketEvidenceRows = marketEvidenceCards.slice(0, 4);
     const overviewSignalChips = signalScreens.slice(0, 4);
     const overviewHighlightCards = [
       {
-        label: 'Business Core',
+        label: copy.businessCore,
         value: valueCore.primaryValueDriver,
         state: `${valueCore.valueCoreType} / ${valueCore.companyStage}`,
-        note: 'Business engine to verify first.',
+        note: copy.businessEngineVerify,
         tone: 'positive'
       },
       {
-        label: 'Market Evidence',
-        value: `Trend: ${momentumStrengthRead}`,
-        state: measuredGapCount !== null ? `Event sample N=${measuredGapCount}` : 'Event sample pending',
-        note: 'Momentum and event evidence are supportive context, not proof of valuation.',
+        label: copy.marketEvidence,
+        value: `${copy.trendPrefix}: ${momentumStrengthRead}`,
+        state: measuredGapCount !== null ? copy.eventSample(measuredGapCount) : copy.eventSamplePending,
+        note: copy.marketEvidenceContextNote,
         tone: momentumScore !== null && momentumScore >= 70 ? 'positive' : 'neutral'
       },
       {
-        label: 'Valuation',
+        label: copy.valuation,
         value: valuationCore.topVerdict.valuationState,
-        state: `Margin of safety: ${valuationCore.topVerdict.marginOfSafety}`,
-        note: 'Valuation pressure remains high.',
+        state: copy.marginOfSafety(valuationCore.topVerdict.marginOfSafety),
+        note: copy.valuationPressureHigh,
         tone: 'warning'
       },
       {
-        label: 'Thesis Risk',
+        label: copy.thesisRisk,
         value: valueCore.thesisBreakTrigger,
-        state: 'Break trigger monitor',
-        note: 'Track whether business durability evidence weakens.',
+        state: copy.breakTriggerMonitor,
+        note: copy.durabilityEvidenceWeakens,
         tone: 'warning'
       },
       {
-        label: 'Financial Health',
-        value: `${valuationMetricValue(valuationCore, 'revenue_growth')} revenue growth / ${valuationMetricValue(valuationCore, 'fcf_margin')} FCF margin`,
-        state: `Cash + securities ${valuationMetricValue(valuationCore, 'cash_securities')}`,
-        note: `SBC / Revenue ${valuationMetricValue(valuationCore, 'sbc_revenue')}`,
+        label: copy.financialHealth,
+        value: copy.financialHealthGrowthFcf(valuationMetricValue(valuationCore, 'revenue_growth'), valuationMetricValue(valuationCore, 'fcf_margin')),
+        state: copy.cashSecurities(valuationMetricValue(valuationCore, 'cash_securities')),
+        note: copy.sbcRevenue(valuationMetricValue(valuationCore, 'sbc_revenue')),
         tone: 'neutral'
       }
     ];
@@ -1737,7 +1857,7 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, refer
                     </div>
                   </article>
 
-                  <PeerEcosystemPanel ecosystem={peerEcosystem} ticker={tickerForSummary} />
+                  <PeerEcosystemPanel ecosystem={peerEcosystem} ticker={tickerForSummary} copy={copy} />
 
                   <article className="dossier-cockpit-card dossier-cockpit-card--wide">
                     <div className="dossier-cockpit-card__heading">
@@ -2081,7 +2201,7 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, refer
       {!visualPhaseOne && peerEcosystem && (
         <section className="card dossier-visual-cockpit" aria-label={`${ticker} peer ecosystem`}>
           <div className="dossier-visual-cockpit__grid">
-            <PeerEcosystemPanel ecosystem={peerEcosystem} ticker={tickerForSummary} />
+            <PeerEcosystemPanel ecosystem={peerEcosystem} ticker={tickerForSummary} copy={copy} />
           </div>
         </section>
       )}
