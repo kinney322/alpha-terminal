@@ -201,7 +201,7 @@ const thesisStateLabels = {
   mixed: 'mixed'
 };
 
-const renderStructuredVerdict = (structuredVerdict, fallback) => {
+const renderStructuredVerdict = (structuredVerdict, fallback, locale = 'en') => {
   if (!structuredVerdict) {
     return {
       reason: fallback.reason,
@@ -214,16 +214,21 @@ const renderStructuredVerdict = (structuredVerdict, fallback) => {
   const researchState = verdictStateLabels[structuredVerdict.researchState] || formatLabel(structuredVerdict.researchState);
   const marketEvidence = verdictStateLabels[structuredVerdict.marketEvidence] || formatLabel(structuredVerdict.marketEvidence);
   const shift = structuredVerdict.thesisShift;
+  const shiftReason = localizedValue(shift, 'reason', locale) || shift?.reason;
   const shiftLine = shift?.from && shift?.to
-    ? `The working thesis has shifted from ${thesisStateLabels[shift.from] || formatLabel(shift.from)} to ${thesisStateLabels[shift.to] || formatLabel(shift.to)}: ${shift.reason}`
+    ? locale === 'zh'
+      ? `工作論點由 ${thesisStateLabels[shift.from] || formatLabel(shift.from)} 轉向 ${thesisStateLabels[shift.to] || formatLabel(shift.to)}：${shiftReason}`
+      : `The working thesis has shifted from ${thesisStateLabels[shift.from] || formatLabel(shift.from)} to ${thesisStateLabels[shift.to] || formatLabel(shift.to)}: ${shiftReason}`
     : '';
+  const support = localizedArray(structuredVerdict, 'keySupport', locale);
+  const risks = localizedArray(structuredVerdict, 'keyRisk', locale);
 
   return {
     reason: `${researchState}: ${marketEvidence.toLowerCase()} evidence keeps this stock on the research queue.`,
-    verdict: structuredVerdict.finalRead || fallback.verdict,
+    verdict: localizedValue(structuredVerdict, 'finalRead', locale) || structuredVerdict.finalRead || fallback.verdict,
     thesisShift: shiftLine,
-    support: structuredVerdict.keySupport || [],
-    risks: structuredVerdict.keyRisk || []
+    support: support.length ? support : (structuredVerdict.keySupport || []),
+    risks: risks.length ? risks : (structuredVerdict.keyRisk || [])
   };
 };
 
@@ -247,28 +252,91 @@ const localizedFaqItems = (items, locale) => {
   }));
 };
 
+const localizedItems = (items, locale, keys) => {
+  if (!Array.isArray(items)) return [];
+  return items.map((item) => keys.reduce((next, key) => {
+    const value = localizedValue(item, key, locale);
+    if (value !== undefined) {
+      next[key] = value;
+    } else if (typeof next[key] === 'string') {
+      next[key] = localizedStaticLabel(next[key], locale);
+    }
+    return next;
+  }, { ...item }));
+};
+
 const localizedStaticLabel = (value, locale) => {
   if (locale !== 'zh') return value;
   return {
+    Above: '高於',
+    Base: '基準',
+    'Base Case': '基準情境',
+    Bear: '悲觀',
+    'Business Quality': '業務質素',
     'Between Catalysts': '催化事件之間',
+    Bull: '樂觀',
     'Catalyst Watch': '催化觀察',
+    Coverage: '覆蓋狀態',
+    'Coverage pending': '覆蓋待補',
+    'Crowding Risk': '擁擠風險',
     Curated: '已整理',
+    'Current curated read': '目前整理判斷',
+    'Direction pending': '方向待補',
+    'Evidence Quality': '證據質素',
+    'Evidence status': '證據狀態',
+    'Follow-through since the event': '事件後延續表現',
+    'Financial health evidence': '財務健康證據',
+    'Gap-up Rate': '高開機率',
     High: '高',
+    'Latest reaction': '最新反應',
+    'Live reference context': '同業參考已載入',
+    'Long Term': '長期趨勢',
+    'Margin of Safety': '安全邊際',
     'Market-derived': '市場推導',
+    Medium: '中',
+    'Measured Gaps': '已核實高低開',
+    'Momentum Score': '動能分數',
     'Momentum Candidate': '動能候選',
-    'Momentum evidence pending': '動能證據待補',
+    'Momentum evidence pending': '動能資料待補',
+    Negative: '負面',
+    Neutral: '中性',
     None: '沒有',
+    'No margin of safety': '沒有安全邊際',
     'Not verified': '未核實',
+    Pending: '待補',
+    Percentile: '百分位',
     Partial: '部分',
-    'Peer-Led Context': '同業帶動脈絡',
+    'Peer-Led Context': '同業帶動',
     'Post-Earnings Watch': '財報後觀察',
     'Priced for Perfection': '接近完美定價',
+    Reaction: '反應',
+    'Relative Strength': '相對強度',
+    'Risk cushion': '風險緩衝',
     Scaling: '擴張期',
     'Software / SaaS': '軟件 / SaaS',
+    Strength: '強度',
     'Strong trend': '強勢趨勢',
-    'Strong trend, but extended': '趨勢強，但已有伸延',
+    'Strong trend, but extended': '趨勢強，但已偏伸延',
+    Theme: '主題',
+    Trend: '趨勢',
     'Constructive trend': '趨勢正面',
-    'Trend needs confirmation': '趨勢仍待確認'
+    'Trend needs confirmation': '趨勢仍待確認',
+    Type: '類型',
+    Valuation: '估值',
+    'Valuation State': '估值狀態',
+    'Valuation state': '估值狀態',
+    'Valuation Judgment': '估值判斷',
+    'Value Core Type': '價值核心類型',
+    'Company Stage': '公司階段',
+    'Primary Driver': '主要驅動因素',
+    'Thesis Break Trigger': '論點破局觸發點',
+    'Break Trigger': '破局觸發點',
+    'Universe Rank': '全名單排名',
+    'Theme Rank': '主題排名',
+    'Trend Stack': '趨勢排列',
+    'Overall scan': '全市場掃描',
+    'vs SMA20 / 50 / 200': '相對 SMA20 / 50 / 200',
+    '200D stretch / upper band': '200 日伸延 / 上軌日數'
   }[value] || value;
 };
 
@@ -982,8 +1050,8 @@ const STOCK_DOSSIER_COPY = {
     marketEvidenceContextNote: '動能與事件資料只作輔助判斷，不是估值結論。',
     marginOfSafety: (value) => `安全邊際：${value}`,
     valuationPressureHigh: '估值壓力仍然高。',
-    breakTriggerMonitor: '破局觸發監察',
-    durabilityEvidenceWeakens: '追蹤業務耐久度證據是否轉弱。',
+    breakTriggerMonitor: '破局觸發點',
+    durabilityEvidenceWeakens: '留意業務耐久度是否轉弱。',
     financialHealthGrowthFcf: (growth, fcfMargin) => `${growth} 收入增長 / ${fcfMargin} FCF 利潤率`,
     cashSecurities: (value) => `現金及證券 ${value}`,
     sbcRevenue: (value) => `SBC / 收入 ${value}`,
@@ -997,8 +1065,8 @@ const STOCK_DOSSIER_COPY = {
       { label: '1 年', key: 'one_year' }
     ],
     asOfDate: (date) => `截至 ${date}`,
-    returnFeedAvailable: '回報資料可用',
-    returnPending: '回報資料待補',
+    returnFeedAvailable: '股價回報資料可用',
+    returnPending: '股價回報資料待補',
     peerReadthrough: '同業啟示',
     peerReadthroughContext: '行業脈絡',
     peerReadthroughSubtitle: (ticker) => `用同業業績判斷 ${ticker} 的股價反應是行業共振、需求帶動，還是公司自身因素。`,
@@ -1046,7 +1114,7 @@ const STOCK_DOSSIER_COPY = {
     peerEarningsContext: {
       title: '同業業績脈絡',
       signal: '行業脈絡',
-      read: '用同業業績、指引和股價反應，判斷這個 setup 是公司自身因素還是行業因素。',
+      read: '用同業業績、指引和股價反應，判斷這次股價反應是公司自身因素還是行業因素。',
       strong: '同業證據強，可支持需求、情緒或估值脈絡。',
       weak: '同業證據弱，可能在本公司公布前先提示行業壓力。'
     },
@@ -1055,7 +1123,7 @@ const STOCK_DOSSIER_COPY = {
     marketEvidence: '市場證據',
     evidenceOverview: '證據概覽',
     businessCore: '業務核心',
-    businessCoreQuestion: '公司價值由甚麼創造？',
+    businessCoreQuestion: '公司靠甚麼創造價值？',
     evidenceToMonitor: '需要監察的證據',
     measuredQuarters: '已核實季度',
     gapUpRate: '高開機率',
@@ -1097,7 +1165,7 @@ const STOCK_DOSSIER_COPY = {
     businessQuality: '業務質素',
     peerCompetition: '同業競爭',
     operatingNotes: '營運筆記',
-    operatingNotesBody: '業務引擎、現金流質素與競爭位置',
+    operatingNotesBody: '業務動力、現金流質素與競爭位置',
     valueCore: '價值核心',
     humanReview: '人手覆核',
     valuationCore: '估值核心',
@@ -1120,11 +1188,11 @@ const STOCK_DOSSIER_COPY = {
     researchJudgment: '研究判斷',
     missingEvidence: '缺少證據',
     momentum: '動能',
-    structureExecution: '結構與執行',
+    structureExecution: '技術結構',
     unavailable: '不可用',
     noTechnicalSetup: '暫無技術結構背景。',
     strengthRead: '強度判斷',
-    executionMap: '執行地圖',
+    executionMap: '走勢地圖',
     latestPricePending: '最新價格待補',
     latest: '最新',
     breakout: '突破',
@@ -1141,16 +1209,16 @@ const STOCK_DOSSIER_COPY = {
     openEventStudy: (ticker) => `查看 ${ticker} 事件研究`,
     earningsSummary: '財報摘要',
     sampleNotIncluded: '樣本未納入',
-    gapEvidencePending: '已核實財報高低開證據待補。',
+    gapEvidencePending: '已核實的財報高低開資料仍待補。',
     scenarioRange: '情境區間',
     scenarioQuestion: '樂觀 / 基準 / 悲觀路徑需要甚麼成立？',
     scenarioModelNote: '引用估值核心的前瞻模型；估值區間與中位回報屬模型推算，不是正式目標價。',
-    impliedOutcome: '隱含結果',
+    impliedOutcome: '模型隱含結果',
     scenarioTrigger: '情境觸發條件',
     thesisRiskMonitor: '論點風險監察',
-    mediumTermRiskQuestion: '甚麼會削弱中期檔案判斷？',
-    fundamentalTriggers: '基本面風險觸發',
-    marketTriggers: '價格 / 市場證據觸發'
+    mediumTermRiskQuestion: '甚麼會削弱中期判斷？',
+    fundamentalTriggers: '基本面風險觸發點',
+    marketTriggers: '價格 / 市場風險觸發點'
   }
 };
 
@@ -1395,7 +1463,7 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, refer
   const renderedVerdict = renderStructuredVerdict(dossierProfile?.dossierVerdict, {
     reason: localizedWhyNowReason,
     verdict: localizedWhyNowVerdict
-  });
+  }, locale);
   const killSwitch = buildResearchKillSwitch(enrichedEventDetail, payload);
   const priceTrendRisk = buildPriceTrendRisk(enrichedEventDetail, payload);
   const valuationCore = buildValuationCore(enrichedEventDetail, dossierProfile);
@@ -1448,15 +1516,57 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, refer
   const companyStageDisplay = localizedValue(dossierProfile?.valueCore, 'company_stage_candidate', locale) || localizedStaticLabel(valueCore.companyStage, locale);
   const primaryValueDriverDisplay = localizedValue(dossierProfile?.valueCore, 'primary_value_driver', locale) || valueCore.primaryValueDriver;
   const thesisBreakTriggerDisplay = localizedValue(dossierProfile?.valueCore, 'thesis_break_trigger', locale) || valueCore.thesisBreakTrigger;
-  const valuationStateDisplay = localizedStaticLabel(valuationCore.topVerdict.valuationState, locale);
-  const marginOfSafetyDisplay = localizedStaticLabel(valuationCore.topVerdict.marginOfSafety, locale);
+  const localizedValueCoreEvidence = localizedArray(dossierProfile?.valueCore, 'evidence_needed', locale);
+  const valueCoreEvidenceItems = localizedValueCoreEvidence.length ? localizedValueCoreEvidence : valueCore.evidenceNeeded;
+  const valuationTopVerdict = {
+    businessQuality: localizedValue(valuationCore.topVerdict, 'businessQuality', locale) || localizedStaticLabel(valuationCore.topVerdict.businessQuality, locale),
+    valuationState: localizedValue(valuationCore.topVerdict, 'valuationState', locale) || localizedStaticLabel(valuationCore.topVerdict.valuationState, locale),
+    baseCaseSupport: localizedValue(valuationCore.topVerdict, 'baseCaseSupport', locale) || localizedStaticLabel(valuationCore.topVerdict.baseCaseSupport, locale),
+    marginOfSafety: localizedValue(valuationCore.topVerdict, 'marginOfSafety', locale) || localizedStaticLabel(valuationCore.topVerdict.marginOfSafety, locale),
+    overallRead: localizedValue(valuationCore.topVerdict, 'overallRead', locale) || valuationCore.topVerdict.overallRead,
+    why: localizedValue(valuationCore.topVerdict, 'why', locale) || valuationCore.topVerdict.why
+  };
+  const valuationStateDisplay = valuationTopVerdict.valuationState;
+  const marginOfSafetyDisplay = valuationTopVerdict.marginOfSafety;
+  const stockOverviewProfileLine = localizedValue(dossierProfile, 'overview', locale) || stockOverview.profileLine;
+  const quickFactsDisplay = stockOverview.quickFacts.map((fact) => ({
+    ...fact,
+    label: localizedValue(fact, 'label', locale) || localizedStaticLabel(fact.label, locale),
+    value: localizedValue(fact, 'value', locale) || localizedStaticLabel(fact.value, locale)
+  }));
+  const largeCustomerFact = quickFactsDisplay.find((fact, index) => (
+    stockOverview.quickFacts[index]?.label?.includes('$100k')
+    || stockOverview.quickFacts[index]?.label?.includes('Customer')
+    || fact.label.includes('客戶')
+  ));
+  const netRetentionFact = quickFactsDisplay.find((fact, index) => (
+    stockOverview.quickFacts[index]?.label?.includes('Net Retention')
+    || fact.label.includes('淨留存')
+  ));
+  const localizedDossierSections = localizedItems(dossierProfile?.sections || [], locale, ['label', 'title', 'points']);
+  const businessEngineSection = localizedDossierSections.find(section => section.id === 'business-engine') || localizedDossierSections[0];
+  const competitivePositionSection = localizedDossierSections.find(section => section.id === 'competitive-position');
+  const localizedMarketEvidencePoints = localizedArray(marketEvidence, 'points', locale);
+  const marketEvidencePoints = localizedMarketEvidencePoints.length ? localizedMarketEvidencePoints : marketEvidence.points;
+  const localizedResearchJudgment = localizedArray(valuationCore, 'researchJudgment', locale);
+  const valuationResearchJudgment = localizedResearchJudgment.length ? localizedResearchJudgment : valuationCore.researchJudgment;
+  const localizedMissingEvidence = localizedArray(valuationCore, 'missingEvidence', locale);
+  const valuationMissingEvidence = localizedMissingEvidence.length ? localizedMissingEvidence : valuationCore.missingEvidence;
+  const localizedKillData = localizedArray(valuationCore, 'killData', locale);
+  const valuationKillData = localizedKillData.length ? localizedKillData : valuationCore.killData;
+  const valuationScenarios = localizedItems(valuationCore.scenarios || [], locale, ['label', 'text', 'impliedOutcome', 'upsideDownside', 'threeYearIrr', 'trigger', 'mustBeTrue']);
   const snapshotRows = [
-    { label: 'Business Quality', value: valuationCore.topVerdict.businessQuality, tone: valuationCore.topVerdict.businessQuality === 'High' ? 'positive' : 'neutral' },
-    { label: 'Valuation', value: valuationCore.topVerdict.valuationState, tone: valuationCore.topVerdict.valuationState.includes('Missing') ? 'warning' : 'neutral' },
-    { label: 'Base Case', value: valuationCore.topVerdict.baseCaseSupport, tone: valuationCore.topVerdict.baseCaseSupport === 'Partial' ? 'warning' : 'neutral' },
-    { label: 'Margin of Safety', value: valuationCore.topVerdict.marginOfSafety, tone: valuationCore.topVerdict.marginOfSafety === 'None' ? 'warning' : 'neutral' }
+    { label: localizedStaticLabel('Business Quality', locale), value: valuationTopVerdict.businessQuality, tone: valuationCore.topVerdict.businessQuality === 'High' ? 'positive' : 'neutral' },
+    { label: localizedStaticLabel('Valuation', locale), value: valuationTopVerdict.valuationState, tone: valuationCore.topVerdict.valuationState.includes('Missing') ? 'warning' : 'neutral' },
+    { label: localizedStaticLabel('Base Case', locale), value: valuationTopVerdict.baseCaseSupport, tone: valuationCore.topVerdict.baseCaseSupport === 'Partial' ? 'warning' : 'neutral' },
+    { label: localizedStaticLabel('Margin of Safety', locale), value: valuationTopVerdict.marginOfSafety, tone: valuationCore.topVerdict.marginOfSafety === 'None' ? 'warning' : 'neutral' }
   ];
-  const radarAxes = buildRadarAxes({ momentum, metrics, valuationCore, eventDetail: enrichedEventDetail });
+  const radarAxes = buildRadarAxes({ momentum, metrics, valuationCore, eventDetail: enrichedEventDetail }).map((axis) => ({
+    ...axis,
+    label: localizedStaticLabel(axis.label, locale),
+    value: localizedStaticLabel(axis.value, locale),
+    detail: localizedStaticLabel(axis.detail, locale)
+  }));
   const latestMomentumPrice = priceSeries.length
     ? priceSeries[priceSeries.length - 1]
     : resolveLatestTechnicalPrice(enrichedEventDetail, payload, tickerForSummary);
@@ -1474,50 +1584,50 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, refer
           : 'Trend needs confirmation';
   const momentumStrengthRows = [
     {
-      label: 'Momentum Score',
-      value: momentumScore === null ? 'Pending' : `${momentumScore}/100`,
+      label: localizedStaticLabel('Momentum Score', locale),
+      value: momentumScore === null ? copy.pending : `${momentumScore}/100`,
       detail: momentum.regime ? formatLabel(momentum.regime, locale) : formatLabel(momentumRanking?.regime, locale),
       tone: metricTone(momentumScore, 70)
     },
     {
-      label: 'Universe Rank',
+      label: localizedStaticLabel('Universe Rank', locale),
       value: formatRank(momentum.universe_rank ?? momentumRanking?.rank, momentum.universe_count ?? payload?.momentum_universe?.ranked_count),
-      detail: 'Overall scan',
+      detail: localizedStaticLabel('Overall scan', locale),
       tone: metricTone(momentumScore, 70)
     },
     {
-      label: 'Theme Rank',
+      label: localizedStaticLabel('Theme Rank', locale),
       value: formatRank(momentum.theme_rank ?? momentumRanking?.theme_rank),
       detail: displayLabel(momentum.industry_theme_label || momentumRanking?.industry_theme_label, locale, locale === 'zh' ? '主題' : 'Theme'),
       tone: toNumeric(momentum.theme_rank ?? momentumRanking?.theme_rank) === 1 ? 'positive' : 'neutral'
     },
     {
-      label: 'Relative Strength',
+      label: copy.relativeStrength,
       value: formatPercentile(momentumRanking?.relative_strength_percentile),
       detail: metrics.relative_strength_vs_spy_63d !== undefined ? `${formatPct(metrics.relative_strength_vs_spy_63d)} vs SPY 63D` : 'Percentile',
       tone: metricTone(momentumRanking?.relative_strength_percentile, 75)
     },
     {
-      label: 'Trend Stack',
+      label: localizedStaticLabel('Trend Stack', locale),
       value: [
         metrics.price_vs_sma20_pct ?? momentumRanking?.price_vs_sma20_pct,
         metrics.price_vs_sma50_pct ?? momentumRanking?.price_vs_sma50_pct,
         metrics.price_vs_sma200_pct ?? momentumRanking?.price_vs_sma200_pct
       ].map((value) => formatPct(value)).join(' / '),
-      detail: 'vs SMA20 / 50 / 200',
+      detail: localizedStaticLabel('vs SMA20 / 50 / 200', locale),
       tone: 'positive'
     },
     {
-      label: 'Crowding Risk',
+      label: localizedStaticLabel('Crowding Risk', locale),
       value: `${formatZScore(zScore)} / ${formatUpperBandDays(upperBandDays)}`,
-      detail: '200D stretch / upper band',
+      detail: localizedStaticLabel('200D stretch / upper band', locale),
       tone: zScore !== null && zScore >= 2.5 ? 'warning' : 'neutral'
     }
   ];
   const valuationGate = valuationCore.topVerdict.marginOfSafety === 'None'
-    ? 'No margin of safety'
-    : valuationCore.topVerdict.valuationState;
-  const breakPoint = renderedVerdict.risks[0] || valuationCore.killData?.[0] || 'Needs updated evidence before conclusion changes.';
+    ? localizedStaticLabel('No margin of safety', locale)
+    : valuationTopVerdict.valuationState;
+  const breakPoint = renderedVerdict.risks[0] || valuationKillData?.[0] || (locale === 'zh' ? '需要更新證據後，才可改變判斷。' : 'Needs updated evidence before conclusion changes.');
   const eventStudyCoverage = eventStudySummary?.coverage || null;
   const eventStudyDigest = eventStudySummary?.dossier_digest || null;
   const forwardGapUps = eventStudySummary?.forward_returns?.after_all_gap_ups || null;
@@ -1586,45 +1696,45 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, refer
   })() : [];
   const eventEvidenceVisuals = [
     {
-      label: 'Gap-up rate',
-      value: formatRatioReturn(eventStudyDigest?.gap_up_rate) || 'Pending',
+      label: copy.gapUpRate,
+      value: formatRatioReturn(eventStudyDigest?.gap_up_rate) || copy.pending,
       score: eventStudyDigest?.gap_up_rate !== undefined ? Math.max(0, Math.min(100, Number(eventStudyDigest.gap_up_rate) * 100)) : 0,
       tone: rateToneClass(eventStudyDigest?.gap_up_rate)
     },
     {
-      label: 'R+3 avg',
-      value: formatRatioReturn(forwardGapUps?.r_plus_3?.avg_return) || 'Pending',
+      label: locale === 'zh' ? 'R+3 平均' : 'R+3 avg',
+      value: formatRatioReturn(forwardGapUps?.r_plus_3?.avg_return) || copy.pending,
       score: forwardGapUps?.r_plus_3?.avg_return !== undefined ? clamp(50 + Number(forwardGapUps.r_plus_3.avg_return) * 180, 0, 100) : 0,
       tone: returnToneClass(forwardGapUps?.r_plus_3?.avg_return)
     },
     {
-      label: 'R+10 avg',
-      value: formatRatioReturn(forwardGapUps?.r_plus_10?.avg_return) || 'Pending',
+      label: locale === 'zh' ? 'R+10 平均' : 'R+10 avg',
+      value: formatRatioReturn(forwardGapUps?.r_plus_10?.avg_return) || copy.pending,
       score: forwardGapUps?.r_plus_10?.avg_return !== undefined ? clamp(50 + Number(forwardGapUps.r_plus_10.avg_return) * 180, 0, 100) : 0,
       tone: returnToneClass(forwardGapUps?.r_plus_10?.avg_return)
     },
     {
-      label: 'R+30 avg',
-      value: formatRatioReturn(forwardGapUps?.r_plus_30?.avg_return) || 'Pending',
+      label: locale === 'zh' ? 'R+30 平均' : 'R+30 avg',
+      value: formatRatioReturn(forwardGapUps?.r_plus_30?.avg_return) || copy.pending,
       score: forwardGapUps?.r_plus_30?.avg_return !== undefined ? clamp(50 + Number(forwardGapUps.r_plus_30.avg_return) * 180, 0, 100) : 0,
       tone: returnToneClass(forwardGapUps?.r_plus_30?.avg_return)
     }
   ];
   const latestReactionRows = [
     {
-      label: 'Latest reaction',
+      label: localizedStaticLabel('Latest reaction', locale),
       value: formatPct(enrichedEventDetail.pead_signal?.reaction?.t1_return),
-      note: enrichedEventDetail.pead_signal?.direction || 'Direction pending'
+      note: localizedStaticLabel(enrichedEventDetail.pead_signal?.direction || 'Direction pending', locale)
     },
     {
-      label: 'Current post-return',
+      label: locale === 'zh' ? '目前事件後回報' : 'Current post-return',
       value: formatPct(enrichedEventDetail.pead_signal?.reaction?.current_post_return),
-      note: 'Follow-through since the event'
+      note: localizedStaticLabel('Follow-through since the event', locale)
     },
     {
-      label: 'Volume / reaction quality',
-      value: enrichedEventDetail.pead_signal?.reaction_quality || enrichedEventDetail.pead_signal?.volume_quality || 'Pending',
-      note: 'Needs confirmed volume evidence'
+      label: locale === 'zh' ? '成交量 / 反應質素' : 'Volume / reaction quality',
+      value: localizedStaticLabel(enrichedEventDetail.pead_signal?.reaction_quality || enrichedEventDetail.pead_signal?.volume_quality || 'Pending', locale),
+      note: locale === 'zh' ? '需要成交量證據確認' : 'Needs confirmed volume evidence'
     }
   ];
   const coverageStatusDisplay = valueCore.coverageStatus === 'Curated' ? copy.curated : localizedStaticLabel(valueCore.coverageStatus, locale);
@@ -1633,20 +1743,20 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, refer
     ? `${evidenceQualityDisplay} / ${coverageStatusDisplay}`
     : evidenceQualityDisplay;
   const businessCoreRows = [
-    { label: 'Type', value: valueCore.valueCoreType },
-    { label: 'Stage', value: valueCore.companyStage },
-    { label: 'Primary Driver', value: valueCore.primaryValueDriver },
-    { label: 'Thesis Break Trigger', value: valueCore.thesisBreakTrigger },
-    { label: 'Evidence Quality', value: businessEvidenceQuality },
-    { label: 'Coverage', value: valueCore.frontendLabel }
+    { label: localizedStaticLabel('Type', locale), value: valueCoreTypeDisplay },
+    { label: localizedStaticLabel('Company Stage', locale), value: companyStageDisplay },
+    { label: localizedStaticLabel('Primary Driver', locale), value: primaryValueDriverDisplay },
+    { label: localizedStaticLabel('Thesis Break Trigger', locale), value: thesisBreakTriggerDisplay },
+    { label: localizedStaticLabel('Evidence Quality', locale), value: businessEvidenceQuality },
+    { label: localizedStaticLabel('Coverage', locale), value: coverageStatusDisplay || localizedStaticLabel(valueCore.frontendLabel, locale) }
   ];
   const legacyValueCoreRows = [
-    { label: 'Value Core Type', value: valueCore.valueCoreType },
-    { label: 'Company Stage', value: valueCore.companyStage },
-    { label: 'Primary Driver', value: valueCore.primaryValueDriver },
-    { label: 'Break Trigger', value: valueCore.thesisBreakTrigger },
-    { label: 'Evidence Quality', value: valueCore.evidenceQuality },
-    { label: 'Coverage', value: valueCore.frontendLabel }
+    { label: localizedStaticLabel('Value Core Type', locale), value: valueCoreTypeDisplay },
+    { label: localizedStaticLabel('Company Stage', locale), value: companyStageDisplay },
+    { label: localizedStaticLabel('Primary Driver', locale), value: primaryValueDriverDisplay },
+    { label: localizedStaticLabel('Break Trigger', locale), value: thesisBreakTriggerDisplay },
+    { label: localizedStaticLabel('Evidence Quality', locale), value: evidenceQualityDisplay },
+    { label: localizedStaticLabel('Coverage', locale), value: coverageStatusDisplay || localizedStaticLabel(valueCore.frontendLabel, locale) }
   ];
   const performanceGrid = buildLiveStockPerformanceGrid(tickerForSummary, visualPhaseOne?.performanceGrid, stockPerformancePayload, copy);
   const peerEcosystem = resolveReferencePeerEcosystemSnapshot(referencePeerMapPayload, tickerForSummary);
@@ -1661,14 +1771,16 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, refer
     evidenceState: localizedValue(signal, 'evidenceState', locale) || localizedStaticLabel(signal.evidenceState, locale)
   }));
   const overviewFaq = localizedFaqItems(visualPhaseOne?.faq?.overview, locale);
-  const businessCoreFaq = visualPhaseOne?.faq?.businessCore || [];
-  const marketEvidenceFaq = visualPhaseOne?.faq?.marketEvidence || [];
-  const valuationFaq = visualPhaseOne?.faq?.valuation || [];
-  const thesisRiskFaq = visualPhaseOne?.faq?.thesisRisk || [];
-  const financialHealthFaq = visualPhaseOne?.faq?.financialHealth || [];
+  const businessCoreFaq = localizedFaqItems(visualPhaseOne?.faq?.businessCore, locale);
+  const marketEvidenceFaq = localizedFaqItems(visualPhaseOne?.faq?.marketEvidence, locale);
+  const valuationFaq = localizedFaqItems(visualPhaseOne?.faq?.valuation, locale);
+  const thesisRiskFaq = localizedFaqItems(visualPhaseOne?.faq?.thesisRisk, locale);
+  const financialHealthFaq = localizedFaqItems(visualPhaseOne?.faq?.financialHealth, locale);
   const phaseTwo = visualPhaseOne?.phaseTwo || {};
-  const coreSectionLabel = visualPhaseOne ? 'Business Core' : 'Value Core';
-  const coreSectionHeading = visualPhaseOne ? 'What creates company value?' : 'What drives company value?';
+  const coreSectionLabel = visualPhaseOne ? copy.businessCore : copy.valueCore;
+  const coreSectionHeading = visualPhaseOne
+    ? copy.businessCoreQuestion
+    : (locale === 'zh' ? '公司靠甚麼創造價值？' : 'What drives company value?');
   const coreSectionRows = visualPhaseOne ? businessCoreRows : legacyValueCoreRows;
   const marketEvidenceCards = visualPhaseOne ? [
     {
@@ -1710,54 +1822,66 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, refer
 
   if (visualPhaseOne) {
     const valuationTab = phaseTwo.valuation || {};
-    const valuationMetricCards = valuationTab.metricCards || [
-      { label: 'Business Quality', value: valuationCore.topVerdict.businessQuality, note: 'Current curated read' },
-      { label: 'Valuation', value: valuationCore.topVerdict.valuationState, note: 'Valuation state' },
-      { label: 'Base Case', value: valuationCore.topVerdict.baseCaseSupport, note: 'Evidence status' },
-      { label: 'Margin of Safety', value: valuationCore.topVerdict.marginOfSafety, note: 'Risk cushion' }
-    ];
+    const valuationPosture = valuationTab.posture ? {
+      ...valuationTab.posture,
+      title: localizedValue(valuationTab.posture, 'title', locale) || valuationTab.posture.title,
+      label: localizedValue(valuationTab.posture, 'label', locale) || valuationTab.posture.label,
+      note: localizedValue(valuationTab.posture, 'note', locale) || valuationTab.posture.note
+    } : null;
+    const valuationMetricCards = localizedItems(valuationTab.metricCards || [
+      { label: 'Business Quality', value: valuationTopVerdict.businessQuality, note: 'Current curated read' },
+      { label: 'Valuation', value: valuationTopVerdict.valuationState, note: 'Valuation state' },
+      { label: 'Base Case', value: valuationTopVerdict.baseCaseSupport, note: 'Evidence status' },
+      { label: 'Margin of Safety', value: valuationTopVerdict.marginOfSafety, note: 'Risk cushion' }
+    ], locale, ['label', 'value', 'note']);
     const isPeerMapVerified = peerEcosystem?.source === 'live_reference_peer_map';
-    const valuationTensionCards = (valuationTab.tensionCards || [
-      { title: 'Growth vs multiple', state: 'Coverage pending', text: valuationCore.topVerdict.why },
-      { title: 'Evidence gap', state: 'Not verified', text: valuationCore.missingEvidence.join('; ') || 'Missing evidence pending.' }
+    const valuationTensionCards = localizedItems((valuationTab.tensionCards || [
+      { title: 'Growth vs multiple', state: 'Coverage pending', text: valuationTopVerdict.why },
+      { title: 'Evidence gap', state: 'Not verified', text: valuationMissingEvidence.join('; ') || 'Missing evidence pending.' }
     ]).map((card) => {
       if (String(card.title || '').toLowerCase().includes('peer')) {
         return {
           ...card,
           state: isPeerMapVerified ? 'Live reference context' : 'Not verified',
           text: isPeerMapVerified
-            ? 'Reference peer ecosystem context loaded successfully from reference peer map feed.'
+            ? (locale === 'zh' ? '同業參考資料已成功載入，可用作估值脈絡參考。' : 'Reference peer ecosystem context loaded successfully from reference peer map feed.')
             : card.text
         };
       }
       return card;
-    });
-    const valuationChecklist = valuationTab.checklist || valuationCore.researchJudgment;
+    }), locale, ['title', 'state', 'text']);
+    const localizedValuationChecklist = localizedArray(valuationTab, 'checklist', locale);
+    const valuationChecklist = localizedValuationChecklist.length ? localizedValuationChecklist : (valuationTab.checklist || valuationResearchJudgment);
     const thesisRiskTab = phaseTwo.thesisRisk || {};
-    const thesisRiskMap = thesisRiskTab.riskMap || (renderedVerdict.risks.length ? renderedVerdict.risks : [
-      'Risk monitor needs curated trigger thresholds before full tab release.'
+    const thesisRiskLead = localizedValue(thesisRiskTab, 'lead', locale) || thesisRiskTab.lead || thesisBreakTriggerDisplay;
+    const thesisRiskMap = localizedItems(thesisRiskTab.riskMap || (renderedVerdict.risks.length ? renderedVerdict.risks : [
+      locale === 'zh' ? '正式發布完整風險頁前，需要先整理觸發門檻。' : 'Risk monitor needs curated trigger thresholds before full tab release.'
     ]).slice(0, 4).map((risk, index) => ({
       label: `Risk ${index + 1}`,
       severity: index === 0 ? 'High' : 'Medium',
       watch: risk
-    }));
-    const thesisRiskEvidence = thesisRiskTab.evidenceNeeded || valueCore.evidenceNeeded;
+    })), locale, ['label', 'severity', 'watch']);
+    const localizedThesisRiskEvidence = localizedArray(thesisRiskTab, 'evidenceNeeded', locale);
+    const thesisRiskEvidence = localizedThesisRiskEvidence.length
+      ? localizedThesisRiskEvidence
+      : (thesisRiskTab.evidenceNeeded || valueCoreEvidenceItems);
     const financialHealthMetrics = valuationResearchGroups
       .find(group => group.title === 'Financial Health')?.metrics || [];
     const financialHealthTab = phaseTwo.financialHealth || {};
-    const financialHealthMetricCards = financialHealthTab.metricCards || (financialHealthMetrics.length ? financialHealthMetrics : [
+    const financialHealthQualityRead = localizedValue(financialHealthTab, 'qualityRead', locale) || financialHealthTab.qualityRead || copy.financialHealthPending;
+    const financialHealthMetricCards = localizedItems(financialHealthTab.metricCards || (financialHealthMetrics.length ? financialHealthMetrics : [
       { label: 'Cash + Securities', value: 'Not verified' },
       { label: 'Debt / Equity', value: 'Not verified' },
       { label: 'FCF Margin', value: 'Not verified' },
       { label: 'SBC / Revenue', value: 'Not verified' }
-    ]).map((metric) => ({
+    ]), locale, ['label', 'value', 'note']).map((metric) => ({
       label: metric.label,
       value: metric.value,
-      note: metric.note || 'Financial health evidence'
+      note: metric.note || localizedStaticLabel('Financial health evidence', locale)
     }));
-    const financialQualityCards = financialHealthTab.qualityCards || [
-      { title: 'Quality of growth', state: 'Coverage pending', text: financialHealthTab.qualityRead || 'Growth quality needs cash-flow and dilution context.' }
-    ];
+    const financialQualityCards = localizedItems(financialHealthTab.qualityCards || [
+      { title: 'Quality of growth', state: 'Coverage pending', text: financialHealthQualityRead || 'Growth quality needs cash-flow and dilution context.' }
+    ], locale, ['title', 'state', 'text']);
     const overviewKeyStatistics = [
       {
         label: copy.currentPrice,
@@ -1831,9 +1955,8 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, refer
         tone: 'neutral'
       }
     ];
-    const primaryRead = localizedFinalRead || valuationCore.topVerdict.overallRead;
-    const localizedEvidenceNeeded = localizedArray(dossierProfile?.valueCore, 'evidence_needed', locale);
-    const evidenceFocusItems = localizedEvidenceNeeded.length ? localizedEvidenceNeeded : valueCore.evidenceNeeded;
+    const primaryRead = localizedFinalRead || valuationTopVerdict.overallRead;
+    const evidenceFocusItems = valueCoreEvidenceItems;
     const evidenceFocus = evidenceFocusItems.slice(0, 3).join(' / ') || (locale === 'zh' ? '證據清單待補' : 'Evidence checklist pending');
 
     return (
@@ -2019,11 +2142,11 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, refer
                     </div>
                   ))}
                 </div>
-                {valueCore.evidenceNeeded.length > 0 && (
+                {evidenceFocusItems.length > 0 && (
                   <div className="dossier-business-evidence">
                     <span>{copy.evidenceToMonitor}</span>
                     <div className="dossier-evidence-chip-list">
-                      {valueCore.evidenceNeeded.map((item) => (
+                      {evidenceFocusItems.map((item) => (
                         <em key={item}>{item}</em>
                       ))}
                     </div>
@@ -2037,7 +2160,7 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, refer
               <section className="dossier-tab-content" aria-label={`${ticker} Market Evidence`}>
                 <div className="dossier-tab-content__header">
                   <p className="crowdrisk-kicker">{copy.marketEvidence}</p>
-                  <h3>{marketEvidence.title}</h3>
+                  <h3>{marketEvidenceTitle}</h3>
                 </div>
                 <div className="dossier-market-visual-grid" aria-label={`${ticker} market evidence visual cards`}>
                   {marketEvidenceCards.map((item) => (
@@ -2080,12 +2203,12 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, refer
               <section className="dossier-tab-content" aria-label={`${ticker} Valuation`}>
                 <div className="dossier-tab-content__header">
                   <p className="crowdrisk-kicker">{copy.valuation}</p>
-                  <h3>{valuationTab.posture?.title || valuationCore.topVerdict.valuationState}</h3>
+                  <h3>{valuationPosture?.title || valuationTopVerdict.valuationState}</h3>
                 </div>
                 <div className="dossier-phase2-lead">
-                  <span>{valuationTab.posture?.label || copy.valuationPosture}</span>
-                  <strong>{valuationCore.topVerdict.valuationState}</strong>
-                  <p>{valuationTab.posture?.note || valuationCore.topVerdict.why}</p>
+                  <span>{valuationPosture?.label || copy.valuationPosture}</span>
+                  <strong>{valuationTopVerdict.valuationState}</strong>
+                  <p>{valuationPosture?.note || valuationTopVerdict.why}</p>
                 </div>
                 <div className="dossier-phase2-metric-grid">
                   {valuationMetricCards.map((card) => (
@@ -2129,7 +2252,7 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, refer
                 <div className="dossier-phase2-lead">
                   <span>{copy.riskPosture}</span>
                   <strong>{copy.durabilityMonitor}</strong>
-                  <p>{thesisRiskTab.lead || valueCore.thesisBreakTrigger}</p>
+                  <p>{thesisRiskLead}</p>
                 </div>
                 <div className="dossier-risk-map-grid">
                   {thesisRiskMap.map((risk) => (
@@ -2166,7 +2289,7 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, refer
                 <div className="dossier-phase2-lead">
                   <span>{copy.qualityOfGrowth}</span>
                   <strong>{copy.growthPlusFcf}</strong>
-                  <p>{financialHealthTab.qualityRead || copy.financialHealthPending}</p>
+                  <p>{financialHealthQualityRead}</p>
                 </div>
                 <div className="dossier-phase2-metric-grid dossier-phase2-metric-grid--six">
                   {financialHealthMetricCards.map((card) => (
@@ -2205,12 +2328,12 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, refer
             <h2>{companyDisplayName}</h2>
             <p className="dossier-ticker-line">{tickerLine}</p>
             <div className="dossier-hero-pills">
-              <span>{researchState}</span>
+              <span>{researchStateDisplay}</span>
               {industryTheme && <span>{formatLabel(industryTheme, locale)}</span>}
             </div>
           </div>
 
-          <p className="dossier-profile-line">{stockOverview.profileLine}</p>
+          <p className="dossier-profile-line">{stockOverviewProfileLine}</p>
 
           <div className="dossier-hero-read" aria-label={`${ticker} executive summary`}>
             <span>{copy.finalRead}</span>
@@ -2323,13 +2446,13 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, refer
             <article className="dossier-cockpit-card">
               <span>{locale === 'zh' ? '公司身份 / 階段' : 'Company identity / stage'}</span>
               <strong>{companyDisplayName}</strong>
-              <p>{valueCore.companyStage}. {industryTheme ? formatLabel(industryTheme, locale) : (locale === 'zh' ? '業務分類待補' : 'Business classification pending')}.</p>
+              <p>{companyStageDisplay}. {industryTheme ? formatLabel(industryTheme, locale) : (locale === 'zh' ? '業務分類待補' : 'Business classification pending')}.</p>
             </article>
 
             <article className="dossier-cockpit-card">
               <span>{copy.businessCore}</span>
-              <strong>{valueCore.valueCoreType}</strong>
-              <p>{valueCore.primaryValueDriver}</p>
+              <strong>{valueCoreTypeDisplay}</strong>
+              <p>{primaryValueDriverDisplay}</p>
             </article>
 
             <article className="dossier-cockpit-card dossier-cockpit-card--wide" data-stock-performance-feed-source={stockPerformanceFeedSource}>
@@ -2368,8 +2491,8 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, refer
 
             <article className="dossier-cockpit-card">
               <span>{copy.marketEvidence}</span>
-              <strong>{momentumStrengthRead}</strong>
-              <p>{marketEvidence.title}</p>
+              <strong>{localizedStaticLabel(momentumStrengthRead, locale)}</strong>
+              <p>{marketEvidenceTitle}</p>
             </article>
           </div>
 
@@ -2413,9 +2536,9 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, refer
           <div className="dossier-company-overview">
             <p className="crowdrisk-kicker">{copy.companyOverview}</p>
             <h3>{copy.companyOverviewQuestion}</h3>
-            <p>{stockOverview.profileLine}</p>
+            <p>{stockOverviewProfileLine}</p>
             <div className="dossier-quick-facts">
-              {stockOverview.quickFacts.map((fact) => (
+              {quickFactsDisplay.map((fact) => (
                 <div key={fact.label}>
                   <span>{fact.label}</span>
                   <strong>{fact.value}</strong>
@@ -2426,33 +2549,33 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, refer
               <article>
                 <span>{copy.howMoney}</span>
                 <strong>{stockOverview.theme}</strong>
-                <p>{dossierProfile.sections?.[0]?.points?.[0] || stockOverview.profileLine}</p>
+                <p>{businessEngineSection?.points?.[0] || stockOverviewProfileLine}</p>
               </article>
               <article>
                 <span>{copy.customerQuality}</span>
-                <strong>{stockOverview.quickFacts.find(fact => fact.label.includes('$100k'))?.value || stockOverview.quickFacts.find(fact => fact.label.includes('Customer'))?.value || 'Pending'}</strong>
-                <p>{stockOverview.quickFacts.find(fact => fact.label.includes('Net Retention'))?.value ? `Net retention remains ${stockOverview.quickFacts.find(fact => fact.label.includes('Net Retention')).value}, so customer expansion stays central to the dossier.` : 'Customer quality needs retention, expansion, and concentration evidence.'}</p>
+                <strong>{largeCustomerFact?.value || copy.pending}</strong>
+                <p>{netRetentionFact?.value ? (locale === 'zh' ? `淨留存率維持在 ${netRetentionFact.value}，所以客戶擴張仍是這份檔案的核心。` : `Net retention remains ${netRetentionFact.value}, so customer expansion stays central to the dossier.`) : (locale === 'zh' ? '客戶質素仍需要留存率、擴張和集中度證據。' : 'Customer quality needs retention, expansion, and concentration evidence.')}</p>
               </article>
               <article>
                 <span>{copy.businessQuality}</span>
-                <strong>{valuationCore.topVerdict.businessQuality}</strong>
-                <p>{valuationCore.topVerdict.why}</p>
+                <strong>{valuationTopVerdict.businessQuality}</strong>
+                <p>{valuationTopVerdict.why}</p>
               </article>
               <article>
                 <span>{copy.peerCompetition}</span>
-                <strong>{dossierProfile.sections?.find(section => section.id === 'competitive-position')?.title || 'Peer context pending'}</strong>
-                <p>{dossierProfile.sections?.find(section => section.id === 'competitive-position')?.points?.[1] || 'Competition and peer positioning need company-specific coverage.'}</p>
+                <strong>{competitivePositionSection?.title || (locale === 'zh' ? '同業脈絡待補' : 'Peer context pending')}</strong>
+                <p>{competitivePositionSection?.points?.[1] || (locale === 'zh' ? '競爭位置仍需要公司層面的證據支持。' : 'Competition and peer positioning need company-specific coverage.')}</p>
               </article>
             </div>
-            {dossierProfile.sections?.length > 0 && (
+            {localizedDossierSections.length > 0 && (
               <div className="dossier-profile-section-heading">
                 <span>{copy.operatingNotes}</span>
                 <strong>{copy.operatingNotesBody}</strong>
               </div>
             )}
-            {dossierProfile.sections?.length > 0 && (
+            {localizedDossierSections.length > 0 && (
               <div className="dossier-profile-sections">
-                {dossierProfile.sections.map((section) => (
+                {localizedDossierSections.map((section) => (
                   <article key={section.id}>
                     <span>{section.label}</span>
                     <h4>{section.title}</h4>
@@ -2476,7 +2599,7 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, refer
             <h3>{coreSectionHeading}</h3>
           </div>
           <div className="dossier-hero-pills">
-            <span>{valueCore.frontendLabel}</span>
+            <span>{coverageStatusDisplay || localizedStaticLabel(valueCore.frontendLabel, locale)}</span>
             {valueCore.needsHumanReview && <span>{copy.humanReview}</span>}
           </div>
         </div>
@@ -2490,11 +2613,11 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, refer
           ))}
         </div>
 
-        {visualPhaseOne && valueCore.evidenceNeeded.length > 0 && (
+        {visualPhaseOne && valueCoreEvidenceItems.length > 0 && (
           <div className="dossier-business-evidence">
             <span>{copy.evidenceToMonitor}</span>
             <div className="dossier-evidence-chip-list">
-              {valueCore.evidenceNeeded.map((item) => (
+              {valueCoreEvidenceItems.map((item) => (
                 <em key={item}>{item}</em>
               ))}
             </div>
@@ -2516,25 +2639,25 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, refer
         <div className="dossier-valuation-verdict">
           <div>
             <span>{copy.businessQuality}</span>
-            <strong>{valuationCore.topVerdict.businessQuality}</strong>
+            <strong>{valuationTopVerdict.businessQuality}</strong>
           </div>
           <div>
             <span>{locale === 'zh' ? '估值狀態' : 'Valuation State'}</span>
-            <strong>{valuationCore.topVerdict.valuationState}</strong>
+            <strong>{valuationTopVerdict.valuationState}</strong>
           </div>
           <div>
             <span>{locale === 'zh' ? '基準情境支持' : 'Base Case Support'}</span>
-            <strong>{valuationCore.topVerdict.baseCaseSupport}</strong>
+            <strong>{valuationTopVerdict.baseCaseSupport}</strong>
           </div>
           <div>
             <span>{locale === 'zh' ? '安全邊際' : 'Margin of Safety'}</span>
-            <strong>{valuationCore.topVerdict.marginOfSafety}</strong>
+            <strong>{valuationTopVerdict.marginOfSafety}</strong>
           </div>
         </div>
 
         <div className="dossier-valuation-read">
-          <strong>{valuationCore.topVerdict.overallRead}</strong>
-          <p>{valuationCore.topVerdict.why}</p>
+          <strong>{valuationTopVerdict.overallRead}</strong>
+          <p>{valuationTopVerdict.why}</p>
         </div>
 
         {forwardValuationRange && (
@@ -2691,7 +2814,7 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, refer
           <div>
             <h4>{copy.researchJudgment}</h4>
             <ul>
-              {valuationCore.researchJudgment.map((item) => (
+              {valuationResearchJudgment.map((item) => (
                 <li key={item}>{item}</li>
               ))}
             </ul>
@@ -2699,7 +2822,7 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, refer
           <div>
             <h4>{copy.missingEvidence}</h4>
             <ul>
-              {valuationCore.missingEvidence.map((item) => (
+              {valuationMissingEvidence.map((item) => (
                 <li key={item}>{item}</li>
               ))}
             </ul>
@@ -2732,7 +2855,7 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, refer
             <div className="dossier-momentum-strength-panel" aria-label={`${ticker} momentum strength`}>
               <div className="dossier-momentum-strength-head">
                 <span>{copy.strengthRead}</span>
-                <strong>{momentumStrengthRead}</strong>
+                <strong>{localizedStaticLabel(momentumStrengthRead, locale)}</strong>
               </div>
               <div className="dossier-momentum-strength-grid">
                 {momentumStrengthRows.map((row) => (
@@ -2847,7 +2970,7 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, refer
 
       <div id="market-evidence" className="card dossier-market-evidence-card" style={{ marginBottom: '24px' }}>
         <p className="crowdrisk-kicker">{copy.marketEvidence}</p>
-        <h3>{copy.eventStudyConnection}: {marketEvidence.title}</h3>
+        <h3>{copy.eventStudyConnection}: {marketEvidenceTitle}</h3>
         {marketEvidenceCards.length > 0 && (
           <div className="dossier-market-visual-grid" aria-label={`${ticker} market evidence visual cards`}>
             {marketEvidenceCards.map((item) => (
@@ -2917,7 +3040,7 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, refer
               </button>
             )}
             <ul>
-              {marketEvidence.points.map((point) => (
+              {marketEvidencePoints.map((point) => (
                 <li key={point}>{point}</li>
               ))}
             </ul>
@@ -2951,7 +3074,7 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, refer
         <ContextualFaq heading={copy.contextualFaq} title={copy.faqMarketEvidenceTitle(ticker)} items={marketEvidenceFaq} />
       </div>
 
-      {valuationCore.scenarios && (
+      {valuationScenarios.length > 0 && (
         <div id="scenario-range" className="card dossier-scenario-card">
           <p className="crowdrisk-kicker">{copy.scenarioRange}</p>
           <h3>{copy.scenarioQuestion}</h3>
@@ -2959,7 +3082,7 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, refer
             {copy.scenarioModelNote}
           </p>
           <div className="dossier-scenario-grid">
-            {valuationCore.scenarios.map((scenario) => (
+            {valuationScenarios.map((scenario) => (
               <div key={scenario.label} className="dossier-scenario-path">
                 <span>{scenario.label}</span>
                 <p>{scenario.text}</p>
@@ -2995,7 +3118,7 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, refer
           <div>
             <span>{copy.fundamentalTriggers}</span>
             <ul>
-              {(valuationCore.killData || killSwitch).map((item, i) => <li key={i}>{item}</li>)}
+              {(valuationKillData || killSwitch).map((item, i) => <li key={i}>{item}</li>)}
             </ul>
           </div>
           <div>

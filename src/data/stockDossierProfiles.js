@@ -9,6 +9,8 @@ const stockDossierProfiles = {
     logoUrl: buildStockLogoUrl('DDOG'),
     overview:
       'Datadog is a cloud-based observability and security platform used by engineering and operations teams to monitor infrastructure, applications, logs, user experience, and cloud-security workflows.',
+    overview_zh:
+      'Datadog 是雲端可觀測性和安全平台，工程及營運團隊用它監控基建、應用程式、日誌、用戶體驗和雲端安全流程。',
     category: 'Cloud & AI Platform',
     analysisDate: '2026-05-09',
     latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
@@ -38,7 +40,9 @@ const stockDossierProfiles = {
         to: 'ai_benefit',
         confidence: 'medium_high',
         reason:
-          'AI workload growth appears to increase the need for observability, security monitoring, and cloud infrastructure visibility rather than weaken Datadog\'s platform value.'
+          'AI workload growth appears to increase the need for observability, security monitoring, and cloud infrastructure visibility rather than weaken Datadog\'s platform value.',
+        reason_zh:
+          'AI 工作負載增長，似乎會增加企業對可觀測性、安全監控和雲端基建可視化的需求，而不是削弱 Datadog 的平台價值。'
       },
       keySupport: [
         'Q1 revenue grew 32% year over year and crossed the $1B quarterly run-rate threshold.',
@@ -46,17 +50,28 @@ const stockDossierProfiles = {
         'Large-customer expansion and low-120%s net retention support the platform expansion thesis.',
         'Post-earnings market evidence remains constructive enough to justify continued research.'
       ],
+      keySupport_zh: [
+        'Q1 收入按年增長 32%，季度收入年化已超過 10 億美元。',
+        'FCF 利潤率達 29%，Rule of 40 證據仍然強。',
+        '大型客戶擴張和低 120%s 淨留存率，支持平台擴張論點。',
+        '財報後市場證據仍偏正面，足以支持繼續研究。'
+      ],
       keyRisk: [
         'The current valuation already assumes durable 25%+ growth and near-30% FCF margins.',
         'Stock-based compensation remains material and needs visible dilution discipline.',
         'There is no margin of safety if growth normalizes toward the low-20%s or below.'
+      ],
+      keyRisk_zh: [
+        '目前估值已預設公司能長期維持 25% 以上增長和接近 30% FCF 利潤率。',
+        'SBC 仍然偏高，需要看到更清晰的攤薄紀律。',
+        '如果增長回落至低 20%s 或以下，現價幾乎沒有安全邊際。'
       ]
     },
     quickFacts: [
-      { label: 'Business Model', value: 'Subscription SaaS' },
-      { label: 'Customer Base', value: '33,200 customers' },
-      { label: '$100k+ ARR Customers', value: '4,550 / 90% of ARR' },
-      { label: 'Net Retention', value: 'Low-120%s' }
+      { label: 'Business Model', value: 'Subscription SaaS', label_zh: '業務模式', value_zh: '訂閱制 SaaS' },
+      { label: 'Customer Base', value: '33,200 customers', label_zh: '客戶基礎', value_zh: '33,200 名客戶' },
+      { label: '$100k+ ARR Customers', value: '4,550 / 90% of ARR', label_zh: '年收入 10 萬美元以上客戶', value_zh: '4,550 名 / 佔 ARR 90%' },
+      { label: 'Net Retention', value: 'Low-120%s', label_zh: '淨留存率', value_zh: '低 120%s' }
     ],
     marketEvidence: {
       title: 'Post-earnings evidence is constructive, but it is not a valuation answer.',
@@ -65,12 +80,20 @@ const stockDossierProfiles = {
         'The stock remains in a post-earnings research window rather than a cold fundamental screen.',
         'Momentum and relative strength keep DDOG worth monitoring, but they do not solve valuation risk.',
         'The market is treating AI workloads as demand support for observability and security tooling.'
+      ],
+      points_zh: [
+        '股價仍處於財報後研究窗口，而不是單純的基本面篩選。',
+        '動能和相對強度令 DDOG 值得繼續跟進，但不能解決估值風險。',
+        '市場目前傾向把 AI 工作負載視為可觀測性和安全工具的需求支持。'
       ]
     },
     eventStudyRead: {
       title: 'The historical setup supports continued monitoring, not automatic entry.',
+      title_zh: '歷史事件證據支持繼續觀察，不代表可以自動進場。',
       interpretation:
         'Use the event-study matrix to judge whether the latest post-earnings move has historically followed through, faded, or required patience. The Dossier should treat this as market evidence beside valuation and fundamentals.',
+      interpretation_zh:
+        '用事件研究矩陣判斷最新財報後股價反應，過往是延續、回吐，還是需要時間確認。股票檔案應把它視為市場證據，並和估值及基本面一併閱讀。',
       checkLabels: {
         baseRate: 'Comparable base rate',
         t1: 'Reaction evidence',
@@ -195,51 +218,71 @@ const stockDossierProfiles = {
         businessCore: [
           {
             question: 'What creates value for DDOG?',
-            answer: 'The main value driver is customer expansion after adoption. Net retention, larger customers, product breadth, and FCF margin show whether the platform keeps compounding.'
+            answer: 'The main value driver is customer expansion after adoption. Net retention, larger customers, product breadth, and FCF margin show whether the platform keeps compounding.',
+            question_zh: 'DDOG 靠甚麼創造價值？',
+            answer_zh: '主要價值來源是客戶採用後持續擴張。淨留存率、大型客戶、產品廣度和 FCF 利潤率，可以反映平台是否仍在複利式增長。'
           },
           {
             question: 'Which metrics matter most?',
-            answer: 'NRR or DBNR, $100k+ ARR customer growth, RPO or cRPO growth, FCF margin, and SBC as a percentage of revenue matter most. These metrics monitor durability rather than a short-term price move.'
+            answer: 'NRR or DBNR, $100k+ ARR customer growth, RPO or cRPO growth, FCF margin, and SBC as a percentage of revenue matter most. These metrics monitor durability rather than a short-term price move.',
+            question_zh: '最重要看哪些指標？',
+            answer_zh: '最重要是 NRR / DBNR、年收入 10 萬美元以上客戶增長、RPO / cRPO 增長、FCF 利潤率，以及 SBC 佔收入比例。這些指標用來看業務耐久度，不是短線股價波動。'
           }
         ],
         marketEvidence: [
           {
             question: 'Does strong momentum mean the thesis is proven?',
-            answer: 'No. Momentum is market evidence, not proof of company quality or valuation support. It helps decide whether the name deserves continued monitoring.'
+            answer: 'No. Momentum is market evidence, not proof of company quality or valuation support. It helps decide whether the name deserves continued monitoring.',
+            question_zh: '股價動能強，是否代表論點已被證明？',
+            answer_zh: '不是。動能只是市場證據，不等於公司質素或估值已被支持。它的作用是判斷這隻股票是否值得繼續跟進。'
           },
           {
             question: 'What would make the market evidence weaker?',
-            answer: 'The market evidence weakens if relative strength fades, the post-earnings move retraces, or event follow-through data turns negative. Those signals should be monitored beside business and valuation evidence.'
+            answer: 'The market evidence weakens if relative strength fades, the post-earnings move retraces, or event follow-through data turns negative. Those signals should be monitored beside business and valuation evidence.',
+            question_zh: '甚麼情況會削弱市場證據？',
+            answer_zh: '如果相對強度轉弱、財報後升勢回吐，或事件後延續數據轉差，市場證據就會變弱。這些信號要和業務及估值證據一起看。'
           }
         ],
         valuation: [
           {
             question: 'Why does valuation matter even if growth is strong?',
-            answer: 'Strong growth can still disappoint if the market already assumes years of durable expansion. This tab checks whether growth, margin, and dilution evidence are enough to support a demanding setup.'
+            answer: 'Strong growth can still disappoint if the market already assumes years of durable expansion. This tab checks whether growth, margin, and dilution evidence are enough to support a demanding setup.',
+            question_zh: '增長強，為甚麼仍要看估值？',
+            answer_zh: '如果市場已經預設公司未來多年都能高增長，即使增長強也可能令人失望。這個 tab 是檢查增長、利潤率和攤薄證據，是否足以支持高估值。'
           },
           {
             question: 'What would make the valuation case cleaner?',
-            answer: 'The case becomes cleaner if growth stays above the mid-20%s, FCF margin holds near 30%, and SBC trends down as a share of revenue. Peer and consensus context are still needed before raising confidence.'
+            answer: 'The case becomes cleaner if growth stays above the mid-20%s, FCF margin holds near 30%, and SBC trends down as a share of revenue. Peer and consensus context are still needed before raising confidence.',
+            question_zh: '甚麼會令估值論點更乾淨？',
+            answer_zh: '如果增長維持中 20%s 以上、FCF 利潤率接近 30%，而 SBC 佔收入比例下降，估值論點會更乾淨。不過仍需要同業和市場共識資料，才可提高信心。'
           }
         ],
         thesisRisk: [
           {
             question: 'What risk would change the thesis first?',
-            answer: 'The first risk to watch is business durability: weaker retention, slower large-customer growth, or lower RPO support. Those signals would challenge the expansion engine before the headline story changes.'
+            answer: 'The first risk to watch is business durability: weaker retention, slower large-customer growth, or lower RPO support. Those signals would challenge the expansion engine before the headline story changes.',
+            question_zh: '哪個風險會最先改變論點？',
+            answer_zh: '最先要看的是業務耐久度：留存率轉弱、大型客戶增長放慢，或 RPO 支持下降。這些信號會比 headline 故事更早挑戰擴張動力。'
           },
           {
             question: 'How should risk signals be read?',
-            answer: 'Risk signals are evidence monitors, not instructions. They show what needs follow-up before the dossier read becomes stronger or weaker.'
+            answer: 'Risk signals are evidence monitors, not instructions. They show what needs follow-up before the dossier read becomes stronger or weaker.',
+            question_zh: '應該怎樣閱讀風險信號？',
+            answer_zh: '風險信號是證據監察，不是操作指令。它們顯示哪些地方要跟進，然後才判斷檔案結論是變強還是變弱。'
           }
         ],
         financialHealth: [
           {
             question: 'What financial signal matters most for DDOG?',
-            answer: 'The cleanest signal is whether revenue growth can convert into durable free cash flow while SBC becomes less burdensome. Cash generation is strong, but dilution discipline still needs monitoring.'
+            answer: 'The cleanest signal is whether revenue growth can convert into durable free cash flow while SBC becomes less burdensome. Cash generation is strong, but dilution discipline still needs monitoring.',
+            question_zh: 'DDOG 最重要的財務信號是甚麼？',
+            answer_zh: '最乾淨的信號，是收入增長能否轉化成持續自由現金流，同時 SBC 負擔下降。現金生成能力強，但攤薄紀律仍要監察。'
           },
           {
             question: 'Is cash flow enough by itself?',
-            answer: 'No. FCF margin helps, but the quality of that cash flow depends on reinvestment needs, SBC, and whether growth remains broad-based. This tab keeps those items together.'
+            answer: 'No. FCF margin helps, but the quality of that cash flow depends on reinvestment needs, SBC, and whether growth remains broad-based. This tab keeps those items together.',
+            question_zh: '只看現金流是否足夠？',
+            answer_zh: '不足夠。FCF 利潤率有幫助，但現金流質素仍取決於再投資需求、SBC，以及增長是否夠廣泛。這個 tab 會把這些項目放在一起看。'
           }
         ]
       },
@@ -248,18 +291,21 @@ const stockDossierProfiles = {
           posture: {
             title: 'Premium assumptions',
             label: 'Valuation posture',
-            note: 'Execution quality is visible, but revenue growth and cash margins need to stay strong.'
+            note: 'Execution quality is visible, but revenue growth and cash margins need to stay strong.',
+            title_zh: '高估值假設',
+            label_zh: '估值狀態',
+            note_zh: '營運質素可見，但收入增長和現金流利潤率仍要保持強勢。'
           },
           metricCards: [
-            { label: 'EV / FY2026 Revenue', value: '16x', note: 'Premium revenue multiple' },
-            { label: 'EV / FY2026 FCF', value: '55x', note: 'Cash-flow expectations are high' },
-            { label: 'Rule of 40', value: '61', note: 'Growth plus FCF margin evidence' },
-            { label: 'Base Case Support', value: 'Partial', note: 'Quality visible; valuation still demanding' }
+            { label: 'EV / FY2026 Revenue', value: '16x', note: 'Premium revenue multiple', label_zh: 'EV / FY2026 收入', note_zh: '收入估值倍數偏高' },
+            { label: 'EV / FY2026 FCF', value: '55x', note: 'Cash-flow expectations are high', label_zh: 'EV / FY2026 FCF', note_zh: '市場對現金流要求很高' },
+            { label: 'Rule of 40', value: '61', note: 'Growth plus FCF margin evidence', label_zh: 'Rule of 40', note_zh: '增長加 FCF 利潤率證據' },
+            { label: 'Base Case Support', value: 'Partial', note: 'Quality visible; valuation still demanding', label_zh: '基準情境支持', value_zh: '部分支持', note_zh: '質素可見，但估值仍然要求高' }
           ],
           tensionCards: [
-            { title: 'Growth vs multiple', state: 'Needs sustained growth', text: 'The setup depends on DDOG keeping revenue growth above the mid-20%s while the revenue multiple remains elevated.' },
-            { title: 'Margin sensitivity', state: 'FCF must hold', text: 'A slip below high-20%s FCF margin would make the current valuation read less forgiving.' },
-            { title: 'Peer context', state: 'Not verified', text: 'A current peer and consensus multiple set is still needed before the valuation read can be considered complete.' }
+            { title: 'Growth vs multiple', state: 'Needs sustained growth', text: 'The setup depends on DDOG keeping revenue growth above the mid-20%s while the revenue multiple remains elevated.', title_zh: '增長與估值倍數', state_zh: '需要持續高增長', text_zh: '只要收入估值倍數仍高，DDOG 就需要把收入增長維持在中 20%s 以上。' },
+            { title: 'Margin sensitivity', state: 'FCF must hold', text: 'A slip below high-20%s FCF margin would make the current valuation read less forgiving.', title_zh: '利潤率敏感度', state_zh: 'FCF 需要守住', text_zh: '如果 FCF 利潤率跌穿高 20%s，現估值會變得更難支持。' },
+            { title: 'Peer context', state: 'Not verified', text: 'A current peer and consensus multiple set is still needed before the valuation read can be considered complete.', title_zh: '同業估值脈絡', state_zh: '未核實', text_zh: '仍需要最新同業和市場共識倍數，估值判斷才算完整。' }
           ],
           checklist: [
             'Revenue growth remains above 25% for multiple years',
@@ -267,15 +313,23 @@ const stockDossierProfiles = {
             'NRR / DBNR stays around low-120%s',
             'SBC declines as a percentage of revenue',
             'RPO / cRPO supports forward revenue durability'
+          ],
+          checklist_zh: [
+            '收入增長未來多年維持 25% 以上',
+            'FCF 利潤率接近或高於 30%',
+            'NRR / DBNR 維持低 120%s 左右',
+            'SBC 佔收入比例下降',
+            'RPO / cRPO 支持未來收入韌性'
           ]
         },
         thesisRisk: {
           lead: 'The main risk is not balance-sheet stress; it is whether platform durability keeps matching a demanding valuation read.',
+          lead_zh: '主要風險不是資產負債表壓力，而是平台耐久度能否繼續配得上高估值要求。',
           riskMap: [
-            { label: 'Growth deceleration', severity: 'High', watch: 'Revenue growth below 25% or weaker RPO support' },
-            { label: 'Margin / efficiency', severity: 'Medium', watch: 'FCF margin below 25% or SBC staying elevated' },
-            { label: 'Platform breadth', severity: 'Medium', watch: 'Large-customer expansion or multi-product adoption slows' },
-            { label: 'AI / cloud spend sensitivity', severity: 'Medium', watch: 'Optimization cycle reduces workload expansion signal' }
+            { label: 'Growth deceleration', severity: 'High', watch: 'Revenue growth below 25% or weaker RPO support', label_zh: '增長放慢', severity_zh: '高', watch_zh: '收入增長跌穿 25%，或 RPO 支持轉弱' },
+            { label: 'Margin / efficiency', severity: 'Medium', watch: 'FCF margin below 25% or SBC staying elevated', label_zh: '利潤率 / 效率', severity_zh: '中', watch_zh: 'FCF 利潤率跌穿 25%，或 SBC 維持高位' },
+            { label: 'Platform breadth', severity: 'Medium', watch: 'Large-customer expansion or multi-product adoption slows', label_zh: '平台廣度', severity_zh: '中', watch_zh: '大型客戶擴張或多產品採用放慢' },
+            { label: 'AI / cloud spend sensitivity', severity: 'Medium', watch: 'Optimization cycle reduces workload expansion signal', label_zh: 'AI / 雲支出敏感度', severity_zh: '中', watch_zh: '成本優化週期削弱工作負載擴張信號' }
           ],
           evidenceNeeded: [
             'NRR / DBNR trend',
@@ -284,22 +338,31 @@ const stockDossierProfiles = {
             'FCF margin durability',
             'SBC as percentage of revenue',
             'AI-native workload adoption signal'
+          ],
+          evidenceNeeded_zh: [
+            'NRR / DBNR 趨勢',
+            '年收入 10 萬美元以上客戶增長',
+            'RPO / cRPO 增長',
+            'FCF 利潤率耐久度',
+            'SBC 佔收入比例',
+            'AI 原生工作負載採用信號'
           ]
         },
         financialHealth: {
           qualityRead: 'Growth quality is strong when revenue expansion, FCF margin, and balance-sheet flexibility move together.',
+          qualityRead_zh: '當收入擴張、FCF 利潤率和資產負債表彈性同步改善時，增長質素才算強。',
           metricCards: [
-            { label: 'Revenue Growth', value: '32.0%', note: 'Q1 year-over-year growth' },
-            { label: 'FCF Margin', value: '29.0%', note: 'Strong cash conversion' },
-            { label: 'Gross Margin', value: '79.0%', note: 'Software margin profile' },
-            { label: 'Cash + Securities', value: '$4.8B', note: 'Liquidity cushion' },
-            { label: 'Convertible Notes', value: '$1.0B', note: 'Balance-sheet item to monitor' },
-            { label: 'SBC / Revenue', value: '19.6%', note: 'Dilution discipline still matters' }
+            { label: 'Revenue Growth', value: '32.0%', note: 'Q1 year-over-year growth', label_zh: '收入增長', note_zh: 'Q1 按年增長' },
+            { label: 'FCF Margin', value: '29.0%', note: 'Strong cash conversion', label_zh: 'FCF 利潤率', note_zh: '現金轉化強' },
+            { label: 'Gross Margin', value: '79.0%', note: 'Software margin profile', label_zh: '毛利率', note_zh: '軟件利潤率特徵' },
+            { label: 'Cash + Securities', value: '$4.8B', note: 'Liquidity cushion', label_zh: '現金及證券', note_zh: '流動性緩衝' },
+            { label: 'Convertible Notes', value: '$1.0B', note: 'Balance-sheet item to monitor', label_zh: '可轉換票據', note_zh: '需要監察的資產負債表項目' },
+            { label: 'SBC / Revenue', value: '19.6%', note: 'Dilution discipline still matters', label_zh: 'SBC / 收入', note_zh: '攤薄紀律仍然重要' }
           ],
           qualityCards: [
-            { title: 'Scale and growth', state: 'Constructive', text: 'Revenue crossed the $1B quarterly run-rate threshold while growth remained above 30%.' },
-            { title: 'Cash generation', state: 'Strong but needs quality check', text: 'FCF margin is strong, but the read should stay paired with SBC and reinvestment evidence.' },
-            { title: 'Reinvestment balance', state: 'Monitor', text: 'The research question is whether DDOG can keep investing in platform breadth while improving shareholder economics.' }
+            { title: 'Scale and growth', state: 'Constructive', text: 'Revenue crossed the $1B quarterly run-rate threshold while growth remained above 30%.', title_zh: '規模與增長', state_zh: '正面', text_zh: '季度收入年化已超過 10 億美元，同時增長仍高於 30%。' },
+            { title: 'Cash generation', state: 'Strong but needs quality check', text: 'FCF margin is strong, but the read should stay paired with SBC and reinvestment evidence.', title_zh: '現金生成能力', state_zh: '強，但仍要檢查質素', text_zh: 'FCF 利潤率強，但仍要和 SBC 及再投資證據一起看。' },
+            { title: 'Reinvestment balance', state: 'Monitor', text: 'The research question is whether DDOG can keep investing in platform breadth while improving shareholder economics.', title_zh: '再投資平衡', state_zh: '需要監察', text_zh: '研究重點是 DDOG 能否繼續投資平台廣度，同時改善股東經濟效益。' }
           ]
         }
       }
@@ -308,12 +371,19 @@ const stockDossierProfiles = {
       status: 'available',
       topVerdict: {
         businessQuality: 'High',
+        businessQuality_zh: '高',
         valuationState: 'Priced for Perfection',
+        valuationState_zh: '接近完美定價',
         baseCaseSupport: 'Partial',
+        baseCaseSupport_zh: '部分支持',
         marginOfSafety: 'None',
+        marginOfSafety_zh: '沒有',
         overallRead: 'High quality compounder; valuation leaves no margin of safety.',
+        overallRead_zh: '高質素、能持續創造價值的公司；但估值幾乎沒有安全邊際。',
         why:
-          'DDOG is executing well, with Q1 revenue growth of 32% and strong free-cash-flow conversion. At roughly 16x FY2026 revenue guide and about 55x FY2026 FCF if Q1 margin holds, the price already assumes years of durable growth and strong cash margins.'
+          'DDOG is executing well, with Q1 revenue growth of 32% and strong free-cash-flow conversion. At roughly 16x FY2026 revenue guide and about 55x FY2026 FCF if Q1 margin holds, the price already assumes years of durable growth and strong cash margins.',
+        why_zh:
+          'DDOG 營運表現仍強，Q1 收入增長 32%，自由現金流轉化亦好。不過以約 16 倍 FY2026 收入指引、以及若 Q1 FCF 利潤率維持則約 55 倍 FY2026 FCF 來看，現價已經預設公司未來多年都能維持高增長和高現金流利潤率。'
       },
       coreMetrics: [
         { id: 'revenue_growth', label: 'Revenue Growth', value: 0.32, format: 'percent' },
@@ -331,11 +401,22 @@ const stockDossierProfiles = {
         'The base case is only partially supported because quality is high but valuation already capitalizes much of the growth story.',
         'The key shareholder cost is not liquidity risk; it is SBC and dilution discipline.'
       ],
+      researchJudgment_zh: [
+        '只有在收入增長未來多年維持 25% 以上、FCF 利潤率接近或高於 30% 時，現估值才較合理。',
+        '基準情境只能算部分支持：公司質素高，但估值已經反映大部分增長故事。',
+        '股東要留意的主要成本不是流動性風險，而是 SBC 和攤薄紀律。'
+      ],
       missingEvidence: [
         'Exact product-level revenue mix',
         'Current full consensus model',
         'Customer concentration detail',
         'Clean ROIC after excess cash and SBC adjustment'
+      ],
+      missingEvidence_zh: [
+        '精確產品層面收入組合',
+        '最新完整市場共識模型',
+        '客戶集中度資料',
+        '扣除多餘現金並調整 SBC 後的乾淨 ROIC'
       ],
       forwardValuationRange: {
         valuationMethod: 'FY2028 model revenue x EV / revenue range, with EV / FCF as cross-check',
@@ -352,6 +433,11 @@ const stockDossierProfiles = {
           'Current full consensus model',
           'Explicit diluted share count',
           'Clean FY2028 model FCF bridge for EV / FCF valuation'
+        ],
+        missingEvidence_zh: [
+          '最新完整市場共識模型',
+          '明確攤薄後股數',
+          '用於 EV / FCF 估值的 FY2028 FCF 模型橋接'
         ],
         scenarios: [
           {
@@ -381,31 +467,49 @@ const stockDossierProfiles = {
         ]
       },
       scenarios: [
-        {
-          label: 'Bull Case',
-          text: 'Revenue compounds 25%-30%, net retention stays in the low-120%s or better, AI/security products expand wallet share, FCF margin moves above 30%, and SBC as a percentage of revenue declines.',
-          impliedOutcome: 'Premium valuation can remain defensible if DDOG proves AI/security workload expansion is additive and margins stay above 30%.',
-          upsideDownside: 'References the Valuation Core forward model; valuation range and median return are model-derived, not formal targets.',
-          threeYearIrr: 'Scenario-level IRR is not separately modeled here; see Valuation Core 3Y IRR to median.',
-          trigger: 'RPO, $100k+ ARR customers, net retention, FCF margin, and SBC discipline all improve together.'
-        },
-        {
-          label: 'Base Case',
-          text: 'Revenue decelerates from 32% toward the low/mid-20%s, FCF margin stays high-20%s, SBC improves gradually, and upside is mostly limited by multiple risk.',
-          impliedOutcome: 'Business quality stays high, but expected return is capped because valuation already capitalizes much of the story.',
-          upsideDownside: 'References the Valuation Core forward model; valuation range and median return are model-derived, not formal targets.',
-          threeYearIrr: 'Scenario-level IRR is not separately modeled here; see Valuation Core 3Y IRR to median.',
-          trigger: 'Growth moderates, FCF holds high-20%s, and the market keeps DDOG on a premium but less forgiving multiple.'
-        },
-        {
-          label: 'Bear Case',
-          text: 'Growth falls below 20%, cloud optimization or native tools pressure pricing, product expansion slows, or SBC stays elevated. Downside would be valuation-led.',
-          impliedOutcome: 'Multiple compression becomes the main downside path if execution no longer supports priced-for-perfection assumptions.',
-          upsideDownside: 'References the Valuation Core forward model; valuation range and median return are model-derived, not formal targets.',
-          threeYearIrr: 'Scenario-level IRR is not separately modeled here; see Valuation Core 3Y IRR to median.',
-          trigger: 'Revenue growth drops below 20%-25%, retention weakens, margins slip, or dilution stays elevated.'
-        }
-      ],
+          {
+            label: 'Bull Case',
+            label_zh: '樂觀情境',
+            text: 'Revenue compounds 25%-30%, net retention stays in the low-120%s or better, AI/security products expand wallet share, FCF margin moves above 30%, and SBC as a percentage of revenue declines.',
+            text_zh: '收入以 25%-30% 複合增長，淨留存率維持低 120%s 或更好，AI / 安全產品提高客戶錢包份額，FCF 利潤率升穿 30%，SBC 佔收入比例下降。',
+            impliedOutcome: 'Premium valuation can remain defensible if DDOG proves AI/security workload expansion is additive and margins stay above 30%.',
+            impliedOutcome_zh: '如果 DDOG 證明 AI / 安全工作負載帶來額外增長，而且利潤率維持 30% 以上，較高估值仍可被支持。',
+            upsideDownside: 'References the Valuation Core forward model; valuation range and median return are model-derived, not formal targets.',
+            upsideDownside_zh: '參考估值核心的前瞻模型；估值區間和中位回報屬模型推算，不是正式目標價。',
+            threeYearIrr: 'Scenario-level IRR is not separately modeled here; see Valuation Core 3Y IRR to median.',
+            threeYearIrr_zh: '此處未另行建立情境級 IRR；請看估值核心的 3 年中位 IRR。',
+            trigger: 'RPO, $100k+ ARR customers, net retention, FCF margin, and SBC discipline all improve together.',
+            trigger_zh: 'RPO、年收入 10 萬美元以上客戶、淨留存率、FCF 利潤率和 SBC 紀律同步改善。'
+          },
+          {
+            label: 'Base Case',
+            label_zh: '基準情境',
+            text: 'Revenue decelerates from 32% toward the low/mid-20%s, FCF margin stays high-20%s, SBC improves gradually, and upside is mostly limited by multiple risk.',
+            text_zh: '收入增長由 32% 放慢至低至中 20%s，FCF 利潤率維持高 20%s，SBC 逐步改善，但上行空間主要受估值倍數風險限制。',
+            impliedOutcome: 'Business quality stays high, but expected return is capped because valuation already capitalizes much of the story.',
+            impliedOutcome_zh: '業務質素仍高，但估值已反映大部分故事，預期回報會受限制。',
+            upsideDownside: 'References the Valuation Core forward model; valuation range and median return are model-derived, not formal targets.',
+            upsideDownside_zh: '參考估值核心的前瞻模型；估值區間和中位回報屬模型推算，不是正式目標價。',
+            threeYearIrr: 'Scenario-level IRR is not separately modeled here; see Valuation Core 3Y IRR to median.',
+            threeYearIrr_zh: '此處未另行建立情境級 IRR；請看估值核心的 3 年中位 IRR。',
+            trigger: 'Growth moderates, FCF holds high-20%s, and the market keeps DDOG on a premium but less forgiving multiple.',
+            trigger_zh: '增長放慢，FCF 維持高 20%s，市場仍給 DDOG 較高、但更不寬容的估值倍數。'
+          },
+          {
+            label: 'Bear Case',
+            label_zh: '悲觀情境',
+            text: 'Growth falls below 20%, cloud optimization or native tools pressure pricing, product expansion slows, or SBC stays elevated. Downside would be valuation-led.',
+            text_zh: '增長跌穿 20%，雲端成本優化或原生工具壓低定價，產品擴張放慢，或 SBC 持續偏高。下行風險將主要由估值收縮帶動。',
+            impliedOutcome: 'Multiple compression becomes the main downside path if execution no longer supports priced-for-perfection assumptions.',
+            impliedOutcome_zh: '如果營運表現不再支持接近完美定價的假設，估值倍數收縮會成為主要下行路徑。',
+            upsideDownside: 'References the Valuation Core forward model; valuation range and median return are model-derived, not formal targets.',
+            upsideDownside_zh: '參考估值核心的前瞻模型；估值區間和中位回報屬模型推算，不是正式目標價。',
+            threeYearIrr: 'Scenario-level IRR is not separately modeled here; see Valuation Core 3Y IRR to median.',
+            threeYearIrr_zh: '此處未另行建立情境級 IRR；請看估值核心的 3 年中位 IRR。',
+            trigger: 'Revenue growth drops below 20%-25%, retention weakens, margins slip, or dilution stays elevated.',
+            trigger_zh: '收入增長跌至 20%-25% 以下，留存率轉弱，利潤率下滑，或攤薄持續偏高。'
+          }
+        ],
       killData: [
         'Revenue growth drops below 25% without FCF margin expanding above 30%.',
         'Dollar-based net retention falls from low-120%s toward the mid/high-110%s.',
@@ -415,37 +519,68 @@ const stockDossierProfiles = {
         'RPO growth stalls or fails to support forward revenue durability.',
         'Cloud-native or hyperscaler competition causes visible pricing pressure.',
         'GAAP operating margin fails to move meaningfully above low single digits.'
+      ],
+      killData_zh: [
+        '收入增長跌穿 25%，但 FCF 利潤率未能升至 30% 以上。',
+        'Dollar-based net retention 由低 120%s 回落至中至高 110%s。',
+        '年收入 10 萬美元以上客戶增長跌穿 15%。',
+        'FCF 利潤率連續超過一季跌穿 25%。',
+        'SBC 持續高於收入 18%-20%，而且沒有清晰攤薄抵銷。',
+        'RPO 增長停滯，或不足以支持未來收入韌性。',
+        '雲原生或 hyperscaler 競爭造成明顯定價壓力。',
+        'GAAP 經營利潤率未能明顯升穿低單位數。'
       ]
     },
     sections: [
       {
         id: 'business-engine',
         label: 'Business Engine',
+        label_zh: '業務動力',
         title: 'High-quality observability and security platform',
+        title_zh: '高質素可觀測性和安全平台',
         points: [
           'Revenue is mainly subscription software, driven by land-and-expand adoption across infrastructure, APM, logs, security, and user-experience monitoring.',
           'Product adoption is deepening: multi-product customers are the core expansion engine.',
           'International revenue remains a growth runway but North America is still the larger base.'
+        ],
+        points_zh: [
+          '收入主要來自訂閱制軟件，增長由基建、APM、日誌、安全和用戶體驗監控的 land-and-expand 採用推動。',
+          '產品採用正在加深，多產品客戶是核心擴張動力。',
+          '國際收入仍是增長 runway，但北美仍是較大的收入基礎。'
         ]
       },
       {
         id: 'cash-flow-quality',
         label: 'Cash Flow Quality',
+        label_zh: '現金流質素',
         title: 'Strong FCF, but SBC needs a haircut',
+        title_zh: 'FCF 強，但要扣除 SBC 影響',
         points: [
           'Q1 operating cash flow was strong and FCF margin reached 29%.',
           'SBC was roughly 19.6% of revenue, so shareholder economics are not as clean as headline FCF suggests.',
           'The Dossier should treat cash conversion as constructive, but not ignore dilution.'
+        ],
+        points_zh: [
+          'Q1 經營現金流強，FCF 利潤率達 29%。',
+          'SBC 約佔收入 19.6%，所以股東經濟效益沒有 headline FCF 那麼乾淨。',
+          '股票檔案應把現金轉化視為正面，但不能忽略攤薄。'
         ]
       },
       {
         id: 'competitive-position',
         label: 'Competitive Position',
+        label_zh: '競爭位置',
         title: 'Strong platform moat, not a monopoly moat',
+        title_zh: '平台護城河強，但不是壟斷式護城河',
         points: [
           'Breadth, workflow embedding, ease of deployment, and product expansion support the moat.',
           'Competition remains intense from Dynatrace, Elastic, Microsoft, Cisco, IBM, cloud-native tooling, and hyperscaler platforms.',
           'The main risk is not current product quality; it is whether pricing and retention can stay strong at a premium valuation.'
+        ],
+        points_zh: [
+          '產品廣度、工作流程嵌入、部署容易度和產品擴張支持護城河。',
+          '競爭仍然激烈，對手包括 Dynatrace、Elastic、Microsoft、Cisco、IBM、雲原生工具和 hyperscaler 平台。',
+          '主要風險不是目前產品質素，而是在高估值下，定價和留存率能否維持強勢。'
         ]
       }
     ]
