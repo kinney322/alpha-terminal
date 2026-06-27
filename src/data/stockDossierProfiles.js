@@ -22,7 +22,7 @@ const stockDossierProfiles = {
       reason: 'DDOG is worth deeper research now because post-earnings evidence, product expansion, customer expansion, and share-price momentum are all improving while valuation risk remains unusually demanding.',
       verdict: 'The business quality is high, but the current price already assumes durable 25%+ growth, near-30% FCF margins, and better SBC discipline.',
       reason_zh: 'DDOG 值得繼續深入研究：財報後反應、產品擴張、客戶擴張和股價動能都在轉強；但現價已經要求公司長期交出高增長和高利潤率。',
-      verdict_zh: '業務質素高，但現價已經預設公司能長期維持 25% 以上增長、接近 30% FCF 利潤率，以及更好的 SBC 紀律。'
+      verdict_zh: '業務質素高，但現價已經預設公司能長期維持 25% 以上增長、接近 30% FCF 利潤率，並逐步改善 SBC 紀律。'
     },
     dossierVerdict: {
       sourceType: 'curated',
@@ -60,7 +60,7 @@ const stockDossierProfiles = {
     ],
     marketEvidence: {
       title: 'Post-earnings evidence is constructive, but it is not a valuation answer.',
-      title_zh: '財報後市場證據偏正面，但它不是估值答案。',
+      title_zh: '財報後市場反應偏正面，但仍不足以單獨支持估值。',
       points: [
         'The stock remains in a post-earnings research window rather than a cold fundamental screen.',
         'Momentum and relative strength keep DDOG worth monitoring, but they do not solve valuation risk.',
@@ -137,7 +137,7 @@ const stockDossierProfiles = {
           explanation: 'Momentum evidence keeps DDOG on the research queue, but it does not prove the business case.',
           evidenceState: 'Market-derived',
           title_zh: '股價動能強',
-          explanation_zh: '動能證據令 DDOG 值得繼續跟進，但不等於業務論點已被證明。',
+          explanation_zh: '股價動能令 DDOG 值得繼續跟進，但不等於業務論點已經被證明。',
           evidenceState_zh: '市場推導'
         },
         {
@@ -145,7 +145,7 @@ const stockDossierProfiles = {
           explanation: 'RSI-specific evidence is not verified in the current dossier and should remain a stretch monitor.',
           evidenceState: 'Not verified',
           title_zh: 'RSI 過熱檢查',
-          explanation_zh: '目前檔案未核實 RSI 具體證據，只應作為股價過熱監察。',
+          explanation_zh: '目前仍未核實 RSI 具體數據，只應作為股價過熱監察。',
           evidenceState_zh: '未核實'
         },
         {
@@ -153,7 +153,7 @@ const stockDossierProfiles = {
           explanation: 'Datadog remains a broad observability and security platform for cloud operations teams.',
           evidenceState: 'Curated',
           title_zh: '雲端可觀測性龍頭',
-          explanation_zh: 'Datadog 仍是雲端營運團隊使用的廣泛可觀測性和安全平台。',
+          explanation_zh: 'Datadog 仍是雲端營運團隊常用的可觀測性和安全平台。',
           evidenceState_zh: '已整理'
         },
         {
@@ -161,7 +161,7 @@ const stockDossierProfiles = {
           explanation: 'Revenue growth, large-customer expansion, and FCF margin make it suitable for a growth-quality screen review.',
           evidenceState: 'Curated',
           title_zh: '增長質素篩選',
-          explanation_zh: '收入增長、大型客戶擴張和 FCF 利潤率令它適合放入增長質素篩選。',
+          explanation_zh: '收入增長、大型客戶擴張和 FCF 利潤率，令它適合放入增長質素名單跟進。',
           evidenceState_zh: '已整理'
         }
       ],
@@ -171,19 +171,19 @@ const stockDossierProfiles = {
             question: 'What should I check first in this dossier?',
             answer: 'Start with Business Core to understand what creates value, then check Market Evidence for current support. After that, review Valuation, Thesis Risk, and Financial Health to see what still needs proof.',
             question_zh: '這份檔案應該先看甚麼？',
-            answer_zh: '先看業務核心，理解公司價值由甚麼創造；再看市場證據，判斷現時股價和事件反應是否支持這個故事。之後再檢查估值、論點風險和財務健康，看看還欠哪些證據。'
+            answer_zh: '先看業務核心，理解公司靠甚麼創造價值；再看市場反應，判斷現時股價和事件反應是否支持投資論點。之後再檢查估值、論點風險和財務健康，看看還欠哪些證據。'
           },
           {
             question: 'What does DDOG do?',
             answer: 'Datadog provides observability and security software for cloud infrastructure, applications, logs, and user experience. The dossier treats it as a subscription SaaS platform with land-and-expand economics.',
             question_zh: 'DDOG 做甚麼業務？',
-            answer_zh: 'Datadog 提供雲端基建、應用程式、日誌、用戶體驗和安全監控軟件。這份檔案把 DDOG 視為訂閱制 SaaS 平台，重點是客戶落地後能否持續擴張用量和產品覆蓋。'
+            answer_zh: 'Datadog 提供雲端基建、應用程式、日誌、用戶體驗和安全監控軟件。這份檔案把 DDOG 視為訂閱制 SaaS 平台，重點是客戶採用後，是否會持續增加用量和使用更多產品。'
           },
           {
             question: 'Why does DDOG matter in AI/cloud operations?',
             answer: 'AI and cloud workloads can increase infrastructure complexity. That makes monitoring, security visibility, and operational telemetry more important evidence to track.',
             question_zh: '為甚麼 DDOG 對 AI / 雲端營運重要？',
-            answer_zh: 'AI 和雲端工作負載會令基建更複雜，企業更需要監控、安全可視化和營運 telemetry。這些需求能否持續增長，是 DDOG 投資論點的重要證據。'
+            answer_zh: 'AI 和雲端工作負載增加，會令基建環境更複雜，企業亦更需要監控、安全可視化和營運 telemetry。這些需求能否持續增長，是 DDOG 投資論點的重要證據。'
           },
           {
             question: 'Who can affect DDOG’s market readthrough?',

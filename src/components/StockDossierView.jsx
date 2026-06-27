@@ -959,7 +959,7 @@ const STOCK_DOSSIER_COPY = {
     coreVerdict: '檔案核心判斷',
     primaryRead: '主要判斷',
     context: '背景',
-    evidenceFocus: '證據焦點',
+    evidenceFocus: '重點證據',
     keyStatistics: '主要數據',
     snapshotMetrics: '快照指標',
     currentPrice: '現價',
@@ -979,7 +979,7 @@ const STOCK_DOSSIER_COPY = {
     trendPrefix: '趨勢',
     eventSample: (count) => `事件樣本 N=${count}`,
     eventSamplePending: '事件樣本待補',
-    marketEvidenceContextNote: '動能與事件證據只作支持脈絡，不是估值結論。',
+    marketEvidenceContextNote: '動能與事件資料只作輔助判斷，不是估值結論。',
     marginOfSafety: (value) => `安全邊際：${value}`,
     valuationPressureHigh: '估值壓力仍然高。',
     breakTriggerMonitor: '破局觸發監察',
@@ -999,10 +999,10 @@ const STOCK_DOSSIER_COPY = {
     asOfDate: (date) => `截至 ${date}`,
     returnFeedAvailable: '回報資料可用',
     returnPending: '回報資料待補',
-    peerReadthrough: '同業傳導',
+    peerReadthrough: '同業啟示',
     peerReadthroughContext: '行業脈絡',
     peerReadthroughSubtitle: (ticker) => `用同業業績判斷 ${ticker} 的股價反應是行業共振、需求帶動，還是公司自身因素。`,
-    peerReadthroughSummary: '核心路徑：軟件預算、可觀測性需求、雲端工作量、份額轉移。',
+    peerReadthroughSummary: '重點觀察：軟件預算、監控與可觀測性需求、雲端工作負載、份額變化。',
     strongPeerPrint: '同業業績強',
     weakPeerPrint: '同業業績弱',
     ddogReadthroughGroups: [
@@ -1012,7 +1012,7 @@ const STOCK_DOSSIER_COPY = {
         peers: ['SNOW', 'MDB', 'CRM', 'WDAY'],
         primaryPeers: ['SNOW', 'CRM', 'WDAY'],
         read: '觀察企業客戶是否仍在擴大軟件與數據平台預算。',
-        strong: '用量、RPO 或指引強，支持 DDOG 需求仍有韌性。',
+        strong: '用量、RPO 或指引強，代表 DDOG 需求仍有韌性。',
         weak: '指引轉弱，可能反映預算壓力或雲端擴張延後。'
       },
       {
@@ -1020,26 +1020,26 @@ const STOCK_DOSSIER_COPY = {
         signal: '需求支持',
         peers: ['DT', 'ESTC', 'CRWD', 'ZS'],
         primaryPeers: ['DT', 'ESTC'],
-        read: '判斷監控、安全與營運可視化需求，是整個行業轉強還是 DDOG 自身因素。',
-        strong: '同業強勁，支持行業需求與平台擴張仍在。',
-        weak: '同業轉弱，會提高需求放慢風險，除非 DDOG 明顯搶到份額。'
+        read: '判斷監控、安全與營運可視化需求，是整個行業轉強，還是 DDOG 自身表現。',
+        strong: '同業強勁，代表行業需求和平台採用仍在擴張。',
+        weak: '同業轉弱，會提高需求放慢風險；除非 DDOG 明顯提升市佔。'
       },
       {
-        title: '雲端工作量 / 雲支出',
-        signal: '雲端工作量風險',
+        title: '雲端工作負載 / 雲支出',
+        signal: '雲端工作負載風險',
         peers: ['MSFT', 'AMZN', 'GOOGL', 'ORCL'],
         primaryPeers: ['MSFT', 'AMZN', 'GOOGL'],
-        read: '雲端工作量增長會影響監控和基建工具的使用需求。',
-        strong: '雲增長強，支持 DDOG 使用量和客戶擴張。',
-        weak: '雲優化或工作量增長放慢，可能壓抑 DDOG 用量。'
+        read: '雲端工作負載增長，會影響監控和基建工具的使用需求。',
+        strong: '雲端增長強，代表 DDOG 的使用量和客戶擴張仍有支持。',
+        weak: '企業優化雲支出，或工作負載增長放慢，可能壓抑 DDOG 用量。'
       },
       {
-        title: '份額轉移 / 公司自身判斷',
-        signal: '份額轉移檢查',
+        title: '市佔變化 / 公司自身判斷',
+        signal: '市佔變化檢查',
         peers: ['DT', 'ESTC'],
         primaryPeers: ['DT', 'ESTC'],
-        read: '分辨股價反應是行業因素，還是 DDOG 自身執行和搶份額。',
-        strong: '直接同業弱而 DDOG 強，可能反映 DDOG 搶到份額。',
+        read: '分辨股價反應是行業因素，還是 DDOG 自己的營運表現和市佔提升。',
+        strong: '直接同業弱而 DDOG 強，可能反映 DDOG 市佔提升。',
         weak: 'DDOG 弱、同業也弱，較可能是行業壓力，不只是公司執行問題。'
       }
     ],
@@ -1050,7 +1050,7 @@ const STOCK_DOSSIER_COPY = {
       strong: '同業證據強，可支持需求、情緒或估值脈絡。',
       weak: '同業證據弱，可能在本公司公布前先提示行業壓力。'
     },
-    signalScreens: '篩選信號 / 證據標籤',
+    signalScreens: '篩選線索 / 證據標籤',
     screenEvidence: '篩選證據，不是結論',
     marketEvidence: '市場證據',
     evidenceOverview: '證據概覽',
