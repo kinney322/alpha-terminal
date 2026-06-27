@@ -19,8 +19,10 @@ const stockDossierProfiles = {
       fiscalYearRevenueGuide: '$4.30B-$4.34B'
     },
     whyNow: {
-      reason: 'DDOG is worth deeper research now because post-earnings evidence, platform execution, and momentum are lining up while valuation risk remains unusually demanding.',
-      verdict: 'The business quality is high, but the current price already assumes durable 25%+ growth, near-30% FCF margins, and better SBC discipline.'
+      reason: 'DDOG is worth deeper research now because post-earnings evidence, product expansion, customer expansion, and share-price momentum are all improving while valuation risk remains unusually demanding.',
+      verdict: 'The business quality is high, but the current price already assumes durable 25%+ growth, near-30% FCF margins, and better SBC discipline.',
+      reason_zh: 'DDOG 值得繼續深入研究：財報後反應、產品擴張、客戶擴張和股價動能都在轉強；但現價已經要求公司長期交出高增長和高利潤率。',
+      verdict_zh: '業務質素高，但現價已經預設公司能長期維持 25% 以上增長、接近 30% FCF 利潤率，以及更好的 SBC 紀律。'
     },
     dossierVerdict: {
       sourceType: 'curated',
@@ -30,6 +32,7 @@ const stockDossierProfiles = {
       valuationState: 'priced_for_perfection',
       marketEvidence: 'constructive',
       finalRead: 'High-quality compounder, but priced for perfection.',
+      finalRead_zh: '高質素、能持續創造價值的公司，但估值已接近完美定價。',
       thesisShift: {
         from: 'ai_risk',
         to: 'ai_benefit',
@@ -57,6 +60,7 @@ const stockDossierProfiles = {
     ],
     marketEvidence: {
       title: 'Post-earnings evidence is constructive, but it is not a valuation answer.',
+      title_zh: '財報後市場證據偏正面，但它不是估值答案。',
       points: [
         'The stock remains in a post-earnings research window rather than a cold fundamental screen.',
         'Momentum and relative strength keep DDOG worth monitoring, but they do not solve valuation risk.',
@@ -77,9 +81,13 @@ const stockDossierProfiles = {
     valueCore: {
       ticker: 'DDOG',
       value_core_type: 'Software / SaaS',
+      value_core_type_zh: '軟件 / SaaS',
       company_stage_candidate: 'Scaling',
+      company_stage_candidate_zh: '擴張期',
       primary_value_driver: 'Net retention and large customer expansion',
+      primary_value_driver_zh: '淨留存率和大型客戶擴張',
       thesis_break_trigger: 'NRR deterioration, large customer growth slowdown, or durable FCF margin compression',
+      thesis_break_trigger_zh: 'NRR 轉弱、大型客戶增長放慢，或 FCF 利潤率持續受壓',
       evidence_needed: [
         'NRR / DBNR trend',
         '$100k+ ARR customer growth',
@@ -87,6 +95,14 @@ const stockDossierProfiles = {
         'FCF margin',
         'SBC as percentage of revenue',
         'AI-native workload adoption signal'
+      ],
+      evidence_needed_zh: [
+        'NRR / DBNR 趨勢',
+        '$100k+ ARR 客戶增長',
+        'RPO / cRPO 增長',
+        'FCF 利潤率',
+        'SBC 佔收入比例',
+        'AI 原生工作負載採用信號'
       ],
       evidence_quality: 'Partial',
       dossier_state: 'golden_sample',
@@ -111,46 +127,69 @@ const stockDossierProfiles = {
         {
           title: 'Revenue Growth Leaders',
           explanation: 'Q1 revenue grew 32% year over year, so growth remains a core evidence point.',
-          evidenceState: 'Curated'
+          evidenceState: 'Curated',
+          title_zh: '收入增長領先',
+          explanation_zh: 'Q1 收入按年增長 32%，增長仍然是核心證據。',
+          evidenceState_zh: '已整理'
         },
         {
           title: 'Strong Momentum Stocks',
           explanation: 'Momentum evidence keeps DDOG on the research queue, but it does not prove the business case.',
-          evidenceState: 'Market-derived'
+          evidenceState: 'Market-derived',
+          title_zh: '股價動能強',
+          explanation_zh: '動能證據令 DDOG 值得繼續跟進，但不等於業務論點已被證明。',
+          evidenceState_zh: '市場推導'
         },
         {
           title: 'RSI Stretch Check',
           explanation: 'RSI-specific evidence is not verified in the current dossier and should remain a stretch monitor.',
-          evidenceState: 'Not verified'
+          evidenceState: 'Not verified',
+          title_zh: 'RSI 過熱檢查',
+          explanation_zh: '目前檔案未核實 RSI 具體證據，只應作為股價過熱監察。',
+          evidenceState_zh: '未核實'
         },
         {
           title: 'Cloud Observability Leader',
           explanation: 'Datadog remains a broad observability and security platform for cloud operations teams.',
-          evidenceState: 'Curated'
+          evidenceState: 'Curated',
+          title_zh: '雲端可觀測性龍頭',
+          explanation_zh: 'Datadog 仍是雲端營運團隊使用的廣泛可觀測性和安全平台。',
+          evidenceState_zh: '已整理'
         },
         {
           title: 'Growth Screen Signal',
           explanation: 'Revenue growth, large-customer expansion, and FCF margin make it suitable for a growth-quality screen review.',
-          evidenceState: 'Curated'
+          evidenceState: 'Curated',
+          title_zh: '增長質素篩選',
+          explanation_zh: '收入增長、大型客戶擴張和 FCF 利潤率令它適合放入增長質素篩選。',
+          evidenceState_zh: '已整理'
         }
       ],
       faq: {
         overview: [
           {
             question: 'What should I check first in this dossier?',
-            answer: 'Start with Business Core to understand what creates value, then check Market Evidence for current support. After that, review Valuation, Thesis Risk, and Financial Health to see what still needs proof.'
+            answer: 'Start with Business Core to understand what creates value, then check Market Evidence for current support. After that, review Valuation, Thesis Risk, and Financial Health to see what still needs proof.',
+            question_zh: '這份檔案應該先看甚麼？',
+            answer_zh: '先看業務核心，理解公司價值由甚麼創造；再看市場證據，判斷現時股價和事件反應是否支持這個故事。之後再檢查估值、論點風險和財務健康，看看還欠哪些證據。'
           },
           {
             question: 'What does DDOG do?',
-            answer: 'Datadog provides observability and security software for cloud infrastructure, applications, logs, and user experience. The dossier treats it as a subscription SaaS platform with land-and-expand economics.'
+            answer: 'Datadog provides observability and security software for cloud infrastructure, applications, logs, and user experience. The dossier treats it as a subscription SaaS platform with land-and-expand economics.',
+            question_zh: 'DDOG 做甚麼業務？',
+            answer_zh: 'Datadog 提供雲端基建、應用程式、日誌、用戶體驗和安全監控軟件。這份檔案把 DDOG 視為訂閱制 SaaS 平台，重點是客戶落地後能否持續擴張用量和產品覆蓋。'
           },
           {
             question: 'Why does DDOG matter in AI/cloud operations?',
-            answer: 'AI and cloud workloads can increase infrastructure complexity. That makes monitoring, security visibility, and operational telemetry more important evidence to track.'
+            answer: 'AI and cloud workloads can increase infrastructure complexity. That makes monitoring, security visibility, and operational telemetry more important evidence to track.',
+            question_zh: '為甚麼 DDOG 對 AI / 雲端營運重要？',
+            answer_zh: 'AI 和雲端工作負載會令基建更複雜，企業更需要監控、安全可視化和營運 telemetry。這些需求能否持續增長，是 DDOG 投資論點的重要證據。'
           },
           {
             question: 'Who can affect DDOG’s market readthrough?',
-            answer: 'DDOG should be read beside direct observability peers such as DT and ESTC, cloud and data-platform names such as SNOW and MDB, security-adjacent platforms such as CRWD and ZS, and hyperscaler/cloud-spend proxies such as MSFT, AMZN, and GOOGL. Peer earnings do not replace DDOG’s own analysis, but they help show whether the setup is company-specific or part of a broader software, cloud, or security budget cycle.'
+            answer: 'DDOG should be read beside direct observability peers such as DT and ESTC, cloud and data-platform names such as SNOW and MDB, security-adjacent platforms such as CRWD and ZS, and hyperscaler/cloud-spend proxies such as MSFT, AMZN, and GOOGL. Peer earnings do not replace DDOG’s own analysis, but they help show whether the setup is company-specific or part of a broader software, cloud, or security budget cycle.',
+            question_zh: '哪些同業會影響 DDOG 的市場解讀？',
+            answer_zh: 'DDOG 應該和直接可觀測性同業 DT、ESTC，雲端和數據平台 SNOW、MDB，安全相鄰平台 CRWD、ZS，以及雲支出代理 MSFT、AMZN、GOOGL 一起觀察。同業業績不能取代 DDOG 自身分析，但可以幫助判斷股價反應是公司自身因素，還是更廣泛的軟件、雲端或安全預算週期。'
           }
         ],
         businessCore: [
