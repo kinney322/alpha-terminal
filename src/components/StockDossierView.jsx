@@ -23,6 +23,17 @@ const formatPct = (value) => {
 
 const formatLabel = (value, locale = 'en') => displayLabel(value, locale, locale === 'zh' ? '未納入' : 'Not Included');
 
+const formatFiscalPeriodLabel = (value, locale = 'en') => {
+  if (!value) return value;
+  if (locale !== 'zh') return value;
+  const raw = String(value).trim();
+  const fiscalMatch = raw.match(/^(Q\d)\s+(FY\d{4}|\d{4})\s+ended\s+(\d{4}-\d{2}-\d{2})$/i);
+  if (fiscalMatch) return `${fiscalMatch[1].toUpperCase()} ${fiscalMatch[2].toUpperCase()}，截至 ${fiscalMatch[3]}`;
+  const secMatch = raw.match(/^Latest SEC periodic filing report date\s+(\d{4}-\d{2}-\d{2})$/i);
+  if (secMatch) return `最新 SEC 定期申報日期：${secMatch[1]}`;
+  return displayLabel(raw, locale, raw);
+};
+
 const formatValuationMetric = (metric) => {
   if (metric.value === undefined || metric.value === null || Number.isNaN(Number(metric.value))) return 'Pending';
   const numeric = Number(metric.value);
@@ -1326,10 +1337,11 @@ const ReadthroughGroup = ({ group, copy }) => {
   );
 };
 
-const PeerEcosystemPanel = ({ ecosystem, ticker, copy }) => {
+const PeerEcosystemPanel = ({ ecosystem, ticker, copy, locale = 'en' }) => {
   if (!ecosystem) return null;
   const groups = buildReadthroughGroups(ecosystem, ticker, copy);
   if (!groups.length) return null;
+  const ecosystemName = displayLabel(ecosystem.ecosystemName, locale, ecosystem.ecosystemName);
 
   return (
     <article className="dossier-cockpit-card dossier-cockpit-card--wide dossier-peer-ecosystem-panel">
@@ -1342,7 +1354,7 @@ const PeerEcosystemPanel = ({ ecosystem, ticker, copy }) => {
       </p>
       <div className="dossier-readthrough-summary">
         <strong>{ticker}</strong>
-        <span>{ecosystem.ecosystemName}</span>
+        <span>{ecosystemName}</span>
         <em>{copy.peerReadthroughSummary}</em>
       </div>
       <div className="dossier-readthrough-insight-grid">
@@ -1804,7 +1816,7 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, refer
     {
       label: locale === 'zh' ? '證據日期' : 'Evidence freshness',
       value: dossierProfile?.analysisDate || localizedStaticLabel('Not verified', locale),
-      note: dossierProfile?.latestFiscalPeriod || (locale === 'zh' ? '最新期間待補' : 'Latest period pending'),
+      note: formatFiscalPeriodLabel(dossierProfile?.latestFiscalPeriod, locale) || (locale === 'zh' ? '最新期間待補' : 'Latest period pending'),
       tone: 'neutral'
     }
   ] : [];
@@ -1903,7 +1915,7 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, refer
       {
         label: copy.revenueGrowth,
         value: valuationMetricValue(valuationCore, 'revenue_growth'),
-        note: dossierProfile?.latestFiscalPeriod || copy.latestVerifiedPeriod
+        note: formatFiscalPeriodLabel(dossierProfile?.latestFiscalPeriod, locale) || copy.latestVerifiedPeriod
       },
       {
         label: copy.fcfMargin,
@@ -2061,7 +2073,7 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, refer
                     </div>
                   </article>
 
-                  <PeerEcosystemPanel ecosystem={peerEcosystem} ticker={tickerForSummary} copy={copy} />
+                  <PeerEcosystemPanel ecosystem={peerEcosystem} ticker={tickerForSummary} copy={copy} locale={locale} />
 
                   <article className="dossier-cockpit-card dossier-cockpit-card--wide">
                     <div className="dossier-cockpit-card__heading">
@@ -2405,7 +2417,7 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, refer
       {!visualPhaseOne && peerEcosystem && (
         <section className="card dossier-visual-cockpit" aria-label={`${ticker} peer ecosystem`}>
           <div className="dossier-visual-cockpit__grid">
-            <PeerEcosystemPanel ecosystem={peerEcosystem} ticker={tickerForSummary} copy={copy} />
+            <PeerEcosystemPanel ecosystem={peerEcosystem} ticker={tickerForSummary} copy={copy} locale={locale} />
           </div>
         </section>
       )}
