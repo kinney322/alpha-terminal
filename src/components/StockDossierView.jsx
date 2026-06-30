@@ -767,8 +767,10 @@ const buildLiveStockPerformanceGrid = (ticker, fallbackGrid, stockPerformancePay
   };
 };
 
-const normalizeNotVerified = (value) => {
-  if (!value || value === 'Not Included' || value === 'Pending') return 'Not verified';
+const normalizeNotVerified = (value, locale = 'en') => {
+  if (!value || value === 'Not Included' || value === 'Pending') {
+    return localizedStaticLabel('Not verified', locale);
+  }
   return value;
 };
 
@@ -2202,7 +2204,7 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, refer
                   {latestReactionRows.map((row) => (
                     <div key={row.label}>
                       <span>{row.label}</span>
-                      <strong>{normalizeNotVerified(row.value)}</strong>
+                      <strong>{normalizeNotVerified(row.value, locale)}</strong>
                       <em>{row.note}</em>
                     </div>
                   ))}
