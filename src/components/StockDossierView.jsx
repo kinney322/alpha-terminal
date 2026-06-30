@@ -823,6 +823,8 @@ const STOCK_DOSSIER_COPY = {
     primaryRead: 'Primary read',
     context: 'Context',
     evidenceFocus: 'Evidence focus',
+    researchPath: 'Research Path',
+    researchPathHint: 'Read in this order',
     keyStatistics: 'Key Statistics',
     snapshotMetrics: 'Snapshot metrics',
     currentPrice: 'Current Price',
@@ -1041,6 +1043,8 @@ const STOCK_DOSSIER_COPY = {
     primaryRead: '主要判斷',
     context: '背景',
     evidenceFocus: '重點證據',
+    researchPath: '研究路徑',
+    researchPathHint: '建議閱讀次序',
     keyStatistics: '主要數據',
     snapshotMetrics: '快照指標',
     currentPrice: '現價',
@@ -1355,7 +1359,6 @@ const PeerEcosystemPanel = ({ ecosystem, ticker, copy, locale = 'en' }) => {
         {copy.peerReadthroughSubtitle(ticker)}
       </p>
       <div className="dossier-readthrough-summary">
-        <strong>{ticker}</strong>
         <span>{ecosystemName}</span>
         <em>{copy.peerReadthroughSummary}</em>
       </div>
@@ -1972,6 +1975,36 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, refer
     const primaryRead = localizedFinalRead || valuationTopVerdict.overallRead;
     const evidenceFocusItems = valueCoreEvidenceItems;
     const evidenceFocus = evidenceFocusItems.slice(0, 3).join(' / ') || (locale === 'zh' ? '證據清單待補' : 'Evidence checklist pending');
+    const researchPathCards = [
+      {
+        tabId: 'business-core',
+        label: copy.businessCore,
+        value: primaryValueDriverDisplay,
+        note: copy.businessEngineVerify,
+        tone: 'positive'
+      },
+      {
+        tabId: 'market-evidence',
+        label: copy.marketEvidence,
+        value: `${copy.trendPrefix}: ${localizedStaticLabel(momentumStrengthRead, locale)}`,
+        note: copy.marketEvidenceContextNote,
+        tone: momentumScore !== null && momentumScore >= 70 ? 'positive' : 'neutral'
+      },
+      {
+        tabId: 'valuation',
+        label: copy.valuation,
+        value: valuationStateDisplay,
+        note: copy.marginOfSafety(marginOfSafetyDisplay),
+        tone: 'warning'
+      },
+      {
+        tabId: 'thesis-risk',
+        label: copy.thesisRisk,
+        value: thesisBreakTriggerDisplay,
+        note: copy.durabilityEvidenceWeakens,
+        tone: 'warning'
+      }
+    ];
 
     return (
       <div className="stock-dossier-view stock-dossier-view--internal-tabs">
@@ -2029,18 +2062,39 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, refer
                     </div>
                     <strong>{localizedWhyNowReason || renderedVerdict.reason}</strong>
                     <p style={{ marginTop: '0.5rem', opacity: 0.9 }}>{localizedWhyNowVerdict || renderedVerdict.verdict}</p>
+                    <div className="dossier-why-now-briefs">
+                      <div>
+                        <span>{copy.primaryRead}</span>
+                        <strong>{primaryRead}</strong>
+                        <em>{copy.context}: {researchStateDisplay}</em>
+                      </div>
+                      <div>
+                        <span>{copy.evidenceFocus}</span>
+                        <strong>{valueCoreTypeDisplay}</strong>
+                        <em>{evidenceFocus}</em>
+                      </div>
+                    </div>
                   </article>
 
-                  <article className="dossier-cockpit-card">
-                    <span>{copy.primaryRead}</span>
-                    <strong>{primaryRead}</strong>
-                    <p>{copy.context}: {researchStateDisplay}. {locale === 'zh' ? '檢查證據是否仍支持這個判斷。' : 'Check whether evidence still supports this read.'}</p>
-                  </article>
-
-                  <article className="dossier-cockpit-card">
-                    <span>{copy.evidenceFocus}</span>
-                    <strong>{valueCoreTypeDisplay}</strong>
-                    <p>{evidenceFocus}.</p>
+                  <article className="dossier-cockpit-card dossier-cockpit-card--wide dossier-research-path-card">
+                    <div className="dossier-cockpit-card__heading">
+                      <span>{copy.researchPath}</span>
+                      <em>{copy.researchPathHint}</em>
+                    </div>
+                    <div className="dossier-research-path-grid">
+                      {researchPathCards.map((card, index) => (
+                        <button
+                          key={card.tabId}
+                          type="button"
+                          className={`tone-${card.tone}`}
+                          onClick={() => setActiveInternalTab(card.tabId)}
+                        >
+                          <span>{index + 1}. {card.label}</span>
+                          <strong>{card.value}</strong>
+                          <em>{card.note}</em>
+                        </button>
+                      ))}
+                    </div>
                   </article>
 
                   <article className="dossier-cockpit-card dossier-cockpit-card--wide" data-stock-performance-feed-source={stockPerformanceFeedSource}>
