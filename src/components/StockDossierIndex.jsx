@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 import { buildDossierRecords } from './dossierHelpers';
 import StockLogo from './StockLogo';
 import { getStockDossierProfile } from '../data/stockDossierProfiles';
-import { displayLabel } from './displayLabelHelpers.js';
+import { displayLabel, frontendEmptyText, safeFrontendText } from './displayLabelHelpers.js';
 
 const DOSSIER_INDEX_COPY = {
   en: {
@@ -13,12 +13,11 @@ const DOSSIER_INDEX_COPY = {
     ticker: 'Ticker',
     sectorTheme: 'Sector / Theme',
     researchState: 'Research State',
-    moveType: 'Move Type',
+    moveType: 'Setup',
     thesisPulse: 'Thesis Pulse',
-    dataCoverage: 'Data Coverage',
     action: 'Action',
     empty: 'No research objects available.',
-    companyPending: 'Company Pending',
+    companyPending: 'Company details unavailable',
     sectorNA: 'Sector N/A',
     openDossier: 'View Dossier'
   },
@@ -30,12 +29,11 @@ const DOSSIER_INDEX_COPY = {
     ticker: '股票',
     sectorTheme: '行業 / 主題',
     researchState: '研究狀態',
-    moveType: '走勢類型',
+    moveType: '研究設定',
     thesisPulse: '論點脈搏',
-    dataCoverage: '資料覆蓋',
     action: '動作',
     empty: '暫無研究對象。',
-    companyPending: '公司資料待補',
+    companyPending: '暫無公司資料',
     sectorNA: '行業未分類',
     openDossier: '查看股票檔案'
   }
@@ -57,11 +55,11 @@ const translateDossierStatus = (value, locale) => {
     diverging: '走勢分歧',
     unavailable: '不可用',
     'market evidence available': '市場證據可用',
-    'coverage pending': '覆蓋待補'
+    'coverage pending': '研究資料不足'
   };
   if (translations[normalized]) return translations[normalized];
-  if (normalized.startsWith('data partial')) return value.replace('Data Partial', '資料部分齊備');
-  return value;
+  if (normalized.startsWith('data partial')) return locale === 'zh' ? '研究資料部分齊備' : 'Research data partially available';
+  return safeFrontendText(value, locale, frontendEmptyText(locale));
 };
 
 export default function StockDossierIndex({ payload, onOpenTicker, locale = 'en' }) {
@@ -90,14 +88,13 @@ export default function StockDossierIndex({ payload, onOpenTicker, locale = 'en'
               <th>{copy.researchState}</th>
               <th>{copy.moveType}</th>
               <th>{copy.thesisPulse}</th>
-              <th>{copy.dataCoverage}</th>
               <th>{copy.action}</th>
             </tr>
           </thead>
           <tbody>
             {dossierRecords.length === 0 ? (
               <tr>
-                <td colSpan="7" style={{ textAlign: 'center', padding: '20px' }}>{copy.empty}</td>
+                <td colSpan="6" style={{ textAlign: 'center', padding: '20px' }}>{copy.empty}</td>
               </tr>
             ) : (
               dossierRecords.map(rec => (
@@ -125,15 +122,12 @@ export default function StockDossierIndex({ payload, onOpenTicker, locale = 'en'
                     <span className="quality-pill" style={{ background: 'var(--bg-highlight, #f1f5f9)', color: 'var(--text-main)' }}>{translateDossierStatus(rec.derivedState.researchState, locale)}</span>
                   </td>
                   <td style={{ fontWeight: 'bold' }}>
-                    {translateDossierStatus(rec.derivedState.moveType, locale)}
+                    {rec.derivedState.moveTypeLocalized?.[locale] || translateDossierStatus(rec.derivedState.moveType, locale)}
                   </td>
                   <td>
                     <span className={`quality-pill pulse-${rec.derivedState.pulseState.toLowerCase()}`} style={{ fontWeight: 'bold' }}>
                       {translateDossierStatus(rec.derivedState.pulseState, locale)}
                     </span>
-                  </td>
-                  <td>
-                    {translateDossierStatus(rec.derivedState.coverage, locale)}
                   </td>
                   <td>
                     <button

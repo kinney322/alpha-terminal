@@ -8,10 +8,10 @@ const RADAR_COPY = {
     loadingUnavailable: 'Completed earnings refresh status unavailable',
     refreshCaughtUp: 'Completed earnings refresh: all caught up',
     completedRefresh: 'Completed earnings refresh',
-    pending: 'Pending',
-    reactionClosePending: 'Reaction close pending',
-    vendorPending: 'Vendor EPS/surprise pending',
-    pricePending: 'Price backfill pending',
+    pending: 'Waiting',
+    reactionClosePending: 'Waiting for reaction close',
+    vendorPending: 'Waiting for EPS/surprise data',
+    pricePending: 'Waiting for price data',
     more: 'more',
     radarTitle: 'Catalyst Radar',
     preEarnings: 'Pre-Earnings',
@@ -60,7 +60,7 @@ const RADAR_COPY = {
     noTracked: 'No tracked catalyst setups.',
     noPullbacks: 'No trend pullback setups.',
     noData: 'No data available for this view.',
-    datePending: 'Date Pending',
+    datePending: 'Date unavailable',
     notIncluded: 'Not Included',
     unavailable: 'Unavailable',
     post: 'Post',
@@ -68,16 +68,16 @@ const RADAR_COPY = {
     marketDataOnly: 'Market data only',
     bandDays: 'Band days',
     newsNotChecked: 'News not checked',
-    coveragePending: 'Coverage Pending',
+    coveragePending: 'Needs more context',
     reviewed: 'Reviewed',
-    reviewPending: 'Review Pending',
-    contextPending: 'Context Pending',
+    reviewPending: 'Needs review',
+    contextPending: 'Needs more context',
     unknown: 'Unknown',
-    pendingRefresh: 'Pending data refresh.',
+    pendingRefresh: 'Waiting for data refresh.',
     waitingReactionClose: 'Waiting for reaction close.',
     waitingVendorData: 'Waiting for EPS/surprise vendor data.',
     waitingPriceBackfill: 'Waiting for price backfill.',
-    pendingRefreshTitle: (ticker) => `${ticker} is pending completed-earnings refresh.`,
+    pendingRefreshTitle: (ticker) => `${ticker} is waiting for completed-earnings refresh.`,
     eventDate: 'Event Date',
     foundElsewhere: (ticker) => `Found ${ticker} in Catalyst Radar, but not in this view.`,
     trySwitch: (view) => `Try switching to ${view}.`,
@@ -92,10 +92,10 @@ const RADAR_COPY = {
     loadingUnavailable: '已完成財報刷新狀態暫時無法取得',
     refreshCaughtUp: '已完成財報刷新：全部已更新',
     completedRefresh: '已完成財報刷新',
-    pending: '待補',
-    reactionClosePending: '反應日收市待補',
-    vendorPending: 'EPS / 驚喜數據待補',
-    pricePending: '價格回補待完成',
+    pending: '等待中',
+    reactionClosePending: '等待反應日收市',
+    vendorPending: '等待 EPS / 驚喜數據',
+    pricePending: '等待價格資料',
     more: '更多',
     radarTitle: '財報雷達',
     preEarnings: '財報前',
@@ -144,7 +144,7 @@ const RADAR_COPY = {
     noTracked: '暫無已追蹤催化設定。',
     noPullbacks: '暫無回調觀察設定。',
     noData: '此檢視暫無資料。',
-    datePending: '日期待補',
+    datePending: '暫無日期',
     notIncluded: '未納入',
     unavailable: '不可用',
     post: '財報後',
@@ -152,16 +152,16 @@ const RADAR_COPY = {
     marketDataOnly: '只有市場數據',
     bandDays: '上軌天數',
     newsNotChecked: '新聞未核對',
-    coveragePending: '覆蓋待補',
+    coveragePending: '需要更多脈絡',
     reviewed: '已覆核',
-    reviewPending: '待覆核',
-    contextPending: '背景待補',
+    reviewPending: '需要覆核',
+    contextPending: '需要更多背景',
     unknown: '未知',
-    pendingRefresh: '資料刷新待完成。',
+    pendingRefresh: '等待資料刷新。',
     waitingReactionClose: '等待反應日收市。',
     waitingVendorData: '等待 EPS / 驚喜數據。',
     waitingPriceBackfill: '等待價格回補。',
-    pendingRefreshTitle: (ticker) => `${ticker} 正等待已完成財報刷新。`,
+    pendingRefreshTitle: (ticker) => `${ticker} 正等待完成財報刷新。`,
     eventDate: '事件日期',
     foundElsewhere: (ticker) => `已在財報雷達找到 ${ticker}，但不在目前檢視。`,
     trySwitch: (view) => `可切換到 ${view}。`,
@@ -275,7 +275,7 @@ const SearchEmptyState = ({ context, onSwitch, copy }) => {
 
   if (context.type === 'pending_refresh') {
     const { ticker, pending_reason_primary, event_date } = context.data;
-    let reasonText = copy.pendingRefresh || 'Pending data refresh.';
+    let reasonText = copy.pendingRefresh || 'Waiting for data refresh.';
     if (pending_reason_primary === 'market_not_closed_yet') reasonText = copy.waitingReactionClose || 'Waiting for reaction close.';
     else if (['missing_actual', 'missing_surprise', 'vendor_unavailable'].includes(pending_reason_primary)) reasonText = copy.waitingVendorData || 'Waiting for EPS/surprise vendor data.';
     else if (pending_reason_primary === 'missing_t1_close') reasonText = copy.waitingPriceBackfill || 'Waiting for price backfill.';
@@ -505,7 +505,7 @@ const RadarMasterView = ({ payload, preopenPayload, selectedEventId, onSelectEve
     const baseRate = item?.post_earnings_base_rate;
     const peadDirection = item?.pead_signal?.direction;
     if (!baseRate || baseRate.status !== 'available') {
-      return { label: 'Base Rate Pending', sublabel: 'No base rate' };
+      return { label: 'Needs more history', sublabel: 'No base rate' };
     }
 
     const rate = peadDirection === 'fade'
@@ -514,7 +514,7 @@ const RadarMasterView = ({ payload, preopenPayload, selectedEventId, onSelectEve
 
     const label = rate !== undefined && rate !== null && !Number.isNaN(Number(rate))
       ? `${(Number(rate) * 100).toFixed(0)}%`
-      : 'Base Rate Pending';
+      : 'Needs more history';
     const sample = baseRate.similar_reaction_sample_size ?? baseRate.sample_size;
 
     return {

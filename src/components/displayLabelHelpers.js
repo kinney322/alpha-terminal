@@ -87,6 +87,87 @@ export const titleizeLabel = (value, fallback = '') => {
     .replace(/\b\w/g, (char) => char.toUpperCase());
 };
 
+const INTERNAL_STATUS_KEYS = new Set([
+  'coverage',
+  'coverage_pending',
+  'curated',
+  'current_curated_read',
+  'data_coverage',
+  'data_partial',
+  'date_pending',
+  'direction_pending',
+  'evidence_quality',
+  'evidence_status',
+  'external_move_check',
+  'missing_evidence_pending',
+  'not_verified',
+  'partial',
+  'pending',
+  'pending_data',
+  'review_pending',
+  'source',
+  'truth_coverage',
+  'unverified',
+  'value_core_pending',
+  '已整理',
+  '部分',
+  '待補',
+  '待補資料',
+  '待補行情',
+  '方向待補',
+  '未核實',
+  '覆蓋待補',
+  '覆蓋狀態',
+  '資料覆蓋',
+  '證據質素'
+]);
+
+const INTERNAL_STATUS_PATTERNS = [
+  /^pending\b/i,
+  /^not verified\b/i,
+  /^coverage pending\b/i,
+  /^data partial\b/i,
+  /feed pending/i,
+  /needs confirmed .* evidence/i,
+  /資料.*待補/,
+  /需要.*證據確認/
+];
+
+export const isFrontendInternalStatus = (value) => {
+  if (value === undefined || value === null) return true;
+  const raw = String(value).trim();
+  if (!raw) return true;
+  if (raw === '-' || raw === '—') return true;
+  const normalized = normalizeDisplayKey(raw);
+  return INTERNAL_STATUS_KEYS.has(raw) ||
+    INTERNAL_STATUS_KEYS.has(normalized) ||
+    INTERNAL_STATUS_PATTERNS.some((pattern) => pattern.test(raw));
+};
+
+export const frontendEmptyText = (locale = 'en', context = 'default') => {
+  if (locale === 'zh') {
+    if (context === 'market') return '暫無足夠市場反應資料';
+    if (context === 'financial') return '暫無足夠財務資料';
+    if (context === 'valuation') return '暫無足夠估值資料';
+    return '暫無足夠資料';
+  }
+  if (context === 'market') return 'Not enough market-reaction data yet';
+  if (context === 'financial') return 'Not enough financial data yet';
+  if (context === 'valuation') return 'Not enough valuation data yet';
+  return 'Not enough data yet';
+};
+
+export const hasFrontendValue = (value) => !isFrontendInternalStatus(value);
+
+export const safeFrontendText = (value, locale = 'en', fallback = '') => {
+  if (!hasFrontendValue(value)) return fallback || frontendEmptyText(locale);
+  return displayLabel(value, locale, fallback);
+};
+
+export const optionalFrontendText = (value, locale = 'en') => (
+  hasFrontendValue(value) ? displayLabel(value, locale, '') : ''
+);
+
 export const displayLabel = (value, locale = 'en', fallback = '') => {
   if (value === undefined || value === null || value === '') return fallback;
   const raw = String(value).trim();

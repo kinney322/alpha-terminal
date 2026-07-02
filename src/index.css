@@ -3999,6 +3999,23 @@ html, body, #root, .app-container, .main-content {
 .crowdrisk-app--dark .dossier-cockpit-card,
 .crowdrisk-app--dark .dossier-why-now-briefs > div,
 .crowdrisk-app--dark .dossier-research-path-grid button,
+.crowdrisk-app--dark .dossier-business-core-read,
+.crowdrisk-app--dark .dossier-business-engine-grid article,
+.crowdrisk-app--dark .dossier-business-break-grid article,
+.crowdrisk-app--dark .dossier-business-proof-grid > div,
+.crowdrisk-app--dark .dossier-evidence-board,
+.crowdrisk-app--dark .dossier-evidence-board__grid article,
+.crowdrisk-app--dark .dossier-performance-cockpit,
+.crowdrisk-app--dark .dossier-performance-cockpit__summary article,
+.crowdrisk-app--dark .dossier-performance-cockpit__returns > div,
+.crowdrisk-app--dark .dossier-level-strip > div,
+.crowdrisk-app--dark .dossier-technical-grid,
+.crowdrisk-app--dark .dossier-technical-grid__cells > div,
+.crowdrisk-app--dark .dossier-technical-observations article,
+.crowdrisk-app--dark .dossier-scenario-mini-grid article,
+.crowdrisk-app--dark .dossier-tab-depth-card,
+.crowdrisk-app--dark .dossier-analysis-lane,
+.crowdrisk-app--dark .dossier-analysis-list article,
 .crowdrisk-app--dark .dossier-performance-cell,
 .crowdrisk-app--dark .dossier-signal-tag,
 .crowdrisk-app--dark .dossier-business-evidence,
@@ -4077,6 +4094,16 @@ html, body, #root, .app-container, .main-content {
 .crowdrisk-app--dark .dossier-forward-range-summary span,
 .crowdrisk-app--dark .dossier-forward-range-visual__head span,
 .crowdrisk-app--dark .dossier-forward-range-legend span,
+.crowdrisk-app--dark .dossier-evidence-board__lead span,
+.crowdrisk-app--dark .dossier-evidence-board__grid span,
+.crowdrisk-app--dark .dossier-performance-cockpit__head span,
+.crowdrisk-app--dark .dossier-performance-cockpit__summary span,
+.crowdrisk-app--dark .dossier-performance-cockpit__returns span,
+.crowdrisk-app--dark .dossier-level-strip span,
+.crowdrisk-app--dark .dossier-technical-grid__heading span,
+.crowdrisk-app--dark .dossier-technical-grid__cells span,
+.crowdrisk-app--dark .dossier-technical-observations span,
+.crowdrisk-app--dark .dossier-scenario-mini-grid span,
 .crowdrisk-app--dark .dossier-forward-scenario-head span,
 .crowdrisk-app--dark .dossier-forward-scenario-facts dt,
 .crowdrisk-app--dark .dossier-momentum-strength-head span,
@@ -6008,6 +6035,120 @@ html, body, #root, .app-container, .main-content {
   grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
+.dossier-business-core-read {
+  margin-bottom: 0.85rem;
+  padding: 1rem;
+  border: 1px solid rgba(63, 143, 103, 0.16);
+  border-radius: 8px;
+  background: rgba(250, 253, 250, 0.84);
+}
+
+.dossier-business-core-read span,
+.dossier-business-section-heading span,
+.dossier-business-engine-grid span,
+.dossier-business-proof-grid span,
+.dossier-business-break-grid span {
+  display: block;
+  margin-bottom: 0.34rem;
+  color: var(--text-muted);
+  font-size: 0.66rem;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+
+.dossier-business-core-read strong {
+  display: block;
+  color: var(--text-main);
+  font-size: 1.18rem;
+  line-height: 1.22;
+}
+
+.dossier-business-core-read p {
+  margin: 0.55rem 0 0;
+  color: var(--text-muted);
+  font-size: 0.92rem;
+  line-height: 1.5;
+}
+
+.dossier-business-section-heading {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+  margin: 1rem 0 0.55rem;
+}
+
+.dossier-business-section-heading strong {
+  color: var(--text-main);
+  font-size: 0.92rem;
+  line-height: 1.25;
+  text-align: right;
+}
+
+.dossier-business-engine-grid,
+.dossier-business-proof-grid,
+.dossier-business-break-grid {
+  display: grid;
+  gap: 0.68rem;
+  min-width: 0;
+}
+
+.dossier-business-engine-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.dossier-business-proof-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.dossier-business-break-grid {
+  grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.75fr);
+}
+
+.dossier-business-engine-grid article,
+.dossier-business-break-grid article,
+.dossier-business-proof-grid > div {
+  min-width: 0;
+  padding: 0.82rem;
+  border: 1px solid rgba(44, 62, 80, 0.08);
+  border-radius: 8px;
+  background: rgba(255, 252, 247, 0.82);
+}
+
+.dossier-business-engine-grid .tone-positive,
+.dossier-business-proof-grid .tone-positive {
+  border-color: rgba(63, 143, 103, 0.16);
+  background: rgba(246, 252, 248, 0.82);
+}
+
+.dossier-business-break-grid .tone-warning {
+  border-color: rgba(168, 86, 29, 0.2);
+  background: rgba(255, 250, 242, 0.86);
+}
+
+.dossier-business-engine-grid strong,
+.dossier-business-break-grid strong,
+.dossier-business-proof-grid strong {
+  display: block;
+  color: var(--text-main);
+  font-size: 0.98rem;
+  line-height: 1.24;
+  overflow-wrap: anywhere;
+}
+
+.dossier-business-engine-grid p,
+.dossier-business-break-grid p,
+.dossier-business-proof-grid em {
+  display: block;
+  margin: 0.38rem 0 0;
+  color: var(--text-muted);
+  font-size: 0.78rem;
+  font-style: normal;
+  line-height: 1.38;
+}
+
 .dossier-tab-placeholder {
   min-width: 0;
 }
@@ -6788,6 +6929,412 @@ html, body, #root, .app-container, .main-content {
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 0.65rem;
   margin-bottom: 1rem;
+}
+
+.dossier-tab-depth-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.dossier-tab-depth-grid--four {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.dossier-tab-depth-card {
+  min-width: 0;
+  padding: 0.95rem;
+  border: 1px solid rgba(63, 143, 103, 0.14);
+  border-radius: 8px;
+  background: rgba(246, 252, 248, 0.72);
+}
+
+.dossier-tab-depth-card.tone-warning {
+  border-color: rgba(168, 86, 29, 0.2);
+  background: rgba(255, 250, 242, 0.78);
+}
+
+.dossier-tab-depth-card span,
+.dossier-analysis-lane span,
+.dossier-analysis-list span {
+  display: block;
+  margin-bottom: 0.35rem;
+  color: var(--text-muted);
+  font-size: 0.68rem;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.dossier-tab-depth-card strong,
+.dossier-analysis-lane strong,
+.dossier-analysis-list strong {
+  display: block;
+  color: var(--text-main);
+  line-height: 1.22;
+  overflow-wrap: anywhere;
+}
+
+.dossier-tab-depth-card p,
+.dossier-analysis-list p {
+  margin: 0.45rem 0 0;
+  color: var(--text-muted);
+  line-height: 1.45;
+}
+
+.dossier-evidence-board {
+  display: grid;
+  gap: 0.85rem;
+  margin-bottom: 1rem;
+  padding: 1rem;
+  border: 1px solid rgba(63, 143, 103, 0.16);
+  border-radius: 8px;
+  background: rgba(246, 252, 248, 0.74);
+}
+
+.dossier-evidence-board--valuation,
+.dossier-evidence-board--risk {
+  border-color: rgba(168, 86, 29, 0.16);
+  background: rgba(255, 250, 242, 0.72);
+}
+
+.dossier-evidence-board--financial {
+  border-color: rgba(44, 62, 80, 0.12);
+  background: rgba(249, 250, 248, 0.72);
+}
+
+.dossier-evidence-board__lead {
+  max-width: 58rem;
+}
+
+.dossier-evidence-board__lead span,
+.dossier-evidence-board__grid span,
+.dossier-level-strip span,
+.dossier-scenario-mini-grid span {
+  display: block;
+  margin-bottom: 0.36rem;
+  color: var(--text-muted);
+  font-size: 0.68rem;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.dossier-evidence-board__lead strong {
+  display: block;
+  color: var(--text-main);
+  font-size: 1.22rem;
+  line-height: 1.2;
+}
+
+.dossier-evidence-board__lead p,
+.dossier-evidence-board__grid p,
+.dossier-scenario-mini-grid p {
+  margin: 0.42rem 0 0;
+  color: var(--text-muted);
+  line-height: 1.48;
+}
+
+.dossier-evidence-board__grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.68rem;
+}
+
+.dossier-evidence-board__grid--three {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.dossier-evidence-board__grid article,
+.dossier-scenario-mini-grid article {
+  min-width: 0;
+  padding: 0.86rem;
+  border: 1px solid rgba(44, 62, 80, 0.08);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.62);
+}
+
+.dossier-evidence-board__grid article.tone-positive,
+.dossier-scenario-mini-grid article.tone-bull {
+  border-color: rgba(63, 143, 103, 0.2);
+  background: rgba(246, 252, 248, 0.84);
+}
+
+.dossier-evidence-board__grid article.tone-warning,
+.dossier-scenario-mini-grid article.tone-bear {
+  border-color: rgba(168, 86, 29, 0.2);
+  background: rgba(255, 250, 242, 0.86);
+}
+
+.dossier-evidence-board__grid strong,
+.dossier-scenario-mini-grid strong,
+.dossier-level-strip strong {
+  display: block;
+  color: var(--text-main);
+  line-height: 1.22;
+  overflow-wrap: anywhere;
+}
+
+.dossier-performance-cockpit {
+  display: grid;
+  gap: 0.7rem;
+  padding: 0.9rem;
+  border: 1px solid rgba(63, 143, 103, 0.14);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.58);
+}
+
+.dossier-performance-cockpit__head {
+  display: grid;
+  gap: 0.22rem;
+}
+
+.dossier-performance-cockpit__head span,
+.dossier-performance-cockpit__summary span,
+.dossier-performance-cockpit__returns span {
+  display: block;
+  color: var(--text-muted);
+  font-size: 0.66rem;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  line-height: 1.15;
+  text-transform: uppercase;
+}
+
+.dossier-performance-cockpit__head strong {
+  color: var(--text-main);
+  font-size: 1rem;
+  line-height: 1.3;
+}
+
+.dossier-performance-cockpit__summary {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.58rem;
+}
+
+.dossier-performance-cockpit__summary article {
+  min-width: 0;
+  padding: 0.78rem 0.82rem;
+  border: 1px solid rgba(44, 62, 80, 0.08);
+  border-radius: 8px;
+  background: rgba(250, 252, 250, 0.82);
+}
+
+.dossier-performance-cockpit__summary article.tone-positive {
+  border-color: rgba(63, 143, 103, 0.2);
+  background: rgba(246, 252, 248, 0.9);
+}
+
+.dossier-performance-cockpit__summary article.tone-warning {
+  border-color: rgba(168, 86, 29, 0.2);
+  background: rgba(255, 250, 242, 0.9);
+}
+
+.dossier-performance-cockpit__summary strong {
+  display: block;
+  margin-top: 0.28rem;
+  color: var(--text-main);
+  line-height: 1.18;
+  overflow-wrap: anywhere;
+}
+
+.dossier-performance-cockpit__summary p {
+  margin: 0.32rem 0 0;
+  color: var(--text-muted);
+  font-size: 0.74rem;
+  line-height: 1.36;
+}
+
+.dossier-performance-cockpit__returns {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 0.48rem;
+}
+
+.dossier-performance-cockpit__returns > div {
+  min-width: 0;
+  padding: 0.6rem 0.64rem;
+  border: 1px solid rgba(44, 62, 80, 0.08);
+  border-radius: 8px;
+  background: rgba(248, 246, 242, 0.72);
+}
+
+.dossier-performance-cockpit__returns strong {
+  display: block;
+  margin-top: 0.2rem;
+  color: var(--text-main);
+  font-size: 0.96rem;
+  line-height: 1.15;
+  overflow-wrap: anywhere;
+}
+
+.dossier-performance-cockpit .tone-positive strong {
+  color: #16805f;
+}
+
+.dossier-performance-cockpit .tone-negative strong {
+  color: #b42318;
+}
+
+.dossier-performance-cockpit .tone-pending strong {
+  color: var(--text-muted);
+}
+
+.dossier-level-strip {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(8.5rem, 1fr));
+  gap: 0.58rem;
+  padding-top: 0.1rem;
+}
+
+.dossier-level-strip > div {
+  min-width: 0;
+  padding: 0.74rem 0.8rem;
+  border: 1px solid rgba(63, 143, 103, 0.12);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.54);
+}
+
+.dossier-level-strip em {
+  display: block;
+  margin-top: 0.36rem;
+  color: var(--text-muted);
+  font-size: 0.76rem;
+  font-style: normal;
+  line-height: 1.38;
+}
+
+.dossier-technical-grid {
+  display: grid;
+  gap: 0.7rem;
+  padding: 0.86rem;
+  border: 1px solid rgba(44, 62, 80, 0.08);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.52);
+}
+
+.dossier-technical-grid__heading span,
+.dossier-technical-grid__cells span,
+.dossier-technical-observations span {
+  display: block;
+  margin-bottom: 0.32rem;
+  color: var(--text-muted);
+  font-size: 0.66rem;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.dossier-technical-grid__heading strong {
+  display: block;
+  color: var(--text-main);
+  font-size: 0.96rem;
+  line-height: 1.28;
+}
+
+.dossier-technical-grid__cells {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 0.55rem;
+}
+
+.dossier-technical-grid__cells--compact {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.dossier-technical-grid__cells > div {
+  min-width: 0;
+  padding: 0.66rem 0.68rem;
+  border: 1px solid rgba(44, 62, 80, 0.08);
+  border-radius: 8px;
+  background: rgba(250, 252, 250, 0.78);
+}
+
+.dossier-technical-grid__cells strong {
+  display: block;
+  color: var(--text-main);
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+}
+
+.dossier-technical-grid__cells em {
+  display: block;
+  margin-top: 0.28rem;
+  color: var(--text-muted);
+  font-size: 0.74rem;
+  font-style: normal;
+  line-height: 1.36;
+}
+
+.dossier-technical-observations {
+  display: grid;
+  gap: 0.55rem;
+}
+
+.dossier-technical-observations article {
+  padding: 0.78rem 0.84rem;
+  border: 1px solid rgba(44, 62, 80, 0.08);
+  border-radius: 8px;
+  background: rgba(250, 252, 250, 0.78);
+}
+
+.dossier-technical-observations article.tone-positive {
+  border-color: rgba(63, 143, 103, 0.2);
+  background: rgba(246, 252, 248, 0.88);
+}
+
+.dossier-technical-observations article.tone-warning {
+  border-color: rgba(168, 86, 29, 0.2);
+  background: rgba(255, 250, 242, 0.88);
+}
+
+.dossier-technical-observations p {
+  margin: 0;
+  color: var(--text-main);
+  line-height: 1.48;
+}
+
+.dossier-scenario-mini-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.72rem;
+  margin-bottom: 1rem;
+}
+
+.dossier-scenario-mini-grid em {
+  display: block;
+  margin-top: 0.4rem;
+  color: var(--text-muted);
+  font-size: 0.78rem;
+  font-style: normal;
+  line-height: 1.35;
+}
+
+.dossier-analysis-lane {
+  display: grid;
+  grid-template-columns: minmax(12rem, 0.72fr) minmax(0, 1.28fr);
+  gap: 0.85rem;
+  margin: 1rem 0;
+  padding: 0.95rem;
+  border: 1px solid rgba(168, 86, 29, 0.14);
+  border-radius: 8px;
+  background: rgba(255, 252, 247, 0.74);
+}
+
+.dossier-analysis-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.7rem;
+}
+
+.dossier-analysis-list article {
+  min-width: 0;
+  padding: 0.75rem;
+  border: 1px solid rgba(44, 62, 80, 0.08);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.48);
 }
 
 .dossier-market-visual-grid > div {
@@ -8186,6 +8733,9 @@ body,
   .dossier-contextual-faq__rows,
   .dossier-tab-shell__header,
   .dossier-business-core-grid,
+  .dossier-business-engine-grid,
+  .dossier-business-proof-grid,
+  .dossier-business-break-grid,
   .dossier-tab-placeholder__grid,
   .dossier-why-now-briefs,
   .dossier-research-path-grid,
@@ -8205,6 +8755,18 @@ body,
   .dossier-valuation-judgment,
   .dossier-event-study-detail,
   .dossier-market-visual-grid,
+  .dossier-evidence-board__grid,
+  .dossier-evidence-board__grid--three,
+  .dossier-performance-cockpit__summary,
+  .dossier-performance-cockpit__returns,
+  .dossier-level-strip,
+  .dossier-technical-grid__cells,
+  .dossier-technical-grid__cells--compact,
+  .dossier-scenario-mini-grid,
+  .dossier-tab-depth-grid,
+  .dossier-tab-depth-grid--four,
+  .dossier-analysis-lane,
+  .dossier-analysis-list,
   .dossier-overview-key-stat-grid,
   .dossier-phase2-metric-grid,
   .dossier-phase2-metric-grid--six,

@@ -12,7 +12,10 @@ import { fetchAndNormalizeRadarPayload, fetchReferencePeerMapPayload, fetchStock
 import { canonicalizeTicker } from './data/tickerAliases.js';
 
 const PRODUCT_MODE = import.meta.env.VITE_PRODUCT_MODE || 'crowdrisk';
-const RADAR_PAYLOAD_REFRESH_MS = 5 * 60 * 1000;
+const BACKEND_PAYLOAD_REFRESH_TIME_ZONE = 'America/New_York';
+const BACKEND_PAYLOAD_REFRESH_HOUR = 6;
+const BACKEND_PAYLOAD_REFRESH_MINUTE = 30;
+const BACKEND_PAYLOAD_REFRESH_WEEKDAYS = new Set([1, 2, 3, 4, 5]);
 
 const CROWDRISK_SECTIONS = [
   { id: 'earnings-radar', label: { en: 'Earnings Radar', zh: '財報雷達' }, shortLabel: { en: 'Earnings', zh: '財報' }, subtitle: { en: 'Pre / Event / Post', zh: '財報前 / 當日 / 之後' } },
@@ -67,6 +70,98 @@ const scrollViewportToTop = () => {
 
 const normalizeTicker = canonicalizeTicker;
 
+const getZonedDateTimeParts = (date, timeZone) => {
+  const parts = new Intl.DateTimeFormat('en-US', {
+    timeZone,
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    hour12: false
+  }).formatToParts(date);
+
+  return parts.reduce((acc, part) => {
+    if (part.type !== 'literal') acc[part.type] = Number(part.value);
+    return acc;
+  }, {});
+};
+
+const getTimeZoneOffsetMs = (date, timeZone) => {
+  const parts = getZonedDateTimeParts(date, timeZone);
+  const zonedAsUtc = Date.UTC(
+    parts.year,
+    parts.month - 1,
+    parts.day,
+    parts.hour,
+    parts.minute,
+    parts.second
+  );
+  return zonedAsUtc - date.getTime();
+};
+
+const zonedWallTimeToUtc = ({ year, month, day, hour, minute, timeZone }) => {
+  const wallTimeAsUtc = Date.UTC(year, month - 1, day, hour, minute, 0);
+  let utcDate = new Date(wallTimeAsUtc);
+  let offsetMs = getTimeZoneOffsetMs(utcDate, timeZone);
+  utcDate = new Date(wallTimeAsUtc - offsetMs);
+  offsetMs = getTimeZoneOffsetMs(utcDate, timeZone);
+  return new Date(wallTimeAsUtc - offsetMs);
+};
+
+const getNextBackendPayloadRefreshDelayMs = (now = new Date()) => {
+  const currentParts = getZonedDateTimeParts(now, BACKEND_PAYLOAD_REFRESH_TIME_ZONE);
+
+  for (let dayOffset = 0; dayOffset <= 7; dayOffset += 1) {
+    const candidateCalendarDate = new Date(Date.UTC(
+      currentParts.year,
+      currentParts.month - 1,
+      currentParts.day + dayOffset,
+      0,
+      0,
+      0
+    ));
+    const weekday = candidateCalendarDate.getUTCDay();
+    if (!BACKEND_PAYLOAD_REFRESH_WEEKDAYS.has(weekday)) continue;
+
+    const candidateUtc = zonedWallTimeToUtc({
+      year: candidateCalendarDate.getUTCFullYear(),
+      month: candidateCalendarDate.getUTCMonth() + 1,
+      day: candidateCalendarDate.getUTCDate(),
+      hour: BACKEND_PAYLOAD_REFRESH_HOUR,
+      minute: BACKEND_PAYLOAD_REFRESH_MINUTE,
+      timeZone: BACKEND_PAYLOAD_REFRESH_TIME_ZONE
+    });
+
+    const delayMs = candidateUtc.getTime() - now.getTime();
+    if (delayMs > 0) return delayMs;
+  }
+
+  return 24 * 60 * 60 * 1000;
+};
+
+const scheduleBackendPayloadRefresh = (loadPayload) => {
+  let timer = null;
+  let cancelled = false;
+
+  const scheduleNext = () => {
+    if (cancelled) return;
+    const delayMs = getNextBackendPayloadRefreshDelayMs();
+    timer = window.setTimeout(() => {
+      loadPayload();
+      scheduleNext();
+    }, delayMs);
+  };
+
+  scheduleNext();
+
+  return () => {
+    cancelled = true;
+    if (timer) window.clearTimeout(timer);
+  };
+};
+
 const resolveDossierDetail = (payload, ticker) => {
   const normalizedTicker = normalizeTicker(ticker);
   if (!normalizedTicker) return null;
@@ -119,11 +214,11 @@ function App() {
     };
 
     loadPayload();
-    const refreshTimer = window.setInterval(loadPayload, RADAR_PAYLOAD_REFRESH_MS);
+    const cancelRefresh = scheduleBackendPayloadRefresh(loadPayload);
 
     return () => {
       alive = false;
-      window.clearInterval(refreshTimer);
+      cancelRefresh();
     };
   }, []);
 
@@ -143,11 +238,11 @@ function App() {
     };
 
     loadStockPerformancePayload();
-    const refreshTimer = window.setInterval(loadStockPerformancePayload, RADAR_PAYLOAD_REFRESH_MS);
+    const cancelRefresh = scheduleBackendPayloadRefresh(loadStockPerformancePayload);
 
     return () => {
       alive = false;
-      window.clearInterval(refreshTimer);
+      cancelRefresh();
     };
   }, []);
 
@@ -167,11 +262,11 @@ function App() {
     };
 
     loadReferencePeerMapPayload();
-    const refreshTimer = window.setInterval(loadReferencePeerMapPayload, RADAR_PAYLOAD_REFRESH_MS);
+    const cancelRefresh = scheduleBackendPayloadRefresh(loadReferencePeerMapPayload);
 
     return () => {
       alive = false;
-      window.clearInterval(refreshTimer);
+      cancelRefresh();
     };
   }, []);
 

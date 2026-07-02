@@ -1,4 +1,4 @@
-import { buildMomentumUniverseSyntheticDetail } from './dossierHelpers.js';
+import { buildMomentumUniverseSyntheticDetail, resolveTechnicalCockpit } from './dossierHelpers.js';
 import { displayLabel } from './displayLabelHelpers.js';
 
 const MOMENTUM_COPY = {
@@ -18,13 +18,13 @@ const MOMENTUM_COPY = {
     action: 'Action',
     openDossier: 'View Dossier',
     empty: 'No momentum universe rankings available.',
-    coverageWatch: 'Coverage Watch',
+    coverageWatch: 'Ranking Watch',
     notRankable: 'Not Yet Rankable',
-    coverageBody: 'Active coverage names that are not ranked because scanner inputs are not ready yet.',
+    coverageBody: 'Names that need more price history or scanner inputs before they can be ranked.',
     nameSingular: 'name',
     namePlural: 'names',
     reason: 'Reason',
-    source: 'Source',
+    source: 'Reason',
     unmapped: 'Unmapped',
     inputHistoryUnavailable: 'Input history unavailable',
     insufficientHistory: 'Insufficient OHLCV history',
@@ -47,13 +47,13 @@ const MOMENTUM_COPY = {
     action: '動作',
     openDossier: '查看股票檔案',
     empty: '暫無動能宇宙排名。',
-    coverageWatch: '覆蓋觀察',
+    coverageWatch: '排名觀察',
     notRankable: '暫未可排名',
-    coverageBody: '已納入覆蓋但掃描輸入尚未準備好，因此暫未排名。',
+    coverageBody: '部分股票仍需要更多價格歷史或掃描輸入，暫時未納入排名。',
     nameSingular: '隻股票',
     namePlural: '隻股票',
     reason: '原因',
-    source: '來源',
+    source: '原因',
     unmapped: '未分類',
     inputHistoryUnavailable: '輸入歷史不足',
     insufficientHistory: 'OHLCV 歷史不足',
@@ -78,7 +78,34 @@ const formatUnavailableReason = (value, copy) => {
   return normalized.replace(/\b\w/g, (char) => char.toUpperCase());
 };
 
-const SetupBadge = ({ setup, locale = 'en' }) => {
+const findCockpitSmaDistance = (cockpit, period) => {
+  const row = (cockpit?.trend?.smaRows || []).find((item) => Number(item.period) === Number(period));
+  return row?.priceDistancePct ?? null;
+};
+
+const formatCockpitSetupLabel = (cockpit, locale) => {
+  if (!cockpit) return null;
+  const longTrend = String(cockpit.trend?.longTermTrend || '').toLowerCase();
+  const shortTrend = String(cockpit.trend?.shortTermTrend || '').toLowerCase();
+  const rsiRead = String(cockpit.indicators?.rsiRead || '').toLowerCase();
+
+  if (longTrend === 'up' && shortTrend === 'up' && rsiRead === 'overbought') {
+    return locale === 'zh' ? '趨勢向上 / 偏熱' : 'Up trend / extended';
+  }
+  if (longTrend === 'up' && shortTrend === 'up') {
+    return locale === 'zh' ? '趨勢向上' : 'Up trend';
+  }
+  if (longTrend === 'down' || shortTrend === 'down') {
+    return locale === 'zh' ? '趨勢轉弱' : 'Trend weakening';
+  }
+  return locale === 'zh' ? '技術面可讀' : 'Technical read available';
+};
+
+const SetupBadge = ({ setup, cockpit, locale = 'en' }) => {
+  const cockpitLabel = formatCockpitSetupLabel(cockpit, locale);
+  if (cockpitLabel) {
+    return <span className="momentum-setup-badge">{cockpitLabel}</span>;
+  }
   if (!setup || setup.status === 'unavailable') {
     return <span className="crowdrisk-muted">—</span>;
   }
@@ -131,28 +158,35 @@ function MomentumUniverseSection({ payload, loading, error, onOpenStockDossier, 
             </tr>
           </thead>
           <tbody>
-            {rankings.map((row, idx) => (
-              <tr key={`${row.ticker}-${idx}`}>
-                <td>#{row.scanner_rank || row.rank || idx + 1}</td>
-                <td>
-                  <strong>{row.ticker}</strong>
-                </td>
-                <td>{displayLabel(row.industry_theme_label || row.primary_theme || row.industry_theme || row.theme, locale, copy.unmapped)}</td>
-                <td>{formatNumber(row.scanner_score || row.leaderboard_score)}</td>
-                <td>{formatNumber(row.relative_strength_percentile, '%')}</td>
-                <td>{formatNumber(row.price ? `$${row.price}` : null)}</td>
-                <td>{formatNumber(row.price_vs_sma50_pct, '%')}</td>
-                <td>{formatNumber(row.price_vs_sma200_pct, '%')}</td>
-                <td>
-                  <SetupBadge setup={row.trend_setup?.technical_setup} locale={locale} />
-                </td>
-                <td>
-                  <button type="button" onClick={() => openDossier(row)}>
-                    {copy.openDossier} →
-                  </button>
-                </td>
-              </tr>
-            ))}
+            {rankings.map((row, idx) => {
+              const cockpit = resolveTechnicalCockpit(null, row, payload);
+              const sma50Distance = findCockpitSmaDistance(cockpit, 50);
+              const sma200Distance = findCockpitSmaDistance(cockpit, 200);
+              const rsPercentile = cockpit?.performance?.relativeStrengthPercentile ?? row.relative_strength_percentile;
+              const price = cockpit?.snapshot?.close ?? row.price;
+              return (
+                <tr key={`${row.ticker}-${idx}`}>
+                  <td>#{row.scanner_rank || row.rank || idx + 1}</td>
+                  <td>
+                    <strong>{row.ticker}</strong>
+                  </td>
+                  <td>{displayLabel(row.industry_theme_label || row.primary_theme || row.industry_theme || row.theme, locale, copy.unmapped)}</td>
+                  <td>{formatNumber(row.scanner_score || row.leaderboard_score)}</td>
+                  <td>{formatNumber(rsPercentile, '%')}</td>
+                  <td>{formatNumber(price ? `$${price}` : null)}</td>
+                  <td>{formatNumber(sma50Distance ?? row.price_vs_sma50_pct, '%')}</td>
+                  <td>{formatNumber(sma200Distance ?? row.price_vs_sma200_pct, '%')}</td>
+                  <td>
+                    <SetupBadge setup={row.trend_setup?.technical_setup} cockpit={cockpit} locale={locale} />
+                  </td>
+                  <td>
+                    <button type="button" onClick={() => openDossier(row)}>
+                      {copy.openDossier} →
+                    </button>
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
         {!rankings.length && (
@@ -161,7 +195,7 @@ function MomentumUniverseSection({ payload, loading, error, onOpenStockDossier, 
       </div>
 
       {!!unavailableRows.length && (
-        <div className="momentum-unavailable-panel" aria-label="Momentum coverage not yet rankable">
+        <div className="momentum-unavailable-panel" aria-label="Momentum names not yet rankable">
           <div className="momentum-unavailable-heading">
             <div>
               <p className="crowdrisk-kicker">{copy.coverageWatch}</p>
@@ -181,10 +215,6 @@ function MomentumUniverseSection({ payload, loading, error, onOpenStockDossier, 
                 <div>
                   <span className="momentum-unavailable-label">{copy.reason}</span>
                   <strong>{formatUnavailableReason(row.unavailable_reason || row.reason, copy)}</strong>
-                </div>
-                <div>
-                  <span className="momentum-unavailable-label">{copy.source}</span>
-                  <strong>{row.source || 'momentum universe'}</strong>
                 </div>
                 <button type="button" onClick={() => openDossier(row)}>
                   {copy.openDossier} →

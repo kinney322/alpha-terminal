@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import StockDossierView from './StockDossierView';
 
 const MISSING_VALUE = 'Not Included';
-const MISSING_DATE = 'Date Pending';
+const MISSING_DATE = 'Date unavailable';
 
 const getPeadDisplay = (peadSignal) => {
   const direction = peadSignal?.direction;
@@ -104,7 +104,7 @@ const OffCycleWatchPanel = ({ eventDetail }) => {
       <h3>Between Catalysts Thesis Monitor</h3>
       <div className="grid-2col">
         <div><strong>Status:</strong> {formatLabel(eventDetail.status)}</div>
-        <div><strong>Source:</strong> {formatLabel(eventDetail.source)}</div>
+        <div><strong>Context:</strong> {formatLabel(eventDetail.source)}</div>
         <div><strong>Reason Labels:</strong> {reason.labels?.length ? reason.labels.map(l => formatLabel(l)).join(', ') : MISSING_VALUE}</div>
         <div><strong>Review State:</strong> {review.reviewed ? 'Reviewed' : 'Not Reviewed'}</div>
         <div><strong>Last Seen:</strong> {formatLifecycleTime(lifecycle.last_seen_at)}</div>
@@ -160,7 +160,7 @@ const HistoricalEarningsTapePanel = ({ eventDetail }) => {
         <div><strong>Total:</strong> {tape.data_quality?.total_rows || 0}</div>
         <div><strong>Completed:</strong> {tape.data_quality?.completed_rows || 0}</div>
         <div><strong>Shown:</strong> {tape.data_quality?.returned_rows || tape.rows.length}</div>
-        <div><strong>Surprise Coverage:</strong> {tape.data_quality?.surprise_rows || 0}</div>
+        <div><strong>Surprise Rows:</strong> {tape.data_quality?.surprise_rows || 0}</div>
       </div>
 
       <div style={{ overflowX: 'auto' }}>
@@ -339,7 +339,7 @@ const HistoricalSetupMatrixPanel = ({ eventDetail }) => {
 
       <div className="grid-2col" style={{marginBottom: '16px', fontSize: '0.9em', color: 'var(--text-muted)'}}>
         <div><strong>Total Samples:</strong> {matrix.data_quality?.total_rows || 0}</div>
-        <div><strong>Surprise Coverage:</strong> {matrix.data_quality?.surprise_coverage_pct || 0}%</div>
+        <div><strong>Surprise Sample:</strong> {matrix.data_quality?.surprise_coverage_pct || 0}%</div>
         {matrix.data_quality?.coverage_warning && (
           <div className="warning-text" style={{gridColumn: '1 / -1', marginTop: '4px'}}>
             <strong>Warning:</strong> {matrix.data_quality.coverage_warning}
@@ -606,7 +606,7 @@ const PeerReadthroughPanel = ({ eventDetail, peerReadthroughCases = {} }) => {
             <strong style={{ color: pctColor(c.target_reaction_pct) }}>{formatPct(c.target_reaction_pct)}</strong>
           </div>
           <div>
-            <span className="panel-kicker">Evidence</span>
+            <span className="panel-kicker">Signal</span>
             <strong>{formatLabel(c.evidence_status)}</strong>
           </div>
           <div>
@@ -614,11 +614,11 @@ const PeerReadthroughPanel = ({ eventDetail, peerReadthroughCases = {} }) => {
             <strong>{c.news_checked ? 'Yes' : 'No'}</strong>
           </div>
           <div>
-            <span className="panel-kicker">External Move Check</span>
-            <strong>Not verified</strong>
+            <span className="panel-kicker">External Move</span>
+            <strong>Needs more context</strong>
           </div>
           <div>
-            <span className="panel-kicker">Review State</span>
+            <span className="panel-kicker">Review</span>
             <strong>{formatLabel(c.review_state)}</strong>
           </div>
         </div>
@@ -807,10 +807,10 @@ const SelectedCatalystIntelligence = ({ eventDetail, payload, peerReadthroughCas
 
   const renderTrustLayer = () => (
     <div className="trust-layer-status card">
-      <h3>Trust Layer Status</h3>
+      <h3>Event Timing Check</h3>
       <div className="grid-2col" style={{ fontSize: '0.9em' }}>
         <div><strong>Event Date:</strong> {eventDetail.event_date || MISSING_DATE} ({eventDetail.event_date_status || MISSING_VALUE})</div>
-        <div><strong>Data Source:</strong> {eventDetail.trust_layer?.data_source || MISSING_VALUE}</div>
+        <div><strong>Timing Evidence:</strong> {eventDetail.trust_layer?.data_source || MISSING_VALUE}</div>
         <div><strong>Timing:</strong> {eventDetail.trust_layer?.earnings_timing || MISSING_VALUE}</div>
         <div><strong>Options Data:</strong> {eventDetail.trust_layer?.options_data_status || MISSING_VALUE}</div>
         <div><strong>Sample Size:</strong> {eventDetail.trust_layer?.sample_size ?? MISSING_VALUE}</div>
@@ -915,7 +915,7 @@ const SelectedCatalystIntelligence = ({ eventDetail, payload, peerReadthroughCas
               </div>
               <div>
                 <span className="panel-kicker">Review</span>
-                <strong>{lifecycle?.review_state?.reviewed ? 'Reviewed' : 'Pending'}</strong>
+                <strong>{lifecycle?.review_state?.reviewed ? 'Reviewed' : 'Needs review'}</strong>
               </div>
               <div>
                 <span className="panel-kicker">Last Seen</span>

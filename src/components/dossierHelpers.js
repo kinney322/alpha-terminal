@@ -4,7 +4,7 @@ import { canonicalizeTicker } from '../data/tickerAliases.js';
 export const normalizeTicker = canonicalizeTicker;
 
 const formatSignedPct = (value) => {
-  if (value === undefined || value === null || Number.isNaN(Number(value))) return 'Not Included';
+  if (value === undefined || value === null || Number.isNaN(Number(value))) return '—';
   const n = Number(value);
   return `${n > 0 ? '+' : ''}${n.toFixed(1)}%`;
 };
@@ -19,18 +19,18 @@ export const resolveValueCore = (eventDetail, dossierProfile = null) => {
   const hasValueCore = valueCore && typeof valueCore === 'object' && !Array.isArray(valueCore);
 
   return {
-    valueCoreType: hasValueCore ? valueOrFallback(valueCore.value_core_type, 'Coverage Pending') : 'Coverage Pending',
-    companyStage: hasValueCore ? valueOrFallback(valueCore.company_stage ?? valueCore.company_stage_candidate, 'Not Verified') : 'Not Verified',
-    primaryValueDriver: hasValueCore ? valueOrFallback(valueCore.primary_value_driver, 'Pending') : 'Pending',
-    thesisBreakTrigger: hasValueCore ? valueOrFallback(valueCore.thesis_break_trigger, 'Pending') : 'Pending',
-    evidenceQuality: hasValueCore ? valueOrFallback(valueCore.evidence_quality, 'Not Verified') : 'Not Verified',
+    valueCoreType: hasValueCore ? valueOrFallback(valueCore.value_core_type, 'Needs more business context') : 'Needs more business context',
+    companyStage: hasValueCore ? valueOrFallback(valueCore.company_stage ?? valueCore.company_stage_candidate, 'Needs more company context') : 'Needs more company context',
+    primaryValueDriver: hasValueCore ? valueOrFallback(valueCore.primary_value_driver, 'Needs more business evidence') : 'Needs more business evidence',
+    thesisBreakTrigger: hasValueCore ? valueOrFallback(valueCore.thesis_break_trigger, 'Needs clearer break signal') : 'Needs clearer break signal',
+    evidenceQuality: hasValueCore ? valueOrFallback(valueCore.evidence_quality, '') : '',
     evidenceNeeded: hasValueCore && Array.isArray(valueCore.evidence_needed) ? valueCore.evidence_needed : [],
     coverageStatus: hasValueCore ? valueOrFallback(valueCore.coverage_status, null) : null,
-    frontendLabel: hasValueCore ? valueOrFallback(valueCore.frontend_label, 'Coverage Pending') : (dossierProfile ? 'Golden Sample' : 'Coverage Pending'),
+    frontendLabel: hasValueCore ? valueOrFallback(valueCore.frontend_label, '') : '',
     dossierState: hasValueCore ? valueOrFallback(valueCore.dossier_state, 'coverage_pending') : (dossierProfile ? 'golden_sample' : 'coverage_pending'),
     needsHumanReview: hasValueCore ? Boolean(valueCore.needs_human_review) : !dossierProfile,
-    sector: hasValueCore ? valueOrFallback(valueCore.sector, 'Pending') : 'Pending',
-    industry: hasValueCore ? valueOrFallback(valueCore.industry, 'Pending') : 'Pending',
+    sector: hasValueCore ? valueOrFallback(valueCore.sector, '') : '',
+    industry: hasValueCore ? valueOrFallback(valueCore.industry, '') : '',
     source: hasValueCore ? valueOrFallback(valueCore.source, 'value_core_pending') : 'value_core_pending'
   };
 };
@@ -38,6 +38,177 @@ export const resolveValueCore = (eventDetail, dossierProfile = null) => {
 const toFiniteNumber = (value) => {
   const numeric = Number(value);
   return Number.isFinite(numeric) ? numeric : null;
+};
+
+const normalizeTechnicalRange = (range) => {
+  if (!range || typeof range !== 'object' || Array.isArray(range)) return null;
+  return {
+    low: toFiniteNumber(range.low),
+    high: toFiniteNumber(range.high),
+    position: toFiniteNumber(range.position)
+  };
+};
+
+const normalizeTechnicalZone = (zone) => {
+  if (!zone || typeof zone !== 'object' || Array.isArray(zone)) return null;
+  return {
+    type: zone.type || '',
+    role: zone.role || '',
+    labelEn: zone.label_en || zone.label || '',
+    labelZh: zone.label_zh || zone.label_en || zone.label || '',
+    price: toFiniteNumber(zone.price),
+    area: Array.isArray(zone.area) ? zone.area.map(toFiniteNumber).filter(value => value !== null) : null,
+    distancePct: toFiniteNumber(zone.distance_pct),
+    timeframe: zone.timeframe || '',
+    displayRole: zone.display_role || '',
+    readEn: zone.read_en || zone.read || '',
+    readZh: zone.read_zh || zone.read_en || zone.read || ''
+  };
+};
+
+const normalizeTechnicalCockpit = (technicalCockpit) => {
+  if (!technicalCockpit || typeof technicalCockpit !== 'object' || Array.isArray(technicalCockpit)) return null;
+
+  const snapshot = technicalCockpit.snapshot || {};
+  const performance = technicalCockpit.performance_rs || {};
+  const trend = technicalCockpit.trend_sma || {};
+  const indicators = technicalCockpit.indicators || {};
+  const supportResistance = technicalCockpit.support_resistance || {};
+
+  return {
+    raw: technicalCockpit,
+    ticker: normalizeTicker(technicalCockpit.ticker || ''),
+    status: technicalCockpit.status || 'available',
+    modelVersion: technicalCockpit.model_version || technicalCockpit.meta?.version || '',
+    meta: {
+      asOfDate: technicalCockpit.meta?.as_of_date || null,
+      generatedAt: technicalCockpit.meta?.generated_at || null,
+      freshnessStatus: technicalCockpit.meta?.freshness_status || null,
+      historyDays: toFiniteNumber(technicalCockpit.meta?.history_days)
+    },
+    snapshot: {
+      close: toFiniteNumber(snapshot.close),
+      averageVolume20d: toFiniteNumber(snapshot.average_volume_20d),
+      technicalQualityScore: toFiniteNumber(snapshot.technical_quality_score),
+      setupQualityScore: toFiniteNumber(snapshot.setup_quality_score),
+      liquidityRead: snapshot.liquidity_read || '',
+      range10d: normalizeTechnicalRange(snapshot.range_10d),
+      range20d: normalizeTechnicalRange(snapshot.range_20d),
+      range13w: normalizeTechnicalRange(snapshot.range_13w),
+      range52w: normalizeTechnicalRange(snapshot.range_52w)
+    },
+    performance: {
+      relativeStrengthPercentile: toFiniteNumber(performance.relative_strength_percentile),
+      return1m: toFiniteNumber(performance.return_1m),
+      return3m: toFiniteNumber(performance.return_3m),
+      return6m: toFiniteNumber(performance.return_6m),
+      return12m: toFiniteNumber(performance.return_12m),
+      return2y: toFiniteNumber(performance.return_2y),
+      vsSpy63d: toFiniteNumber(performance.vs_spy_63d),
+      vsQqq63d: toFiniteNumber(performance.vs_qqq_63d)
+    },
+    trend: {
+      longTermTrend: trend.long_term_trend || '',
+      shortTermTrend: trend.short_term_trend || '',
+      smaRows: Array.isArray(trend.sma) ? trend.sma.map((row) => ({
+        period: toFiniteNumber(row.period),
+        value: toFiniteNumber(row.value),
+        slope: row.slope || '',
+        priceDistancePct: toFiniteNumber(row.price_distance_pct),
+        read: row.read || ''
+      })).filter(row => row.period !== null) : [],
+      weekly: Array.isArray(trend.weekly) ? trend.weekly : []
+    },
+    indicators: {
+      rsi14: toFiniteNumber(indicators.rsi14),
+      macd: indicators.macd && typeof indicators.macd === 'object' ? {
+        line: toFiniteNumber(indicators.macd.line),
+        signal: toFiniteNumber(indicators.macd.signal),
+        histogram: toFiniteNumber(indicators.macd.histogram)
+      } : null,
+      adx14: toFiniteNumber(indicators.adx14),
+      atrPct: toFiniteNumber(indicators.atr_pct),
+      adrPct: toFiniteNumber(indicators.adr_pct),
+      stochastics: indicators.stochastics && typeof indicators.stochastics === 'object' ? {
+        k: toFiniteNumber(indicators.stochastics.k),
+        d: toFiniteNumber(indicators.stochastics.d)
+      } : null,
+      rvol: toFiniteNumber(indicators.rvol),
+      volatilityRead: indicators.volatility_read || '',
+      rsiRead: indicators.rsi_read || '',
+      adxRead: indicators.adx_read || '',
+      stochasticsRead: indicators.stochastics_read || ''
+    },
+    supportResistance: {
+      currentPrice: toFiniteNumber(supportResistance.current_price),
+      currentPricePositionRead: supportResistance.current_price_position_read || '',
+      noResistanceDetected: Boolean(supportResistance.no_resistance_detected),
+      zones: Array.isArray(supportResistance.zones)
+        ? supportResistance.zones.map(normalizeTechnicalZone).filter(Boolean)
+        : []
+    },
+    observations: Array.isArray(technicalCockpit.observations) ? technicalCockpit.observations.map((item) => ({
+      type: item.type || '',
+      severity: item.severity || 'neutral',
+      textEn: item.text_en || item.text || '',
+      textZh: item.text_zh || item.text_en || item.text || '',
+      facts: Array.isArray(item.facts) ? item.facts : []
+    })).filter(item => item.textEn || item.textZh) : [],
+    patterns: technicalCockpit.patterns || {},
+    methodNoteKeys: Array.isArray(technicalCockpit.method_note_keys) ? technicalCockpit.method_note_keys : []
+  };
+};
+
+export const resolveTechnicalCockpit = (eventDetail, momentumRanking, payload) => {
+  const ticker = normalizeTicker(eventDetail?.ticker || momentumRanking?.ticker || '');
+  const matchingRanking = ticker
+    ? (payload?.momentum_universe?.rankings || []).find((row) => normalizeTicker(row?.ticker) === ticker)
+    : null;
+
+  const candidates = [
+    eventDetail?.technical_cockpit,
+    eventDetail?.technicalCockpit,
+    momentumRanking?.technical_cockpit,
+    momentumRanking?.technicalCockpit,
+    matchingRanking?.technical_cockpit,
+    matchingRanking?.technicalCockpit
+  ];
+
+  for (const candidate of candidates) {
+    const normalized = normalizeTechnicalCockpit(candidate);
+    if (normalized && normalized.status !== 'unavailable') {
+      return normalized;
+    }
+  }
+
+  return null;
+};
+
+const buildTechnicalMoveType = (technicalCockpit) => {
+  if (!technicalCockpit) return null;
+  const rs = technicalCockpit.performance?.relativeStrengthPercentile;
+  const longTrend = String(technicalCockpit.trend?.longTermTrend || '').toLowerCase();
+  const shortTrend = String(technicalCockpit.trend?.shortTermTrend || '').toLowerCase();
+
+  const trendEn = longTrend === 'up' && shortTrend === 'up'
+    ? 'Up trend'
+    : longTrend === 'down' || shortTrend === 'down'
+      ? 'Trend weakening'
+      : 'Trend mixed';
+  const trendZh = longTrend === 'up' && shortTrend === 'up'
+    ? '趨勢向上'
+    : longTrend === 'down' || shortTrend === 'down'
+      ? '趨勢轉弱'
+      : '趨勢混合';
+
+  if (rs !== null && rs !== undefined) {
+    return {
+      en: `${trendEn} / RS ${rs.toFixed(0)}`,
+      zh: `${trendZh} / RS ${rs.toFixed(0)}`
+    };
+  }
+
+  return { en: trendEn, zh: trendZh };
 };
 
 const firstFiniteMetric = (source, keys) => {
@@ -256,23 +427,22 @@ export const buildStockOverview = (eventDetail, payload, profile = null) => {
   const profileQuickFacts = Array.isArray(profile?.quickFacts) ? profile.quickFacts : null;
   const valueCore = profile?.valueCore || {};
   const derivedQuickFacts = profile ? [
-    { label: 'Business Model', value: profile.category || 'Pending' },
-    { label: 'Company Stage', value: valueCore.company_stage_candidate || 'Pending' },
-    { label: 'Primary Value Driver', value: valueCore.primary_value_driver || 'Pending' },
-    { label: 'Evidence Quality', value: valueCore.evidence_quality || valueCore.coverage_status || 'Pending' }
+    { label: 'Business Model', value: profile.category || '—' },
+    { label: 'Company Stage', value: valueCore.company_stage_candidate || '—' },
+    { label: 'Primary Value Driver', value: valueCore.primary_value_driver || '—' }
   ] : null;
 
   return {
     title: companyName || `${eventDetail?.ticker || 'Ticker'} Stock Overview`,
     profileLine: businessDescription || `Company profile is not yet available in the live payload; use the research context below before opening a deeper Dossier review.`,
-    theme: profile?.category || (theme ? formatOverviewLabel(theme) : 'Theme Pending'),
+    theme: profile?.category || (theme ? formatOverviewLabel(theme) : 'Theme unavailable'),
     eventContext: eventPhase,
-    dataCoverage: profile ? 'Curated Dossier Available' : fundamental.status === 'available' ? 'Fundamentals Available' : 'Company Profile Pending',
+    dataCoverage: profile ? 'Company research available' : fundamental.status === 'available' ? 'Fundamentals available' : 'Company profile unavailable',
     quickFacts: profileQuickFacts || derivedQuickFacts || [
       { label: 'Research State', value: eventPhase },
-      { label: 'Theme / Industry', value: theme ? formatOverviewLabel(theme) : 'Pending' },
-      { label: 'Fundamentals', value: fundamental.status === 'available' ? 'Available' : 'Pending' },
-      { label: 'Event Date', value: eventDetail?.event_date || 'Not Included' }
+      { label: 'Theme / Industry', value: theme ? formatOverviewLabel(theme) : '—' },
+      { label: 'Fundamentals', value: fundamental.status === 'available' ? 'Available' : '—' },
+      { label: 'Event Date', value: eventDetail?.event_date || '—' }
     ]
   };
 };
@@ -405,6 +575,7 @@ export const buildMomentumUniverseSyntheticDetail = (ticker, payload) => {
       status: "momentum_universe",
       value_core: null,
       trend_setup: { status: 'unavailable' },
+      technical_cockpit: unavailable.technical_cockpit || null,
       momentum_evidence: {
         status: 'unavailable',
         industry_theme: unavailable.industry_theme,
@@ -448,6 +619,7 @@ export const buildMomentumUniverseSyntheticDetail = (ticker, payload) => {
     status: "momentum_universe",
     value_core: ranking.value_core || null,
     trend_setup: ranking.trend_setup || {},
+    technical_cockpit: ranking.technical_cockpit || null,
     momentum_evidence: {
       ...ranking.momentum_evidence,
       industry_theme: ranking.industry_theme,
@@ -562,6 +734,8 @@ export const buildDossierRecords = (payload) => {
     const primary = rec.primaryEventDetail;
     const momentum = primary?.momentum_evidence || rec.secondaryContexts.momentumUniverse?.momentum_evidence || {};
     const trend = primary?.trend_setup || rec.secondaryContexts.momentumUniverse?.trend_setup || {};
+    const technicalCockpit = resolveTechnicalCockpit(primary, rec.secondaryContexts.momentumUniverse, payload);
+    const technicalMoveType = buildTechnicalMoveType(technicalCockpit);
 
     const theme = momentum.industry_theme_label || momentum.industry_theme || trend.supply_chain_stage || null;
 
@@ -575,17 +749,19 @@ export const buildDossierRecords = (payload) => {
     const missing = primary?.trust_layer?.missing_fields || [];
     const meaningfulMissing = missing.filter(field => field !== 'options_data' && field !== 'options_chain');
 
-    let coverage = 'Coverage Pending';
+    let coverage = 'Needs more context';
     if (meaningfulMissing.length === 0) {
       if (primary) coverage = 'Market Evidence Available';
     } else {
-      coverage = `Data Partial (${meaningfulMissing.length})`;
+      coverage = `Needs more context (${meaningfulMissing.length})`;
     }
 
-    let moveType = 'Move Type Pending';
+    let moveType = 'Setup unavailable';
     if (primary?.pead_signal?.status === 'available') {
        const t = primary.pead_signal.reaction?.current_post_return;
        if (t !== undefined && t !== null) moveType = `Post ${t > 0 ? '+' : ''}${t.toFixed(1)}%`;
+    } else if (technicalMoveType?.en) {
+       moveType = technicalMoveType.en;
     } else if (momentum.evidence?.ma200_slope_pct !== undefined) {
        const t = momentum.evidence.ma200_slope_pct;
        moveType = `MA200 ${t > 0 ? '+' : ''}${t.toFixed(1)}%`;
@@ -595,6 +771,8 @@ export const buildDossierRecords = (payload) => {
       theme,
       researchState,
       moveType,
+      moveTypeLocalized: technicalMoveType,
+      technicalCockpitAvailable: Boolean(technicalCockpit),
       pulseState: pulse.state,
       coverage
     };
