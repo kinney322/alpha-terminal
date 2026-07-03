@@ -9,6 +9,7 @@ import {
   resolveValueCore
 } from './dossierHelpers';
 import { getStockDossierProfile } from '../data/stockDossierProfiles';
+import { resolveStockDossierContractModel } from '../data/stockDossierContractAdapter';
 import { resolveReferencePeerEcosystemSnapshot } from '../data/referencePeerMapAdapter';
 import { canonicalizeTicker, getTickerLookupKeys } from '../data/tickerAliases';
 import StockLogo from './StockLogo';
@@ -1890,6 +1891,13 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, refer
   ];
   const performanceGrid = buildLiveStockPerformanceGrid(tickerForSummary, visualPhaseOne?.performanceGrid, stockPerformancePayload, copy);
   const peerEcosystem = resolveReferencePeerEcosystemSnapshot(referencePeerMapPayload, tickerForSummary);
+  const remainingTabsModel = resolveStockDossierContractModel({
+    ticker: tickerForSummary,
+    locale,
+    stockPerformancePayload,
+    technicalCockpit,
+    marketSnapshot
+  });
   const performanceRows = performanceGrid?.periods || [];
   const stockPerformanceFeedSource = performanceGrid?.feedSource === 'dedicated'
     ? 'dedicated'
@@ -1953,13 +1961,13 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, refer
 
   if (visualPhaseOne) {
     const valuationTab = phaseTwo.valuation || {};
-    const valuationPosture = valuationTab.posture ? {
+    const valuationPosture = remainingTabsModel?.valuation?.posture || (valuationTab.posture ? {
       ...valuationTab.posture,
       title: localizedValue(valuationTab.posture, 'title', locale) || valuationTab.posture.title,
       label: localizedValue(valuationTab.posture, 'label', locale) || valuationTab.posture.label,
       note: localizedValue(valuationTab.posture, 'note', locale) || valuationTab.posture.note
-    } : null;
-    const valuationMetricCards = localizedItems(valuationTab.metricCards || [
+    } : null);
+    const valuationMetricCards = remainingTabsModel?.valuation?.metricCards || localizedItems(valuationTab.metricCards || [
       { label: 'Business Quality', value: valuationTopVerdict.businessQuality, note: 'Current research view' },
       { label: 'Valuation', value: valuationTopVerdict.valuationState, note: 'Valuation state' },
       { label: 'Base Case', value: valuationTopVerdict.baseCaseSupport, note: 'Research support' },
@@ -1970,7 +1978,7 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, refer
       note: optionalFrontendText(card.note, locale)
     }));
     const isPeerMapVerified = peerEcosystem?.source === 'live_reference_peer_map';
-    const valuationTensionCards = localizedItems((valuationTab.tensionCards || [
+    const valuationTensionCards = remainingTabsModel?.valuation?.tensionCards || localizedItems((valuationTab.tensionCards || [
       { title: 'Growth vs multiple', state: 'Valuation pressure', text: valuationTopVerdict.why },
       { title: 'Evidence to watch', state: 'Research checklist', text: valuationMissingEvidence.join('; ') || frontendEmptyText(locale, 'valuation') }
     ]).map((card) => {
@@ -1990,10 +1998,10 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, refer
       text: safeFrontendText(card.text, locale, frontendEmptyText(locale, 'valuation'))
     }));
     const localizedValuationChecklist = localizedArray(valuationTab, 'checklist', locale);
-    const valuationChecklist = localizedValuationChecklist.length ? localizedValuationChecklist : (valuationTab.checklist || valuationResearchJudgment);
+    const valuationChecklist = remainingTabsModel?.valuation?.checklist || (localizedValuationChecklist.length ? localizedValuationChecklist : (valuationTab.checklist || valuationResearchJudgment));
     const thesisRiskTab = phaseTwo.thesisRisk || {};
-    const thesisRiskLead = localizedValue(thesisRiskTab, 'lead', locale) || thesisRiskTab.lead || thesisBreakTriggerDisplay;
-    const thesisRiskMap = localizedItems(thesisRiskTab.riskMap || (renderedVerdict.risks.length ? renderedVerdict.risks : [
+    const thesisRiskLead = remainingTabsModel?.thesisRisk?.lead || localizedValue(thesisRiskTab, 'lead', locale) || thesisRiskTab.lead || thesisBreakTriggerDisplay;
+    const thesisRiskMap = remainingTabsModel?.thesisRisk?.riskMap || localizedItems(thesisRiskTab.riskMap || (renderedVerdict.risks.length ? renderedVerdict.risks : [
       locale === 'zh' ? '正式發布完整風險頁前，需要先整理觸發門檻。' : 'Risk monitor needs curated trigger thresholds before full tab release.'
     ]).slice(0, 4).map((risk, index) => ({
       label: `Risk ${index + 1}`,
@@ -2001,14 +2009,14 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, refer
       watch: risk
     })), locale, ['label', 'severity', 'watch']);
     const localizedThesisRiskEvidence = localizedArray(thesisRiskTab, 'evidenceNeeded', locale);
-    const thesisRiskEvidence = localizedThesisRiskEvidence.length
+    const thesisRiskEvidence = remainingTabsModel?.thesisRisk?.evidenceNeeded || (localizedThesisRiskEvidence.length
       ? localizedThesisRiskEvidence
-      : (thesisRiskTab.evidenceNeeded || valueCoreEvidenceItems);
+      : (thesisRiskTab.evidenceNeeded || valueCoreEvidenceItems));
     const financialHealthMetrics = valuationResearchGroups
       .find(group => group.title === 'Financial Health')?.metrics || [];
     const financialHealthTab = phaseTwo.financialHealth || {};
-    const financialHealthQualityRead = localizedValue(financialHealthTab, 'qualityRead', locale) || financialHealthTab.qualityRead || copy.financialHealthPending;
-    const financialHealthMetricCards = localizedItems(financialHealthTab.metricCards || (financialHealthMetrics.length ? financialHealthMetrics : [
+    const financialHealthQualityRead = remainingTabsModel?.financialHealth?.qualityRead || localizedValue(financialHealthTab, 'qualityRead', locale) || financialHealthTab.qualityRead || copy.financialHealthPending;
+    const financialHealthMetricCards = remainingTabsModel?.financialHealth?.metricCards || localizedItems(financialHealthTab.metricCards || (financialHealthMetrics.length ? financialHealthMetrics : [
       { label: 'Cash + Securities', value: frontendEmptyText(locale, 'financial') },
       { label: 'Debt / Equity', value: frontendEmptyText(locale, 'financial') },
       { label: 'FCF Margin', value: frontendEmptyText(locale, 'financial') },
@@ -2018,7 +2026,7 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, refer
       value: safeFrontendText(metric.value, locale, frontendEmptyText(locale, 'financial')),
       note: optionalFrontendText(metric.note, locale) || (locale === 'zh' ? '用來檢查增長質素' : 'Used to check growth quality')
     }));
-    const financialQualityCards = localizedItems(financialHealthTab.qualityCards || [
+    const financialQualityCards = remainingTabsModel?.financialHealth?.qualityCards || localizedItems(financialHealthTab.qualityCards || [
       { title: 'Quality of growth', state: 'Growth quality', text: financialHealthQualityRead || 'Growth quality needs cash-flow and dilution context.' }
     ], locale, ['title', 'state', 'text']).map((card) => ({
       ...card,
@@ -2066,7 +2074,7 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, refer
         tone: gapUpRateValue !== null && gapUpRateValue >= 0.55 ? 'positive' : gapUpRateValue !== null && gapUpRateValue <= 0.45 ? 'warning' : 'neutral'
       }
     ];
-    const valuationDepthCards = [
+    const valuationDepthCards = remainingTabsModel?.valuation?.depthCards || [
       {
         label: locale === 'zh' ? '市場已定價甚麼？' : 'What is priced in?',
         value: valuationTopVerdict.valuationState,
@@ -2090,7 +2098,7 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, refer
         tone: 'neutral'
       }
     ];
-    const valuationWatchCards = [
+    const valuationWatchCards = remainingTabsModel?.valuation?.watchCards || [
       {
         label: locale === 'zh' ? '安全邊際' : 'Margin of safety',
         value: marginOfSafetyDisplay,
@@ -2106,7 +2114,7 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, refer
           : 'Refresh the read with current consensus, multiples, and share-count evidence.'
       }
     ];
-    const thesisAssumptionCards = [
+    const thesisAssumptionCards = remainingTabsModel?.thesisRisk?.assumptionCards || [
       {
         label: locale === 'zh' ? '核心假設' : 'Core assumption',
         value: primaryValueDriverDisplay,
@@ -2132,7 +2140,7 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, refer
         tone: 'warning'
       }
     ];
-    const thesisEvidenceCards = [
+    const thesisEvidenceCards = remainingTabsModel?.thesisRisk?.evidenceCards || [
       {
         label: locale === 'zh' ? '要繼續成立' : 'Needs to keep working',
         value: renderedVerdict.support[0] || primaryValueDriverDisplay,
@@ -2148,7 +2156,7 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, refer
           : 'These are the first evidence items to refresh next.'
       }
     ];
-    const financialDepthCards = [
+    const financialDepthCards = remainingTabsModel?.financialHealth?.depthCards || [
       {
         label: locale === 'zh' ? '增長質素' : 'Growth quality',
         value: valuationMetricValue(valuationCore, 'revenue_growth'),
@@ -2180,7 +2188,7 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, refer
         tone: 'neutral'
       }
     ];
-    const financialWatchCards = [
+    const financialWatchCards = remainingTabsModel?.financialHealth?.watchCards || [
       {
         label: locale === 'zh' ? '質素結論' : 'Quality read',
         value: financialHealthQualityRead,
@@ -2352,7 +2360,7 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, refer
       { label: locale === 'zh' ? '1 年' : '1 Year', value: technicalCockpit.performance?.return12m },
       { label: locale === 'zh' ? '2 年' : '2 Years', value: technicalCockpit.performance?.return2y }
     ].filter((card) => toNumeric(card.value) !== null) : [];
-    const valuationWorkbenchCards = [
+    const valuationWorkbenchCards = remainingTabsModel?.valuation?.workbenchCards || [
       {
         label: locale === 'zh' ? '現價相對區間' : 'Current price vs range',
         value: forwardValuationRange?.medianUpsideDownsideDisplay || marginOfSafetyDisplay,
@@ -2380,7 +2388,7 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, refer
         tone: 'neutral'
       }
     ];
-    const riskTriggerGroups = [
+    const riskTriggerGroups = remainingTabsModel?.thesisRisk?.triggerGroups || [
       {
         label: locale === 'zh' ? '業務破局' : 'Business break',
         value: thesisBreakTriggerDisplay,
@@ -2406,7 +2414,7 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, refer
         tone: 'neutral'
       }
     ];
-    const financialDashboardCards = [
+    const financialDashboardCards = remainingTabsModel?.financialHealth?.dashboardCards || [
       {
         label: locale === 'zh' ? '增長' : 'Growth',
         value: valuationMetricValue(valuationCore, 'revenue_growth'),
@@ -2432,9 +2440,9 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, refer
         tone: 'warning'
       }
     ];
-    const businessCoreRead = localizedFinalRead || primaryValueDriverDisplay;
-    const businessCoreReadBody = stockOverviewProfileLine;
-    const valueEngineCards = [
+    const businessCoreRead = remainingTabsModel?.businessCore?.headline || localizedFinalRead || primaryValueDriverDisplay;
+    const businessCoreReadBody = remainingTabsModel?.businessCore?.body || stockOverviewProfileLine;
+    const valueEngineCards = remainingTabsModel?.businessCore?.valueEngineCards || [
       {
         label: copy.revenueEngine,
         value: quickFactsDisplay.find((fact) => fact.label === copy.businessCore || fact.label.includes('業務模式'))?.value || quickFactsDisplay.find((fact) => fact.label.includes('Business Model'))?.value || (locale === 'zh' ? '訂閱制平台收入' : 'Subscription platform revenue'),
@@ -2464,7 +2472,7 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, refer
         tone: 'positive'
       }
     ];
-    const operatingProofCards = [
+    const operatingProofCards = remainingTabsModel?.businessCore?.operatingProofCards || [
       {
         label: copy.revenueGrowth,
         value: valuationMetricValue(valuationCore, 'revenue_growth'),
@@ -2490,7 +2498,7 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, refer
         tone: 'neutral'
       }
     ];
-    const businessBreakCards = [
+    const businessBreakCards = remainingTabsModel?.businessCore?.breakSignalCards || [
       {
         label: copy.firstBreakSignal,
         value: thesisBreakTriggerDisplay,
@@ -2580,7 +2588,7 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, refer
       }
     ];
     const primaryRead = localizedFinalRead || valuationTopVerdict.overallRead;
-    const evidenceFocusItems = valueCoreEvidenceItems;
+    const evidenceFocusItems = remainingTabsModel?.businessCore?.evidenceToMonitor || valueCoreEvidenceItems;
     const evidenceFocus = evidenceFocusItems.slice(0, 3).join(' / ') || frontendEmptyText(locale);
     const researchPathCards = [
       {
