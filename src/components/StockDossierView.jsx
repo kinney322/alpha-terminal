@@ -31,8 +31,8 @@ const formatFiscalPeriodLabel = (value, locale = 'en') => {
   const raw = String(value).trim();
   const fiscalMatch = raw.match(/^(Q\d)\s+(FY\d{4}|\d{4})\s+ended\s+(\d{4}-\d{2}-\d{2})$/i);
   if (fiscalMatch) return `${fiscalMatch[1].toUpperCase()} ${fiscalMatch[2].toUpperCase()}，截至 ${fiscalMatch[3]}`;
-  const secMatch = raw.match(/^Latest SEC periodic filing report date\s+(\d{4}-\d{2}-\d{2})$/i);
-  if (secMatch) return `最新 SEC 定期申報日期：${secMatch[1]}`;
+  const businessUpdateMatch = raw.match(/^Business update through\s+(\d{4}-\d{2}-\d{2})$/i);
+  if (businessUpdateMatch) return `業務資料截至 ${businessUpdateMatch[1]}`;
   return displayLabel(raw, locale, raw);
 };
 
@@ -1874,9 +1874,6 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, refer
       note: locale === 'zh' ? '成交量可輔助判斷反應是否有承接。' : 'Volume helps test whether the reaction had follow-through support.'
     }
   ].filter((row) => hasFrontendValue(row.value));
-  const coverageStatusDisplay = optionalFrontendText(valueCore.coverageStatus, locale);
-  const evidenceQualityDisplay = optionalFrontendText(valueCore.evidenceQuality, locale);
-  const frontendDossierLabel = optionalFrontendText(valueCore.frontendLabel, locale);
   const businessCoreRows = [
     { label: copy.businessCore, value: valueCoreTypeDisplay },
     { label: copy.customerExpansion, value: companyStageDisplay },
@@ -3437,7 +3434,6 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, refer
               <p className="crowdrisk-kicker">{copy.tabs[0]?.label || 'Overview'}</p>
               <h3>{copy.snapshot}</h3>
             </div>
-            {frontendDossierLabel && <span>{frontendDossierLabel}</span>}
           </div>
 
           <div className="dossier-visual-cockpit__grid">
@@ -3595,9 +3591,6 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, refer
           <div>
             <p className="crowdrisk-kicker">{coreSectionLabel}</p>
             <h3>{coreSectionHeading}</h3>
-          </div>
-          <div className="dossier-hero-pills">
-            {(coverageStatusDisplay || frontendDossierLabel) && <span>{coverageStatusDisplay || frontendDossierLabel}</span>}
           </div>
         </div>
 

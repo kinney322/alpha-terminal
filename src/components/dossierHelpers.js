@@ -26,7 +26,6 @@ export const resolveValueCore = (eventDetail, dossierProfile = null) => {
     evidenceQuality: hasValueCore ? valueOrFallback(valueCore.evidence_quality, '') : '',
     evidenceNeeded: hasValueCore && Array.isArray(valueCore.evidence_needed) ? valueCore.evidence_needed : [],
     coverageStatus: hasValueCore ? valueOrFallback(valueCore.coverage_status, null) : null,
-    frontendLabel: hasValueCore ? valueOrFallback(valueCore.frontend_label, '') : '',
     dossierState: hasValueCore ? valueOrFallback(valueCore.dossier_state, 'coverage_pending') : (dossierProfile ? 'golden_sample' : 'coverage_pending'),
     needsHumanReview: hasValueCore ? Boolean(valueCore.needs_human_review) : !dossierProfile,
     sector: hasValueCore ? valueOrFallback(valueCore.sector, '') : '',

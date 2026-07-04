@@ -129,7 +129,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'golden_sample',
-      frontend_label: 'Golden Sample',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'stockDossierProfiles.js'
@@ -645,7 +644,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_1',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q and NVIDIA official earnings release'
@@ -746,7 +744,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_1',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -847,7 +844,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_1',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -948,7 +944,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_1',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -1049,7 +1044,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_1',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -1150,7 +1144,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_2',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -1251,7 +1244,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_2',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -1352,7 +1344,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_2',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -1453,7 +1444,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_2',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -1554,7 +1544,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_2',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -1603,7 +1592,7 @@ const stockDossierProfiles = {
     overview: 'Apple sells iPhone, Mac, iPad, wearables, accessories, and services through a global hardware, software, and services ecosystem.',
     category: 'Hardware / Services Ecosystem',
     analysisDate: '2026-06-11',
-    latestFiscalPeriod: 'Latest SEC periodic filing report date 2026-03-28',
+    latestFiscalPeriod: 'Business update through 2026-03-28',
     dossierVerdict: {
       sourceType: 'curated',
       asOf: '2026-06-11',
@@ -1613,10 +1602,9 @@ const stockDossierProfiles = {
       marketEvidence: 'not_verified',
       finalRead: 'Hardware / Services Ecosystem where the thesis depends on Services revenue, installed base engagement, hardware upgrade cycles, and platform retention are central evidence points.',
       keySupport: [
-        'SEC source pack identifies Apple Inc. as Hardware / Services Ecosystem.',
+        'Apple Inc. fits the Hardware / Services Ecosystem research bucket.',
         'Apple sells iPhone, Mac, iPad, wearables, accessories, and services through a global hardware, software, and services ecosystem.',
         'Services revenue, installed base engagement, hardware upgrade cycles, and platform retention are central evidence points.',
-        'Latest primary-source filing reviewed: SEC 10-Q.'
       ],
       keyRisk: [
         'Hardware replacement cycles can slow.',
@@ -1639,7 +1627,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_3',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -1694,7 +1681,7 @@ const stockDossierProfiles = {
     overview: 'Meta operates social, messaging, creator, advertising, and AI-driven discovery platforms across Family of Apps and Reality Labs.',
     category: 'Social / Advertising / AI Platform',
     analysisDate: '2026-06-11',
-    latestFiscalPeriod: 'Latest SEC periodic filing report date 2026-03-31',
+    latestFiscalPeriod: 'Business update through 2026-03-31',
     dossierVerdict: {
       sourceType: 'curated',
       asOf: '2026-06-11',
@@ -1704,10 +1691,9 @@ const stockDossierProfiles = {
       marketEvidence: 'not_verified',
       finalRead: 'Social / Advertising / AI Platform where the thesis depends on Advertising engagement, monetization, AI infrastructure, and Reality Labs investment discipline drive the research frame.',
       keySupport: [
-        'SEC source pack identifies Meta Platforms, Inc. as Social / Advertising / AI Platform.',
+        'Meta Platforms, Inc. fits the Social / Advertising / AI Platform research bucket.',
         'Meta operates social, messaging, creator, advertising, and AI-driven discovery platforms across Family of Apps and Reality Labs.',
         'Advertising engagement, monetization, AI infrastructure, and Reality Labs investment discipline drive the research frame.',
-        'Latest primary-source filing reviewed: SEC 10-Q.'
       ],
       keyRisk: [
         'Ad demand, privacy rules, regulation, AI capex, youth-safety issues, and Reality Labs losses can pressure the thesis.'
@@ -1729,7 +1715,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_3',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -1779,7 +1764,7 @@ const stockDossierProfiles = {
     overview: 'Tesla designs and sells electric vehicles, energy generation and storage products, software, services, and autonomous / AI-related capabilities.',
     category: 'Electric Vehicles / Energy / AI Robotics',
     analysisDate: '2026-06-11',
-    latestFiscalPeriod: 'Latest SEC periodic filing report date 2026-03-31',
+    latestFiscalPeriod: 'Business update through 2026-03-31',
     dossierVerdict: {
       sourceType: 'curated',
       asOf: '2026-06-11',
@@ -1789,10 +1774,9 @@ const stockDossierProfiles = {
       marketEvidence: 'not_verified',
       finalRead: 'Electric Vehicles / Energy / AI Robotics where the thesis depends on Vehicle volume, gross margin, energy storage growth, autonomy progress, and pricing power are central evidence points.',
       keySupport: [
-        'SEC source pack identifies Tesla, Inc. as Electric Vehicles / Energy / AI Robotics.',
+        'Tesla, Inc. fits the Electric Vehicles / Energy / AI Robotics research bucket.',
         'Tesla designs and sells electric vehicles, energy generation and storage products, software, services, and autonomous / AI-related capabilities.',
         'Vehicle volume, gross margin, energy storage growth, autonomy progress, and pricing power are central evidence points.',
-        'Latest primary-source filing reviewed: SEC 10-Q.'
       ],
       keyRisk: [
         'EV demand, price competition, margins, autonomy execution, regulatory scrutiny, and management distraction can affect the thesis.'
@@ -1814,7 +1798,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_3',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -1864,7 +1847,7 @@ const stockDossierProfiles = {
     overview: 'Oracle sells cloud infrastructure, cloud applications, database, middleware, hardware, and related services.',
     category: 'Enterprise Software / Cloud Infrastructure',
     analysisDate: '2026-06-11',
-    latestFiscalPeriod: 'Latest SEC periodic filing report date 2026-02-28',
+    latestFiscalPeriod: 'Business update through 2026-02-28',
     dossierVerdict: {
       sourceType: 'curated',
       asOf: '2026-06-11',
@@ -1874,10 +1857,9 @@ const stockDossierProfiles = {
       marketEvidence: 'not_verified',
       finalRead: 'Enterprise Software / Cloud Infrastructure where the thesis depends on OCI growth, database franchise durability, applications growth, remaining performance obligations, and AI infrastructure demand are key evidence points.',
       keySupport: [
-        'SEC source pack identifies Oracle Corporation as Enterprise Software / Cloud Infrastructure.',
+        'Oracle Corporation fits the Enterprise Software / Cloud Infrastructure research bucket.',
         'Oracle sells cloud infrastructure, cloud applications, database, middleware, hardware, and related services.',
         'OCI growth, database franchise durability, applications growth, remaining performance obligations, and AI infrastructure demand are key evidence points.',
-        'Latest primary-source filing reviewed: SEC 10-Q.'
       ],
       keyRisk: [
         'Large cloud capex, debt, execution risk, hyperscaler competition, and slower cloud bookings can weaken the thesis.'
@@ -1899,7 +1881,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_3',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -1949,7 +1930,7 @@ const stockDossierProfiles = {
     overview: 'Salesforce provides customer relationship management software across sales, service, marketing, commerce, data, integration, analytics, and AI workflows.',
     category: 'Enterprise SaaS / CRM',
     analysisDate: '2026-06-11',
-    latestFiscalPeriod: 'Latest SEC periodic filing report date 2026-04-30',
+    latestFiscalPeriod: 'Business update through 2026-04-30',
     dossierVerdict: {
       sourceType: 'curated',
       asOf: '2026-06-11',
@@ -1959,10 +1940,9 @@ const stockDossierProfiles = {
       marketEvidence: 'not_verified',
       finalRead: 'Enterprise SaaS / CRM where the thesis depends on Subscription growth, remaining performance obligations, margin discipline, Data Cloud, and Agentforce / AI adoption drive the frame.',
       keySupport: [
-        'SEC source pack identifies Salesforce, Inc. as Enterprise SaaS / CRM.',
+        'Salesforce, Inc. fits the Enterprise SaaS / CRM research bucket.',
         'Salesforce provides customer relationship management software across sales, service, marketing, commerce, data, integration, analytics, and AI workflows.',
         'Subscription growth, remaining performance obligations, margin discipline, Data Cloud, and Agentforce / AI adoption drive the frame.',
-        'Latest primary-source filing reviewed: SEC 10-Q.'
       ],
       keyRisk: [
         'Seat growth can slow, enterprise IT spending can soften, AI monetization can disappoint, and competition can pressure renewal or expansion.'
@@ -1984,7 +1964,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_3',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -2034,7 +2013,7 @@ const stockDossierProfiles = {
     overview: 'Snowflake provides a cloud data platform for data warehousing, data lakes, data engineering, analytics, collaboration, applications, and AI / ML workloads.',
     category: 'Data Cloud / Analytics',
     analysisDate: '2026-06-11',
-    latestFiscalPeriod: 'Latest SEC periodic filing report date 2026-04-30',
+    latestFiscalPeriod: 'Business update through 2026-04-30',
     dossierVerdict: {
       sourceType: 'curated',
       asOf: '2026-06-11',
@@ -2044,10 +2023,9 @@ const stockDossierProfiles = {
       marketEvidence: 'not_verified',
       finalRead: 'Data Cloud / Analytics where the thesis depends on Consumption growth, net revenue retention, large customer expansion, platform workload breadth, and AI data use cases drive the frame.',
       keySupport: [
-        'SEC source pack identifies Snowflake Inc. as Data Cloud / Analytics.',
+        'Snowflake Inc. fits the Data Cloud / Analytics research bucket.',
         'Snowflake provides a cloud data platform for data warehousing, data lakes, data engineering, analytics, collaboration, applications, and AI / ML workloads.',
         'Consumption growth, net revenue retention, large customer expansion, platform workload breadth, and AI data use cases drive the frame.',
-        'Latest primary-source filing reviewed: SEC 10-Q.'
       ],
       keyRisk: [
         'Consumption can slow, optimization can pressure growth, competition from hyperscalers can intensify, and AI features need durable monetization.'
@@ -2069,7 +2047,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_3',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -2119,7 +2096,7 @@ const stockDossierProfiles = {
     overview: 'Micron manufactures memory and storage products, including DRAM, NAND, HBM, and SSD-related solutions.',
     category: 'Memory Semiconductor',
     analysisDate: '2026-06-11',
-    latestFiscalPeriod: 'Latest SEC periodic filing report date 2026-02-26',
+    latestFiscalPeriod: 'Business update through 2026-02-26',
     dossierVerdict: {
       sourceType: 'curated',
       asOf: '2026-06-11',
@@ -2129,10 +2106,9 @@ const stockDossierProfiles = {
       marketEvidence: 'not_verified',
       finalRead: 'Memory Semiconductor where the thesis depends on HBM demand, DRAM/NAND pricing, bit supply discipline, gross margin, and AI data-center memory content are core evidence points.',
       keySupport: [
-        'SEC source pack identifies Micron Technology, Inc. as Memory Semiconductor.',
+        'Micron Technology, Inc. fits the Memory Semiconductor research bucket.',
         'Micron manufactures memory and storage products, including DRAM, NAND, HBM, and SSD-related solutions.',
         'HBM demand, DRAM/NAND pricing, bit supply discipline, gross margin, and AI data-center memory content are core evidence points.',
-        'Latest primary-source filing reviewed: SEC 10-Q.'
       ],
       keyRisk: [
         'Memory is highly cyclical; pricing, inventory, capex, customer demand, and supply discipline can change quickly.'
@@ -2154,7 +2130,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_3',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -2204,7 +2179,7 @@ const stockDossierProfiles = {
     overview: 'Intel operates across client computing, data center and AI, network and edge, and foundry / manufacturing ambitions.',
     category: 'Semiconductors / Foundry / Client and Data Center',
     analysisDate: '2026-06-11',
-    latestFiscalPeriod: 'Latest SEC periodic filing report date 2026-03-28',
+    latestFiscalPeriod: 'Business update through 2026-03-28',
     dossierVerdict: {
       sourceType: 'curated',
       asOf: '2026-06-11',
@@ -2214,10 +2189,9 @@ const stockDossierProfiles = {
       marketEvidence: 'not_verified',
       finalRead: 'Semiconductors / Foundry / Client and Data Center where the thesis depends on The thesis depends on process execution, product competitiveness, foundry traction, margin recovery, and AI / data-center relevance.',
       keySupport: [
-        'SEC source pack identifies Intel Corporation as Semiconductors / Foundry / Client and Data Center.',
+        'Intel Corporation fits the Semiconductors / Foundry / Client and Data Center research bucket.',
         'Intel operates across client computing, data center and AI, network and edge, and foundry / manufacturing ambitions.',
         'The thesis depends on process execution, product competitiveness, foundry traction, margin recovery, and AI / data-center relevance.',
-        'Latest primary-source filing reviewed: SEC 10-Q.'
       ],
       keyRisk: [
         'Foundry losses, product delays, competitive pressure, weak margins, capex burden, and share loss can weaken the thesis.'
@@ -2239,7 +2213,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_3',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -2289,7 +2262,7 @@ const stockDossierProfiles = {
     overview: 'ASML supplies lithography systems and related services for semiconductor manufacturing, including EUV and DUV systems.',
     category: 'Semiconductor Equipment / Lithography',
     analysisDate: '2026-06-11',
-    latestFiscalPeriod: 'Latest SEC periodic filing report date 2025-12-31',
+    latestFiscalPeriod: 'Business update through 2025-12-31',
     dossierVerdict: {
       sourceType: 'curated',
       asOf: '2026-06-11',
@@ -2299,10 +2272,9 @@ const stockDossierProfiles = {
       marketEvidence: 'not_verified',
       finalRead: 'Semiconductor Equipment / Lithography where the thesis depends on Semiconductor node transitions, EUV demand, installed base service, China/export restrictions, and customer capex drive the frame.',
       keySupport: [
-        'SEC source pack identifies ASML Holding N.V. as Semiconductor Equipment / Lithography.',
+        'ASML Holding N.V. fits the Semiconductor Equipment / Lithography research bucket.',
         'ASML supplies lithography systems and related services for semiconductor manufacturing, including EUV and DUV systems.',
         'Semiconductor node transitions, EUV demand, installed base service, China/export restrictions, and customer capex drive the frame.',
-        'Latest primary-source filing reviewed: SEC 20-F.'
       ],
       keyRisk: [
         'Semiconductor capex cycles, export controls, customer concentration, supply chain complexity, and lithography demand timing can affect the thesis.'
@@ -2324,7 +2296,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_3',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -2374,7 +2345,7 @@ const stockDossierProfiles = {
     overview: 'Applied Materials provides semiconductor manufacturing equipment, services, and display / adjacent equipment across materials engineering, deposition, etch, inspection, and process control.',
     category: 'Semiconductor Equipment / Materials Engineering',
     analysisDate: '2026-06-11',
-    latestFiscalPeriod: 'Latest SEC periodic filing report date 2026-04-26',
+    latestFiscalPeriod: 'Business update through 2026-04-26',
     dossierVerdict: {
       sourceType: 'curated',
       asOf: '2026-06-11',
@@ -2384,10 +2355,9 @@ const stockDossierProfiles = {
       marketEvidence: 'not_verified',
       finalRead: 'Semiconductor Equipment / Materials Engineering where the thesis depends on WFE demand, memory and foundry/logic capex, advanced packaging, services, and China/export restrictions drive the frame.',
       keySupport: [
-        'SEC source pack identifies Applied Materials, Inc. as Semiconductor Equipment / Materials Engineering.',
+        'Applied Materials, Inc. fits the Semiconductor Equipment / Materials Engineering research bucket.',
         'Applied Materials provides semiconductor manufacturing equipment, services, and display / adjacent equipment across materials engineering, deposition, etch, inspection, and process control.',
         'WFE demand, memory and foundry/logic capex, advanced packaging, services, and China/export restrictions drive the frame.',
-        'Latest primary-source filing reviewed: SEC 10-Q.'
       ],
       keyRisk: [
         'Wafer-fab equipment cycles, memory capex swings, customer concentration, export controls, and order timing can affect growth and margins.'
@@ -2409,7 +2379,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_3',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -2469,8 +2438,7 @@ const stockDossierProfiles = {
       marketEvidence: 'not_verified',
       finalRead: 'Semiconductor Equipment / Etch and Deposition where the thesis depends on Semiconductor Equipment / Etch and Deposition execution, customer demand, margin, and cash flow.',
       keySupport: [
-        'SEC source pack identifies Lam Research Corporation as Semiconductor Equipment / Etch and Deposition.',
-        'Latest primary-source filing reviewed: SEC latest periodic filing.'
+        'Lam Research Corporation fits the Semiconductor Equipment / Etch and Deposition research bucket.',
       ],
       keyRisk: [
         'Semiconductor Equipment / Etch and Deposition demand can slow.',
@@ -2494,7 +2462,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_4',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -2569,8 +2536,7 @@ const stockDossierProfiles = {
       marketEvidence: 'not_verified',
       finalRead: 'Semiconductor Process Control / Inspection where the thesis depends on Semiconductor Process Control / Inspection execution, customer demand, margin, and cash flow.',
       keySupport: [
-        'SEC source pack identifies KLA Corporation as Semiconductor Process Control / Inspection.',
-        'Latest primary-source filing reviewed: SEC latest periodic filing.'
+        'KLA Corporation fits the Semiconductor Process Control / Inspection research bucket.',
       ],
       keyRisk: [
         'Semiconductor Process Control / Inspection demand can slow.',
@@ -2594,7 +2560,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_4',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -2669,8 +2634,7 @@ const stockDossierProfiles = {
       marketEvidence: 'not_verified',
       finalRead: 'Mobile / Edge AI Semiconductor Platform where the thesis depends on Mobile / Edge AI Semiconductor Platform execution, customer demand, margin, and cash flow.',
       keySupport: [
-        'SEC source pack identifies QUALCOMM Incorporated as Mobile / Edge AI Semiconductor Platform.',
-        'Latest primary-source filing reviewed: SEC latest periodic filing.'
+        'QUALCOMM Incorporated fits the Mobile / Edge AI Semiconductor Platform research bucket.',
       ],
       keyRisk: [
         'Mobile / Edge AI Semiconductor Platform demand can slow.',
@@ -2694,7 +2658,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_4',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -2769,8 +2732,7 @@ const stockDossierProfiles = {
       marketEvidence: 'not_verified',
       finalRead: 'Analog / Embedded Semiconductor where the thesis depends on Analog / Embedded Semiconductor execution, customer demand, margin, and cash flow.',
       keySupport: [
-        'SEC source pack identifies Texas Instruments Incorporated as Analog / Embedded Semiconductor.',
-        'Latest primary-source filing reviewed: SEC latest periodic filing.'
+        'Texas Instruments Incorporated fits the Analog / Embedded Semiconductor research bucket.',
       ],
       keyRisk: [
         'Analog / Embedded Semiconductor demand can slow.',
@@ -2794,7 +2756,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_4',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -2869,8 +2830,7 @@ const stockDossierProfiles = {
       marketEvidence: 'not_verified',
       finalRead: 'Networking / Security / Observability Platform where the thesis depends on Networking / Security / Observability Platform execution, customer demand, margin, and cash flow.',
       keySupport: [
-        'SEC source pack identifies Cisco Systems, Inc. as Networking / Security / Observability Platform.',
-        'Latest primary-source filing reviewed: SEC latest periodic filing.'
+        'Cisco Systems, Inc. fits the Networking / Security / Observability Platform research bucket.',
       ],
       keyRisk: [
         'Networking / Security / Observability Platform demand can slow.',
@@ -2894,7 +2854,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_4',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -2969,8 +2928,7 @@ const stockDossierProfiles = {
       marketEvidence: 'not_verified',
       finalRead: 'Hybrid Cloud / AI / Consulting Platform where the thesis depends on Hybrid Cloud / AI / Consulting Platform execution, customer demand, margin, and cash flow.',
       keySupport: [
-        'SEC source pack identifies International Business Machines Corporation as Hybrid Cloud / AI / Consulting Platform.',
-        'Latest primary-source filing reviewed: SEC latest periodic filing.'
+        'International Business Machines Corporation fits the Hybrid Cloud / AI / Consulting Platform research bucket.',
       ],
       keyRisk: [
         'Hybrid Cloud / AI / Consulting Platform demand can slow.',
@@ -2994,7 +2952,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_4',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -3069,8 +3026,7 @@ const stockDossierProfiles = {
       marketEvidence: 'not_verified',
       finalRead: 'Diversified Bank / Financial Services where the thesis depends on Diversified Bank / Financial Services execution, customer demand, margin, and cash flow.',
       keySupport: [
-        'SEC source pack identifies JPMorgan Chase & Co. as Diversified Bank / Financial Services.',
-        'Latest primary-source filing reviewed: SEC latest periodic filing.'
+        'JPMorgan Chase & Co. fits the Diversified Bank / Financial Services research bucket.',
       ],
       keyRisk: [
         'Diversified Bank / Financial Services demand can slow.',
@@ -3094,7 +3050,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_4',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -3169,8 +3124,7 @@ const stockDossierProfiles = {
       marketEvidence: 'not_verified',
       finalRead: 'Global Payments Network where the thesis depends on Global Payments Network execution, customer demand, margin, and cash flow.',
       keySupport: [
-        'SEC source pack identifies Visa Inc. as Global Payments Network.',
-        'Latest primary-source filing reviewed: SEC latest periodic filing.'
+        'Visa Inc. fits the Global Payments Network research bucket.',
       ],
       keyRisk: [
         'Global Payments Network demand can slow.',
@@ -3194,7 +3148,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_4',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -3269,8 +3222,7 @@ const stockDossierProfiles = {
       marketEvidence: 'not_verified',
       finalRead: 'Membership Warehouse Retail where the thesis depends on Membership Warehouse Retail execution, customer demand, margin, and cash flow.',
       keySupport: [
-        'SEC source pack identifies Costco Wholesale Corporation as Membership Warehouse Retail.',
-        'Latest primary-source filing reviewed: SEC latest periodic filing.'
+        'Costco Wholesale Corporation fits the Membership Warehouse Retail research bucket.',
       ],
       keyRisk: [
         'Membership Warehouse Retail demand can slow.',
@@ -3294,7 +3246,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_4',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -3369,8 +3320,7 @@ const stockDossierProfiles = {
       marketEvidence: 'not_verified',
       finalRead: 'Home Improvement Retail where the thesis depends on Home Improvement Retail execution, customer demand, margin, and cash flow.',
       keySupport: [
-        'SEC source pack identifies The Home Depot, Inc. as Home Improvement Retail.',
-        'Latest primary-source filing reviewed: SEC latest periodic filing.'
+        'The Home Depot, Inc. fits the Home Improvement Retail research bucket.',
       ],
       keyRisk: [
         'Home Improvement Retail demand can slow.',
@@ -3394,7 +3344,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_4',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -3469,8 +3418,7 @@ const stockDossierProfiles = {
       marketEvidence: 'not_verified',
       finalRead: 'Managed Care / Health Services where the thesis depends on Managed Care / Health Services execution, customer demand, margin, and cash flow.',
       keySupport: [
-        'SEC source pack identifies UnitedHealth Group Incorporated as Managed Care / Health Services.',
-        'Latest primary-source filing reviewed: SEC latest periodic filing.'
+        'UnitedHealth Group Incorporated fits the Managed Care / Health Services research bucket.',
       ],
       keyRisk: [
         'Managed Care / Health Services demand can slow.',
@@ -3494,7 +3442,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_5',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -3569,8 +3516,7 @@ const stockDossierProfiles = {
       marketEvidence: 'not_verified',
       finalRead: 'Pharmaceuticals / GLP-1 / Diabetes / Obesity where the thesis depends on Pharmaceuticals / GLP-1 / Diabetes / Obesity execution, customer demand, margin, and cash flow.',
       keySupport: [
-        'SEC source pack identifies Eli Lilly and Company as Pharmaceuticals / GLP-1 / Diabetes / Obesity.',
-        'Latest primary-source filing reviewed: SEC latest periodic filing.'
+        'Eli Lilly and Company fits the Pharmaceuticals / GLP-1 / Diabetes / Obesity research bucket.',
       ],
       keyRisk: [
         'Pharmaceuticals / GLP-1 / Diabetes / Obesity demand can slow.',
@@ -3594,7 +3540,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_5',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -3669,8 +3614,7 @@ const stockDossierProfiles = {
       marketEvidence: 'not_verified',
       finalRead: 'Pharmaceuticals / MedTech where the thesis depends on Pharmaceuticals / MedTech execution, customer demand, margin, and cash flow.',
       keySupport: [
-        'SEC source pack identifies Johnson & Johnson as Pharmaceuticals / MedTech.',
-        'Latest primary-source filing reviewed: SEC latest periodic filing.'
+        'Johnson & Johnson fits the Pharmaceuticals / MedTech research bucket.',
       ],
       keyRisk: [
         'Pharmaceuticals / MedTech demand can slow.',
@@ -3694,7 +3638,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_5',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -3769,8 +3712,7 @@ const stockDossierProfiles = {
       marketEvidence: 'not_verified',
       finalRead: 'Pharmaceuticals / Oncology / Vaccines where the thesis depends on Pharmaceuticals / Oncology / Vaccines execution, customer demand, margin, and cash flow.',
       keySupport: [
-        'SEC source pack identifies Merck & Co., Inc. as Pharmaceuticals / Oncology / Vaccines.',
-        'Latest primary-source filing reviewed: SEC latest periodic filing.'
+        'Merck & Co., Inc. fits the Pharmaceuticals / Oncology / Vaccines research bucket.',
       ],
       keyRisk: [
         'Pharmaceuticals / Oncology / Vaccines demand can slow.',
@@ -3794,7 +3736,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_5',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -3869,8 +3810,7 @@ const stockDossierProfiles = {
       marketEvidence: 'not_verified',
       finalRead: 'Biopharma / Immunology / Neuroscience / Aesthetics where the thesis depends on Biopharma / Immunology / Neuroscience / Aesthetics execution, customer demand, margin, and cash flow.',
       keySupport: [
-        'SEC source pack identifies AbbVie Inc. as Biopharma / Immunology / Neuroscience / Aesthetics.',
-        'Latest primary-source filing reviewed: SEC latest periodic filing.'
+        'AbbVie Inc. fits the Biopharma / Immunology / Neuroscience / Aesthetics research bucket.',
       ],
       keyRisk: [
         'Biopharma / Immunology / Neuroscience / Aesthetics demand can slow.',
@@ -3894,7 +3834,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_5',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -3969,8 +3908,7 @@ const stockDossierProfiles = {
       marketEvidence: 'not_verified',
       finalRead: 'Pharmaceuticals / Vaccines / Oncology where the thesis depends on Pharmaceuticals / Vaccines / Oncology execution, customer demand, margin, and cash flow.',
       keySupport: [
-        'SEC source pack identifies Pfizer Inc. as Pharmaceuticals / Vaccines / Oncology.',
-        'Latest primary-source filing reviewed: SEC latest periodic filing.'
+        'Pfizer Inc. fits the Pharmaceuticals / Vaccines / Oncology research bucket.',
       ],
       keyRisk: [
         'Pharmaceuticals / Vaccines / Oncology demand can slow.',
@@ -3994,7 +3932,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_5',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -4069,8 +4006,7 @@ const stockDossierProfiles = {
       marketEvidence: 'not_verified',
       finalRead: 'Biotechnology / Therapeutics where the thesis depends on Biotechnology / Therapeutics execution, customer demand, margin, and cash flow.',
       keySupport: [
-        'SEC source pack identifies Amgen Inc. as Biotechnology / Therapeutics.',
-        'Latest primary-source filing reviewed: SEC latest periodic filing.'
+        'Amgen Inc. fits the Biotechnology / Therapeutics research bucket.',
       ],
       keyRisk: [
         'Biotechnology / Therapeutics demand can slow.',
@@ -4094,7 +4030,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_5',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -4169,8 +4104,7 @@ const stockDossierProfiles = {
       marketEvidence: 'not_verified',
       finalRead: 'Medical Devices where the thesis depends on Medical Devices execution, customer demand, margin, and cash flow.',
       keySupport: [
-        'SEC source pack identifies Medtronic plc as Medical Devices.',
-        'Latest primary-source filing reviewed: SEC latest periodic filing.'
+        'Medtronic plc fits the Medical Devices research bucket.',
       ],
       keyRisk: [
         'Medical Devices demand can slow.',
@@ -4194,7 +4128,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_5',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -4269,8 +4202,7 @@ const stockDossierProfiles = {
       marketEvidence: 'not_verified',
       finalRead: 'Robotic Surgery / MedTech where the thesis depends on Robotic Surgery / MedTech execution, customer demand, margin, and cash flow.',
       keySupport: [
-        'SEC source pack identifies Intuitive Surgical, Inc. as Robotic Surgery / MedTech.',
-        'Latest primary-source filing reviewed: SEC latest periodic filing.'
+        'Intuitive Surgical, Inc. fits the Robotic Surgery / MedTech research bucket.',
       ],
       keyRisk: [
         'Robotic Surgery / MedTech demand can slow.',
@@ -4294,7 +4226,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_5',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -4369,8 +4300,7 @@ const stockDossierProfiles = {
       marketEvidence: 'not_verified',
       finalRead: 'Life Sciences / Diagnostics / Bioprocessing where the thesis depends on Life Sciences / Diagnostics / Bioprocessing execution, customer demand, margin, and cash flow.',
       keySupport: [
-        'SEC source pack identifies Danaher Corporation as Life Sciences / Diagnostics / Bioprocessing.',
-        'Latest primary-source filing reviewed: SEC latest periodic filing.'
+        'Danaher Corporation fits the Life Sciences / Diagnostics / Bioprocessing research bucket.',
       ],
       keyRisk: [
         'Life Sciences / Diagnostics / Bioprocessing demand can slow.',
@@ -4394,7 +4324,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_5',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -4469,8 +4398,7 @@ const stockDossierProfiles = {
       marketEvidence: 'not_verified',
       finalRead: 'Diversified Bank / Consumer and Commercial Banking where the thesis depends on Diversified Bank / Consumer and Commercial Banking execution, customer demand, margin, and cash flow.',
       keySupport: [
-        'SEC source pack identifies Bank of America Corporation as Diversified Bank / Consumer and Commercial Banking.',
-        'Latest primary-source filing reviewed: SEC latest periodic filing.'
+        'Bank of America Corporation fits the Diversified Bank / Consumer and Commercial Banking research bucket.',
       ],
       keyRisk: [
         'Diversified Bank / Consumer and Commercial Banking demand can slow.',
@@ -4494,7 +4422,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_6',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -4569,8 +4496,7 @@ const stockDossierProfiles = {
       marketEvidence: 'not_verified',
       finalRead: 'Investment Banking / Global Markets / Asset Management where the thesis depends on Investment Banking / Global Markets / Asset Management execution, customer demand, margin, and cash flow.',
       keySupport: [
-        'SEC source pack identifies The Goldman Sachs Group, Inc. as Investment Banking / Global Markets / Asset Management.',
-        'Latest primary-source filing reviewed: SEC latest periodic filing.'
+        'The Goldman Sachs Group, Inc. fits the Investment Banking / Global Markets / Asset Management research bucket.',
       ],
       keyRisk: [
         'Investment Banking / Global Markets / Asset Management demand can slow.',
@@ -4594,7 +4520,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_6',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -4669,8 +4594,7 @@ const stockDossierProfiles = {
       marketEvidence: 'not_verified',
       finalRead: 'Wealth Management / Investment Banking / Markets where the thesis depends on Wealth Management / Investment Banking / Markets execution, customer demand, margin, and cash flow.',
       keySupport: [
-        'SEC source pack identifies Morgan Stanley as Wealth Management / Investment Banking / Markets.',
-        'Latest primary-source filing reviewed: SEC latest periodic filing.'
+        'Morgan Stanley fits the Wealth Management / Investment Banking / Markets research bucket.',
       ],
       keyRisk: [
         'Wealth Management / Investment Banking / Markets demand can slow.',
@@ -4694,7 +4618,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_6',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -4769,8 +4692,7 @@ const stockDossierProfiles = {
       marketEvidence: 'not_verified',
       finalRead: 'Payments / Card Issuer / Closed-Loop Network where the thesis depends on Payments / Card Issuer / Closed-Loop Network execution, customer demand, margin, and cash flow.',
       keySupport: [
-        'SEC source pack identifies American Express Company as Payments / Card Issuer / Closed-Loop Network.',
-        'Latest primary-source filing reviewed: SEC latest periodic filing.'
+        'American Express Company fits the Payments / Card Issuer / Closed-Loop Network research bucket.',
       ],
       keyRisk: [
         'Payments / Card Issuer / Closed-Loop Network demand can slow.',
@@ -4794,7 +4716,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_6',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -4869,8 +4790,7 @@ const stockDossierProfiles = {
       marketEvidence: 'not_verified',
       finalRead: 'Global Payments Network where the thesis depends on Global Payments Network execution, customer demand, margin, and cash flow.',
       keySupport: [
-        'SEC source pack identifies Mastercard Incorporated as Global Payments Network.',
-        'Latest primary-source filing reviewed: SEC latest periodic filing.'
+        'Mastercard Incorporated fits the Global Payments Network research bucket.',
       ],
       keyRisk: [
         'Global Payments Network demand can slow.',
@@ -4894,7 +4814,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_6',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -4969,8 +4888,7 @@ const stockDossierProfiles = {
       marketEvidence: 'not_verified',
       finalRead: 'Integrated Energy where the thesis depends on Integrated Energy execution, customer demand, margin, and cash flow.',
       keySupport: [
-        'SEC source pack identifies Chevron Corporation as Integrated Energy.',
-        'Latest primary-source filing reviewed: SEC latest periodic filing.'
+        'Chevron Corporation fits the Integrated Energy research bucket.',
       ],
       keyRisk: [
         'Integrated Energy demand can slow.',
@@ -4994,7 +4912,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_6',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -5069,8 +4986,7 @@ const stockDossierProfiles = {
       marketEvidence: 'not_verified',
       finalRead: 'Exploration and Production / Upstream Energy where the thesis depends on Exploration and Production / Upstream Energy execution, customer demand, margin, and cash flow.',
       keySupport: [
-        'SEC source pack identifies ConocoPhillips as Exploration and Production / Upstream Energy.',
-        'Latest primary-source filing reviewed: SEC latest periodic filing.'
+        'ConocoPhillips fits the Exploration and Production / Upstream Energy research bucket.',
       ],
       keyRisk: [
         'Exploration and Production / Upstream Energy demand can slow.',
@@ -5094,7 +5010,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_6',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -5169,8 +5084,7 @@ const stockDossierProfiles = {
       marketEvidence: 'not_verified',
       finalRead: 'Construction / Mining / Energy Equipment where the thesis depends on Construction / Mining / Energy Equipment execution, customer demand, margin, and cash flow.',
       keySupport: [
-        'SEC source pack identifies Caterpillar Inc. as Construction / Mining / Energy Equipment.',
-        'Latest primary-source filing reviewed: SEC latest periodic filing.'
+        'Caterpillar Inc. fits the Construction / Mining / Energy Equipment research bucket.',
       ],
       keyRisk: [
         'Construction / Mining / Energy Equipment demand can slow.',
@@ -5194,7 +5108,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_6',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -5269,8 +5182,7 @@ const stockDossierProfiles = {
       marketEvidence: 'not_verified',
       finalRead: 'Agriculture / Construction Equipment where the thesis depends on Agriculture / Construction Equipment execution, customer demand, margin, and cash flow.',
       keySupport: [
-        'SEC source pack identifies Deere & Company as Agriculture / Construction Equipment.',
-        'Latest primary-source filing reviewed: SEC latest periodic filing.'
+        'Deere & Company fits the Agriculture / Construction Equipment research bucket.',
       ],
       keyRisk: [
         'Agriculture / Construction Equipment demand can slow.',
@@ -5294,7 +5206,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_6',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -5369,8 +5280,7 @@ const stockDossierProfiles = {
       marketEvidence: 'not_verified',
       finalRead: 'Railroad / Freight Transportation where the thesis depends on Railroad / Freight Transportation execution, customer demand, margin, and cash flow.',
       keySupport: [
-        'SEC source pack identifies Union Pacific Corporation as Railroad / Freight Transportation.',
-        'Latest primary-source filing reviewed: SEC latest periodic filing.'
+        'Union Pacific Corporation fits the Railroad / Freight Transportation research bucket.',
       ],
       keyRisk: [
         'Railroad / Freight Transportation demand can slow.',
@@ -5394,7 +5304,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_6',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -5469,8 +5378,7 @@ const stockDossierProfiles = {
       marketEvidence: 'not_verified',
       finalRead: 'Streaming Entertainment / Advertising where the thesis depends on Streaming Entertainment / Advertising execution, customer demand, margin, and cash flow.',
       keySupport: [
-        'SEC source pack identifies Netflix, Inc. as Streaming Entertainment / Advertising.',
-        'Latest primary-source filing reviewed: SEC latest periodic filing.'
+        'Netflix, Inc. fits the Streaming Entertainment / Advertising research bucket.',
       ],
       keyRisk: [
         'Streaming Entertainment / Advertising demand can slow.',
@@ -5494,7 +5402,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_7',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -5569,8 +5476,7 @@ const stockDossierProfiles = {
       marketEvidence: 'not_verified',
       finalRead: 'Media / Parks / Streaming Entertainment where the thesis depends on Media / Parks / Streaming Entertainment execution, customer demand, margin, and cash flow.',
       keySupport: [
-        'SEC source pack identifies The Walt Disney Company as Media / Parks / Streaming Entertainment.',
-        'Latest primary-source filing reviewed: SEC latest periodic filing.'
+        'The Walt Disney Company fits the Media / Parks / Streaming Entertainment research bucket.',
       ],
       keyRisk: [
         'Media / Parks / Streaming Entertainment demand can slow.',
@@ -5594,7 +5500,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_7',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -5669,8 +5574,7 @@ const stockDossierProfiles = {
       marketEvidence: 'not_verified',
       finalRead: 'Online Travel / Marketplace where the thesis depends on Online Travel / Marketplace execution, customer demand, margin, and cash flow.',
       keySupport: [
-        'SEC source pack identifies Booking Holdings Inc. as Online Travel / Marketplace.',
-        'Latest primary-source filing reviewed: SEC latest periodic filing.'
+        'Booking Holdings Inc. fits the Online Travel / Marketplace research bucket.',
       ],
       keyRisk: [
         'Online Travel / Marketplace demand can slow.',
@@ -5694,7 +5598,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_7',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -5769,8 +5672,7 @@ const stockDossierProfiles = {
       marketEvidence: 'not_verified',
       finalRead: 'Mobility / Delivery / Logistics Platform where the thesis depends on Mobility / Delivery / Logistics Platform execution, customer demand, margin, and cash flow.',
       keySupport: [
-        'SEC source pack identifies Uber Technologies, Inc. as Mobility / Delivery / Logistics Platform.',
-        'Latest primary-source filing reviewed: SEC latest periodic filing.'
+        'Uber Technologies, Inc. fits the Mobility / Delivery / Logistics Platform research bucket.',
       ],
       keyRisk: [
         'Mobility / Delivery / Logistics Platform demand can slow.',
@@ -5794,7 +5696,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_7',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -5869,8 +5770,7 @@ const stockDossierProfiles = {
       marketEvidence: 'not_verified',
       finalRead: 'Commerce Infrastructure / Merchant Platform where the thesis depends on Commerce Infrastructure / Merchant Platform execution, customer demand, margin, and cash flow.',
       keySupport: [
-        'SEC source pack identifies Shopify Inc. as Commerce Infrastructure / Merchant Platform.',
-        'Latest primary-source filing reviewed: SEC latest periodic filing.'
+        'Shopify Inc. fits the Commerce Infrastructure / Merchant Platform research bucket.',
       ],
       keyRisk: [
         'Commerce Infrastructure / Merchant Platform demand can slow.',
@@ -5894,7 +5794,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_7',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -5969,8 +5868,7 @@ const stockDossierProfiles = {
       marketEvidence: 'not_verified',
       finalRead: 'Crypto Exchange / Digital Asset Infrastructure where the thesis depends on Crypto Exchange / Digital Asset Infrastructure execution, customer demand, margin, and cash flow.',
       keySupport: [
-        'SEC source pack identifies Coinbase Global, Inc. as Crypto Exchange / Digital Asset Infrastructure.',
-        'Latest primary-source filing reviewed: SEC latest periodic filing.'
+        'Coinbase Global, Inc. fits the Crypto Exchange / Digital Asset Infrastructure research bucket.',
       ],
       keyRisk: [
         'Crypto Exchange / Digital Asset Infrastructure demand can slow.',
@@ -5994,7 +5892,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_7',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -6069,8 +5966,7 @@ const stockDossierProfiles = {
       marketEvidence: 'not_verified',
       finalRead: 'Financial Software / Tax / SMB Platform where the thesis depends on Financial Software / Tax / SMB Platform execution, customer demand, margin, and cash flow.',
       keySupport: [
-        'SEC source pack identifies Intuit Inc. as Financial Software / Tax / SMB Platform.',
-        'Latest primary-source filing reviewed: SEC latest periodic filing.'
+        'Intuit Inc. fits the Financial Software / Tax / SMB Platform research bucket.',
       ],
       keyRisk: [
         'Financial Software / Tax / SMB Platform demand can slow.',
@@ -6094,7 +5990,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_7',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -6169,8 +6064,7 @@ const stockDossierProfiles = {
       marketEvidence: 'not_verified',
       finalRead: 'Creative / Document / Digital Experience Software where the thesis depends on Creative / Document / Digital Experience Software execution, customer demand, margin, and cash flow.',
       keySupport: [
-        'SEC source pack identifies Adobe Inc. as Creative / Document / Digital Experience Software.',
-        'Latest primary-source filing reviewed: SEC latest periodic filing.'
+        'Adobe Inc. fits the Creative / Document / Digital Experience Software research bucket.',
       ],
       keyRisk: [
         'Creative / Document / Digital Experience Software demand can slow.',
@@ -6194,7 +6088,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_7',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -6269,8 +6162,7 @@ const stockDossierProfiles = {
       marketEvidence: 'not_verified',
       finalRead: 'Design / Engineering Software where the thesis depends on Design / Engineering Software execution, customer demand, margin, and cash flow.',
       keySupport: [
-        'SEC source pack identifies Autodesk, Inc. as Design / Engineering Software.',
-        'Latest primary-source filing reviewed: SEC latest periodic filing.'
+        'Autodesk, Inc. fits the Design / Engineering Software research bucket.',
       ],
       keyRisk: [
         'Design / Engineering Software demand can slow.',
@@ -6294,7 +6186,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_7',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -6369,8 +6260,7 @@ const stockDossierProfiles = {
       marketEvidence: 'not_verified',
       finalRead: 'Human Capital / Finance Enterprise SaaS where the thesis depends on Human Capital / Finance Enterprise SaaS execution, customer demand, margin, and cash flow.',
       keySupport: [
-        'SEC source pack identifies Workday, Inc. as Human Capital / Finance Enterprise SaaS.',
-        'Latest primary-source filing reviewed: SEC latest periodic filing.'
+        'Workday, Inc. fits the Human Capital / Finance Enterprise SaaS research bucket.',
       ],
       keyRisk: [
         'Human Capital / Finance Enterprise SaaS demand can slow.',
@@ -6394,7 +6284,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_7',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -6469,9 +6358,8 @@ const stockDossierProfiles = {
       marketEvidence: 'not_verified',
       finalRead: 'Retail / Consumer Staples where the thesis depends on Walmart operates a global omnichannel retail business centered on stores, grocery, e-commerce, marketplace, membership, advertising, and supply-chain scale.',
       keySupport: [
-        'SEC source pack identifies Walmart Inc. as Retail / Consumer Staples.',
+        'Walmart Inc. fits the Retail / Consumer Staples research bucket.',
         'Walmart operates a global omnichannel retail business centered on stores, grocery, e-commerce, marketplace, membership, advertising, and supply-chain scale.',
-        'Latest primary-source filing reviewed: SEC latest periodic filing.'
       ],
       keyRisk: [
         'Comparable sales.',
@@ -6496,7 +6384,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_8',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -6571,9 +6458,8 @@ const stockDossierProfiles = {
       marketEvidence: 'not_verified',
       finalRead: 'Restaurants / Franchised Consumer where the thesis depends on McDonald\'s operates a global franchised restaurant system driven by brand scale, comparable sales, unit economics, franchise economics, and menu value.',
       keySupport: [
-        'SEC source pack identifies McDonald\'s Corporation as Restaurants / Franchised Consumer.',
+        'McDonald\'s Corporation fits the Restaurants / Franchised Consumer research bucket.',
         'McDonald\'s operates a global franchised restaurant system driven by brand scale, comparable sales, unit economics, franchise economics, and menu value.',
-        'Latest primary-source filing reviewed: SEC latest periodic filing.'
       ],
       keyRisk: [
         'Traffic.',
@@ -6598,7 +6484,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_8',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -6673,9 +6558,8 @@ const stockDossierProfiles = {
       marketEvidence: 'not_verified',
       finalRead: 'Beverages / Consumer Staples where the thesis depends on Coca-Cola is a global nonalcoholic beverage company with a concentrate and franchise bottling model across sparkling, water, sports, coffee, tea, juice, and other beverage categories.',
       keySupport: [
-        'SEC source pack identifies The Coca-Cola Company as Beverages / Consumer Staples.',
+        'The Coca-Cola Company fits the Beverages / Consumer Staples research bucket.',
         'Coca-Cola is a global nonalcoholic beverage company with a concentrate and franchise bottling model across sparkling, water, sports, coffee, tea, juice, and other beverage categories.',
-        'Latest primary-source filing reviewed: SEC latest periodic filing.'
       ],
       keyRisk: [
         'Volume.',
@@ -6700,7 +6584,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_8',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -6775,9 +6658,8 @@ const stockDossierProfiles = {
       marketEvidence: 'not_verified',
       finalRead: 'Snacks & Beverages / Consumer Staples where the thesis depends on PepsiCo combines global snacks and beverages, with Frito-Lay, international expansion, pricing, volume, productivity, and brand portfolio execution as central evidence.',
       keySupport: [
-        'SEC source pack identifies PepsiCo, Inc. as Snacks & Beverages / Consumer Staples.',
+        'PepsiCo, Inc. fits the Snacks & Beverages / Consumer Staples research bucket.',
         'PepsiCo combines global snacks and beverages, with Frito-Lay, international expansion, pricing, volume, productivity, and brand portfolio execution as central evidence.',
-        'Latest primary-source filing reviewed: SEC latest periodic filing.'
       ],
       keyRisk: [
         'Volume pressure.',
@@ -6802,7 +6684,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_8',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -6877,9 +6758,8 @@ const stockDossierProfiles = {
       marketEvidence: 'not_verified',
       finalRead: 'Consumer Staples / Household Products where the thesis depends on Procter & Gamble is a global branded consumer products company across beauty, grooming, health care, fabric and home care, baby, feminine, and family care.',
       keySupport: [
-        'SEC source pack identifies The Procter & Gamble Company as Consumer Staples / Household Products.',
+        'The Procter & Gamble Company fits the Consumer Staples / Household Products research bucket.',
         'Procter & Gamble is a global branded consumer products company across beauty, grooming, health care, fabric and home care, baby, feminine, and family care.',
-        'Latest primary-source filing reviewed: SEC latest periodic filing.'
       ],
       keyRisk: [
         'Organic volume.',
@@ -6904,7 +6784,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_8',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -6979,9 +6858,8 @@ const stockDossierProfiles = {
       marketEvidence: 'not_verified',
       finalRead: 'Athletic Apparel / Consumer Discretionary where the thesis depends on Nike designs and sells athletic footwear, apparel, equipment, and accessories through wholesale, direct-to-consumer, digital, and global brand channels.',
       keySupport: [
-        'SEC source pack identifies NIKE, Inc. as Athletic Apparel / Consumer Discretionary.',
+        'NIKE, Inc. fits the Athletic Apparel / Consumer Discretionary research bucket.',
         'Nike designs and sells athletic footwear, apparel, equipment, and accessories through wholesale, direct-to-consumer, digital, and global brand channels.',
-        'Latest primary-source filing reviewed: SEC latest periodic filing.'
       ],
       keyRisk: [
         'Brand heat.',
@@ -7006,7 +6884,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_8',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -7081,9 +6958,8 @@ const stockDossierProfiles = {
       marketEvidence: 'not_verified',
       finalRead: 'Home Improvement Retail where the thesis depends on Lowe\'s is a home improvement retailer serving DIY and Pro customers through stores, digital channels, merchandising, and supply-chain execution.',
       keySupport: [
-        'SEC source pack identifies Lowe\'s Companies, Inc. as Home Improvement Retail.',
+        'Lowe\'s Companies, Inc. fits the Home Improvement Retail research bucket.',
         'Lowe\'s is a home improvement retailer serving DIY and Pro customers through stores, digital channels, merchandising, and supply-chain execution.',
-        'Latest primary-source filing reviewed: SEC latest periodic filing.'
       ],
       keyRisk: [
         'Comparable sales.',
@@ -7108,7 +6984,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_8',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -7183,9 +7058,8 @@ const stockDossierProfiles = {
       marketEvidence: 'not_verified',
       finalRead: 'Snacks / Consumer Staples where the thesis depends on Mondelez is a global snacks company focused on biscuits, chocolate, gum, candy, cheese, grocery, and related packaged food brands.',
       keySupport: [
-        'SEC source pack identifies Mondelez International, Inc. as Snacks / Consumer Staples.',
+        'Mondelez International, Inc. fits the Snacks / Consumer Staples research bucket.',
         'Mondelez is a global snacks company focused on biscuits, chocolate, gum, candy, cheese, grocery, and related packaged food brands.',
-        'Latest primary-source filing reviewed: SEC latest periodic filing.'
       ],
       keyRisk: [
         'Volume elasticity.',
@@ -7210,7 +7084,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_8',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -7285,9 +7158,8 @@ const stockDossierProfiles = {
       marketEvidence: 'not_verified',
       finalRead: 'Tobacco / Smoke-Free Nicotine where the thesis depends on Philip Morris International is a global tobacco and smoke-free products company where the thesis centers on combustible transition, smoke-free adoption, and nicotine portfolio execution.',
       keySupport: [
-        'SEC source pack identifies Philip Morris International Inc. as Tobacco / Smoke-Free Nicotine.',
+        'Philip Morris International Inc. fits the Tobacco / Smoke-Free Nicotine research bucket.',
         'Philip Morris International is a global tobacco and smoke-free products company where the thesis centers on combustible transition, smoke-free adoption, and nicotine portfolio execution.',
-        'Latest primary-source filing reviewed: SEC latest periodic filing.'
       ],
       keyRisk: [
         'Regulation.',
@@ -7312,7 +7184,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_8',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -7387,9 +7258,8 @@ const stockDossierProfiles = {
       marketEvidence: 'not_verified',
       finalRead: 'Tobacco / U.S. Nicotine where the thesis depends on Altria is a U.S.-focused tobacco company across smokeable products, oral tobacco, and nicotine categories, with pricing, regulation, and volume decline as core evidence.',
       keySupport: [
-        'SEC source pack identifies Altria Group, Inc. as Tobacco / U.S. Nicotine.',
+        'Altria Group, Inc. fits the Tobacco / U.S. Nicotine research bucket.',
         'Altria is a U.S.-focused tobacco company across smokeable products, oral tobacco, and nicotine categories, with pricing, regulation, and volume decline as core evidence.',
-        'Latest primary-source filing reviewed: SEC latest periodic filing.'
       ],
       keyRisk: [
         'Cigarette volume decline.',
@@ -7414,7 +7284,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_8',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -7489,9 +7358,8 @@ const stockDossierProfiles = {
       marketEvidence: 'not_verified',
       finalRead: 'Telecom / Wireless where the thesis depends on T-Mobile US is a wireless communications provider where postpaid phone growth, churn, ARPU, 5G network quality, and fixed wireless broadband are central evidence.',
       keySupport: [
-        'SEC source pack identifies T-Mobile US, Inc. as Telecom / Wireless.',
+        'T-Mobile US, Inc. fits the Telecom / Wireless research bucket.',
         'T-Mobile US is a wireless communications provider where postpaid phone growth, churn, ARPU, 5G network quality, and fixed wireless broadband are central evidence.',
-        'Latest primary-source filing reviewed: SEC latest periodic filing.'
       ],
       keyRisk: [
         'Wireless competition.',
@@ -7516,7 +7384,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_9',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -7591,9 +7458,8 @@ const stockDossierProfiles = {
       marketEvidence: 'not_verified',
       finalRead: 'Telecom / Wireless & Broadband where the thesis depends on Verizon provides wireless, broadband, and business communications services, with postpaid trends, churn, network quality, fixed wireless, debt, and capex as key evidence.',
       keySupport: [
-        'SEC source pack identifies Verizon Communications Inc. as Telecom / Wireless & Broadband.',
+        'Verizon Communications Inc. fits the Telecom / Wireless & Broadband research bucket.',
         'Verizon provides wireless, broadband, and business communications services, with postpaid trends, churn, network quality, fixed wireless, debt, and capex as key evidence.',
-        'Latest primary-source filing reviewed: SEC latest periodic filing.'
       ],
       keyRisk: [
         'Wireless competition.',
@@ -7618,7 +7484,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_9',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -7693,9 +7558,8 @@ const stockDossierProfiles = {
       marketEvidence: 'not_verified',
       finalRead: 'Connectivity / Media where the thesis depends on Comcast combines broadband, cable, media, streaming, film, theme parks, and connectivity assets, with broadband trends and media profitability as central evidence.',
       keySupport: [
-        'SEC source pack identifies Comcast Corporation as Connectivity / Media.',
+        'Comcast Corporation fits the Connectivity / Media research bucket.',
         'Comcast combines broadband, cable, media, streaming, film, theme parks, and connectivity assets, with broadband trends and media profitability as central evidence.',
-        'Latest primary-source filing reviewed: SEC latest periodic filing.'
       ],
       keyRisk: [
         'Broadband subscriber losses.',
@@ -7720,7 +7584,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_9',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -7795,9 +7658,8 @@ const stockDossierProfiles = {
       marketEvidence: 'not_verified',
       finalRead: 'Utility / Renewable Power where the thesis depends on NextEra Energy combines regulated utility operations at Florida Power & Light with renewable energy and infrastructure development through NextEra Energy Resources.',
       keySupport: [
-        'SEC source pack identifies NextEra Energy, Inc. as Utility / Renewable Power.',
+        'NextEra Energy, Inc. fits the Utility / Renewable Power research bucket.',
         'NextEra Energy combines regulated utility operations at Florida Power & Light with renewable energy and infrastructure development through NextEra Energy Resources.',
-        'Latest primary-source filing reviewed: SEC latest periodic filing.'
       ],
       keyRisk: [
         'Rate cases.',
@@ -7822,7 +7684,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_9',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -7897,9 +7758,8 @@ const stockDossierProfiles = {
       marketEvidence: 'not_verified',
       finalRead: 'Regulated Electric Utility where the thesis depends on American Electric Power is a regulated electric utility holding company focused on transmission, distribution, generation, load growth, rate base, and reliability.',
       keySupport: [
-        'SEC source pack identifies American Electric Power Company, Inc. as Regulated Electric Utility.',
+        'American Electric Power Company, Inc. fits the Regulated Electric Utility research bucket.',
         'American Electric Power is a regulated electric utility holding company focused on transmission, distribution, generation, load growth, rate base, and reliability.',
-        'Latest primary-source filing reviewed: SEC latest periodic filing.'
       ],
       keyRisk: [
         'Rate cases.',
@@ -7924,7 +7784,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_9',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -7999,9 +7858,8 @@ const stockDossierProfiles = {
       marketEvidence: 'not_verified',
       finalRead: 'Communications Real Estate where the thesis depends on American Tower is a communications real estate company whose tower leases depend on carrier network investment, tenant demand, contract escalators, and international execution.',
       keySupport: [
-        'SEC source pack identifies American Tower Corporation as Communications Real Estate.',
+        'American Tower Corporation fits the Communications Real Estate research bucket.',
         'American Tower is a communications real estate company whose tower leases depend on carrier network investment, tenant demand, contract escalators, and international execution.',
-        'Latest primary-source filing reviewed: SEC latest periodic filing.'
       ],
       keyRisk: [
         'Carrier capex.',
@@ -8026,7 +7884,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_9',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -8101,9 +7958,8 @@ const stockDossierProfiles = {
       marketEvidence: 'not_verified',
       finalRead: 'Industrial Gases where the thesis depends on Linde is a global industrial gases company serving chemicals, manufacturing, metals, healthcare, electronics, energy, and other end markets through long-term supply models.',
       keySupport: [
-        'SEC source pack identifies Linde plc as Industrial Gases.',
+        'Linde plc fits the Industrial Gases research bucket.',
         'Linde is a global industrial gases company serving chemicals, manufacturing, metals, healthcare, electronics, energy, and other end markets through long-term supply models.',
-        'Latest primary-source filing reviewed: SEC latest periodic filing.'
       ],
       keyRisk: [
         'Industrial demand.',
@@ -8128,7 +7984,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_9',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -8203,9 +8058,8 @@ const stockDossierProfiles = {
       marketEvidence: 'not_verified',
       finalRead: 'Logistics / Parcel Delivery where the thesis depends on United Parcel Service is a global package delivery and logistics company where volume, yield, labor cost, network efficiency, and e-commerce mix drive evidence.',
       keySupport: [
-        'SEC source pack identifies United Parcel Service, Inc. as Logistics / Parcel Delivery.',
+        'United Parcel Service, Inc. fits the Logistics / Parcel Delivery research bucket.',
         'United Parcel Service is a global package delivery and logistics company where volume, yield, labor cost, network efficiency, and e-commerce mix drive evidence.',
-        'Latest primary-source filing reviewed: SEC latest periodic filing.'
       ],
       keyRisk: [
         'Package volume.',
@@ -8230,7 +8084,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_9',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -8305,9 +8158,8 @@ const stockDossierProfiles = {
       marketEvidence: 'not_verified',
       finalRead: 'Restaurants / Coffee Retail where the thesis depends on Starbucks operates company-operated and licensed coffee stores globally, with comparable sales, transactions, ticket, store economics, China, and brand strength as key evidence.',
       keySupport: [
-        'SEC source pack identifies Starbucks Corporation as Restaurants / Coffee Retail.',
+        'Starbucks Corporation fits the Restaurants / Coffee Retail research bucket.',
         'Starbucks operates company-operated and licensed coffee stores globally, with comparable sales, transactions, ticket, store economics, China, and brand strength as key evidence.',
-        'Latest primary-source filing reviewed: SEC latest periodic filing.'
       ],
       keyRisk: [
         'Traffic.',
@@ -8332,7 +8184,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_9',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -8407,9 +8258,8 @@ const stockDossierProfiles = {
       marketEvidence: 'not_verified',
       finalRead: 'Life Sciences Tools where the thesis depends on Thermo Fisher Scientific provides life sciences tools, analytical instruments, diagnostics, specialty diagnostics, laboratory products, and biopharma services.',
       keySupport: [
-        'SEC source pack identifies Thermo Fisher Scientific Inc. as Life Sciences Tools.',
+        'Thermo Fisher Scientific Inc. fits the Life Sciences Tools research bucket.',
         'Thermo Fisher Scientific provides life sciences tools, analytical instruments, diagnostics, specialty diagnostics, laboratory products, and biopharma services.',
-        'Latest primary-source filing reviewed: SEC latest periodic filing.'
       ],
       keyRisk: [
         'Biopharma funding.',
@@ -8434,7 +8284,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_9',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -8535,7 +8384,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_10',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -8631,7 +8479,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_10',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -8727,7 +8574,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_10',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -8823,7 +8669,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_10',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -8919,7 +8764,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_10',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -9015,7 +8859,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_10',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -9111,7 +8954,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_10',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -9207,7 +9049,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_10',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -9303,7 +9144,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_10',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -9399,7 +9239,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_10',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -9495,7 +9334,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_11',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 20-F / 6-K'
@@ -9591,7 +9429,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_11',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -9687,7 +9524,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_11',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -9783,7 +9619,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_11',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -9879,7 +9714,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_11',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -9975,7 +9809,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_11',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -10071,7 +9904,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_11',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -10167,7 +9999,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_11',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -10263,7 +10094,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_11',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -10359,7 +10189,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_11',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -10436,7 +10265,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_12',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -10491,7 +10319,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_12',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 20-F / 6-K'
@@ -10546,7 +10373,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_12',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -10601,7 +10427,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_12',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -10656,7 +10481,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_12',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -10711,7 +10535,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_12',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -10766,7 +10589,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_12',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -10821,7 +10643,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_12',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -10876,7 +10697,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_12',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -10931,7 +10751,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_12',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -10987,7 +10806,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_13',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -11042,7 +10860,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_13',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -11097,7 +10914,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_13',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -11152,7 +10968,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_13',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -11207,7 +11022,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_13',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -11262,7 +11076,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_13',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -11317,7 +11130,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_13',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -11372,7 +11184,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_13',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -11427,7 +11238,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_13',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -11482,7 +11292,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_13',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -11538,7 +11347,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_14',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -11593,7 +11401,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_14',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -11648,7 +11455,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_14',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -11703,7 +11509,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_14',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -11758,7 +11563,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_14',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -11813,7 +11617,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_14',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -11868,7 +11671,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_14',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -11923,7 +11725,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_14',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -11978,7 +11779,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_14',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -12033,7 +11833,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_14',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -12089,7 +11888,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_15',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 20-F / 6-K'
@@ -12144,7 +11942,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_15',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -12199,7 +11996,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_15',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -12254,7 +12050,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_15',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -12309,7 +12104,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_15',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -12364,7 +12158,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_15',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -12419,7 +12212,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_15',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -12474,7 +12266,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_15',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -12529,7 +12320,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_15',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -12584,7 +12374,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_15',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -12640,7 +12429,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_16',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -12696,7 +12484,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_16',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -12752,7 +12539,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_16',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -12808,7 +12594,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_16',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -12864,7 +12649,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_16',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -12920,7 +12704,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_16',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -12976,7 +12759,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_16',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -13032,7 +12814,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_16',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -13088,7 +12869,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_16',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -13144,7 +12924,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_16',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -13200,7 +12979,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_17',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -13256,7 +13034,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_17',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -13312,7 +13089,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_17',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -13368,7 +13144,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_17',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -13424,7 +13199,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_17',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -13480,7 +13254,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_17',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -13536,7 +13309,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_17',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -13592,7 +13364,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_17',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 20-F / 6-K'
@@ -13648,7 +13419,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_17',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -13704,7 +13474,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_17',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -13760,7 +13529,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_18',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -13816,7 +13584,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_18',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -13872,7 +13639,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_18',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -13928,7 +13694,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_18',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -13984,7 +13749,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_18',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -14040,7 +13804,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_18',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -14096,7 +13859,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_18',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -14152,7 +13914,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_18',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -14208,7 +13969,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_18',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 20-F / 6-K'
@@ -14264,7 +14024,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_18',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -14320,7 +14079,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_19',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -14376,7 +14134,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_19',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -14432,7 +14189,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_19',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -14488,7 +14244,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_19',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -14544,7 +14299,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_19',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -14600,7 +14354,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_19',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -14656,7 +14409,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_19',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -14712,7 +14464,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_19',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -14768,7 +14519,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_19',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -14824,7 +14574,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_19',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -14880,7 +14629,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_19',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -14936,7 +14684,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_19',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -14992,7 +14739,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_19',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -15048,7 +14794,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_19',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -15104,7 +14849,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_19',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -15160,7 +14904,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_20',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 20-F / 6-K'
@@ -15216,7 +14959,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_20',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -15272,7 +15014,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_20',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 20-F / 6-K'
@@ -15328,7 +15069,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_20',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -15384,7 +15124,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_20',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -15440,7 +15179,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_20',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -15496,7 +15234,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_20',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -15552,7 +15289,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_20',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -15608,7 +15344,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_20',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -15664,7 +15399,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_20',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -15720,7 +15454,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_20',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -15776,7 +15509,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_20',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -15832,7 +15564,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_20',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -15888,7 +15619,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_20',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -15944,7 +15674,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_20',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -16000,7 +15729,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Partial',
       dossier_state: 'curated_profile_batch_20',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'SEC 10-K / 10-Q'
@@ -16102,7 +15830,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Curated',
       dossier_state: 'curated_profile_nasdaq_rebalance_2026_06',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'stockDossierProfiles.js'
@@ -16261,7 +15988,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Curated',
       dossier_state: 'curated_profile_nasdaq_rebalance_2026_06',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'stockDossierProfiles.js'
@@ -16420,7 +16146,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Curated',
       dossier_state: 'curated_profile_nasdaq_rebalance_2026_06',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'stockDossierProfiles.js'
@@ -16579,7 +16304,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Curated',
       dossier_state: 'curated_profile_nasdaq_rebalance_2026_06',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'stockDossierProfiles.js'
@@ -16753,7 +16477,6 @@ const stockDossierProfiles = {
       ],
       evidence_quality: 'Curated',
       dossier_state: 'curated_profile_spcx_initial_2026_06',
-      frontend_label: 'Curated',
       coverage_status: 'Curated',
       needs_human_review: false,
       source: 'stockDossierProfiles.js'
