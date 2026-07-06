@@ -23,14 +23,9 @@ export const resolveValueCore = (eventDetail, dossierProfile = null) => {
     companyStage: hasValueCore ? valueOrFallback(valueCore.company_stage ?? valueCore.company_stage_candidate, 'Needs more company context') : 'Needs more company context',
     primaryValueDriver: hasValueCore ? valueOrFallback(valueCore.primary_value_driver, 'Needs more business evidence') : 'Needs more business evidence',
     thesisBreakTrigger: hasValueCore ? valueOrFallback(valueCore.thesis_break_trigger, 'Needs clearer break signal') : 'Needs clearer break signal',
-    evidenceQuality: hasValueCore ? valueOrFallback(valueCore.evidence_quality, '') : '',
     evidenceNeeded: hasValueCore && Array.isArray(valueCore.evidence_needed) ? valueCore.evidence_needed : [],
-    coverageStatus: hasValueCore ? valueOrFallback(valueCore.coverage_status, null) : null,
-    dossierState: hasValueCore ? valueOrFallback(valueCore.dossier_state, 'coverage_pending') : (dossierProfile ? 'golden_sample' : 'coverage_pending'),
-    needsHumanReview: hasValueCore ? Boolean(valueCore.needs_human_review) : !dossierProfile,
     sector: hasValueCore ? valueOrFallback(valueCore.sector, '') : '',
-    industry: hasValueCore ? valueOrFallback(valueCore.industry, '') : '',
-    source: hasValueCore ? valueOrFallback(valueCore.source, 'value_core_pending') : 'value_core_pending'
+    industry: hasValueCore ? valueOrFallback(valueCore.industry, '') : ''
   };
 };
 

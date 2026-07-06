@@ -1902,8 +1902,7 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, refer
   const signalScreens = (visualPhaseOne?.signalScreens || []).map((signal) => ({
     ...signal,
     title: localizedValue(signal, 'title', locale) || signal.title,
-    explanation: localizedValue(signal, 'explanation', locale) || signal.explanation,
-    evidenceState: optionalFrontendText(localizedValue(signal, 'evidenceState', locale) || signal.evidenceState, locale)
+    explanation: localizedValue(signal, 'explanation', locale) || signal.explanation
   }));
   const overviewFaq = localizedFaqItems(visualPhaseOne?.faq?.overview, locale);
   const businessCoreFaq = localizedFaqItems(visualPhaseOne?.faq?.businessCore, locale);
@@ -2771,7 +2770,6 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, refer
                             <strong>{signal.title}</strong>
                             <p>{signal.explanation}</p>
                           </div>
-                          <span>{signal.evidenceState}</span>
                         </div>
                       ))}
                     </div>
@@ -3477,7 +3475,6 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, refer
                       <strong>{signal.title}</strong>
                       <p>{signal.explanation}</p>
                     </div>
-                    {signal.evidenceState && <span>{signal.evidenceState}</span>}
                   </div>
                 ))}
               </div>

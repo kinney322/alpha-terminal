@@ -27,7 +27,6 @@ const stockDossierProfiles = {
       verdict_zh: '業務質素高，但現價已經預設公司能長期維持 25% 以上增長、接近 30% FCF 利潤率，並逐步改善 SBC 紀律。'
     },
     dossierVerdict: {
-      sourceType: 'curated',
       asOf: '2026-05-09',
       researchState: 'post_earnings_watch',
       businessQuality: 'high',
@@ -127,11 +126,6 @@ const stockDossierProfiles = {
         'SBC 佔收入比例',
         'AI 原生工作負載採用信號'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'golden_sample',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'stockDossierProfiles.js'
     },
     visualPhaseOne: {
       performanceGrid: {
@@ -149,42 +143,32 @@ const stockDossierProfiles = {
         {
           title: 'Revenue Growth Leaders',
           explanation: 'Q1 revenue grew 32% year over year, so growth remains a core evidence point.',
-          evidenceState: 'Curated',
           title_zh: '收入增長領先',
           explanation_zh: 'Q1 收入按年增長 32%，增長仍然是核心證據。',
-          evidenceState_zh: '已整理'
         },
         {
           title: 'Strong Momentum Stocks',
           explanation: 'Momentum evidence keeps DDOG on the research queue, but it does not prove the business case.',
-          evidenceState: 'Market-derived',
           title_zh: '股價動能強',
           explanation_zh: '股價動能令 DDOG 值得繼續跟進，但不等於業務論點已經被證明。',
-          evidenceState_zh: '市場推導'
         },
         {
           title: 'RSI Stretch Check',
           explanation: 'RSI-specific evidence is not verified in the current dossier and should remain a stretch monitor.',
-          evidenceState: 'Not verified',
           title_zh: 'RSI 過熱檢查',
           explanation_zh: '目前仍未核實 RSI 具體數據，只應作為股價過熱監察。',
-          evidenceState_zh: '未核實'
         },
         {
           title: 'Cloud Observability Leader',
           explanation: 'Datadog remains a broad observability and security platform for cloud operations teams.',
-          evidenceState: 'Curated',
           title_zh: '雲端可觀測性龍頭',
           explanation_zh: 'Datadog 仍是雲端營運團隊常用的可觀測性和安全平台。',
-          evidenceState_zh: '已整理'
         },
         {
           title: 'Growth Screen Signal',
           explanation: 'Revenue growth, large-customer expansion, and FCF margin make it suitable for a growth-quality screen review.',
-          evidenceState: 'Curated',
           title_zh: '增長質素篩選',
           explanation_zh: '收入增長、大型客戶擴張和 FCF 利潤率，令它適合放入增長質素名單跟進。',
-          evidenceState_zh: '已整理'
         }
       ],
       faq: {
@@ -595,7 +579,6 @@ const stockDossierProfiles = {
     analysisDate: '2026-06-10',
     latestFiscalPeriod: 'Q1 FY2027 ended 2026-04-26',
     dossierVerdict: {
-      sourceType: 'curated',
       asOf: '2026-06-10',
       researchState: 'ai_infrastructure_watch',
       businessQuality: 'high',
@@ -642,11 +625,6 @@ const stockDossierProfiles = {
         'supply and capacity commitments',
         'export-control impact'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_1',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q and NVIDIA official earnings release'
     },
     visualPhaseOne: {
       faq: {
@@ -695,7 +673,6 @@ const stockDossierProfiles = {
     analysisDate: '2026-06-10',
     latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
     dossierVerdict: {
-      sourceType: 'curated',
       asOf: '2026-06-10',
       researchState: 'platform_watch',
       businessQuality: 'high',
@@ -742,11 +719,6 @@ const stockDossierProfiles = {
         'AI and fulfillment capex intensity',
         'regulatory / antitrust exposure'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_1',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -795,7 +767,6 @@ const stockDossierProfiles = {
     analysisDate: '2026-06-10',
     latestFiscalPeriod: 'Q1 FY2027 ended 2026-05-02',
     dossierVerdict: {
-      sourceType: 'curated',
       asOf: '2026-06-10',
       researchState: 'ai_data_center_watch',
       businessQuality: 'medium_high',
@@ -842,11 +813,6 @@ const stockDossierProfiles = {
         'customer concentration',
         'inventory and non-data-center cycle'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_1',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -895,7 +861,6 @@ const stockDossierProfiles = {
     analysisDate: '2026-06-10',
     latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
     dossierVerdict: {
-      sourceType: 'curated',
       asOf: '2026-06-10',
       researchState: 'ai_software_watch',
       businessQuality: 'high',
@@ -942,11 +907,6 @@ const stockDossierProfiles = {
         'GAAP profitability and SBC discipline',
         'customer concentration and procurement timing'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_1',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -995,7 +955,6 @@ const stockDossierProfiles = {
     analysisDate: '2026-06-10',
     latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
     dossierVerdict: {
-      sourceType: 'curated',
       asOf: '2026-06-10',
       researchState: 'enterprise_software_watch',
       businessQuality: 'high',
@@ -1042,11 +1001,6 @@ const stockDossierProfiles = {
         'AI product monetization',
         'renewal rates and enterprise IT budget pressure'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_1',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -1095,7 +1049,6 @@ const stockDossierProfiles = {
     analysisDate: '2026-06-10',
     latestFiscalPeriod: 'Q1 2026 ended 2026-03-28',
     dossierVerdict: {
-      sourceType: 'curated',
       asOf: '2026-06-10',
       researchState: 'ai_compute_watch',
       businessQuality: 'medium_high',
@@ -1142,11 +1095,6 @@ const stockDossierProfiles = {
         'customer inventory and channel normalization signals',
         'client / gaming / embedded cycle evidence'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_2',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -1195,7 +1143,6 @@ const stockDossierProfiles = {
     analysisDate: '2026-06-10',
     latestFiscalPeriod: 'Q2 FY2026 ended 2026-05-03',
     dossierVerdict: {
-      sourceType: 'curated',
       asOf: '2026-06-10',
       researchState: 'ai_infrastructure_watch',
       businessQuality: 'high',
@@ -1242,11 +1189,6 @@ const stockDossierProfiles = {
         'semiconductor segment gross margin and backlog',
         'customer concentration and design-win timing'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_2',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -1295,7 +1237,6 @@ const stockDossierProfiles = {
     analysisDate: '2026-06-10',
     latestFiscalPeriod: 'Q1 FY2027 ended 2026-04-30',
     dossierVerdict: {
-      sourceType: 'curated',
       asOf: '2026-06-10',
       researchState: 'cybersecurity_platform_watch',
       businessQuality: 'high',
@@ -1342,11 +1283,6 @@ const stockDossierProfiles = {
         'gross retention / customer churn commentary',
         'post-incident renewal and win-rate evidence'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_2',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -1395,7 +1331,6 @@ const stockDossierProfiles = {
     analysisDate: '2026-06-10',
     latestFiscalPeriod: 'Q3 FY2026 ended 2026-03-31',
     dossierVerdict: {
-      sourceType: 'curated',
       asOf: '2026-06-10',
       researchState: 'mega_cap_ai_cloud_watch',
       businessQuality: 'high',
@@ -1442,11 +1377,6 @@ const stockDossierProfiles = {
         'Microsoft 365 / Copilot adoption',
         'security and regulatory developments'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_2',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -1495,7 +1425,6 @@ const stockDossierProfiles = {
     analysisDate: '2026-06-10',
     latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
     dossierVerdict: {
-      sourceType: 'curated',
       asOf: '2026-06-10',
       researchState: 'mega_cap_ai_platform_watch',
       businessQuality: 'high',
@@ -1542,11 +1471,6 @@ const stockDossierProfiles = {
         'regulatory case outcomes and remedies',
         'capex / technical infrastructure commentary'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_2',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -1594,7 +1518,6 @@ const stockDossierProfiles = {
     analysisDate: '2026-06-11',
     latestFiscalPeriod: 'Business update through 2026-03-28',
     dossierVerdict: {
-      sourceType: 'curated',
       asOf: '2026-06-11',
       researchState: 'business_evidence_watch',
       businessQuality: 'high',
@@ -1625,11 +1548,6 @@ const stockDossierProfiles = {
         'cash flow',
         'risk factor changes'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_3',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -1683,7 +1601,6 @@ const stockDossierProfiles = {
     analysisDate: '2026-06-11',
     latestFiscalPeriod: 'Business update through 2026-03-31',
     dossierVerdict: {
-      sourceType: 'curated',
       asOf: '2026-06-11',
       researchState: 'business_evidence_watch',
       businessQuality: 'high',
@@ -1713,11 +1630,6 @@ const stockDossierProfiles = {
         'capex or R&D execution',
         'free cash flow'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_3',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -1766,7 +1678,6 @@ const stockDossierProfiles = {
     analysisDate: '2026-06-11',
     latestFiscalPeriod: 'Business update through 2026-03-31',
     dossierVerdict: {
-      sourceType: 'curated',
       asOf: '2026-06-11',
       researchState: 'business_evidence_watch',
       businessQuality: 'high',
@@ -1796,11 +1707,6 @@ const stockDossierProfiles = {
         'capex or R&D execution',
         'free cash flow'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_3',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -1849,7 +1755,6 @@ const stockDossierProfiles = {
     analysisDate: '2026-06-11',
     latestFiscalPeriod: 'Business update through 2026-02-28',
     dossierVerdict: {
-      sourceType: 'curated',
       asOf: '2026-06-11',
       researchState: 'business_evidence_watch',
       businessQuality: 'high',
@@ -1879,11 +1784,6 @@ const stockDossierProfiles = {
         'cash flow',
         'risk factor changes'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_3',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -1932,7 +1832,6 @@ const stockDossierProfiles = {
     analysisDate: '2026-06-11',
     latestFiscalPeriod: 'Business update through 2026-04-30',
     dossierVerdict: {
-      sourceType: 'curated',
       asOf: '2026-06-11',
       researchState: 'business_evidence_watch',
       businessQuality: 'high',
@@ -1962,11 +1861,6 @@ const stockDossierProfiles = {
         'cash flow',
         'risk factor changes'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_3',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -2015,7 +1909,6 @@ const stockDossierProfiles = {
     analysisDate: '2026-06-11',
     latestFiscalPeriod: 'Business update through 2026-04-30',
     dossierVerdict: {
-      sourceType: 'curated',
       asOf: '2026-06-11',
       researchState: 'business_evidence_watch',
       businessQuality: 'high',
@@ -2045,11 +1938,6 @@ const stockDossierProfiles = {
         'cash flow',
         'risk factor changes'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_3',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -2098,7 +1986,6 @@ const stockDossierProfiles = {
     analysisDate: '2026-06-11',
     latestFiscalPeriod: 'Business update through 2026-02-26',
     dossierVerdict: {
-      sourceType: 'curated',
       asOf: '2026-06-11',
       researchState: 'semiconductor_cycle_watch',
       businessQuality: 'high',
@@ -2128,11 +2015,6 @@ const stockDossierProfiles = {
         'capex or R&D execution',
         'free cash flow'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_3',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -2181,7 +2063,6 @@ const stockDossierProfiles = {
     analysisDate: '2026-06-11',
     latestFiscalPeriod: 'Business update through 2026-03-28',
     dossierVerdict: {
-      sourceType: 'curated',
       asOf: '2026-06-11',
       researchState: 'semiconductor_cycle_watch',
       businessQuality: 'high',
@@ -2211,11 +2092,6 @@ const stockDossierProfiles = {
         'capex or R&D execution',
         'free cash flow'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_3',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -2264,7 +2140,6 @@ const stockDossierProfiles = {
     analysisDate: '2026-06-11',
     latestFiscalPeriod: 'Business update through 2025-12-31',
     dossierVerdict: {
-      sourceType: 'curated',
       asOf: '2026-06-11',
       researchState: 'semiconductor_cycle_watch',
       businessQuality: 'high',
@@ -2294,11 +2169,6 @@ const stockDossierProfiles = {
         'capex or R&D execution',
         'free cash flow'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_3',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -2347,7 +2217,6 @@ const stockDossierProfiles = {
     analysisDate: '2026-06-11',
     latestFiscalPeriod: 'Business update through 2026-04-26',
     dossierVerdict: {
-      sourceType: 'curated',
       asOf: '2026-06-11',
       researchState: 'semiconductor_cycle_watch',
       businessQuality: 'high',
@@ -2377,11 +2246,6 @@ const stockDossierProfiles = {
         'capex or R&D execution',
         'free cash flow'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_3',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -2430,7 +2294,6 @@ const stockDossierProfiles = {
     analysisDate: '2026-06-11',
     latestFiscalPeriod: 'Q3 FY2026 ended 2026-03-29',
     dossierVerdict: {
-      sourceType: 'curated',
       asOf: '2026-06-11',
       researchState: 'semiconductor_cycle_watch',
       businessQuality: 'high',
@@ -2460,11 +2323,6 @@ const stockDossierProfiles = {
         'capex or R&D execution',
         'free cash flow'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_4',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -2528,7 +2386,6 @@ const stockDossierProfiles = {
     analysisDate: '2026-06-11',
     latestFiscalPeriod: 'Q3 FY2026 ended 2026-03-31',
     dossierVerdict: {
-      sourceType: 'curated',
       asOf: '2026-06-11',
       researchState: 'semiconductor_cycle_watch',
       businessQuality: 'high',
@@ -2558,11 +2415,6 @@ const stockDossierProfiles = {
         'capex or R&D execution',
         'free cash flow'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_4',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -2626,7 +2478,6 @@ const stockDossierProfiles = {
     analysisDate: '2026-06-11',
     latestFiscalPeriod: 'Q2 FY2026 ended 2026-03-29',
     dossierVerdict: {
-      sourceType: 'curated',
       asOf: '2026-06-11',
       researchState: 'semiconductor_cycle_watch',
       businessQuality: 'high',
@@ -2656,11 +2507,6 @@ const stockDossierProfiles = {
         'capex or R&D execution',
         'free cash flow'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_4',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -2724,7 +2570,6 @@ const stockDossierProfiles = {
     analysisDate: '2026-06-11',
     latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
     dossierVerdict: {
-      sourceType: 'curated',
       asOf: '2026-06-11',
       researchState: 'semiconductor_cycle_watch',
       businessQuality: 'high',
@@ -2754,11 +2599,6 @@ const stockDossierProfiles = {
         'capex or R&D execution',
         'free cash flow'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_4',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -2822,7 +2662,6 @@ const stockDossierProfiles = {
     analysisDate: '2026-06-11',
     latestFiscalPeriod: 'Q3 FY2026 ended 2026-04-25',
     dossierVerdict: {
-      sourceType: 'curated',
       asOf: '2026-06-11',
       researchState: 'business_evidence_watch',
       businessQuality: 'high',
@@ -2852,11 +2691,6 @@ const stockDossierProfiles = {
         'capex or R&D execution',
         'free cash flow'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_4',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -2920,7 +2754,6 @@ const stockDossierProfiles = {
     analysisDate: '2026-06-11',
     latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
     dossierVerdict: {
-      sourceType: 'curated',
       asOf: '2026-06-11',
       researchState: 'business_evidence_watch',
       businessQuality: 'high',
@@ -2950,11 +2783,6 @@ const stockDossierProfiles = {
         'capex or R&D execution',
         'free cash flow'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_4',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -3018,7 +2846,6 @@ const stockDossierProfiles = {
     analysisDate: '2026-06-11',
     latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
     dossierVerdict: {
-      sourceType: 'curated',
       asOf: '2026-06-11',
       researchState: 'financial_cycle_watch',
       businessQuality: 'medium',
@@ -3048,11 +2875,6 @@ const stockDossierProfiles = {
         'operating leverage',
         'cash flow'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_4',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -3116,7 +2938,6 @@ const stockDossierProfiles = {
     analysisDate: '2026-06-11',
     latestFiscalPeriod: 'Q2 FY2026 ended 2026-03-31',
     dossierVerdict: {
-      sourceType: 'curated',
       asOf: '2026-06-11',
       researchState: 'business_evidence_watch',
       businessQuality: 'high',
@@ -3146,11 +2967,6 @@ const stockDossierProfiles = {
         'operating leverage',
         'cash flow'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_4',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -3214,7 +3030,6 @@ const stockDossierProfiles = {
     analysisDate: '2026-06-11',
     latestFiscalPeriod: 'Q3 FY2026 ended 2026-05-10',
     dossierVerdict: {
-      sourceType: 'curated',
       asOf: '2026-06-11',
       researchState: 'consumer_demand_watch',
       businessQuality: 'high',
@@ -3244,11 +3059,6 @@ const stockDossierProfiles = {
         'capex or R&D execution',
         'free cash flow'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_4',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -3312,7 +3122,6 @@ const stockDossierProfiles = {
     analysisDate: '2026-06-11',
     latestFiscalPeriod: 'Q1 FY2026 ended 2026-05-03',
     dossierVerdict: {
-      sourceType: 'curated',
       asOf: '2026-06-11',
       researchState: 'consumer_demand_watch',
       businessQuality: 'high',
@@ -3342,11 +3151,6 @@ const stockDossierProfiles = {
         'capex or R&D execution',
         'free cash flow'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_4',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -3410,7 +3214,6 @@ const stockDossierProfiles = {
     analysisDate: '2026-06-11',
     latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
     dossierVerdict: {
-      sourceType: 'curated',
       asOf: '2026-06-11',
       researchState: 'healthcare_evidence_watch',
       businessQuality: 'high',
@@ -3440,11 +3243,6 @@ const stockDossierProfiles = {
         'cash flow',
         'safety or reimbursement evidence'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_5',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -3508,7 +3306,6 @@ const stockDossierProfiles = {
     analysisDate: '2026-06-11',
     latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
     dossierVerdict: {
-      sourceType: 'curated',
       asOf: '2026-06-11',
       researchState: 'healthcare_evidence_watch',
       businessQuality: 'high',
@@ -3538,11 +3335,6 @@ const stockDossierProfiles = {
         'cash flow',
         'safety or reimbursement evidence'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_5',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -3606,7 +3398,6 @@ const stockDossierProfiles = {
     analysisDate: '2026-06-11',
     latestFiscalPeriod: 'Q1 2026 ended 2026-03-29',
     dossierVerdict: {
-      sourceType: 'curated',
       asOf: '2026-06-11',
       researchState: 'healthcare_evidence_watch',
       businessQuality: 'high',
@@ -3636,11 +3427,6 @@ const stockDossierProfiles = {
         'cash flow',
         'safety or reimbursement evidence'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_5',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -3704,7 +3490,6 @@ const stockDossierProfiles = {
     analysisDate: '2026-06-11',
     latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
     dossierVerdict: {
-      sourceType: 'curated',
       asOf: '2026-06-11',
       researchState: 'healthcare_evidence_watch',
       businessQuality: 'high',
@@ -3734,11 +3519,6 @@ const stockDossierProfiles = {
         'cash flow',
         'safety or reimbursement evidence'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_5',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -3802,7 +3582,6 @@ const stockDossierProfiles = {
     analysisDate: '2026-06-11',
     latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
     dossierVerdict: {
-      sourceType: 'curated',
       asOf: '2026-06-11',
       researchState: 'healthcare_evidence_watch',
       businessQuality: 'high',
@@ -3832,11 +3611,6 @@ const stockDossierProfiles = {
         'cash flow',
         'safety or reimbursement evidence'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_5',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -3900,7 +3674,6 @@ const stockDossierProfiles = {
     analysisDate: '2026-06-11',
     latestFiscalPeriod: 'Q1 2026 ended 2026-03-29',
     dossierVerdict: {
-      sourceType: 'curated',
       asOf: '2026-06-11',
       researchState: 'healthcare_evidence_watch',
       businessQuality: 'high',
@@ -3930,11 +3703,6 @@ const stockDossierProfiles = {
         'cash flow',
         'safety or reimbursement evidence'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_5',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -3998,7 +3766,6 @@ const stockDossierProfiles = {
     analysisDate: '2026-06-11',
     latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
     dossierVerdict: {
-      sourceType: 'curated',
       asOf: '2026-06-11',
       researchState: 'healthcare_evidence_watch',
       businessQuality: 'medium',
@@ -4028,11 +3795,6 @@ const stockDossierProfiles = {
         'cash flow',
         'safety or reimbursement evidence'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_5',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -4096,7 +3858,6 @@ const stockDossierProfiles = {
     analysisDate: '2026-06-11',
     latestFiscalPeriod: 'Q3 FY2026 ended 2026-01-23',
     dossierVerdict: {
-      sourceType: 'curated',
       asOf: '2026-06-11',
       researchState: 'business_evidence_watch',
       businessQuality: 'high',
@@ -4126,11 +3887,6 @@ const stockDossierProfiles = {
         'cash flow',
         'safety or reimbursement evidence'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_5',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -4194,7 +3950,6 @@ const stockDossierProfiles = {
     analysisDate: '2026-06-11',
     latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
     dossierVerdict: {
-      sourceType: 'curated',
       asOf: '2026-06-11',
       researchState: 'business_evidence_watch',
       businessQuality: 'high',
@@ -4224,11 +3979,6 @@ const stockDossierProfiles = {
         'cash flow',
         'risk factor changes'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_5',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -4292,7 +4042,6 @@ const stockDossierProfiles = {
     analysisDate: '2026-06-11',
     latestFiscalPeriod: 'Q1 2026 ended 2026-03-27',
     dossierVerdict: {
-      sourceType: 'curated',
       asOf: '2026-06-11',
       researchState: 'business_evidence_watch',
       businessQuality: 'high',
@@ -4322,11 +4071,6 @@ const stockDossierProfiles = {
         'cash flow',
         'risk factor changes'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_5',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -4390,7 +4134,6 @@ const stockDossierProfiles = {
     analysisDate: '2026-06-11',
     latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
     dossierVerdict: {
-      sourceType: 'curated',
       asOf: '2026-06-11',
       researchState: 'financial_cycle_watch',
       businessQuality: 'medium',
@@ -4420,11 +4163,6 @@ const stockDossierProfiles = {
         'operating leverage',
         'cash flow'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_6',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -4488,7 +4226,6 @@ const stockDossierProfiles = {
     analysisDate: '2026-06-11',
     latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
     dossierVerdict: {
-      sourceType: 'curated',
       asOf: '2026-06-11',
       researchState: 'financial_cycle_watch',
       businessQuality: 'medium',
@@ -4518,11 +4255,6 @@ const stockDossierProfiles = {
         'operating leverage',
         'cash flow'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_6',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -4586,7 +4318,6 @@ const stockDossierProfiles = {
     analysisDate: '2026-06-11',
     latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
     dossierVerdict: {
-      sourceType: 'curated',
       asOf: '2026-06-11',
       researchState: 'financial_cycle_watch',
       businessQuality: 'medium',
@@ -4616,11 +4347,6 @@ const stockDossierProfiles = {
         'operating leverage',
         'cash flow'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_6',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -4684,7 +4410,6 @@ const stockDossierProfiles = {
     analysisDate: '2026-06-11',
     latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
     dossierVerdict: {
-      sourceType: 'curated',
       asOf: '2026-06-11',
       researchState: 'business_evidence_watch',
       businessQuality: 'high',
@@ -4714,11 +4439,6 @@ const stockDossierProfiles = {
         'operating leverage',
         'cash flow'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_6',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -4782,7 +4502,6 @@ const stockDossierProfiles = {
     analysisDate: '2026-06-11',
     latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
     dossierVerdict: {
-      sourceType: 'curated',
       asOf: '2026-06-11',
       researchState: 'business_evidence_watch',
       businessQuality: 'high',
@@ -4812,11 +4531,6 @@ const stockDossierProfiles = {
         'operating leverage',
         'cash flow'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_6',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -4880,7 +4594,6 @@ const stockDossierProfiles = {
     analysisDate: '2026-06-11',
     latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
     dossierVerdict: {
-      sourceType: 'curated',
       asOf: '2026-06-11',
       researchState: 'business_evidence_watch',
       businessQuality: 'high',
@@ -4910,11 +4623,6 @@ const stockDossierProfiles = {
         'cash flow',
         'risk factor changes'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_6',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -4978,7 +4686,6 @@ const stockDossierProfiles = {
     analysisDate: '2026-06-11',
     latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
     dossierVerdict: {
-      sourceType: 'curated',
       asOf: '2026-06-11',
       researchState: 'business_evidence_watch',
       businessQuality: 'high',
@@ -5008,11 +4715,6 @@ const stockDossierProfiles = {
         'cash flow',
         'risk factor changes'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_6',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -5076,7 +4778,6 @@ const stockDossierProfiles = {
     analysisDate: '2026-06-11',
     latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
     dossierVerdict: {
-      sourceType: 'curated',
       asOf: '2026-06-11',
       researchState: 'business_evidence_watch',
       businessQuality: 'high',
@@ -5106,11 +4807,6 @@ const stockDossierProfiles = {
         'cash flow',
         'risk factor changes'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_6',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -5174,7 +4870,6 @@ const stockDossierProfiles = {
     analysisDate: '2026-06-11',
     latestFiscalPeriod: 'Q2 FY2026 ended 2026-05-03',
     dossierVerdict: {
-      sourceType: 'curated',
       asOf: '2026-06-11',
       researchState: 'business_evidence_watch',
       businessQuality: 'high',
@@ -5204,11 +4899,6 @@ const stockDossierProfiles = {
         'cash flow',
         'risk factor changes'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_6',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -5272,7 +4962,6 @@ const stockDossierProfiles = {
     analysisDate: '2026-06-11',
     latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
     dossierVerdict: {
-      sourceType: 'curated',
       asOf: '2026-06-11',
       researchState: 'business_evidence_watch',
       businessQuality: 'high',
@@ -5302,11 +4991,6 @@ const stockDossierProfiles = {
         'capex or R&D execution',
         'free cash flow'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_6',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -5370,7 +5054,6 @@ const stockDossierProfiles = {
     analysisDate: '2026-06-11',
     latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
     dossierVerdict: {
-      sourceType: 'curated',
       asOf: '2026-06-11',
       researchState: 'business_evidence_watch',
       businessQuality: 'high',
@@ -5400,11 +5083,6 @@ const stockDossierProfiles = {
         'capex or R&D execution',
         'free cash flow'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_7',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -5468,7 +5146,6 @@ const stockDossierProfiles = {
     analysisDate: '2026-06-11',
     latestFiscalPeriod: 'Q2 FY2026 ended 2026-03-28',
     dossierVerdict: {
-      sourceType: 'curated',
       asOf: '2026-06-11',
       researchState: 'business_evidence_watch',
       businessQuality: 'high',
@@ -5498,11 +5175,6 @@ const stockDossierProfiles = {
         'capex or R&D execution',
         'free cash flow'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_7',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -5566,7 +5238,6 @@ const stockDossierProfiles = {
     analysisDate: '2026-06-11',
     latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
     dossierVerdict: {
-      sourceType: 'curated',
       asOf: '2026-06-11',
       researchState: 'business_evidence_watch',
       businessQuality: 'high',
@@ -5596,11 +5267,6 @@ const stockDossierProfiles = {
         'customer retention',
         'free cash flow'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_7',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -5664,7 +5330,6 @@ const stockDossierProfiles = {
     analysisDate: '2026-06-11',
     latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
     dossierVerdict: {
-      sourceType: 'curated',
       asOf: '2026-06-11',
       researchState: 'business_evidence_watch',
       businessQuality: 'medium',
@@ -5694,11 +5359,6 @@ const stockDossierProfiles = {
         'cash flow',
         'risk factor changes'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_7',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -5762,7 +5422,6 @@ const stockDossierProfiles = {
     analysisDate: '2026-06-11',
     latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
     dossierVerdict: {
-      sourceType: 'curated',
       asOf: '2026-06-11',
       researchState: 'business_evidence_watch',
       businessQuality: 'high',
@@ -5792,11 +5451,6 @@ const stockDossierProfiles = {
         'cash flow',
         'risk factor changes'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_7',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -5860,7 +5514,6 @@ const stockDossierProfiles = {
     analysisDate: '2026-06-11',
     latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
     dossierVerdict: {
-      sourceType: 'curated',
       asOf: '2026-06-11',
       researchState: 'business_evidence_watch',
       businessQuality: 'medium',
@@ -5890,11 +5543,6 @@ const stockDossierProfiles = {
         'cash flow',
         'risk factor changes'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_7',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -5958,7 +5606,6 @@ const stockDossierProfiles = {
     analysisDate: '2026-06-11',
     latestFiscalPeriod: 'Q3 FY2026 ended 2026-04-30',
     dossierVerdict: {
-      sourceType: 'curated',
       asOf: '2026-06-11',
       researchState: 'financial_cycle_watch',
       businessQuality: 'high',
@@ -5988,11 +5635,6 @@ const stockDossierProfiles = {
         'operating leverage',
         'cash flow'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_7',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -6056,7 +5698,6 @@ const stockDossierProfiles = {
     analysisDate: '2026-06-11',
     latestFiscalPeriod: 'Q1 FY2026 ended 2026-02-27',
     dossierVerdict: {
-      sourceType: 'curated',
       asOf: '2026-06-11',
       researchState: 'business_evidence_watch',
       businessQuality: 'high',
@@ -6086,11 +5727,6 @@ const stockDossierProfiles = {
         'cash flow',
         'risk factor changes'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_7',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -6154,7 +5790,6 @@ const stockDossierProfiles = {
     analysisDate: '2026-06-11',
     latestFiscalPeriod: 'Q1 FY2027 ended 2026-04-30',
     dossierVerdict: {
-      sourceType: 'curated',
       asOf: '2026-06-11',
       researchState: 'business_evidence_watch',
       businessQuality: 'high',
@@ -6184,11 +5819,6 @@ const stockDossierProfiles = {
         'cash flow',
         'risk factor changes'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_7',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -6252,7 +5882,6 @@ const stockDossierProfiles = {
     analysisDate: '2026-06-11',
     latestFiscalPeriod: 'Q1 FY2027 ended 2026-04-30',
     dossierVerdict: {
-      sourceType: 'curated',
       asOf: '2026-06-11',
       researchState: 'business_evidence_watch',
       businessQuality: 'high',
@@ -6282,11 +5911,6 @@ const stockDossierProfiles = {
         'cash flow',
         'risk factor changes'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_7',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -6350,7 +5974,6 @@ const stockDossierProfiles = {
     analysisDate: '2026-06-11',
     latestFiscalPeriod: 'Q1 FY2027 ended 2026-04-30',
     dossierVerdict: {
-      sourceType: 'curated',
       asOf: '2026-06-11',
       researchState: 'consumer_demand_watch',
       businessQuality: 'high',
@@ -6382,11 +6005,6 @@ const stockDossierProfiles = {
         'capex or R&D execution',
         'free cash flow'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_8',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -6450,7 +6068,6 @@ const stockDossierProfiles = {
     analysisDate: '2026-06-11',
     latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
     dossierVerdict: {
-      sourceType: 'curated',
       asOf: '2026-06-11',
       researchState: 'consumer_demand_watch',
       businessQuality: 'high',
@@ -6482,11 +6099,6 @@ const stockDossierProfiles = {
         'customer retention',
         'free cash flow'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_8',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -6550,7 +6162,6 @@ const stockDossierProfiles = {
     analysisDate: '2026-06-11',
     latestFiscalPeriod: 'Q1 2026 ended 2026-04-03',
     dossierVerdict: {
-      sourceType: 'curated',
       asOf: '2026-06-11',
       researchState: 'consumer_demand_watch',
       businessQuality: 'high',
@@ -6582,11 +6193,6 @@ const stockDossierProfiles = {
         'customer retention',
         'free cash flow'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_8',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -6650,7 +6256,6 @@ const stockDossierProfiles = {
     analysisDate: '2026-06-11',
     latestFiscalPeriod: 'Q1 2026 ended 2026-03-21',
     dossierVerdict: {
-      sourceType: 'curated',
       asOf: '2026-06-11',
       researchState: 'consumer_demand_watch',
       businessQuality: 'high',
@@ -6682,11 +6287,6 @@ const stockDossierProfiles = {
         'customer retention',
         'free cash flow'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_8',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -6750,7 +6350,6 @@ const stockDossierProfiles = {
     analysisDate: '2026-06-11',
     latestFiscalPeriod: 'Q3 FY2026 ended 2026-03-31',
     dossierVerdict: {
-      sourceType: 'curated',
       asOf: '2026-06-11',
       researchState: 'consumer_demand_watch',
       businessQuality: 'high',
@@ -6782,11 +6381,6 @@ const stockDossierProfiles = {
         'customer retention',
         'free cash flow'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_8',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -6850,7 +6444,6 @@ const stockDossierProfiles = {
     analysisDate: '2026-06-11',
     latestFiscalPeriod: 'Q3 FY2026 ended 2026-02-28',
     dossierVerdict: {
-      sourceType: 'curated',
       asOf: '2026-06-11',
       researchState: 'consumer_demand_watch',
       businessQuality: 'high',
@@ -6882,11 +6475,6 @@ const stockDossierProfiles = {
         'customer retention',
         'free cash flow'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_8',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -6950,7 +6538,6 @@ const stockDossierProfiles = {
     analysisDate: '2026-06-11',
     latestFiscalPeriod: 'Q1 FY2026 ended 2026-05-01',
     dossierVerdict: {
-      sourceType: 'curated',
       asOf: '2026-06-11',
       researchState: 'consumer_demand_watch',
       businessQuality: 'high',
@@ -6982,11 +6569,6 @@ const stockDossierProfiles = {
         'capex or R&D execution',
         'free cash flow'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_8',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -7050,7 +6632,6 @@ const stockDossierProfiles = {
     analysisDate: '2026-06-11',
     latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
     dossierVerdict: {
-      sourceType: 'curated',
       asOf: '2026-06-11',
       researchState: 'consumer_demand_watch',
       businessQuality: 'high',
@@ -7082,11 +6663,6 @@ const stockDossierProfiles = {
         'customer retention',
         'free cash flow'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_8',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -7150,7 +6726,6 @@ const stockDossierProfiles = {
     analysisDate: '2026-06-11',
     latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
     dossierVerdict: {
-      sourceType: 'curated',
       asOf: '2026-06-11',
       researchState: 'business_evidence_watch',
       businessQuality: 'medium',
@@ -7182,11 +6757,6 @@ const stockDossierProfiles = {
         'cash flow',
         'risk factor changes'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_8',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -7250,7 +6820,6 @@ const stockDossierProfiles = {
     analysisDate: '2026-06-11',
     latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
     dossierVerdict: {
-      sourceType: 'curated',
       asOf: '2026-06-11',
       researchState: 'business_evidence_watch',
       businessQuality: 'medium',
@@ -7282,11 +6851,6 @@ const stockDossierProfiles = {
         'cash flow',
         'risk factor changes'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_8',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -7350,7 +6914,6 @@ const stockDossierProfiles = {
     analysisDate: '2026-06-11',
     latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
     dossierVerdict: {
-      sourceType: 'curated',
       asOf: '2026-06-11',
       researchState: 'communications_cashflow_watch',
       businessQuality: 'medium',
@@ -7382,11 +6945,6 @@ const stockDossierProfiles = {
         'cash flow',
         'risk factor changes'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_9',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -7450,7 +7008,6 @@ const stockDossierProfiles = {
     analysisDate: '2026-06-11',
     latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
     dossierVerdict: {
-      sourceType: 'curated',
       asOf: '2026-06-11',
       researchState: 'communications_cashflow_watch',
       businessQuality: 'medium',
@@ -7482,11 +7039,6 @@ const stockDossierProfiles = {
         'cash flow',
         'risk factor changes'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_9',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -7550,7 +7102,6 @@ const stockDossierProfiles = {
     analysisDate: '2026-06-11',
     latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
     dossierVerdict: {
-      sourceType: 'curated',
       asOf: '2026-06-11',
       researchState: 'business_evidence_watch',
       businessQuality: 'high',
@@ -7582,11 +7133,6 @@ const stockDossierProfiles = {
         'cash flow',
         'risk factor changes'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_9',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -7650,7 +7196,6 @@ const stockDossierProfiles = {
     analysisDate: '2026-06-11',
     latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
     dossierVerdict: {
-      sourceType: 'curated',
       asOf: '2026-06-11',
       researchState: 'regulated_utility_watch',
       businessQuality: 'high',
@@ -7682,11 +7227,6 @@ const stockDossierProfiles = {
         'cash flow',
         'risk factor changes'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_9',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -7750,7 +7290,6 @@ const stockDossierProfiles = {
     analysisDate: '2026-06-11',
     latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
     dossierVerdict: {
-      sourceType: 'curated',
       asOf: '2026-06-11',
       researchState: 'regulated_utility_watch',
       businessQuality: 'high',
@@ -7782,11 +7321,6 @@ const stockDossierProfiles = {
         'cash flow',
         'risk factor changes'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_9',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -7850,7 +7384,6 @@ const stockDossierProfiles = {
     analysisDate: '2026-06-11',
     latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
     dossierVerdict: {
-      sourceType: 'curated',
       asOf: '2026-06-11',
       researchState: 'communications_cashflow_watch',
       businessQuality: 'high',
@@ -7882,11 +7415,6 @@ const stockDossierProfiles = {
         'cash flow',
         'risk factor changes'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_9',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -7950,7 +7478,6 @@ const stockDossierProfiles = {
     analysisDate: '2026-06-11',
     latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
     dossierVerdict: {
-      sourceType: 'curated',
       asOf: '2026-06-11',
       researchState: 'business_evidence_watch',
       businessQuality: 'high',
@@ -7982,11 +7509,6 @@ const stockDossierProfiles = {
         'cash flow',
         'risk factor changes'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_9',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -8050,7 +7572,6 @@ const stockDossierProfiles = {
     analysisDate: '2026-06-11',
     latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
     dossierVerdict: {
-      sourceType: 'curated',
       asOf: '2026-06-11',
       researchState: 'business_evidence_watch',
       businessQuality: 'medium',
@@ -8082,11 +7603,6 @@ const stockDossierProfiles = {
         'cash flow',
         'risk factor changes'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_9',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -8150,7 +7666,6 @@ const stockDossierProfiles = {
     analysisDate: '2026-06-11',
     latestFiscalPeriod: 'Q2 FY2026 ended 2026-03-29',
     dossierVerdict: {
-      sourceType: 'curated',
       asOf: '2026-06-11',
       researchState: 'consumer_demand_watch',
       businessQuality: 'high',
@@ -8182,11 +7697,6 @@ const stockDossierProfiles = {
         'capex or R&D execution',
         'free cash flow'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_9',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -8250,7 +7760,6 @@ const stockDossierProfiles = {
     analysisDate: '2026-06-11',
     latestFiscalPeriod: 'Q1 2026 ended 2026-03-28',
     dossierVerdict: {
-      sourceType: 'curated',
       asOf: '2026-06-11',
       researchState: 'business_evidence_watch',
       businessQuality: 'high',
@@ -8282,11 +7791,6 @@ const stockDossierProfiles = {
         'cash flow',
         'risk factor changes'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_9',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -8350,7 +7854,6 @@ const stockDossierProfiles = {
     analysisDate: '2026-06-11',
     latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
     dossierVerdict: {
-      sourceType: 'curated',
       asOf: '2026-06-11',
       researchState: 'platform_watch',
       businessQuality: 'high',
@@ -8382,11 +7885,6 @@ const stockDossierProfiles = {
         'host supply and retention metrics',
         'local regulatory changes'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_10',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -8445,7 +7943,6 @@ const stockDossierProfiles = {
     analysisDate: '2026-06-11',
     latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
     dossierVerdict: {
-      sourceType: 'curated',
       asOf: '2026-06-11',
       researchState: 'healthcare_watch',
       businessQuality: 'high',
@@ -8477,11 +7974,6 @@ const stockDossierProfiles = {
         'FX currency impact disclosures',
         'Acquisition integration progress (Exact Sciences)'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_10',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -8540,7 +8032,6 @@ const stockDossierProfiles = {
     analysisDate: '2026-06-11',
     latestFiscalPeriod: 'Q2 FY2026 ended 2026-02-28',
     dossierVerdict: {
-      sourceType: 'curated',
       asOf: '2026-06-11',
       researchState: 'enterprise_spend_watch',
       businessQuality: 'high',
@@ -8572,11 +8063,6 @@ const stockDossierProfiles = {
         'consulting billing rates',
         'operating margin trends'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_10',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -8635,7 +8121,6 @@ const stockDossierProfiles = {
     analysisDate: '2026-06-11',
     latestFiscalPeriod: 'Q2 FY2026 ended 2026-05-02',
     dossierVerdict: {
-      sourceType: 'curated',
       asOf: '2026-06-11',
       researchState: 'semiconductor_cycle_watch',
       businessQuality: 'high',
@@ -8667,11 +8152,6 @@ const stockDossierProfiles = {
         'average selling prices (ASPs)',
         'design-win pipeline details'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_10',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -8730,7 +8210,6 @@ const stockDossierProfiles = {
     analysisDate: '2026-06-11',
     latestFiscalPeriod: 'Q3 FY2026 ended 2026-03-31',
     dossierVerdict: {
-      sourceType: 'curated',
       asOf: '2026-06-11',
       researchState: 'employment_watch',
       businessQuality: 'high',
@@ -8762,11 +8241,6 @@ const stockDossierProfiles = {
         'operating margin trends',
         'IT infrastructure and security spending'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_10',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -8825,7 +8299,6 @@ const stockDossierProfiles = {
     analysisDate: '2026-06-11',
     latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
     dossierVerdict: {
-      sourceType: 'curated',
       asOf: '2026-06-11',
       researchState: 'biotech_pipeline_watch',
       businessQuality: 'medium_high',
@@ -8857,11 +8330,6 @@ const stockDossierProfiles = {
         'cash runway and financing needs',
         'intellectual property and patent dispute outcomes'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_10',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -8920,7 +8388,6 @@ const stockDossierProfiles = {
     analysisDate: '2026-06-11',
     latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
     dossierVerdict: {
-      sourceType: 'curated',
       asOf: '2026-06-11',
       researchState: 'cloud_capex_watch',
       businessQuality: 'high',
@@ -8952,11 +8419,6 @@ const stockDossierProfiles = {
         'supply chain purchase commitments',
         'Cisco / competitor market share trends'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_10',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -9015,7 +8477,6 @@ const stockDossierProfiles = {
     analysisDate: '2026-06-11',
     latestFiscalPeriod: 'Q3 FY2026 ended 2026-02-28',
     dossierVerdict: {
-      sourceType: 'curated',
       asOf: '2026-06-11',
       researchState: 'infrastructure_build_watch',
       businessQuality: 'medium',
@@ -9047,11 +8508,6 @@ const stockDossierProfiles = {
         'major customer creditworthiness',
         'gross margins by hosting segment'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_10',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -9110,7 +8566,6 @@ const stockDossierProfiles = {
     analysisDate: '2026-06-11',
     latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
     dossierVerdict: {
-      sourceType: 'curated',
       asOf: '2026-06-11',
       researchState: 'software_platform_watch',
       businessQuality: 'high',
@@ -9142,11 +8597,6 @@ const stockDossierProfiles = {
         'operating cash flow margins',
         'mobile OS privacy / tracking policy changes'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_10',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -9205,7 +8655,6 @@ const stockDossierProfiles = {
     analysisDate: '2026-06-11',
     latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
     dossierVerdict: {
-      sourceType: 'curated',
       asOf: '2026-06-11',
       researchState: 'credit_cycle_watch',
       businessQuality: 'high',
@@ -9237,11 +8686,6 @@ const stockDossierProfiles = {
         'leverage ratio and debt-to-equity headroom',
         'portfolio mix (senior secured vs subordinated)'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_10',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -9300,7 +8744,6 @@ const stockDossierProfiles = {
     analysisDate: '2026-06-11',
     latestFiscalPeriod: 'FY2026 ended 2026-03-31',
     dossierVerdict: {
-      sourceType: 'curated',
       asOf: '2026-06-11',
       researchState: 'semiconductor_ip_watch',
       businessQuality: 'high',
@@ -9332,11 +8775,6 @@ const stockDossierProfiles = {
         'customer concentration revenue disclosures',
         'Arm China business performance updates'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_11',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 20-F / 6-K'
     },
     visualPhaseOne: {
       faq: {
@@ -9395,7 +8833,6 @@ const stockDossierProfiles = {
     analysisDate: '2026-06-11',
     latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
     dossierVerdict: {
-      sourceType: 'curated',
       asOf: '2026-06-11',
       researchState: 'public_safety_watch',
       businessQuality: 'high',
@@ -9427,11 +8864,6 @@ const stockDossierProfiles = {
         'international booking metrics',
         'public agency budget trend indicators'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_11',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -9490,7 +8922,6 @@ const stockDossierProfiles = {
     analysisDate: '2026-06-11',
     latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
     dossierVerdict: {
-      sourceType: 'curated',
       asOf: '2026-06-11',
       researchState: 'aerospace_turnaround_watch',
       businessQuality: 'medium_low',
@@ -9522,11 +8953,6 @@ const stockDossierProfiles = {
         'order backlog volume and pricing',
         'key supplier production rate compliance'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_11',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -9585,7 +9011,6 @@ const stockDossierProfiles = {
     analysisDate: '2026-06-11',
     latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
     dossierVerdict: {
-      sourceType: 'curated',
       asOf: '2026-06-11',
       researchState: 'energy_infrastructure_watch',
       businessQuality: 'medium_low',
@@ -9617,11 +9042,6 @@ const stockDossierProfiles = {
         'utility grid connection delay times',
         'data center customer pipeline scaling'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_11',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -9680,7 +9100,6 @@ const stockDossierProfiles = {
     analysisDate: '2026-06-11',
     latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
     dossierVerdict: {
-      sourceType: 'curated',
       asOf: '2026-06-11',
       researchState: 'financial_services_watch',
       businessQuality: 'high',
@@ -9712,11 +9131,6 @@ const stockDossierProfiles = {
         'operating leverage and expense ratio',
         'regulatory capital ratios (CET1)'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_11',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -9775,7 +9189,6 @@ const stockDossierProfiles = {
     analysisDate: '2026-06-11',
     latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
     dossierVerdict: {
-      sourceType: 'curated',
       asOf: '2026-06-11',
       researchState: 'energy_technology_watch',
       businessQuality: 'medium_high',
@@ -9807,11 +9220,6 @@ const stockDossierProfiles = {
         'raw material and supply chain costs',
         'free cash flow conversion rate'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_11',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -9870,7 +9278,6 @@ const stockDossierProfiles = {
     analysisDate: '2026-06-11',
     latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
     dossierVerdict: {
-      sourceType: 'curated',
       asOf: '2026-06-11',
       researchState: 'asset_management_watch',
       businessQuality: 'high',
@@ -9902,11 +9309,6 @@ const stockDossierProfiles = {
         'operating margin trends',
         'passive vs active asset mix shifts'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_11',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -9965,7 +9367,6 @@ const stockDossierProfiles = {
     analysisDate: '2026-06-11',
     latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
     dossierVerdict: {
-      sourceType: 'curated',
       asOf: '2026-06-11',
       researchState: 'biopharma_transition_watch',
       businessQuality: 'medium_high',
@@ -9997,11 +9398,6 @@ const stockDossierProfiles = {
         'operating cash flow and debt reduction rate',
         'in-licensing and business development pipeline'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_11',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -10060,7 +9456,6 @@ const stockDossierProfiles = {
     analysisDate: '2026-06-11',
     latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
     dossierVerdict: {
-      sourceType: 'curated',
       asOf: '2026-06-11',
       researchState: 'diversified_holding_watch',
       businessQuality: 'high',
@@ -10092,11 +9487,6 @@ const stockDossierProfiles = {
         'equity investment portfolio market value',
         'share repurchase volume and price levels'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_11',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -10155,7 +9545,6 @@ const stockDossierProfiles = {
     analysisDate: '2026-06-11',
     latestFiscalPeriod: 'Q1 2026 ended 2026-03-31',
     dossierVerdict: {
-      sourceType: 'curated',
       asOf: '2026-06-11',
       researchState: 'private_credit_watch',
       businessQuality: 'high',
@@ -10187,11 +9576,6 @@ const stockDossierProfiles = {
         'asset coverage ratio and leverage ratio headroom',
         'first-lien loan concentration percentage'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_11',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -10263,11 +9647,6 @@ const stockDossierProfiles = {
         'Gross credit card loan non-accrual rate',
         'Wealth management assets under management'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_12',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -10317,11 +9696,6 @@ const stockDossierProfiles = {
         'Operating cash flow conversion rate',
         'Foreign exchange translation impact on revenue'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_12',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 20-F / 6-K'
     },
     visualPhaseOne: {
       faq: {
@@ -10371,11 +9745,6 @@ const stockDossierProfiles = {
         'Marine fuel cost per metric ton',
         'Advanced cruise ticket booking volumes'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_12',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -10425,11 +9794,6 @@ const stockDossierProfiles = {
         'R&D expenses as a percentage of revenue',
         'Product revenue growth from hardware emulation systems'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_12',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -10479,11 +9843,6 @@ const stockDossierProfiles = {
         'Revenue generated from hyperscale data center PPAs',
         'Nuclear fuel procurement cost changes'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_12',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -10533,11 +9892,6 @@ const stockDossierProfiles = {
         'Capital expenditures for network upgrades',
         'Adjusted EBITDA margin percentage'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_12',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -10587,11 +9941,6 @@ const stockDossierProfiles = {
         'Telecom carrier capital expenditure guidance',
         'Inventory turnover ratio'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_12',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -10641,11 +9990,6 @@ const stockDossierProfiles = {
         'Capital expenditure commitments for site development',
         'Total outstanding share dilution percentage'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_12',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -10695,11 +10039,6 @@ const stockDossierProfiles = {
         'Advertising and promotion expenses',
         'Pet nutrition (Hill\'s) revenue growth'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_12',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -10749,11 +10088,6 @@ const stockDossierProfiles = {
         'ASIC miner purchase commitments',
         'ATM equity facility drawdowns and share counts'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_12',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -10804,11 +10138,6 @@ const stockDossierProfiles = {
         'Average deposit interest rate cost',
         'Auto loan provision for credit losses'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_13',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -10858,11 +10187,6 @@ const stockDossierProfiles = {
         'Bitcoin mined per quarter',
         'Total outstanding share dilution'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_13',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -10912,11 +10236,6 @@ const stockDossierProfiles = {
         'International buyer volume growth',
         'Operating income margin percentage'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_13',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -10966,11 +10285,6 @@ const stockDossierProfiles = {
         'Total monthly active users on marketplaces',
         'Average revenue per advertiser'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_13',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -11020,11 +10334,6 @@ const stockDossierProfiles = {
         'Operating ratio percentage',
         'Fuel surcharge revenue vs fuel expenses'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_13',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -11074,11 +10383,6 @@ const stockDossierProfiles = {
         'Average route fuel cost per mile',
         'Customer contract retention rate'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_13',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -11128,11 +10432,6 @@ const stockDossierProfiles = {
         'Average hourly billing rate realized',
         'Operating margin percentage'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_13',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -11182,11 +10481,6 @@ const stockDossierProfiles = {
         'Operating cash flow conversion',
         'Interest coverage ratio on outstanding debt'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_13',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -11236,11 +10530,6 @@ const stockDossierProfiles = {
         'SkyMiles co-brand cash revenue',
         'Total liquidity and net debt levels'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_13',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -11290,11 +10579,6 @@ const stockDossierProfiles = {
         'Adjusted EBITDA margin as a percentage of GOV',
         'Non-food delivery order volume growth'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_13',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -11345,11 +10629,6 @@ const stockDossierProfiles = {
         'Client Solutions Group (CSG) revenue',
         'Operating cash flow conversion'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_14',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -11399,11 +10678,6 @@ const stockDossierProfiles = {
         'Weighted average cost of debt',
         'Retail customer growth rate'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_14',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -11453,11 +10727,6 @@ const stockDossierProfiles = {
         'R&D expenses as a percentage of sales',
         'Sales and marketing expense productivity'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_14',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -11507,11 +10776,6 @@ const stockDossierProfiles = {
         'Mobile segment revenue growth',
         'R&D development spend efficiency'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_14',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -11561,11 +10825,6 @@ const stockDossierProfiles = {
         'Total order backlog value',
         'Free cash flow conversion rate'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_14',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -11615,11 +10874,6 @@ const stockDossierProfiles = {
         'Utility grid equipment bookings',
         'EMobility segment profitability'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_14',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -11669,11 +10923,6 @@ const stockDossierProfiles = {
         'Interest coverage ratio',
         'Commercial and industrial load growth'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_14',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -11723,11 +10972,6 @@ const stockDossierProfiles = {
         'Free cash flow conversion rate',
         'Permian Basin pipeline throughput capacity'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_14',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -11777,11 +11021,6 @@ const stockDossierProfiles = {
         'Fastener vs non-fastener sales mix',
         'Vending machine installations count'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_14',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -11831,11 +11070,6 @@ const stockDossierProfiles = {
         'Operating income margin by segment',
         'Fuel surcharge revenues vs fuel costs'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_14',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -11886,11 +11120,6 @@ const stockDossierProfiles = {
         'Hybrid and BEV unit volume mix percentage',
         'Capital spending on next-generation manufacturing facilities'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_15',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 20-F / 6-K'
     },
     visualPhaseOne: {
       faq: {
@@ -11940,11 +11169,6 @@ const stockDossierProfiles = {
         'Deferred revenue backlog balance',
         'Operating income margin percentage'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_15',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -11994,11 +11218,6 @@ const stockDossierProfiles = {
         'Percentage of portfolio in first-lien debt',
         'Asset coverage ratio and regulatory leverage headroom'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_15',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -12048,11 +11267,6 @@ const stockDossierProfiles = {
         'Technologies segment backlog',
         'Free cash flow conversion rate'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_15',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -12102,11 +11316,6 @@ const stockDossierProfiles = {
         'Operating margin percentage',
         'Free cash flow generation'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_15',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -12156,11 +11365,6 @@ const stockDossierProfiles = {
         'Order backlog drawdown rate',
         'Free cash flow conversion rate'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_15',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -12210,11 +11414,6 @@ const stockDossierProfiles = {
         'Total order book bookings',
         'Restructuring charges and cash margins'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_15',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -12264,11 +11463,6 @@ const stockDossierProfiles = {
         'R&D expenses as a percentage of revenue',
         'Operating cash flow conversion'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_15',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -12318,11 +11512,6 @@ const stockDossierProfiles = {
         'Cruise autonomous vehicle capital burn rate',
         'Dealer inventory days supply'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_15',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -12372,11 +11561,6 @@ const stockDossierProfiles = {
         'Backlog book-to-bill ratio',
         'Free cash flow conversion rate'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_15',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -12427,11 +11611,6 @@ const stockDossierProfiles = {
         'Net interest revenues',
         'Net deposits and assets under custody'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_16',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -12482,11 +11661,6 @@ const stockDossierProfiles = {
         'Free cash flow generation',
         'Enterprise storage revenues'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_16',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -12537,11 +11711,6 @@ const stockDossierProfiles = {
         'Floating-rate yield spreads',
         'Venture debt loan origination volumes'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_16',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -12592,11 +11761,6 @@ const stockDossierProfiles = {
         'Veterinary clinic patient visit volumes',
         'Research and development spending'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_16',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -12647,11 +11811,6 @@ const stockDossierProfiles = {
         'Research and development expenses',
         'Sales and marketing expenses'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_16',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -12702,11 +11861,6 @@ const stockDossierProfiles = {
         'Data center operational megawatt capacity',
         'Outstanding share dilution count'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_16',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -12757,11 +11911,6 @@ const stockDossierProfiles = {
         'Total debt to EBITDA leverage ratio',
         'Brewer shipment volumes'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_16',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -12812,11 +11961,6 @@ const stockDossierProfiles = {
         'Marketing and advertising spending efficiency',
         'Free cash flow conversion'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_16',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -12867,11 +12011,6 @@ const stockDossierProfiles = {
         'Free cash flow generation',
         'Government budget appropriation adjustments'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_16',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -12922,11 +12061,6 @@ const stockDossierProfiles = {
         'Lower middle-market equity holdings fair value',
         'Distributable net investment income'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_16',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -12977,11 +12111,6 @@ const stockDossierProfiles = {
         'Franchise and management fee margins',
         'Average daily room rates'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_17',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -13032,11 +12161,6 @@ const stockDossierProfiles = {
         'Automotive and industrial segment revenues',
         'Design win pipeline metrics'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_17',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -13087,11 +12211,6 @@ const stockDossierProfiles = {
         'Net interest income on credit book',
         'Logistics shipping cost margins'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_17',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -13142,11 +12261,6 @@ const stockDossierProfiles = {
         'Net legal liabilities cash payouts',
         'Free cash flow conversion rate'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_17',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -13197,11 +12311,6 @@ const stockDossierProfiles = {
         'Marketing expenditures as a percentage of sales',
         'Bottler partner inventory levels'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_17',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -13252,11 +12361,6 @@ const stockDossierProfiles = {
         'Research and development spending',
         'Days inventory outstanding'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_17',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -13307,11 +12411,6 @@ const stockDossierProfiles = {
         'Software operating profit margins',
         'Cash flows from software operations'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_17',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -13362,11 +12461,6 @@ const stockDossierProfiles = {
         'Enterprise AI customer concentration',
         'Consolidated operating cash flow'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_17',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 20-F / 6-K'
     },
     visualPhaseOne: {
       faq: {
@@ -13417,11 +12511,6 @@ const stockDossierProfiles = {
         'Consolidated debt leverage ratios',
         'Customer acquisition costs'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_17',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -13472,11 +12561,6 @@ const stockDossierProfiles = {
         'Consolidated gross profit margin',
         'Industrial and IoT segment revenues'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_17',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -13527,11 +12611,6 @@ const stockDossierProfiles = {
         'Net acquisition and development volume',
         'Debt to adjusted EBITDA leverage ratio'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_18',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -13582,11 +12661,6 @@ const stockDossierProfiles = {
         'Weighted average yield on debt investments',
         'Debt to equity leverage ratio'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_18',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -13637,11 +12711,6 @@ const stockDossierProfiles = {
         'Operating ratio percentage',
         'Capital spending on equipment and terminals'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_18',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -13692,11 +12761,6 @@ const stockDossierProfiles = {
         'Research and development spending',
         'Outstanding share dilution count'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_18',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -13747,11 +12811,6 @@ const stockDossierProfiles = {
         'Inventory turnover ratio',
         'Professional customer transaction mix'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_18',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -13802,11 +12861,6 @@ const stockDossierProfiles = {
         'Free cash flow conversion rate',
         'Operating income margin percentage'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_18',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -13857,11 +12911,6 @@ const stockDossierProfiles = {
         'Consolidated operating profit margin',
         'Consolidated revenue growth rate'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_18',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -13912,11 +12961,6 @@ const stockDossierProfiles = {
         'Aftermarket parts revenue growth',
         'Financial services loan default rate'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_18',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -13967,11 +13011,6 @@ const stockDossierProfiles = {
         'Marketing and promotion spending efficiency',
         'Days inventory outstanding'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_18',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 20-F / 6-K'
     },
     visualPhaseOne: {
       faq: {
@@ -14022,11 +13061,6 @@ const stockDossierProfiles = {
         'Capital expenditures as a percentage of sales',
         'Free cash flow conversion rate'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_18',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -14077,11 +13111,6 @@ const stockDossierProfiles = {
         'Active customer accounts count',
         'Total payment volume processed'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_19',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -14132,11 +13161,6 @@ const stockDossierProfiles = {
         'Net debt to adjusted EBITDA ratio',
         'Weighted average fuel cost per metric ton'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_19',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -14187,11 +13211,6 @@ const stockDossierProfiles = {
         'Research and development spending',
         'Biosimilar market penetration rates'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_19',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -14242,11 +13261,6 @@ const stockDossierProfiles = {
         'Free cash flow conversion rate',
         'Net debt to adjusted EBITDA ratio'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_19',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -14297,11 +13311,6 @@ const stockDossierProfiles = {
         'Inventory turnover ratio',
         'Average customer ticket transaction value'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_19',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -14352,11 +13361,6 @@ const stockDossierProfiles = {
         'Free cash flow conversion rate',
         'Fixed-price contract operating margins'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_19',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -14407,11 +13411,6 @@ const stockDossierProfiles = {
         'Securities brokerage active account count',
         'Banking regulatory Tier 1 leverage ratio'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_19',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -14462,11 +13461,6 @@ const stockDossierProfiles = {
         'Housing starts and home resale volume',
         'Days inventory outstanding'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_19',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -14517,11 +13511,6 @@ const stockDossierProfiles = {
         'Consolidated gross profit margin',
         'Days inventory outstanding'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_19',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -14572,11 +13561,6 @@ const stockDossierProfiles = {
         'Operating income margin percentage',
         'Customer design start project counts'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_19',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -14627,11 +13611,6 @@ const stockDossierProfiles = {
         'Wholesale interest rate refinancing costs',
         'Weather-normalized electricity demand'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_19',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -14682,11 +13661,6 @@ const stockDossierProfiles = {
         'Net debt to adjusted EBITDA ratio',
         'Refinancing debt interest rate yields'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_19',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -14737,11 +13711,6 @@ const stockDossierProfiles = {
         'Cloud datacenter inventory levels',
         'Days inventory outstanding'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_19',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -14792,11 +13761,6 @@ const stockDossierProfiles = {
         'Free cash flow generation',
         'Net debt outstanding balance'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_19',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -14847,11 +13811,6 @@ const stockDossierProfiles = {
         'Weighted average yield on venture debt',
         'New debt loan origination volumes'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_19',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -14902,11 +13861,6 @@ const stockDossierProfiles = {
         'CoCounsel user adoption',
         'Free cash flow generation'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_20',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 20-F / 6-K'
     },
     visualPhaseOne: {
       faq: {
@@ -14957,11 +13911,6 @@ const stockDossierProfiles = {
         'Net written premium growth',
         'Net investment income'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_20',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -15012,11 +13961,6 @@ const stockDossierProfiles = {
         'Capital expenditures',
         'Wafer shipments'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_20',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 20-F / 6-K'
     },
     visualPhaseOne: {
       faq: {
@@ -15067,11 +14011,6 @@ const stockDossierProfiles = {
         'Console and PC net bookings',
         'Operating cash flows'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_20',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -15122,11 +14061,6 @@ const stockDossierProfiles = {
         'Passenger load factor',
         'Total debt outstanding'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_20',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -15177,11 +14111,6 @@ const stockDossierProfiles = {
         'Net charge-off ratio',
         'Nonperforming asset ratio'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_20',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -15232,11 +14161,6 @@ const stockDossierProfiles = {
         'Remaining performance obligations',
         'Customer retention rate'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_20',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -15287,11 +14211,6 @@ const stockDossierProfiles = {
         'Book-to-bill ratio',
         'Inventory turnover days'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_20',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -15342,11 +14261,6 @@ const stockDossierProfiles = {
         'Casgevy patient treatment initiations',
         'Cash and marketable securities'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_20',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -15397,11 +14311,6 @@ const stockDossierProfiles = {
         'Advertising revenue decline rate',
         'Free cash flow generation'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_20',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -15452,11 +14361,6 @@ const stockDossierProfiles = {
         'Operating cash flows',
         'Total debt outstanding'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_20',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -15507,11 +14411,6 @@ const stockDossierProfiles = {
         'Net charge-offs ratio',
         'Nonperforming asset ratio'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_20',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -15562,11 +14461,6 @@ const stockDossierProfiles = {
         'Allowed return on equity',
         'Interest expense ratio'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_20',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -15617,11 +14511,6 @@ const stockDossierProfiles = {
         'Shareowner cash returns',
         'Guyana net production volume'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_20',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -15672,11 +14561,6 @@ const stockDossierProfiles = {
         'Cash App primary banking active users',
         'Square gross payment volume'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_20',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -15727,11 +14611,6 @@ const stockDossierProfiles = {
         'Non-GAAP operating margin',
         'Free cash flow margin'
       ],
-      evidence_quality: 'Partial',
-      dossier_state: 'curated_profile_batch_20',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'SEC 10-K / 10-Q'
     },
     visualPhaseOne: {
       faq: {
@@ -15780,7 +14659,6 @@ const stockDossierProfiles = {
       verdict: 'Growth is robust with high gross margins, but the valuation multiple requires sustained near-triple-digit revenue growth and operating leverage.'
     },
     dossierVerdict: {
-      sourceType: 'curated',
       asOf: '2026-06-13',
       researchState: 'post_earnings_watch',
       businessQuality: 'high',
@@ -15828,11 +14706,6 @@ const stockDossierProfiles = {
         'Gross margin trends',
         'SBC dilution'
       ],
-      evidence_quality: 'Curated',
-      dossier_state: 'curated_profile_nasdaq_rebalance_2026_06',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'stockDossierProfiles.js'
     },
     visualPhaseOne: {
       performanceGrid: {
@@ -15850,7 +14723,6 @@ const stockDossierProfiles = {
         {
           title: 'High Growth Connectivity',
           explanation: 'Q1 revenue grew 93% YoY to $308.4M, indicating leading connectivity growth.',
-          evidenceState: 'Curated'
         }
       ],
       faq: {
@@ -15938,7 +14810,6 @@ const stockDossierProfiles = {
       verdict: 'Outstanding top-line scale and backlog of $100B, but capital expenditures are massive, leaving FCF negative with substantial debt risk.'
     },
     dossierVerdict: {
-      sourceType: 'curated',
       asOf: '2026-06-13',
       researchState: 'post_earnings_watch',
       businessQuality: 'medium_high',
@@ -15986,11 +14857,6 @@ const stockDossierProfiles = {
         'Average customer tenure',
         'CapEx buildout cadence'
       ],
-      evidence_quality: 'Curated',
-      dossier_state: 'curated_profile_nasdaq_rebalance_2026_06',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'stockDossierProfiles.js'
     },
     visualPhaseOne: {
       performanceGrid: {
@@ -16008,7 +14874,6 @@ const stockDossierProfiles = {
         {
           title: 'Hyper Scale GPU Cloud',
           explanation: 'Guidance of $12B-$13B for FY2026 indicates rapid cloud infrastructure scale.',
-          evidenceState: 'Curated'
         }
       ],
       faq: {
@@ -16096,7 +14961,6 @@ const stockDossierProfiles = {
       verdict: 'Strong growth and record backlog, but FCF remains negative due to heavy Neutron R&D spend and launch capital costs.'
     },
     dossierVerdict: {
-      sourceType: 'curated',
       asOf: '2026-06-13',
       researchState: 'post_earnings_watch',
       businessQuality: 'medium',
@@ -16144,11 +15008,6 @@ const stockDossierProfiles = {
         'Space systems backlog growth',
         'ATM share dilution rate'
       ],
-      evidence_quality: 'Curated',
-      dossier_state: 'curated_profile_nasdaq_rebalance_2026_06',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'stockDossierProfiles.js'
     },
     visualPhaseOne: {
       performanceGrid: {
@@ -16166,7 +15025,6 @@ const stockDossierProfiles = {
         {
           title: 'Commercial Space Growth',
           explanation: 'Q1 revenue grew 63.5% YoY, led by the space systems division.',
-          evidenceState: 'Curated'
         }
       ],
       faq: {
@@ -16254,7 +15112,6 @@ const stockDossierProfiles = {
       verdict: 'High profitability and solid cash flow generation, though performance is tied to semiconductor capital spending cycles.'
     },
     dossierVerdict: {
-      sourceType: 'curated',
       asOf: '2026-06-13',
       researchState: 'post_earnings_watch',
       businessQuality: 'high',
@@ -16302,11 +15159,6 @@ const stockDossierProfiles = {
         'Advanced packaging test mix',
         'Share repurchase cadence'
       ],
-      evidence_quality: 'Curated',
-      dossier_state: 'curated_profile_nasdaq_rebalance_2026_06',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'stockDossierProfiles.js'
     },
     visualPhaseOne: {
       performanceGrid: {
@@ -16324,7 +15176,6 @@ const stockDossierProfiles = {
         {
           title: 'Cyclical Semi Test',
           explanation: 'Q1 revenue grew 87% YoY to $1.282B, showing sharp recovery.',
-          evidenceState: 'Curated'
         }
       ],
       faq: {
@@ -16416,15 +15267,13 @@ const stockDossierProfiles = {
       initialProceeds: '$75.0B',
       underwriterOptionShares: '83.3M',
       totalProceedsAfterGreenshoe: '$85.7B',
-      ipoValuation: '$1.77T',
-      sourceNote: 'Curated from MarketWatch IPO pricing report and WSJ greenshoe proceeds report; direct official filing not verified in this profile gate.'
+      ipoValuation: '$1.77T'
     },
     whyNow: {
       reason: 'SPCX is a newly public BOSS watchlist name with live market-cap and stock-performance coverage, but still has short public trading history and no canonical earnings event ledger.',
       verdict: 'Early public-market evidence is highly attention-driven. CrowdRisk should track the company as a catalyst watch, not as a fully verified valuation case.'
     },
     dossierVerdict: {
-      sourceType: 'curated',
       asOf: '2026-06-18',
       researchState: 'catalyst_watch',
       businessQuality: 'not_verified',
@@ -16475,11 +15324,6 @@ const stockDossierProfiles = {
         'Capex intensity and free cash flow path',
         'Governance and key-person risk'
       ],
-      evidence_quality: 'Curated',
-      dossier_state: 'curated_profile_spcx_initial_2026_06',
-      coverage_status: 'Curated',
-      needs_human_review: false,
-      source: 'stockDossierProfiles.js'
     },
     visualPhaseOne: {
       performanceGrid: {
@@ -16497,12 +15341,10 @@ const stockDossierProfiles = {
         {
           title: 'New Public Space Infrastructure Exposure',
           explanation: 'SPCX is newly public and combines launch systems, Starlink connectivity, spacecraft operations, and space / AI infrastructure optionality.',
-          evidenceState: 'Curated'
         },
         {
           title: 'Short-History Momentum Constraint',
           explanation: 'SPCX is active coverage but not yet rankable in Momentum Universe because public OHLCV history is insufficient.',
-          evidenceState: 'Verified'
         }
       ],
       faq: {
