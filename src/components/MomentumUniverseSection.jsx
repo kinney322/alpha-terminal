@@ -8,7 +8,7 @@ const MOMENTUM_COPY = {
     error: 'Momentum Universe payload unavailable.',
     kicker: 'Momentum Universe',
     title: 'Trend follow-through candidates ranked for research.',
-    body: 'This section reads the live momentum universe contract and keeps scanner rank, scanner score, relative strength, price, and SMA distance in one place.',
+    body: 'Use these lenses to separate leadership, extension risk, pullback setups, and lagging relative momentum. The lenses can overlap.',
     rank: 'Rank',
     ticker: 'Ticker',
     theme: 'Theme',
@@ -19,10 +19,10 @@ const MOMENTUM_COPY = {
     action: 'Action',
     openDossier: 'View Dossier',
     rankedNames: 'Ranked names',
-    leaders: 'Leaders',
+    leaders: 'Leadership',
     constructive: 'Constructive',
-    crowded: 'Extended',
-    weak: 'Weak',
+    crowded: 'Extended / crowded',
+    weak: 'Lagging',
     neutral: 'Neutral',
     pullback: 'Pullback / reclaim',
     themeWatch: 'Theme watch',
@@ -38,6 +38,24 @@ const MOMENTUM_COPY = {
     resistance: 'Resistance',
     noResistance: 'No nearby resistance detected',
     observations: 'Observations',
+    signalRead: 'Signal read',
+    signalLenses: 'Active lenses',
+    cleanLeadership: 'Leadership',
+    extensionRisk: 'Extension risk',
+    pullbackLens: 'Pullback / reclaim',
+    laggingLens: 'Lagging',
+    constructiveLens: 'Constructive',
+    themeGap: 'Theme gap',
+    neutralLens: 'Neutral read',
+    readLeadershipExtendedPullback: 'Leadership is strong, but the move is extended; use pullback or reclaim evidence before chasing.',
+    readLeadershipExtended: 'Leadership is strong, but the move is crowded; watch consolidation and support quality before adding risk.',
+    readLeadership: 'Leadership is strong; check whether price keeps holding key moving averages.',
+    readLaggingStrongTrend: 'Relative momentum is lagging even while ADX shows a strong trend; treat this as repair mode until RS improves.',
+    readLagging: 'Relative momentum is lagging; require reclaim evidence or stronger RS before ranking it higher.',
+    readPullback: 'Pullback lens: focus on support hold and improving RS, not just a one-day bounce.',
+    readConstructive: 'Constructive setup: trend and RS are improving, but confirmation is not yet leadership.',
+    readThemeGap: 'Theme context is not mapped yet; classify the peer context before relying on readthrough.',
+    readNeutral: 'Neutral read: keep it in the monitor list until leadership, pullback, or lagging evidence becomes clearer.',
     noObservation: 'No cockpit observation available.',
     vsSpy: 'vs SPY',
     vsQqq: 'vs QQQ',
@@ -65,7 +83,7 @@ const MOMENTUM_COPY = {
     error: '動能宇宙資料暫時無法取得。',
     kicker: '動能宇宙',
     title: '按研究優先次序排列的趨勢延續候選名單。',
-    body: '這裡集中顯示即時動能排名、掃描分數、相對強度、價格與均線距離。',
+    body: '這裡用多個觀察鏡頭拆開領先度、伸延風險、回調結構和相對落後；同一隻股票可以同時落入多個鏡頭。',
     rank: '排名',
     ticker: '股票',
     theme: '主題',
@@ -76,10 +94,10 @@ const MOMENTUM_COPY = {
     action: '動作',
     openDossier: '查看股票檔案',
     rankedNames: '已排名股票',
-    leaders: '領先股',
+    leaders: '領先度',
     constructive: '建設性轉強',
-    crowded: '偏伸延',
-    weak: '弱勢',
+    crowded: '偏伸延 / 擁擠',
+    weak: '相對落後',
     neutral: '中性',
     pullback: '回調 / 收復',
     themeWatch: '主題待整理',
@@ -95,6 +113,24 @@ const MOMENTUM_COPY = {
     resistance: '阻力',
     noResistance: '暫未偵測到近端阻力',
     observations: '觀察',
+    signalRead: '訊號讀法',
+    signalLenses: '目前鏡頭',
+    cleanLeadership: '領先度',
+    extensionRisk: '伸延風險',
+    pullbackLens: '回調 / 收復',
+    laggingLens: '相對落後',
+    constructiveLens: '建設性',
+    themeGap: '主題待分類',
+    neutralLens: '中性觀察',
+    readLeadershipExtendedPullback: '相對強度突出，但走勢已偏伸延；不宜只看排名追入，要等回調或收復證據。',
+    readLeadershipExtended: '相對強度突出，但走勢已有擁擠感；要先觀察整固和支撐質素。',
+    readLeadership: '領先度清楚；下一步看價格能否守住主要均線。',
+    readLaggingStrongTrend: '相對動能落後，但 ADX 仍顯示趨勢強；先當作修復觀察，不宜當成強勢確認。',
+    readLagging: '相對動能落後；要見到收復或相對強度改善，才值得排前。',
+    readPullback: '回調鏡頭：重點看支撐能否守住，以及相對強度有沒有改善，不只看單日反彈。',
+    readConstructive: '結構正在改善，但仍未去到領先確認；要等更多趨勢或相對強度證據。',
+    readThemeGap: '主題仍未分類；未補好同行脈絡前，不應過度依賴 readthrough。',
+    readNeutral: '中性觀察：先留在監察名單，等領先、回調或落後訊號更清楚。',
     noObservation: '暫無技術觀察。',
     vsSpy: '相對 SPY',
     vsQqq: '相對 QQQ',
@@ -304,6 +340,49 @@ const getRegimeLabel = (regime, locale) => {
   return labels[locale]?.[normalized] || formatReadLabel(regime, locale, locale === 'zh' ? '中性' : 'Neutral');
 };
 
+const getSignalLenses = (row, cockpit, copy) => {
+  const lenses = [];
+  if (rowMatchesFilter(row, cockpit, 'leaders')) {
+    lenses.push({ key: 'leaders', label: copy.cleanLeadership, tone: 'positive' });
+  }
+  if (rowMatchesFilter(row, cockpit, 'constructive')) {
+    lenses.push({ key: 'constructive', label: copy.constructiveLens, tone: 'positive' });
+  }
+  if (rowMatchesFilter(row, cockpit, 'crowded')) {
+    lenses.push({ key: 'crowded', label: copy.extensionRisk, tone: 'warning' });
+  }
+  if (rowMatchesFilter(row, cockpit, 'pullback')) {
+    lenses.push({ key: 'pullback', label: copy.pullbackLens, tone: 'neutral' });
+  }
+  if (rowMatchesFilter(row, cockpit, 'weak')) {
+    lenses.push({ key: 'weak', label: copy.laggingLens, tone: 'negative' });
+  }
+  if (rowMatchesFilter(row, cockpit, 'themeWatch')) {
+    lenses.push({ key: 'themeWatch', label: copy.themeGap, tone: 'neutral' });
+  }
+  return lenses.length ? lenses : [{ key: 'neutral', label: copy.neutralLens, tone: 'neutral' }];
+};
+
+const getSignalRead = (row, cockpit, copy) => {
+  const isLeader = rowMatchesFilter(row, cockpit, 'leaders');
+  const isExtended = rowMatchesFilter(row, cockpit, 'crowded');
+  const isPullback = rowMatchesFilter(row, cockpit, 'pullback');
+  const isWeak = rowMatchesFilter(row, cockpit, 'weak');
+  const isConstructive = rowMatchesFilter(row, cockpit, 'constructive');
+  const isThemeWatch = rowMatchesFilter(row, cockpit, 'themeWatch');
+  const isStrongTrend = normalizeRead(cockpit?.indicators?.adxRead) === 'strong_trend';
+
+  if (isLeader && isExtended && isPullback) return copy.readLeadershipExtendedPullback;
+  if (isLeader && isExtended) return copy.readLeadershipExtended;
+  if (isLeader) return copy.readLeadership;
+  if (isWeak && isStrongTrend) return copy.readLaggingStrongTrend;
+  if (isWeak) return copy.readLagging;
+  if (isPullback) return copy.readPullback;
+  if (isConstructive) return copy.readConstructive;
+  if (isThemeWatch) return copy.readThemeGap;
+  return copy.readNeutral;
+};
+
 const formatCockpitSetupLabel = (cockpit, locale) => {
   if (!cockpit) return null;
   const longTrend = String(cockpit.trend?.longTermTrend || '').toLowerCase();
@@ -424,6 +503,8 @@ function MomentumUniverseSection({ payload, loading, error, onOpenStockDossier, 
           const regime = getMomentumRegime(row);
           const theme = displayLabel(row.industry_theme_label || row.primary_theme || row.industry_theme || row.theme, locale, copy.unmapped);
           const setupLabel = getTechnicalSetupLabel(row, locale);
+          const signalLenses = getSignalLenses(row, cockpit, copy);
+          const signalRead = getSignalRead(row, cockpit, copy);
 
           return (
             <article className="momentum-cockpit-card" key={`${row.ticker}-${idx}`}>
@@ -441,6 +522,23 @@ function MomentumUniverseSection({ payload, loading, error, onOpenStockDossier, 
                     {copy.openDossier} →
                   </button>
                 </div>
+              </div>
+
+              <div className="momentum-cockpit-signal">
+                <div>
+                  <span>{copy.signalLenses}</span>
+                  <div className="momentum-cockpit-lenses">
+                    {signalLenses.map((lens) => (
+                      <span
+                        className={`momentum-cockpit-lens momentum-cockpit-lens--${lens.tone}`}
+                        key={lens.key}
+                      >
+                        {lens.label}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+                <p><strong>{copy.signalRead}:</strong> {signalRead}</p>
               </div>
 
               <div className="momentum-cockpit-card__metrics">
