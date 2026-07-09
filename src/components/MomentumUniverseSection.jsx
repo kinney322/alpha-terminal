@@ -7,8 +7,8 @@ const MOMENTUM_COPY = {
     loading: 'Loading Momentum Universe...',
     error: 'Momentum Universe payload unavailable.',
     kicker: 'Momentum Universe',
-    title: 'Trend follow-through candidates ranked for research.',
-    body: 'Use these lenses to separate leadership, extension risk, pullback setups, and lagging relative momentum. The lenses can overlap.',
+    title: 'Trend research workbench.',
+    body: 'Start with relative strength, then separate clean leadership from extended moves, pullback setups, and lagging names that need repair.',
     rank: 'Rank',
     ticker: 'Ticker',
     theme: 'Theme',
@@ -40,6 +40,16 @@ const MOMENTUM_COPY = {
     observations: 'Observations',
     signalRead: 'How to read it',
     signalLenses: 'Signal tags',
+    decisionPath: 'Decision path',
+    findStrength: 'Find strength',
+    checkHeat: 'Check heat',
+    planAction: 'Plan action',
+    findStrengthBody: 'Start with names where relative strength and trend evidence both support leadership.',
+    checkHeatBody: 'Separate durable leaders from crowded moves where RSI, distance from averages, or volatility raises chase risk.',
+    planActionBody: 'Use pullback and weak-momentum tags to decide whether a name is actionable, watch-only, or too early.',
+    selectedView: 'Selected view',
+    showing: 'Showing',
+    of: 'of',
     cleanLeadership: 'Leadership',
     extensionRisk: 'Extension risk',
     pullbackLens: 'Pullback / reclaim',
@@ -82,8 +92,8 @@ const MOMENTUM_COPY = {
     loading: '正在載入動能宇宙...',
     error: '動能宇宙資料暫時無法取得。',
     kicker: '動能宇宙',
-    title: '按研究優先次序排列的趨勢延續候選名單。',
-    body: '這裡用多個觀察鏡頭拆開領先度、伸延風險、回調結構和相對落後；同一隻股票可以同時落入多個鏡頭。',
+    title: '趨勢研究工作台。',
+    body: '先看相對強度，再分清乾淨領先、走勢偏熱、回調結構，以及仍需要修復的落後股票。',
     rank: '排名',
     ticker: '股票',
     theme: '主題',
@@ -115,6 +125,16 @@ const MOMENTUM_COPY = {
     observations: '觀察',
     signalRead: '怎樣解讀',
     signalLenses: '訊號標籤',
+    decisionPath: '判斷路徑',
+    findStrength: '先找強勢',
+    checkHeat: '再查過熱',
+    planAction: '最後定行動',
+    findStrengthBody: '先找相對強度和趨勢證據同時支持的股票。',
+    checkHeatBody: '把真正領先股和已經偏擠擁、偏伸延的走勢分開看。',
+    planActionBody: '用回調和弱勢標籤，決定是可跟進、只觀察，還是太早。',
+    selectedView: '目前分類',
+    showing: '顯示',
+    of: '/',
     cleanLeadership: '領先度',
     extensionRisk: '伸延風險',
     pullbackLens: '回調 / 收復',
@@ -464,6 +484,7 @@ function MomentumUniverseSection({ payload, loading, error, onOpenStockDossier, 
           <span>{copy.rankedNames}</span>
           <strong>{rankings.length}</strong>
           {asOfDate && <small>{copy.asOf} {asOfDate}</small>}
+          <p>{copy.body}</p>
         </div>
         <div className="momentum-cockpit-summary__grid">
           <div><span>{copy.leaders}</span><strong>{summary.leaders}</strong></div>
@@ -486,6 +507,31 @@ function MomentumUniverseSection({ payload, loading, error, onOpenStockDossier, 
             <strong>{filterCounts[filter.key] || 0}</strong>
           </button>
         ))}
+      </div>
+
+      <div className="momentum-cockpit-guide" aria-label={copy.decisionPath}>
+        <div className="momentum-cockpit-guide__intro">
+          <span>{copy.decisionPath}</span>
+          <strong>{copy.showing} {filteredRankings.length} {copy.of} {rankings.length}</strong>
+          <small>{copy.selectedView}: {copy[TREND_FILTERS.find((filter) => filter.key === activeFilter)?.labelKey] || copy.all}</small>
+        </div>
+        <div className="momentum-cockpit-guide__steps">
+          <div>
+            <strong>{copy.findStrength}</strong>
+            <span>{summary.leaders}</span>
+            <p>{copy.findStrengthBody}</p>
+          </div>
+          <div>
+            <strong>{copy.checkHeat}</strong>
+            <span>{summary.crowded}</span>
+            <p>{copy.checkHeatBody}</p>
+          </div>
+          <div>
+            <strong>{copy.planAction}</strong>
+            <span>{filterCounts.pullback || 0}</span>
+            <p>{copy.planActionBody}</p>
+          </div>
+        </div>
       </div>
 
       <div className="momentum-cockpit-list">
@@ -538,7 +584,10 @@ function MomentumUniverseSection({ payload, loading, error, onOpenStockDossier, 
                     ))}
                   </div>
                 </div>
-                <p><strong>{copy.signalRead}:</strong> {signalRead}</p>
+                <div className="momentum-cockpit-signal__read">
+                  <span>{copy.signalRead}</span>
+                  <p>{signalRead}</p>
+                </div>
               </div>
 
               <div className="momentum-cockpit-card__metrics">

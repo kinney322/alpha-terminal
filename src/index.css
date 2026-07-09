@@ -4364,12 +4364,21 @@ html, body, #root, .app-container, .main-content {
 }
 
 .momentum-cockpit-summary__lead small,
+.momentum-cockpit-summary__lead p,
 .momentum-cockpit-summary__grid small,
 .momentum-cockpit-metric small,
 .momentum-cockpit-card__header p,
 .momentum-cockpit-signal p,
+.momentum-cockpit-guide__intro small,
+.momentum-cockpit-guide__steps p,
 .momentum-cockpit-observations p {
   color: var(--text-muted);
+}
+
+.momentum-cockpit-summary__lead p {
+  margin: 0.35rem 0 0;
+  max-width: 34rem;
+  line-height: 1.45;
 }
 
 .momentum-cockpit-summary__grid {
@@ -4417,6 +4426,64 @@ html, body, #root, .app-container, .main-content {
 .momentum-cockpit-filters button strong {
   color: var(--text-muted);
   font-size: 0.78rem;
+}
+
+.momentum-cockpit-guide {
+  display: grid;
+  grid-template-columns: minmax(12rem, 0.75fr) minmax(0, 2.25fr);
+  gap: 1rem;
+  padding: 1rem;
+  border: 1px solid rgba(208, 131, 63, 0.18);
+  border-radius: 8px;
+  background: rgba(208, 131, 63, 0.055);
+}
+
+.momentum-cockpit-guide__intro,
+.momentum-cockpit-guide__steps > div {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.momentum-cockpit-guide__intro > span,
+.momentum-cockpit-guide__steps strong,
+.momentum-cockpit-signal__read > span {
+  color: var(--text-muted);
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.momentum-cockpit-guide__intro strong {
+  font-size: clamp(1.25rem, 3vw, 1.9rem);
+  line-height: 1.1;
+}
+
+.momentum-cockpit-guide__steps {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.momentum-cockpit-guide__steps > div {
+  padding: 0.85rem;
+  border: 1px solid var(--border-light);
+  border-radius: 8px;
+  background: var(--surface-color);
+}
+
+.momentum-cockpit-guide__steps span {
+  color: var(--crowdrisk-rust);
+  font-size: 1.55rem;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.momentum-cockpit-guide__steps p {
+  margin: 0;
+  line-height: 1.38;
 }
 
 .momentum-cockpit-list {
@@ -4519,8 +4586,11 @@ html, body, #root, .app-container, .main-content {
   line-height: 1.45;
 }
 
-.momentum-cockpit-signal p strong {
-  color: var(--text-color);
+.momentum-cockpit-signal__read {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 0.35rem;
 }
 
 .momentum-cockpit-lenses {
@@ -4750,6 +4820,14 @@ html, body, #root, .app-container, .main-content {
   .momentum-cockpit-filters button {
     justify-content: space-between;
     width: 100%;
+  }
+
+  .momentum-cockpit-guide {
+    grid-template-columns: 1fr;
+  }
+
+  .momentum-cockpit-guide__steps {
+    grid-template-columns: 1fr;
   }
 
   .momentum-cockpit-card__header,
