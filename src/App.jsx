@@ -353,9 +353,8 @@ function App() {
     ),
     'earnings-radar': (
       <CatalystRadarShell
-        payload={payload}
-        loading={loading}
-        error={error}
+        onOpenEventStudy={handleOpenEventStudy}
+        onOpenMomentum={() => handleNavigate('momentum-universe')}
         onOpenStockDossier={handleOpenStockDossier}
         locale={locale}
       />

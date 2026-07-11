@@ -9,6 +9,7 @@ const PREOPEN_CATALYST_URL = `${API_BASE}/event-opportunity/preopen-catalyst-rad
 const STOCK_PERFORMANCE_URL = `${API_BASE}/event-opportunity/stock-performance-latest`;
 const REFERENCE_PEER_MAP_URL = `${API_BASE}/event-opportunity/reference-peer-map-latest`;
 const EARNINGS_REACTION_RETURN_URL = `${API_BASE}/event-study/earnings-reaction-return`;
+const EARNINGS_RADAR_LIFECYCLE_URL = `${API_BASE}/event-study/earnings-radar-lifecycle`;
 const LOCAL_ENRICHED_PAYLOAD_URL = 'http://127.0.0.1:5055/radar-v1.2-enriched.module.preview.json';
 
 function shouldUseLocalEnrichedPayload() {
@@ -72,6 +73,29 @@ function isValidEarningsReactionReturnPayload(payload) {
     return true;
   }
   return false;
+}
+
+export function isValidEarningsRadarLifecyclePayload(payload) {
+  if (!payload || typeof payload !== 'object' || Array.isArray(payload)) return false;
+  if (payload.meta?.version !== 'earnings-radar-lifecycle-v1') return false;
+  if (!payload.meta?.as_of_date || !payload.meta?.generated_at) return false;
+  if (!payload.boards || typeof payload.boards !== 'object' || Array.isArray(payload.boards)) return false;
+  if (!payload.events_detail || typeof payload.events_detail !== 'object' || Array.isArray(payload.events_detail)) return false;
+
+  const pre = payload.boards.pre_earnings;
+  if (!pre || !Array.isArray(pre.verified) || !Array.isArray(pre.estimated)) return false;
+  if (!Array.isArray(payload.boards.event_day) || !Array.isArray(payload.boards.post_earnings)) return false;
+
+  const ids = [
+    ...pre.verified,
+    ...pre.estimated,
+    ...payload.boards.event_day,
+    ...payload.boards.post_earnings
+  ];
+  if (ids.some((eventId) => typeof eventId !== 'string' || !payload.events_detail[eventId])) return false;
+  if (payload.meta.event_count !== undefined && Number(payload.meta.event_count) !== Object.keys(payload.events_detail).length) return false;
+
+  return true;
 }
 
 export async function fetchAndNormalizeRadarPayload() {
@@ -142,6 +166,20 @@ export async function fetchPreopenCatalystRadarPayload() {
   const data = await res.json();
   if (!isValidV12Payload(data)) {
     throw new Error('Preopen catalyst payload is not a valid v1.2 schema');
+  }
+
+  return data;
+}
+
+export async function fetchEarningsRadarLifecyclePayload() {
+  const res = await fetch(EARNINGS_RADAR_LIFECYCLE_URL, { headers: { Accept: 'application/json' } });
+  if (!res.ok) {
+    throw new Error(`Earnings lifecycle unavailable (${res.status})`);
+  }
+
+  const data = await res.json();
+  if (!isValidEarningsRadarLifecyclePayload(data)) {
+    throw new Error('Earnings lifecycle response does not match the required contract');
   }
 
   return data;

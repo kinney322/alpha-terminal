@@ -1,97 +1,55 @@
 import React, { useEffect, useState } from 'react';
-import RadarMasterView from './RadarMasterView';
-import SelectedCatalystIntelligence from './SelectedCatalystIntelligence';
-import OpportunityXRayCard from './OpportunityXRayCard';
-import { fetchPreopenCatalystRadarPayload } from '../data/payloadAdapter';
+import EarningsLifecycleView from './EarningsLifecycleView';
+import { fetchEarningsRadarLifecyclePayload } from '../data/payloadAdapter';
 import './CatalystRadar.css';
 
-const CatalystRadarShell = ({ payload, loading, error, onOpenStockDossier, locale = 'en' }) => {
-  const [selectedEventId, setSelectedEventId] = useState(null);
-  const [selectedEventDetailOverride, setSelectedEventDetailOverride] = useState(null);
-  const [selectedXRayRow, setSelectedXRayRow] = useState(null);
-  const [preopenPayload, setPreopenPayload] = useState(null);
+const CatalystRadarShell = ({ onOpenEventStudy, onOpenMomentum, onOpenStockDossier, locale = 'en' }) => {
+  const [lifecyclePayload, setLifecyclePayload] = useState(null);
+  const [lifecycleError, setLifecycleError] = useState(null);
+  const [retryToken, setRetryToken] = useState(0);
 
   useEffect(() => {
-    if (loading || error || !payload) {
-      setPreopenPayload(null);
-      return undefined;
-    }
-
     let alive = true;
-    fetchPreopenCatalystRadarPayload()
+    setLifecyclePayload(null);
+    setLifecycleError(null);
+
+    fetchEarningsRadarLifecyclePayload()
       .then((data) => {
-        if (alive) setPreopenPayload(data);
+        if (alive) setLifecyclePayload(data);
       })
       .catch((err) => {
         if (!alive) return;
-        console.warn('Failed to load dedicated preopen catalyst payload; falling back to canonical radar payload.', err);
-        setPreopenPayload(null);
+        setLifecycleError(err instanceof Error ? err.message : 'Lifecycle data unavailable');
       });
 
     return () => {
       alive = false;
     };
-  }, [payload, loading, error]);
+  }, [retryToken]);
 
-  const handleSelectEvent = (eventId, eventDetailOverride = null, xrayRow = null) => {
-    setSelectedEventId(eventId);
-    setSelectedEventDetailOverride(eventDetailOverride);
-    setSelectedXRayRow(xrayRow);
-  };
-
-  const handleCloseDetail = () => {
-    setSelectedEventId(null);
-    setSelectedEventDetailOverride(null);
-    setSelectedXRayRow(null);
-  };
-
-  if (loading) {
-    return <div className="fade-in" style={{padding: '40px', color: 'var(--text-muted)'}}>{locale === 'zh' ? '正在載入財報雷達...' : 'Loading Radar Data...'}</div>;
+  if (!lifecyclePayload && !lifecycleError) {
+    return <div className="radar-load-state fade-in">{locale === 'zh' ? '正在載入財報進程...' : 'Loading earnings lifecycle...'}</div>;
   }
 
-  if (error) {
-    return <div className="fade-in" style={{padding: '40px', color: '#dc2626'}}>{locale === 'zh' ? '錯誤' : 'Error'}: {error}</div>;
+  if (lifecycleError) {
+    return (
+      <div className="radar-load-state radar-load-state--error fade-in" role="alert">
+        <strong>{locale === 'zh' ? '財報進程暫時無法載入' : 'Earnings lifecycle is temporarily unavailable'}</strong>
+        <span>{locale === 'zh' ? '系統沒有改用舊資料，以免混淆已核實與預計日期。' : 'The product did not fall back to legacy rows, so verified and estimated dates stay separate.'}</span>
+        <button type="button" onClick={() => setRetryToken((value) => value + 1)}>{locale === 'zh' ? '重新載入' : 'Retry'}</button>
+      </div>
+    );
   }
 
   return (
     <div className="catalyst-radar-shell fade-in">
-      <div className="radar-master-pane">
-        <RadarMasterView 
-          payload={payload} 
-          preopenPayload={preopenPayload}
-          selectedEventId={selectedEventId} 
-          onSelectEvent={handleSelectEvent} 
-          locale={locale}
-        />
-      </div>
-      
-      {selectedEventId && (
-        <>
-          <button
-            className="radar-detail-backdrop"
-            aria-label="Close catalyst detail"
-            onClick={handleCloseDetail}
-          />
-          <aside className="radar-detail-pane fade-in" role="dialog" aria-modal="true">
-            {selectedXRayRow ? (
-              <OpportunityXRayCard
-                row={selectedXRayRow}
-                onClose={handleCloseDetail}
-                locale={locale}
-              />
-            ) : (
-              <SelectedCatalystIntelligence
-                eventDetail={selectedEventDetailOverride || payload.events_detail[selectedEventId]}
-                payload={payload}
-                peerReadthroughCases={payload.peer_readthrough_cases || {}}
-                onClose={handleCloseDetail}
-                onOpenStockDossier={onOpenStockDossier}
-                locale={locale}
-              />
-            )}
-          </aside>
-        </>
-      )}
+      <EarningsLifecycleView
+        payload={lifecyclePayload}
+        locale={locale}
+        onOpenEventStudy={onOpenEventStudy}
+        onOpenMomentum={onOpenMomentum}
+        onOpenStockDossier={onOpenStockDossier}
+      />
     </div>
   );
 };
