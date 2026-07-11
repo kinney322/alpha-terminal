@@ -2,7 +2,7 @@
 
 import { canonicalizeTicker, getTickerLookupKeys } from './tickerAliases.js';
 
-const API_BASE = 'https://kw-terminal-api.myfootballplaces.workers.dev';
+const API_BASE = import.meta.env?.VITE_API_BASE || 'https://kw-terminal-api.myfootballplaces.workers.dev';
 const V1_2_URL = `${API_BASE}/event-opportunity/radar-v1.2-latest`;
 const V1_1_URL = `${API_BASE}/event-opportunity/radar-v1.1-latest`;
 const PREOPEN_CATALYST_URL = `${API_BASE}/event-opportunity/preopen-catalyst-radar-latest`;
@@ -79,6 +79,7 @@ export function isValidEarningsRadarLifecyclePayload(payload) {
   if (!payload || typeof payload !== 'object' || Array.isArray(payload)) return false;
   if (payload.meta?.version !== 'earnings-radar-lifecycle-v1') return false;
   if (!payload.meta?.as_of_date || !payload.meta?.generated_at) return false;
+  if (!payload.coverage || typeof payload.coverage !== 'object' || Array.isArray(payload.coverage)) return false;
   if (!payload.boards || typeof payload.boards !== 'object' || Array.isArray(payload.boards)) return false;
   if (!payload.events_detail || typeof payload.events_detail !== 'object' || Array.isArray(payload.events_detail)) return false;
 
@@ -94,6 +95,32 @@ export function isValidEarningsRadarLifecyclePayload(payload) {
   ];
   if (ids.some((eventId) => typeof eventId !== 'string' || !payload.events_detail[eventId])) return false;
   if (payload.meta.event_count !== undefined && Number(payload.meta.event_count) !== Object.keys(payload.events_detail).length) return false;
+
+  const eventTickers = new Set(Object.values(payload.events_detail).map((event) => event?.ticker).filter(Boolean));
+  const noActiveEvents = payload.coverage.no_active_events;
+  if (!Array.isArray(noActiveEvents)) return false;
+  const noEventTickers = noActiveEvents.map((event) => event?.ticker);
+  if (noEventTickers.some((ticker) => !ticker || eventTickers.has(ticker))) return false;
+  if (new Set(noEventTickers).size !== noEventTickers.length) return false;
+  if (Number(payload.coverage.event_ticker_count) !== eventTickers.size) return false;
+  if (Number(payload.coverage.no_active_event_count) !== noActiveEvents.length) return false;
+  if (Number(payload.coverage.active_ticker_count) !== eventTickers.size + noActiveEvents.length) return false;
+  if (payload.coverage.content_enrichment?.contract_version !== 'earnings-content-enrichment-v1') return false;
+  if (payload.coverage.content_enrichment?.missing_values_are_null !== true) return false;
+  const enrichmentFields = payload.coverage.content_enrichment?.fields;
+  if (!enrichmentFields || typeof enrichmentFields !== 'object') return false;
+  const requiredEnrichmentFields = [
+    'fiscal_period', 'eps_estimate', 'revenue_estimate', 'estimate_as_of', 'actual_eps',
+    'actual_revenue', 'eps_surprise_pct', 'revenue_surprise_pct', 'guidance', 'r_plus_10'
+  ];
+  if (requiredEnrichmentFields.some((field) => {
+    const stats = enrichmentFields[field];
+    return !stats
+      || !Number.isInteger(stats.available_count)
+      || !Number.isInteger(stats.eligible_count)
+      || stats.available_count < 0
+      || stats.eligible_count < stats.available_count;
+  })) return false;
 
   return true;
 }

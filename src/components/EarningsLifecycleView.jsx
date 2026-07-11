@@ -20,7 +20,7 @@ const COPY = {
     reactionPending: 'Awaiting reaction',
     measured: 'Measured',
     partial: 'Partial',
-    search: 'Search ticker in this phase',
+    search: 'Search covered ticker',
     clear: 'Clear',
     ticker: 'Ticker',
     releaseDate: 'Release date',
@@ -28,6 +28,7 @@ const COPY = {
     days: 'Days',
     estimate: 'EPS estimate',
     revenueEstimate: 'Revenue estimate',
+    estimateAsOf: 'Estimate as of',
     actual: 'Actual EPS',
     actualRevenue: 'Actual revenue',
     surprise: 'EPS surprise',
@@ -47,6 +48,7 @@ const COPY = {
     dateEstimated: 'Estimated date',
     timingDefault: 'Usual timing',
     timingVerified: 'Timing verified',
+    timingUnavailable: 'Timing not verified',
     complete: 'Complete',
     qualityPartial: 'Partial',
     qualityUnavailable: 'Awaiting data',
@@ -71,7 +73,18 @@ const COPY = {
     postNote: 'Returns are measured market evidence. No continuation or reversal label is inferred in the browser.',
     releaseAwaiting: 'Release not yet observed',
     resultsObserved: 'Results observed',
-    measuredReaction: 'Reaction measured'
+    measuredReaction: 'Reaction measured',
+    coveredSummary: (covered, noEvent) => `${covered} covered · ${noEvent} without a current date`,
+    updated: 'Updated',
+    noEventEyebrow: 'Covered ticker',
+    noEventTitle: (ticker) => `${ticker} has no current earnings date`,
+    noEventBody: 'The ticker remains covered, but no usable current earnings event is available. No date has been guessed.',
+    otherPhaseTitle: (ticker) => `${ticker} is in another earnings phase`,
+    otherPhaseBody: 'Open its current phase to review the available event.',
+    filteredTitle: (ticker) => `${ticker} is hidden by the current filter`,
+    filteredBody: 'Reset the status filter to show the event in this phase.',
+    viewCurrentPhase: 'View current phase',
+    resetFilter: 'Reset filter'
   },
   zh: {
     eyebrow: '財報追蹤',
@@ -90,7 +103,7 @@ const COPY = {
     reactionPending: '等待市場反應',
     measured: '反應已量度',
     partial: '資料未齊',
-    search: '搜尋本階段股票代號',
+    search: '搜尋已覆蓋股票代號',
     clear: '清除',
     ticker: '股票',
     releaseDate: '公布日期',
@@ -98,6 +111,7 @@ const COPY = {
     days: '尚餘日數',
     estimate: 'EPS 預期',
     revenueEstimate: '收入預期',
+    estimateAsOf: '預期更新時間',
     actual: '實際 EPS',
     actualRevenue: '實際收入',
     surprise: 'EPS 與預期差幅',
@@ -117,6 +131,7 @@ const COPY = {
     dateEstimated: '預計日期',
     timingDefault: '按慣常時段',
     timingVerified: '時段已核實',
+    timingUnavailable: '時段未核實',
     complete: '資料齊備',
     qualityPartial: '部分資料',
     qualityUnavailable: '等待資料',
@@ -141,7 +156,18 @@ const COPY = {
     postNote: '回報只代表已量度的市場表現；前端不會自行判定延續或反轉。',
     releaseAwaiting: '尚未取得業績結果',
     resultsObserved: '已取得業績結果',
-    measuredReaction: '市場反應已量度'
+    measuredReaction: '市場反應已量度',
+    coveredSummary: (covered, noEvent) => `覆蓋 ${covered} 隻 · ${noEvent} 隻暫無日期`,
+    updated: '更新時間',
+    noEventEyebrow: '已覆蓋股票',
+    noEventTitle: (ticker) => `${ticker} 目前沒有可用的財報日期`,
+    noEventBody: '這隻股票仍在覆蓋範圍內，但目前沒有可用的財報事件；系統不會猜測日期。',
+    otherPhaseTitle: (ticker) => `${ticker} 目前在另一個財報階段`,
+    otherPhaseBody: '可前往目前階段查看已有事件資料。',
+    filteredTitle: (ticker) => `${ticker} 被目前篩選條件隱藏`,
+    filteredBody: '重設資料狀態篩選後，即可顯示這個階段的事件。',
+    viewCurrentPhase: '查看目前階段',
+    resetFilter: '重設篩選'
   }
 };
 
@@ -215,13 +241,21 @@ function statusTone(event) {
 
 function missingFieldLabel(field, copy) {
   const labels = {
+    fiscal_period: copy.fiscalPeriod,
     eps_estimate: copy.estimate,
     revenue_estimate: copy.revenueEstimate,
+    estimate_as_of: copy.estimateAsOf,
     actual_eps: copy.actual,
     actual_revenue: copy.actualRevenue,
+    eps_surprise_pct: copy.surprise,
+    revenue_surprise_pct: copy.revenueSurprise,
+    guidance: copy.guidance,
     reaction_day: copy.reactionDay,
     gap_return: copy.gap,
-    same_day_oc: copy.sameDay
+    same_day_oc: copy.sameDay,
+    r_plus_1: 'R+1',
+    r_plus_5: 'R+5',
+    r_plus_10: 'R+10'
   };
   return labels[field] || copy.unavailable;
 }
@@ -233,6 +267,52 @@ function Metric({ label, value }) {
       <strong>{value}</strong>
     </div>
   );
+}
+
+function timingValue(event, copy) {
+  const timing = event.schedule?.release_timing || copy.unavailable;
+  const status = event.schedule?.timing_status;
+  if (status === 'verified') return `${timing} · ${copy.timingVerified}`;
+  if (status === 'profile_default') return `${timing} · ${copy.timingDefault}`;
+  return `${timing} · ${copy.timingUnavailable}`;
+}
+
+function SearchState({ state, copy, locale, generatedAt, onOpenEventStudy, onOpenMomentum, onSelectPhase, onResetFilter }) {
+  if (!state) return null;
+  if (state.type === 'no_event') {
+    const item = state.item;
+    return (
+      <section className="earnings-lifecycle-search-state" aria-live="polite">
+        <div>
+          <p>{copy.noEventEyebrow}</p>
+          <h2>{copy.noEventTitle(item.ticker)}</h2>
+          <span>{copy.noEventBody}</span>
+          <small>{copy.asOf}: {formatTimestamp(generatedAt, locale, copy.unavailable)}</small>
+        </div>
+        <div className="earnings-lifecycle-search-state__actions">
+          {item.links?.event_study && onOpenEventStudy && <button type="button" onClick={() => onOpenEventStudy(item.ticker)}><BarChart3 size={16} />{copy.viewEventStudy}</button>}
+          {item.links?.momentum && onOpenMomentum && <button type="button" onClick={() => onOpenMomentum(item.ticker)}><ExternalLink size={16} />{copy.viewTrend}</button>}
+        </div>
+      </section>
+    );
+  }
+  if (state.type === 'other_phase') {
+    return (
+      <section className="earnings-lifecycle-search-state" aria-live="polite">
+        <div><p>{copy.status}</p><h2>{copy.otherPhaseTitle(state.event.ticker)}</h2><span>{copy.otherPhaseBody}</span></div>
+        <div className="earnings-lifecycle-search-state__actions"><button type="button" onClick={() => onSelectPhase(state.event.phase)}>{copy.viewCurrentPhase}</button></div>
+      </section>
+    );
+  }
+  if (state.type === 'filtered') {
+    return (
+      <section className="earnings-lifecycle-search-state" aria-live="polite">
+        <div><p>{copy.status}</p><h2>{copy.filteredTitle(state.event.ticker)}</h2><span>{copy.filteredBody}</span></div>
+        <div className="earnings-lifecycle-search-state__actions"><button type="button" onClick={onResetFilter}>{copy.resetFilter}</button></div>
+      </section>
+    );
+  }
+  return null;
 }
 
 function EventDetail({ event, copy, locale, generatedAt, onClose, onOpenEventStudy, onOpenMomentum, onOpenStockDossier }) {
@@ -266,7 +346,7 @@ function EventDetail({ event, copy, locale, generatedAt, onClose, onOpenEventStu
           <h3 id="detail-schedule">{copy.releaseDate}</h3>
           <div className="earnings-lifecycle-metric-grid">
             <Metric label={copy.releaseDate} value={formatDate(event.schedule?.release_date, locale, copy.unavailable)} />
-            <Metric label={copy.timing} value={event.schedule?.release_timing || copy.unavailable} />
+            <Metric label={copy.timing} value={timingValue(event, copy)} />
             <Metric label={copy.reactionDay} value={formatDate(event.schedule?.reaction_day, locale, copy.unavailable)} />
             <Metric label={copy.fiscalPeriod} value={event.fiscal_period || copy.unavailable} />
           </div>
@@ -277,6 +357,7 @@ function EventDetail({ event, copy, locale, generatedAt, onClose, onOpenEventStu
           <div className="earnings-lifecycle-metric-grid">
             <Metric label={copy.estimate} value={formatNumber(event.expectations?.eps_estimate, copy.unavailable)} />
             <Metric label={copy.revenueEstimate} value={formatNumber(event.expectations?.revenue_estimate, copy.unavailable)} />
+            <Metric label={copy.estimateAsOf} value={formatTimestamp(event.expectations?.estimate_as_of, locale, copy.unavailable)} />
             <Metric label={copy.sample} value={hasValue(event.historical_context?.sample_size) ? copy.sampleCount(event.historical_context.sample_size) : copy.unavailable} />
           </div>
         </section>
@@ -357,6 +438,8 @@ export default function EarningsLifecycleView({ payload, locale = 'en', onOpenEv
     event_day: boardIds.event_day.length,
     post_earnings: boardIds.post_earnings.length
   };
+  const allEvents = useMemo(() => Object.values(payload.events_detail).filter(Boolean), [payload.events_detail]);
+  const noActiveEvents = payload.coverage?.no_active_events || [];
 
   const filters = phase === 'pre_earnings'
     ? [['all', copy.all], ['verified', copy.verified], ['estimated', copy.estimated], ['next7', copy.next7], ['later', copy.later]]
@@ -385,12 +468,30 @@ export default function EarningsLifecycleView({ payload, locale = 'en', onOpenEv
       });
   }, [boardIds, filter, payload.events_detail, phase, query]);
 
+  const searchState = useMemo(() => {
+    const normalizedQuery = query.trim().toUpperCase();
+    if (!normalizedQuery || events.length) return null;
+    const noEvent = noActiveEvents.find((item) => item.ticker === normalizedQuery);
+    if (noEvent) return { type: 'no_event', item: noEvent };
+    const tickerEvents = allEvents.filter((event) => event.ticker === normalizedQuery);
+    const otherPhase = tickerEvents.find((event) => event.phase !== phase);
+    if (otherPhase) return { type: 'other_phase', event: otherPhase };
+    const filteredEvent = tickerEvents.find((event) => event.phase === phase);
+    if (filteredEvent) return { type: 'filtered', event: filteredEvent };
+    return null;
+  }, [allEvents, events.length, noActiveEvents, phase, query]);
+
   const phaseNote = phase === 'pre_earnings' ? copy.preNote : phase === 'event_day' ? copy.eventNote : copy.postNote;
 
   const selectPhase = (nextPhase) => {
     setPhase(nextPhase);
     setFilter('all');
     setQuery('');
+  };
+
+  const selectSearchPhase = (nextPhase) => {
+    setPhase(nextPhase);
+    setFilter('all');
   };
 
   return (
@@ -405,6 +506,8 @@ export default function EarningsLifecycleView({ payload, locale = 'en', onOpenEv
           <CalendarClock size={18} />
           <span>{copy.asOf}</span>
           <strong>{formatDate(payload.meta.as_of_date, locale, copy.unavailable)}</strong>
+          <small>{copy.coveredSummary(payload.coverage.active_ticker_count, payload.coverage.no_active_event_count)}</small>
+          <small>{copy.updated}: {formatTimestamp(payload.meta.generated_at, locale, copy.unavailable)}</small>
         </div>
       </header>
 
@@ -480,8 +583,21 @@ export default function EarningsLifecycleView({ payload, locale = 'en', onOpenEv
             ))}
           </tbody>
         </table>
-        {!events.length && <div className="earnings-lifecycle__empty">{copy.noRows}</div>}
+        {!events.length && !searchState && <div className="earnings-lifecycle__empty">{copy.noRows}</div>}
       </div>
+
+      {!events.length && searchState && (
+        <SearchState
+          state={searchState}
+          copy={copy}
+          locale={locale}
+          generatedAt={payload.meta.generated_at}
+          onOpenEventStudy={onOpenEventStudy}
+          onOpenMomentum={onOpenMomentum}
+          onSelectPhase={selectSearchPhase}
+          onResetFilter={() => setFilter('all')}
+        />
+      )}
 
       <EventDetail
         event={selectedEvent}

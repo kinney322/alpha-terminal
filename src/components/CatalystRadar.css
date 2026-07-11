@@ -5,6 +5,33 @@
   overflow: visible;
 }
 
+.radar-refresh-warning {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 14px;
+  padding: 10px 12px;
+  border: 1px solid rgba(180, 83, 9, 0.3);
+  border-radius: 6px;
+  background: rgba(245, 158, 11, 0.09);
+  color: var(--text-color);
+  font-size: 0.82rem;
+}
+
+.radar-refresh-warning button {
+  flex: 0 0 auto;
+  min-height: 34px;
+  padding: 6px 10px;
+  border: 1px solid rgba(180, 83, 9, 0.35);
+  border-radius: 5px;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+  font-weight: 750;
+}
+
 .radar-load-state {
   display: grid;
   justify-items: start;

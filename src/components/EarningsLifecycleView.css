@@ -39,7 +39,7 @@
   grid-template-columns: auto auto;
   gap: 2px 8px;
   align-items: center;
-  min-width: 178px;
+  min-width: 248px;
   padding: 12px 14px;
   border: 1px solid var(--border-light);
   border-radius: 6px;
@@ -47,7 +47,7 @@
 }
 
 .earnings-lifecycle__asof svg {
-  grid-row: 1 / span 2;
+  grid-row: 1 / span 4;
   color: var(--primary-color, #8a4b16);
 }
 
@@ -56,6 +56,13 @@
   font-size: 0.76rem;
   font-weight: 700;
   text-transform: uppercase;
+}
+
+.earnings-lifecycle__asof small {
+  grid-column: 2;
+  color: var(--text-muted);
+  font-size: 0.7rem;
+  line-height: 1.35;
 }
 
 .earnings-lifecycle__phases {
@@ -317,6 +324,77 @@
   text-align: center;
 }
 
+.earnings-lifecycle-search-state {
+  display: flex;
+  justify-content: space-between;
+  gap: 18px;
+  align-items: center;
+  margin-top: 14px;
+  padding: 18px;
+  border: 1px solid var(--border-light);
+  border-left: 4px solid var(--primary-color, #8a4b16);
+  border-radius: 6px;
+  background: var(--surface-color);
+}
+
+.earnings-lifecycle-search-state p,
+.earnings-lifecycle-search-state h2,
+.earnings-lifecycle-search-state span,
+.earnings-lifecycle-search-state small {
+  display: block;
+}
+
+.earnings-lifecycle-search-state p {
+  margin: 0 0 5px;
+  color: var(--primary-color, #8a4b16);
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.earnings-lifecycle-search-state h2 {
+  margin: 0 0 6px;
+  font-size: 1.05rem;
+}
+
+.earnings-lifecycle-search-state span,
+.earnings-lifecycle-search-state small {
+  color: var(--text-muted);
+  line-height: 1.45;
+}
+
+.earnings-lifecycle-search-state small {
+  margin-top: 8px;
+  font-size: 0.72rem;
+}
+
+.earnings-lifecycle-search-state__actions {
+  display: flex;
+  flex-wrap: wrap;
+  flex: 0 0 auto;
+  gap: 8px;
+}
+
+.earnings-lifecycle-search-state__actions button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 38px;
+  padding: 8px 11px;
+  border: 1px solid var(--border-light);
+  border-radius: 5px;
+  background: transparent;
+  color: var(--text-color);
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.8rem;
+  font-weight: 750;
+}
+
+.earnings-lifecycle-search-state__actions button:hover {
+  border-color: var(--primary-color, #8a4b16);
+}
+
 .earnings-lifecycle-detail {
   position: fixed;
   top: 0;
@@ -466,6 +544,7 @@
 }
 
 .crowdrisk-app--dark .earnings-lifecycle__asof,
+.crowdrisk-app--dark .earnings-lifecycle-search-state,
 .crowdrisk-app--dark .earnings-lifecycle__phases button,
 .crowdrisk-app--dark .earnings-lifecycle__filters button,
 .crowdrisk-app--dark .earnings-lifecycle__search,
@@ -521,6 +600,16 @@
   .earnings-lifecycle__asof {
     width: 100%;
     box-sizing: border-box;
+  }
+
+  .earnings-lifecycle-search-state {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .earnings-lifecycle-search-state__actions button {
+    justify-content: center;
+    width: 100%;
   }
 
   .earnings-lifecycle__phases {
