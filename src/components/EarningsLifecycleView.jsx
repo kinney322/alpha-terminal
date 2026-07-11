@@ -26,6 +26,11 @@ const COPY = {
     releaseDate: 'Release date',
     timing: 'Timing',
     days: 'Days',
+    preEventPerformance: 'Pre-event performance',
+    preEventLiveAsOf: (date) => `Through ${date} close`,
+    preEventFinalAsOf: (date) => `Final through ${date} close`,
+    preEventUnavailable: 'Not enough trading history',
+    sessionLabel: (days) => `${days}D`,
     estimate: 'EPS estimate',
     revenueEstimate: 'Revenue estimate',
     estimateAsOf: 'Estimate as of',
@@ -109,6 +114,11 @@ const COPY = {
     releaseDate: '公布日期',
     timing: '公布時段',
     days: '尚餘日數',
+    preEventPerformance: '財報前股價表現',
+    preEventLiveAsOf: (date) => `截至 ${date} 收市`,
+    preEventFinalAsOf: (date) => `以 ${date} 收市為最終基準`,
+    preEventUnavailable: '交易日數據不足',
+    sessionLabel: (days) => `${days}日`,
     estimate: 'EPS 預期',
     revenueEstimate: '收入預期',
     estimateAsOf: '預期更新時間',
@@ -172,6 +182,7 @@ const COPY = {
 };
 
 const PHASES = ['pre_earnings', 'event_day', 'post_earnings'];
+const PRE_EVENT_DISPLAY_HORIZONS = [14, 7, 5, 3, 1];
 
 function hasValue(value) {
   return value !== null && value !== undefined && value !== '';
@@ -217,6 +228,40 @@ function formatSurprise(value, fallback) {
   if (!hasValue(value) || !Number.isFinite(Number(value))) return fallback;
   const percent = Number(value);
   return `${percent > 0 ? '+' : ''}${percent.toFixed(2)}%`;
+}
+
+function returnTone(value) {
+  if (!hasValue(value) || !Number.isFinite(Number(value)) || Number(value) === 0) return 'neutral';
+  return Number(value) > 0 ? 'positive' : 'negative';
+}
+
+function PreEventPerformance({ performance, copy, locale, detail = false }) {
+  const status = performance?.status || 'unavailable';
+  const asOfDate = formatDate(performance?.as_of_date, locale, copy.unavailable);
+  const statusText = status === 'final'
+    ? copy.preEventFinalAsOf(asOfDate)
+    : status === 'live'
+      ? copy.preEventLiveAsOf(asOfDate)
+      : copy.preEventUnavailable;
+
+  return (
+    <div className={`earnings-pre-event-performance${detail ? ' earnings-pre-event-performance--detail' : ''}`}>
+      <div className="earnings-pre-event-performance__grid">
+        {PRE_EVENT_DISPLAY_HORIZONS.map((horizon) => {
+          const value = performance?.[`pre_${horizon}_return`];
+          return (
+            <span className="earnings-pre-event-performance__item" key={horizon}>
+              <small>{copy.sessionLabel(horizon)}</small>
+              <strong className={`earnings-pre-event-return--${returnTone(value)}`}>
+                {formatPercent(value, '—')}
+              </strong>
+            </span>
+          );
+        })}
+      </div>
+      <small className="earnings-pre-event-performance__asof">{statusText}</small>
+    </div>
+  );
 }
 
 function qualityLabel(event, copy) {
@@ -361,6 +406,13 @@ function EventDetail({ event, copy, locale, generatedAt, onClose, onOpenEventStu
             <Metric label={copy.sample} value={hasValue(event.historical_context?.sample_size) ? copy.sampleCount(event.historical_context.sample_size) : copy.unavailable} />
           </div>
         </section>
+
+        {event.phase === 'pre_earnings' && (
+          <section aria-labelledby="detail-pre-event-performance">
+            <h3 id="detail-pre-event-performance">{copy.preEventPerformance}</h3>
+            <PreEventPerformance performance={event.pre_event_performance} copy={copy} locale={locale} detail />
+          </section>
+        )}
 
         <section aria-labelledby="detail-results">
           <h3 id="detail-results">{copy.results}</h3>
@@ -546,7 +598,7 @@ export default function EarningsLifecycleView({ payload, locale = 'en', onOpenEv
             <tr>
               <th>{copy.ticker}</th>
               <th>{copy.releaseDate}</th>
-              {phase === 'pre_earnings' && <><th>{copy.timing}</th><th>{copy.days}</th><th>{copy.estimate}</th><th>{copy.sample}</th><th>{copy.coverage}</th></>}
+              {phase === 'pre_earnings' && <><th>{copy.timing}</th><th>{copy.days}</th><th>{copy.preEventPerformance}</th><th>{copy.estimate}</th><th>{copy.sample}</th><th>{copy.coverage}</th></>}
               {phase === 'event_day' && <><th>{copy.status}</th><th>{copy.estimate}</th><th>{copy.actual}</th><th>{copy.surprise}</th><th>{copy.coverage}</th></>}
               {phase === 'post_earnings' && <><th>{copy.reactionDay}</th><th>{copy.surprise}</th><th>{copy.gap}</th><th>{copy.sameDay}</th><th>{copy.forward}</th><th>{copy.sample}</th></>}
               <th />
@@ -560,6 +612,7 @@ export default function EarningsLifecycleView({ payload, locale = 'en', onOpenEv
                 {phase === 'pre_earnings' && <>
                   <td data-label={copy.timing}><strong>{event.schedule?.release_timing || copy.unavailable}</strong><span>{event.schedule?.timing_status === 'verified' ? copy.timingVerified : copy.timingDefault}</span></td>
                   <td data-label={copy.days}>{hasValue(event.schedule?.days_to_event) ? copy.daysAway(event.schedule.days_to_event) : copy.unavailable}</td>
+                  <td className="earnings-lifecycle-row__pre-performance" data-label={copy.preEventPerformance}><PreEventPerformance performance={event.pre_event_performance} copy={copy} locale={locale} /></td>
                   <td data-label={copy.estimate}>{formatNumber(event.expectations?.eps_estimate, copy.unavailable)}</td>
                   <td data-label={copy.sample}>{hasValue(event.historical_context?.sample_size) ? copy.sampleCount(event.historical_context.sample_size) : copy.unavailable}</td>
                   <td data-label={copy.coverage}>{qualityLabel(event, copy)}</td>

@@ -231,7 +231,7 @@
 
 .earnings-lifecycle-table {
   width: 100%;
-  min-width: 920px;
+  min-width: 1220px;
   border-collapse: collapse;
   font-size: 0.88rem;
 }
@@ -277,6 +277,85 @@
   display: block;
   margin-bottom: 5px;
   font-size: 0.98rem;
+}
+
+.earnings-lifecycle-row__pre-performance {
+  min-width: 300px;
+}
+
+.earnings-pre-event-performance {
+  min-width: 270px;
+}
+
+.earnings-pre-event-performance__grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  align-items: start;
+}
+
+.earnings-pre-event-performance__item {
+  min-width: 0;
+  padding: 0 6px;
+  border-left: 1px solid var(--border-light);
+  text-align: center;
+}
+
+.earnings-pre-event-performance__item:first-child {
+  padding-left: 0;
+  border-left: 0;
+}
+
+.earnings-pre-event-performance__item:last-child {
+  padding-right: 0;
+}
+
+.earnings-pre-event-performance__item small,
+.earnings-pre-event-performance__item strong,
+.earnings-pre-event-performance__asof {
+  display: block;
+}
+
+.earnings-pre-event-performance__item small {
+  margin-bottom: 3px;
+  color: var(--text-muted);
+  font-size: 0.66rem;
+  font-weight: 750;
+}
+
+.earnings-pre-event-performance__item strong {
+  font-size: 0.76rem;
+  white-space: nowrap;
+}
+
+.earnings-pre-event-performance__asof {
+  margin-top: 7px;
+  color: var(--text-muted);
+  font-size: 0.68rem;
+  line-height: 1.35;
+}
+
+.earnings-pre-event-return--positive {
+  color: #18794e;
+}
+
+.earnings-pre-event-return--negative {
+  color: #b42318;
+}
+
+.earnings-pre-event-return--neutral {
+  color: var(--text-color);
+}
+
+.earnings-pre-event-performance--detail {
+  min-width: 0;
+}
+
+.earnings-pre-event-performance--detail .earnings-pre-event-performance__grid {
+  gap: 0;
+}
+
+.earnings-pre-event-performance--detail .earnings-pre-event-performance__item strong {
+  font-size: 0.84rem;
 }
 
 .earnings-status {
@@ -579,6 +658,18 @@
   color: rgba(232, 218, 197, 0.66);
 }
 
+.crowdrisk-app--dark .earnings-pre-event-performance__item {
+  border-color: rgba(232, 218, 197, 0.14);
+}
+
+.crowdrisk-app--dark .earnings-pre-event-return--positive {
+  color: #86d69f;
+}
+
+.crowdrisk-app--dark .earnings-pre-event-return--negative {
+  color: #ff9c91;
+}
+
 @media (max-width: 900px) {
   .earnings-lifecycle-detail {
     width: calc(100vw - 24px);
@@ -707,12 +798,40 @@
     display: none;
   }
 
+  .earnings-lifecycle-table td.earnings-lifecycle-row__pre-performance {
+    display: block;
+    min-width: 0;
+  }
+
+  .earnings-lifecycle-table td.earnings-lifecycle-row__pre-performance::before {
+    display: block;
+    margin-bottom: 9px;
+  }
+
+  .earnings-pre-event-performance {
+    width: 100%;
+    min-width: 0;
+  }
+
   .earnings-lifecycle-metric-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
 @media (max-width: 420px) {
+  .earnings-pre-event-performance__item {
+    padding-right: 4px;
+    padding-left: 4px;
+  }
+
+  .earnings-pre-event-performance__item strong {
+    font-size: 0.7rem;
+  }
+
+  .earnings-pre-event-performance--detail .earnings-pre-event-performance__item strong {
+    font-size: 0.74rem;
+  }
+
   .earnings-lifecycle-metric-grid {
     grid-template-columns: 1fr;
   }

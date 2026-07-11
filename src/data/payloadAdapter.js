@@ -11,6 +11,11 @@ const REFERENCE_PEER_MAP_URL = `${API_BASE}/event-opportunity/reference-peer-map
 const EARNINGS_REACTION_RETURN_URL = `${API_BASE}/event-study/earnings-reaction-return`;
 const EARNINGS_RADAR_LIFECYCLE_URL = `${API_BASE}/event-study/earnings-radar-lifecycle`;
 const LOCAL_ENRICHED_PAYLOAD_URL = 'http://127.0.0.1:5055/radar-v1.2-enriched.module.preview.json';
+const PRE_EVENT_RETURN_FIELDS = [
+  'pre_1_return', 'pre_3_return', 'pre_5_return',
+  'pre_7_return', 'pre_10_return', 'pre_14_return'
+];
+const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
 
 function shouldUseLocalEnrichedPayload() {
   if (typeof window === 'undefined') return false;
@@ -121,6 +126,18 @@ export function isValidEarningsRadarLifecyclePayload(payload) {
       || stats.available_count < 0
       || stats.eligible_count < stats.available_count;
   })) return false;
+
+  for (const event of Object.values(payload.events_detail)) {
+    const performance = event?.pre_event_performance;
+    if (!performance || typeof performance !== 'object' || Array.isArray(performance)) return false;
+    if (!['live', 'final', 'unavailable'].includes(performance.status)) return false;
+    if (performance.as_of_date !== null && !DATE_RE.test(String(performance.as_of_date))) return false;
+    if (performance.status !== 'unavailable' && performance.as_of_date === null) return false;
+    if (PRE_EVENT_RETURN_FIELDS.some((field) => (
+      !Object.prototype.hasOwnProperty.call(performance, field)
+      || (performance[field] !== null && (typeof performance[field] !== 'number' || !Number.isFinite(performance[field])))
+    ))) return false;
+  }
 
   return true;
 }

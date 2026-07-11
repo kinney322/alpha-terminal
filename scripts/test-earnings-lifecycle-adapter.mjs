@@ -8,6 +8,16 @@ const event = {
   lifecycle: { state: 'measured_post_earnings', reason_codes: [] },
   schedule: { release_date: '2026-06-24', release_date_status: 'verified' },
   expectations: {},
+  pre_event_performance: {
+    status: 'final',
+    as_of_date: '2026-06-24',
+    pre_1_return: 0.01,
+    pre_3_return: 0.03,
+    pre_5_return: 0.05,
+    pre_7_return: 0.07,
+    pre_10_return: 0.1,
+    pre_14_return: 0.14
+  },
   actuals: {},
   market_reaction: {},
   historical_context: {},
@@ -60,6 +70,28 @@ assert.equal(isValidEarningsRadarLifecyclePayload({ ...valid, boards: { ...valid
 assert.equal(isValidEarningsRadarLifecyclePayload({ ...valid, boards: { ...valid.boards, pre_earnings: [] } }), false);
 assert.equal(isValidEarningsRadarLifecyclePayload({ ...valid, meta: { ...valid.meta, event_count: 2 } }), false);
 assert.equal(isValidEarningsRadarLifecyclePayload({ ...valid, coverage: undefined }), false);
+assert.equal(isValidEarningsRadarLifecyclePayload({
+  ...valid,
+  events_detail: { [event.event_id]: { ...event, pre_event_performance: undefined } }
+}), false);
+assert.equal(isValidEarningsRadarLifecyclePayload({
+  ...valid,
+  events_detail: {
+    [event.event_id]: {
+      ...event,
+      pre_event_performance: { ...event.pre_event_performance, pre_3_return: '0.03' }
+    }
+  }
+}), false);
+assert.equal(isValidEarningsRadarLifecyclePayload({
+  ...valid,
+  events_detail: {
+    [event.event_id]: {
+      ...event,
+      pre_event_performance: { ...event.pre_event_performance, status: 'live', as_of_date: null }
+    }
+  }
+}), false);
 assert.equal(isValidEarningsRadarLifecyclePayload({
   ...valid,
   coverage: { ...valid.coverage, no_active_events: [{ ...valid.coverage.no_active_events[0], ticker: 'MU' }] }
