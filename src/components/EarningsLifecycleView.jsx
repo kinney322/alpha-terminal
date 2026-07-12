@@ -26,7 +26,22 @@ const COPY = {
     releaseDate: 'Release date',
     timing: 'Timing',
     days: 'Days',
-    preEventPerformance: 'Pre-event performance',
+    preEventPerformance: 'Current run-up',
+    historicalPreEvent: 'Historical pre-earnings median',
+    historyWindow: 'History window',
+    window1y: '1Y',
+    window3y: '3Y',
+    window5y: '5Y',
+    windowMax: 'Max',
+    historyLoading: 'Loading historical pattern',
+    historyUnavailable: 'Historical pattern unavailable',
+    historyDelayed: 'Historical reference is temporarily unavailable. Current event data remains visible.',
+    pastEarnings: (size) => `At least ${size} past earnings`,
+    lowSample: (size) => `Low sample · at least ${size} events`,
+    median: 'Median',
+    average: 'Average',
+    upRate: 'Up rate',
+    range: 'Range',
     preEventLiveAsOf: (date) => `Through ${date} close`,
     preEventFinalAsOf: (date) => `Final through ${date} close`,
     preEventUnavailable: 'Not enough trading history',
@@ -73,7 +88,7 @@ const COPY = {
     viewDossier: 'View Stock Dossier',
     close: 'Close event detail',
     openDetail: (ticker) => `Open ${ticker} event detail`,
-    preNote: 'Estimated events remain separate from verified release dates and are not treated as confirmed catalysts.',
+    preNote: 'Historical medians use past earnings only. Estimated dates remain separate from verified catalysts.',
     eventNote: 'Event-day rows show only observed results and reaction data. Missing values remain pending.',
     postNote: 'Returns are measured market evidence. No continuation or reversal label is inferred in the browser.',
     releaseAwaiting: 'Release not yet observed',
@@ -114,7 +129,22 @@ const COPY = {
     releaseDate: '公布日期',
     timing: '公布時段',
     days: '尚餘日數',
-    preEventPerformance: '財報前股價表現',
+    preEventPerformance: '今次財報前走勢',
+    historicalPreEvent: '歷史財報前中位回報',
+    historyWindow: '歷史區間',
+    window1y: '1年',
+    window3y: '3年',
+    window5y: '5年',
+    windowMax: '全部',
+    historyLoading: '正在載入歷史表現',
+    historyUnavailable: '暫無歷史表現',
+    historyDelayed: '歷史參考暫時未能載入，今次事件資料仍可查看。',
+    pastEarnings: (size) => `最少 ${size} 次歷史財報`,
+    lowSample: (size) => `樣本較少 · 最少 ${size} 次`,
+    median: '中位回報',
+    average: '平均回報',
+    upRate: '上升比例',
+    range: '回報範圍',
     preEventLiveAsOf: (date) => `截至 ${date} 收市`,
     preEventFinalAsOf: (date) => `以 ${date} 收市為最終基準`,
     preEventUnavailable: '交易日數據不足',
@@ -161,7 +191,7 @@ const COPY = {
     viewDossier: '查看股票檔案',
     close: '關閉事件詳情',
     openDetail: (ticker) => `查看 ${ticker} 事件詳情`,
-    preNote: '預計日期與已核實日期分開顯示，不會把預計日期當成已確認催化事件。',
+    preNote: '歷史中位回報只採用過去財報；預計日期仍與已核實催化事件分開顯示。',
     eventNote: '公布日只顯示已取得的業績及市場反應，未有的數值會保留為等待中。',
     postNote: '回報只代表已量度的市場表現；前端不會自行判定延續或反轉。',
     releaseAwaiting: '尚未取得業績結果',
@@ -182,7 +212,8 @@ const COPY = {
 };
 
 const PHASES = ['pre_earnings', 'event_day', 'post_earnings'];
-const PRE_EVENT_DISPLAY_HORIZONS = [14, 7, 5, 3, 1];
+const PRE_EVENT_DISPLAY_HORIZONS = [14, 10, 7, 5, 3, 1];
+const REFERENCE_WINDOWS = ['1y', '3y', '5y', 'max'];
 
 function hasValue(value) {
   return value !== null && value !== undefined && value !== '';
@@ -230,6 +261,23 @@ function formatSurprise(value, fallback) {
   return `${percent > 0 ? '+' : ''}${percent.toFixed(2)}%`;
 }
 
+function formatRate(value, fallback) {
+  if (!hasValue(value) || !Number.isFinite(Number(value))) return fallback;
+  return `${(Number(value) * 100).toFixed(0)}%`;
+}
+
+function formatRange(stats, fallback) {
+  if (!stats || !hasValue(stats.min_return) || !hasValue(stats.max_return)) return fallback;
+  return `${formatPercent(stats.min_return, fallback)} / ${formatPercent(stats.max_return, fallback)}`;
+}
+
+function historyWindowLabel(copy, window) {
+  if (window === '1y') return copy.window1y;
+  if (window === '3y') return copy.window3y;
+  if (window === 'max') return copy.windowMax;
+  return copy.window5y;
+}
+
 function returnTone(value) {
   if (!hasValue(value) || !Number.isFinite(Number(value)) || Number(value) === 0) return 'neutral';
   return Number(value) > 0 ? 'positive' : 'negative';
@@ -260,6 +308,79 @@ function PreEventPerformance({ performance, copy, locale, detail = false }) {
         })}
       </div>
       <small className="earnings-pre-event-performance__asof">{statusText}</small>
+    </div>
+  );
+}
+
+function HistoricalPreEventPerformance({ reference, window, copy, loading = false, error = null, detail = false }) {
+  if (loading) {
+    return <div className="earnings-history-state">{copy.historyLoading}</div>;
+  }
+  if (error || !reference || reference.sample_size === 0) {
+    return <div className="earnings-history-state">{copy.historyUnavailable}</div>;
+  }
+  const conservativeSampleSize = reference.minimum_horizon_sample_size;
+  const sampleText = reference.low_sample
+    ? copy.lowSample(conservativeSampleSize)
+    : copy.pastEarnings(conservativeSampleSize);
+  return (
+    <div className={`earnings-pre-event-performance earnings-historical-performance${detail ? ' earnings-pre-event-performance--detail' : ''}`}>
+      <div className="earnings-pre-event-performance__grid">
+        {PRE_EVENT_DISPLAY_HORIZONS.map((horizon) => {
+          const value = reference.horizons?.[String(horizon)]?.median_return;
+          return (
+            <span className="earnings-pre-event-performance__item" key={horizon}>
+              <small>{copy.sessionLabel(horizon)}</small>
+              <strong className={`earnings-pre-event-return--${returnTone(value)}`}>
+                {formatPercent(value, '—')}
+              </strong>
+            </span>
+          );
+        })}
+      </div>
+      <small className={`earnings-pre-event-performance__asof${reference.low_sample ? ' earnings-pre-event-performance__asof--warning' : ''}`}>
+        {historyWindowLabel(copy, window)} · {sampleText}
+      </small>
+    </div>
+  );
+}
+
+function HistoricalReferenceDetail({ reference, window, copy, loading, error }) {
+  return (
+    <div className="earnings-history-detail">
+      <HistoricalPreEventPerformance
+        reference={reference}
+        window={window}
+        copy={copy}
+        loading={loading}
+        error={error}
+        detail
+      />
+      {reference?.sample_size > 0 && !loading && !error && (
+        <div className="earnings-history-stats">
+          <div className="earnings-history-stats__row earnings-history-stats__header" aria-hidden="true">
+            <span />
+            <span>{copy.median}</span>
+            <span>{copy.average}</span>
+            <span>{copy.upRate}</span>
+            <span>{copy.range}</span>
+            <span>{copy.sample}</span>
+          </div>
+          {PRE_EVENT_DISPLAY_HORIZONS.map((horizon) => {
+            const stats = reference.horizons?.[String(horizon)];
+            return (
+              <div className="earnings-history-stats__row" key={horizon}>
+                <strong>{copy.sessionLabel(horizon)}</strong>
+                <span data-label={copy.median}>{formatPercent(stats?.median_return, '—')}</span>
+                <span data-label={copy.average}>{formatPercent(stats?.mean_return, '—')}</span>
+                <span data-label={copy.upRate}>{formatRate(stats?.positive_rate, '—')}</span>
+                <span data-label={copy.range}>{formatRange(stats, '—')}</span>
+                <span data-label={copy.sample}>{stats?.sample_size || '—'}</span>
+              </div>
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 }
@@ -360,7 +481,20 @@ function SearchState({ state, copy, locale, generatedAt, onOpenEventStudy, onOpe
   return null;
 }
 
-function EventDetail({ event, copy, locale, generatedAt, onClose, onOpenEventStudy, onOpenMomentum, onOpenStockDossier }) {
+function EventDetail({
+  event,
+  reference,
+  referenceWindow,
+  referenceLoading,
+  referenceError,
+  copy,
+  locale,
+  generatedAt,
+  onClose,
+  onOpenEventStudy,
+  onOpenMomentum,
+  onOpenStockDossier
+}) {
   if (!event) return null;
   const missing = Array.isArray(event.quality?.missing_fields) ? event.quality.missing_fields : [];
   const canEventStudy = Boolean(event.links?.event_study && onOpenEventStudy);
@@ -403,15 +537,26 @@ function EventDetail({ event, copy, locale, generatedAt, onClose, onOpenEventStu
             <Metric label={copy.estimate} value={formatNumber(event.expectations?.eps_estimate, copy.unavailable)} />
             <Metric label={copy.revenueEstimate} value={formatNumber(event.expectations?.revenue_estimate, copy.unavailable)} />
             <Metric label={copy.estimateAsOf} value={formatTimestamp(event.expectations?.estimate_as_of, locale, copy.unavailable)} />
-            <Metric label={copy.sample} value={hasValue(event.historical_context?.sample_size) ? copy.sampleCount(event.historical_context.sample_size) : copy.unavailable} />
           </div>
         </section>
 
         {event.phase === 'pre_earnings' && (
-          <section aria-labelledby="detail-pre-event-performance">
-            <h3 id="detail-pre-event-performance">{copy.preEventPerformance}</h3>
-            <PreEventPerformance performance={event.pre_event_performance} copy={copy} locale={locale} detail />
-          </section>
+          <>
+            <section aria-labelledby="detail-historical-pre-event-performance">
+              <h3 id="detail-historical-pre-event-performance">{copy.historicalPreEvent}</h3>
+              <HistoricalReferenceDetail
+                reference={reference}
+                window={referenceWindow}
+                copy={copy}
+                loading={referenceLoading}
+                error={referenceError}
+              />
+            </section>
+            <section aria-labelledby="detail-current-pre-event-performance">
+              <h3 id="detail-current-pre-event-performance">{copy.preEventPerformance}</h3>
+              <PreEventPerformance performance={event.pre_event_performance} copy={copy} locale={locale} detail />
+            </section>
+          </>
         )}
 
         <section aria-labelledby="detail-results">
@@ -472,7 +617,18 @@ function RowButton({ event, children, onSelect, openLabel }) {
   );
 }
 
-export default function EarningsLifecycleView({ payload, locale = 'en', onOpenEventStudy, onOpenMomentum, onOpenStockDossier }) {
+export default function EarningsLifecycleView({
+  payload,
+  referencePayload,
+  referenceWindow = '5y',
+  referenceLoading = false,
+  referenceError = null,
+  onReferenceWindowChange,
+  locale = 'en',
+  onOpenEventStudy,
+  onOpenMomentum,
+  onOpenStockDossier
+}) {
   const copy = COPY[locale] || COPY.en;
   const [phase, setPhase] = useState('pre_earnings');
   const [filter, setFilter] = useState('all');
@@ -492,6 +648,9 @@ export default function EarningsLifecycleView({ payload, locale = 'en', onOpenEv
   };
   const allEvents = useMemo(() => Object.values(payload.events_detail).filter(Boolean), [payload.events_detail]);
   const noActiveEvents = payload.coverage?.no_active_events || [];
+  const selectedReference = selectedEvent
+    ? referencePayload?.tickers?.[selectedEvent.ticker] || null
+    : null;
 
   const filters = phase === 'pre_earnings'
     ? [['all', copy.all], ['verified', copy.verified], ['estimated', copy.estimated], ['next7', copy.next7], ['later', copy.later]]
@@ -587,6 +746,26 @@ export default function EarningsLifecycleView({ payload, locale = 'en', onOpenEv
         </label>
       </div>
 
+      {phase === 'pre_earnings' && (
+        <div className="earnings-history-window">
+          <span>{copy.historyWindow}</span>
+          <div role="group" aria-label={copy.historyWindow}>
+            {REFERENCE_WINDOWS.map((window) => (
+              <button
+                key={window}
+                type="button"
+                className={referenceWindow === window ? 'active' : ''}
+                aria-pressed={referenceWindow === window}
+                onClick={() => onReferenceWindowChange?.(window)}
+              >
+                {historyWindowLabel(copy, window)}
+              </button>
+            ))}
+          </div>
+          {referenceError && <small role="status">{copy.historyDelayed}</small>}
+        </div>
+      )}
+
       <div className="earnings-lifecycle__note">
         {phase === 'pre_earnings' ? <ShieldCheck size={17} /> : phase === 'event_day' ? <AlertCircle size={17} /> : <BarChart3 size={17} />}
         <span>{phaseNote}</span>
@@ -598,7 +777,7 @@ export default function EarningsLifecycleView({ payload, locale = 'en', onOpenEv
             <tr>
               <th>{copy.ticker}</th>
               <th>{copy.releaseDate}</th>
-              {phase === 'pre_earnings' && <><th>{copy.timing}</th><th>{copy.days}</th><th>{copy.preEventPerformance}</th><th>{copy.estimate}</th><th>{copy.sample}</th><th>{copy.coverage}</th></>}
+              {phase === 'pre_earnings' && <><th>{copy.timing}</th><th>{copy.days}</th><th>{copy.historicalPreEvent}</th><th>{copy.estimate}</th><th>{copy.coverage}</th></>}
               {phase === 'event_day' && <><th>{copy.status}</th><th>{copy.estimate}</th><th>{copy.actual}</th><th>{copy.surprise}</th><th>{copy.coverage}</th></>}
               {phase === 'post_earnings' && <><th>{copy.reactionDay}</th><th>{copy.surprise}</th><th>{copy.gap}</th><th>{copy.sameDay}</th><th>{copy.forward}</th><th>{copy.sample}</th></>}
               <th />
@@ -612,9 +791,16 @@ export default function EarningsLifecycleView({ payload, locale = 'en', onOpenEv
                 {phase === 'pre_earnings' && <>
                   <td data-label={copy.timing}><strong>{event.schedule?.release_timing || copy.unavailable}</strong><span>{event.schedule?.timing_status === 'verified' ? copy.timingVerified : copy.timingDefault}</span></td>
                   <td data-label={copy.days}>{hasValue(event.schedule?.days_to_event) ? copy.daysAway(event.schedule.days_to_event) : copy.unavailable}</td>
-                  <td className="earnings-lifecycle-row__pre-performance" data-label={copy.preEventPerformance}><PreEventPerformance performance={event.pre_event_performance} copy={copy} locale={locale} /></td>
+                  <td className="earnings-lifecycle-row__pre-performance" data-label={copy.historicalPreEvent}>
+                    <HistoricalPreEventPerformance
+                      reference={referencePayload?.tickers?.[event.ticker] || null}
+                      window={referenceWindow}
+                      copy={copy}
+                      loading={referenceLoading}
+                      error={referenceError}
+                    />
+                  </td>
                   <td data-label={copy.estimate}>{formatNumber(event.expectations?.eps_estimate, copy.unavailable)}</td>
-                  <td data-label={copy.sample}>{hasValue(event.historical_context?.sample_size) ? copy.sampleCount(event.historical_context.sample_size) : copy.unavailable}</td>
                   <td data-label={copy.coverage}>{qualityLabel(event, copy)}</td>
                 </>}
                 {phase === 'event_day' && <>
@@ -654,6 +840,10 @@ export default function EarningsLifecycleView({ payload, locale = 'en', onOpenEv
 
       <EventDetail
         event={selectedEvent}
+        reference={selectedReference}
+        referenceWindow={referenceWindow}
+        referenceLoading={referenceLoading}
+        referenceError={referenceError}
         copy={copy}
         locale={locale}
         generatedAt={payload.meta.generated_at}
