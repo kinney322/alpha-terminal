@@ -11,6 +11,8 @@ import {
 import { getStockDossierProfile } from '../data/stockDossierProfiles';
 import { resolveStockDossierContractModel } from '../data/stockDossierContractAdapter';
 import { resolveReferencePeerEcosystemSnapshot } from '../data/referencePeerMapAdapter';
+import { getDossierTruthCompany } from '../data/dossierTruthAdapter';
+import { buildDossierDecisionBrief } from '../data/dossierDecisionBriefAdapter';
 import { canonicalizeTicker, getTickerLookupKeys } from '../data/tickerAliases';
 import StockLogo from './StockLogo';
 import { displayLabel, frontendEmptyText, hasFrontendValue, optionalFrontendText, safeFrontendText } from './displayLabelHelpers.js';
@@ -278,6 +280,33 @@ const localizedItems = (items, locale, keys) => {
   }, { ...item }));
 };
 
+const normalizeCoveragePendingDecisionBrief = (brief, locale) => {
+  const pendingCopy = locale === 'zh'
+    ? {
+        value: '覆蓋待補',
+        whyDetail: '此公司因 active 公司名單而納入；目前沒有催化事件或市場設定證據。',
+        stateDetail: '公司共用證據尚未齊備，目前不建立研究設定。'
+      }
+    : {
+        value: 'Coverage pending',
+        whyDetail: 'Included by active membership; no catalyst or market setup is asserted.',
+        stateDetail: 'Shared company evidence is incomplete; no research setup is asserted.'
+      };
+  const items = brief.items.map((item) => {
+    if (item.id === 'why-now') {
+      return { ...item, value: pendingCopy.value, detail: pendingCopy.whyDetail, status: 'pending' };
+    }
+    if (item.id === 'research-state') {
+      return { ...item, value: pendingCopy.value, detail: pendingCopy.stateDetail, status: 'pending' };
+    }
+    return item;
+  });
+  return {
+    ...brief,
+    items
+  };
+};
+
 const localizedStaticLabel = (value, locale) => {
   if (!hasFrontendValue(value)) return '—';
   if (locale !== 'zh') return value;
@@ -290,6 +319,7 @@ const localizedStaticLabel = (value, locale) => {
     'Between Catalysts': '催化事件之間',
     Bull: '樂觀',
     'Catalyst Watch': '催化觀察',
+    'Coverage Pending': '資料覆蓋待補',
     'Crowding Risk': '擁擠風險',
     'Current curated read': '目前整理判斷',
     'Evidence status': '證據狀態',
@@ -1523,13 +1553,14 @@ const buildEventStudyDetail = (eventDetail, dossierProfile = null) => {
 const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, referencePeerMapPayload, onOpenEventStudy, locale = 'en' }) => {
   const copy = STOCK_DOSSIER_COPY[locale] || STOCK_DOSSIER_COPY.en;
   const tickerForSummary = canonicalizeTicker(eventDetail?.ticker);
+  const isCoveragePending = eventDetail?.status === 'coverage_pending' || eventDetail?.event_phase === 'tracked_coverage';
   const [eventStudySummary, setEventStudySummary] = React.useState(null);
   const [eventStudyLoading, setEventStudyLoading] = React.useState(false);
   const [eventStudyError, setEventStudyError] = React.useState(null);
   const [activeInternalTab, setActiveInternalTab] = React.useState('overview');
 
   React.useEffect(() => {
-    if (!tickerForSummary) {
+    if (!tickerForSummary || isCoveragePending) {
       setEventStudySummary(null);
       setEventStudyError(null);
       setEventStudyLoading(false);
@@ -1572,7 +1603,7 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, refer
       });
 
     return () => controller.abort();
-  }, [tickerForSummary]);
+  }, [tickerForSummary, isCoveragePending]);
 
   React.useEffect(() => {
     setActiveInternalTab('overview');
@@ -1580,16 +1611,19 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, refer
 
   if (!eventDetail) return null;
 
-  const dossierProfile = getStockDossierProfile(eventDetail.ticker);
-  const enrichedEventDetail = dossierProfile ? {
+  const companyTruth = getDossierTruthCompany(payload?.dossier_shared_truth, eventDetail.ticker);
+  const dossierProfile = isCoveragePending ? null : getStockDossierProfile(eventDetail.ticker);
+  const enrichedEventDetail = {
     ...eventDetail,
-    company_name: eventDetail.company_name || dossierProfile.companyName,
-    exchange: eventDetail.exchange || dossierProfile.exchange,
-    company_logo_url: dossierProfile.logoUrl || eventDetail.company_logo_url,
-    business_summary: eventDetail.business_summary || dossierProfile.overview
-  } : eventDetail;
+    company_name: companyTruth?.company_name || eventDetail.company_name || dossierProfile?.companyName,
+    exchange: eventDetail.exchange || dossierProfile?.exchange,
+    company_logo_url: dossierProfile?.logoUrl || eventDetail.company_logo_url,
+    business_summary: eventDetail.business_summary || dossierProfile?.overview,
+    dossier_shared_truth: companyTruth,
+    shared_earnings_truth: companyTruth?.earnings || null
+  };
 
-  const dossierSummary = buildDossierSummary(enrichedEventDetail, payload);
+  const dossierSummary = buildDossierSummary(enrichedEventDetail, payload, locale);
   const localizedWhyNowReason = localizedValue(dossierProfile?.whyNow, 'reason', locale) || dossierSummary.reason;
   const localizedWhyNowVerdict = localizedValue(dossierProfile?.whyNow, 'verdict', locale) || dossierSummary.verdict;
   const localizedFinalRead = localizedValue(dossierProfile?.dossierVerdict, 'finalRead', locale);
@@ -1601,8 +1635,12 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, refer
   const priceTrendRisk = buildPriceTrendRisk(enrichedEventDetail, payload);
   const valuationCore = buildValuationCore(enrichedEventDetail, dossierProfile);
   const stockOverview = buildStockOverview(enrichedEventDetail, payload, dossierProfile);
-  const marketSnapshot = buildLiveMarketSnapshot(dossierProfile?.marketSnapshot, enrichedEventDetail, payload, tickerForSummary, stockPerformancePayload);
-  const liveCapitalization = resolveLiveCapitalization(stockPerformancePayload, tickerForSummary);
+  const marketSnapshot = isCoveragePending
+    ? null
+    : buildLiveMarketSnapshot(dossierProfile?.marketSnapshot, enrichedEventDetail, payload, tickerForSummary, stockPerformancePayload);
+  const liveCapitalization = isCoveragePending
+    ? null
+    : resolveLiveCapitalization(stockPerformancePayload, tickerForSummary);
   const marketEvidence = dossierProfile?.marketEvidence || {
     title: 'Market evidence requires more context before it can support a research conclusion.',
     points: [
@@ -1614,7 +1652,7 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, refer
   const eventStudyDetail = buildEventStudyDetail(enrichedEventDetail, dossierProfile);
   const visualPhaseOne = dossierProfile?.visualPhaseOne || null;
 
-  const momentumRanking = findMomentumUniverseRow(payload, tickerForSummary);
+  const momentumRanking = isCoveragePending ? null : findMomentumUniverseRow(payload, tickerForSummary);
   const technicalCockpit = resolveTechnicalCockpit(enrichedEventDetail, momentumRanking, payload);
   const valueCore = resolveValueCore({
     ...enrichedEventDetail,
@@ -1640,12 +1678,23 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, refer
   const tickerLine = exchange ? `${exchange}:${ticker} ${copy.stockDossier}` : `${ticker} ${copy.stockDossier}`;
   const compactTickerLine = exchange ? `${exchange}:${ticker}` : ticker;
   const industryTheme = stockOverview.theme || momentum.industry_theme_label || momentum.industry_theme || enrichedEventDetail.trend_setup?.supply_chain_stage || '';
-  const researchState = isMomentumUniverse ? 'Momentum Candidate'
+  const researchState = isCoveragePending ? 'Coverage Pending'
+                      : isMomentumUniverse ? 'Momentum Candidate'
                       : (enrichedEventDetail.status === 'off_cycle_watch' || enrichedEventDetail.event_phase === 'off_cycle') ? 'Between Catalysts'
                       : enrichedEventDetail.event_phase === 'post_earnings' ? 'Post-Earnings Watch'
                       : enrichedEventDetail.peer_readthrough?.incoming?.length > 0 ? 'Peer-Led Context'
                       : 'Catalyst Watch';
-  const researchStateDisplay = optionalFrontendText(researchState, locale);
+  const baseDecisionBrief = buildDossierDecisionBrief({
+    companyTruth,
+    eventDetail: enrichedEventDetail,
+    momentumRanking,
+    asOfDate: payload?.dossier_shared_truth?.as_of_date,
+    locale
+  });
+  const decisionBrief = isCoveragePending
+    ? normalizeCoveragePendingDecisionBrief(baseDecisionBrief, locale)
+    : baseDecisionBrief;
+  const researchStateDisplay = localizedStaticLabel(researchState, locale);
   const valueCoreTypeDisplay = localizedValue(dossierProfile?.valueCore, 'value_core_type', locale) || localizedStaticLabel(valueCore.valueCoreType, locale);
   const companyStageDisplay = localizedValue(dossierProfile?.valueCore, 'company_stage_candidate', locale) || localizedStaticLabel(valueCore.companyStage, locale);
   const primaryValueDriverDisplay = localizedValue(dossierProfile?.valueCore, 'primary_value_driver', locale) || valueCore.primaryValueDriver;
@@ -1886,12 +1935,16 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, refer
     { label: copy.revenueEngine, value: primaryValueDriverDisplay },
     { label: copy.firstBreakSignal, value: thesisBreakTriggerDisplay }
   ];
-  const performanceGrid = buildLiveStockPerformanceGrid(tickerForSummary, visualPhaseOne?.performanceGrid, stockPerformancePayload, copy);
-  const peerEcosystem = resolveReferencePeerEcosystemSnapshot(referencePeerMapPayload, tickerForSummary);
+  const performanceGrid = isCoveragePending
+    ? null
+    : buildLiveStockPerformanceGrid(tickerForSummary, visualPhaseOne?.performanceGrid, stockPerformancePayload, copy);
+  const peerEcosystem = isCoveragePending
+    ? null
+    : resolveReferencePeerEcosystemSnapshot(referencePeerMapPayload, tickerForSummary);
   const remainingTabsModel = resolveStockDossierContractModel({
     ticker: tickerForSummary,
     locale,
-    stockPerformancePayload,
+    stockPerformancePayload: isCoveragePending ? null : stockPerformancePayload,
     technicalCockpit,
     marketSnapshot
   });
@@ -2665,6 +2718,21 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, refer
                 </div>
 
                 <div className="dossier-visual-cockpit__grid">
+                  <article className="dossier-cockpit-card dossier-cockpit-card--wide" data-dossier-shared-truth={companyTruth ? 'available' : 'pending'}>
+                    <div className="dossier-cockpit-card__heading">
+                      <span>{decisionBrief.title}</span>
+                    </div>
+                    <div className="dossier-why-now-briefs">
+                      {decisionBrief.items.map((item) => (
+                        <div key={item.id}>
+                          <span>{item.label}</span>
+                          <strong>{item.value}</strong>
+                          <em>{item.detail}</em>
+                        </div>
+                      ))}
+                    </div>
+                  </article>
+
                   <article className="dossier-cockpit-card dossier-cockpit-card--wide">
                     <div className="dossier-cockpit-card__heading">
                       <span>{copy.whyNow}</span>
@@ -3332,6 +3400,16 @@ const StockDossierView = ({ eventDetail, payload, stockPerformancePayload, refer
             <span>{copy.finalRead}</span>
             <strong>{renderedVerdict.verdict}</strong>
             <p>{valuationGate}. {breakPoint}</p>
+          </div>
+
+          <div className="dossier-why-now-briefs" aria-label={`${ticker} ${decisionBrief.title}`} data-dossier-shared-truth={companyTruth ? 'available' : 'pending'}>
+            {decisionBrief.items.map((item) => (
+              <div key={item.id}>
+                <span>{item.label}</span>
+                <strong>{item.value}</strong>
+                <em>{item.detail}</em>
+              </div>
+            ))}
           </div>
 
           {marketSnapshot && (

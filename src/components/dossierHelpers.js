@@ -1,5 +1,6 @@
 import { buildStockLogoUrl } from '../data/stockLogoUrls.js';
 import { canonicalizeTicker } from '../data/tickerAliases.js';
+import { buildDossierTruthIndex } from '../data/dossierTruthAdapter.js';
 
 export const normalizeTicker = canonicalizeTicker;
 
@@ -379,12 +380,17 @@ export const deriveThesisPulse = (eventDetail, payload) => {
   return { state: 'Stable', reason: 'Trend and momentum available with no material deterioration.' };
 };
 
-export const buildDossierSummary = (eventDetail, payload) => {
+export const buildDossierSummary = (eventDetail, payload, locale = 'en') => {
   const isOffCycle = eventDetail.status === 'off_cycle_watch' || eventDetail.event_phase === 'off_cycle';
   const isMomentumUniverse = eventDetail.status === 'momentum_universe' || eventDetail.event_phase === 'off_cycle_universe';
+  const isCoveragePending = eventDetail.status === 'coverage_pending' || eventDetail.event_phase === 'tracked_coverage';
 
   let reason = '';
-  if (isMomentumUniverse) {
+  if (isCoveragePending) {
+    reason = locale === 'zh'
+      ? `${eventDetail.ticker} 已納入 active 公司名單；目前未有事件或市場設定證據。`
+      : `${eventDetail.ticker} is included in active company coverage; no current event or market setup is asserted.`;
+  } else if (isMomentumUniverse) {
     reason = `Identified in the Momentum Universe scan due to extreme momentum or relative strength vs SPY/QQQ.`;
   } else if (isOffCycle) {
     reason = `Currently in off-cycle thesis watch, monitoring trend setup between catalyst cycles.`;
@@ -393,7 +399,11 @@ export const buildDossierSummary = (eventDetail, payload) => {
   }
 
   let verdict = '';
-  if (isMomentumUniverse) {
+  if (isCoveragePending) {
+    verdict = locale === 'zh'
+      ? `${eventDetail.ticker} 的資料覆蓋仍待補；公司、財報及市場證據齊備前，不建立研究設定。`
+      : `Coverage is pending for ${eventDetail.ticker}; wait for company, earnings, and market evidence before assigning a setup.`;
+  } else if (isMomentumUniverse) {
     const theme = eventDetail.momentum_evidence?.industry_theme_label || eventDetail.momentum_evidence?.industry_theme || 'sector';
     verdict = `${eventDetail.ticker} is a top-ranked ${theme.toLowerCase()} momentum candidate; next validation comes from catalyst follow-through and company-specific evidence; peer moves remain market context only.`;
   } else if (eventDetail.pead_signal?.status === 'available') {
@@ -448,7 +458,7 @@ const formatOverviewLabel = (value) => {
 export const buildSignalStack = (eventDetail, payload) => {
   const chips = [];
 
-  if (eventDetail.event_phase && eventDetail.event_phase !== 'off_cycle_universe') {
+  if (eventDetail.event_phase && !['off_cycle_universe', 'tracked_coverage'].includes(eventDetail.event_phase)) {
     chips.push({ id: 'catalyst', label: 'Catalyst', state: 'constructive', value: eventDetail.event_phase.replace(/_/g, ' ') });
   }
 
@@ -650,33 +660,93 @@ export const buildMomentumUniverseSyntheticDetail = (ticker, payload) => {
   };
 };
 
-export const buildDossierRecords = (payload) => {
-  if (!payload) return [];
+const buildTrackedCoverageSyntheticDetail = (companyTruth) => {
+  const ticker = normalizeTicker(companyTruth?.ticker);
+  const coverage = companyTruth?.coverage || {};
+  const missingFields = [
+    ...Object.entries(coverage)
+      .filter(([, state]) => state !== 'verified')
+      .map(([field]) => field),
+    'market_evidence'
+  ];
 
+  return {
+    event_id: `${ticker}-TrackedCoverage`,
+    ticker,
+    company_name: companyTruth?.company_name || null,
+    logoUrl: buildStockLogoUrl(ticker),
+    company_logo_url: buildStockLogoUrl(ticker),
+    event_phase: 'tracked_coverage',
+    event_category: 'Tracked Coverage',
+    status: 'coverage_pending',
+    value_core: null,
+    momentum_evidence: {
+      status: 'not_available',
+      evidence: {}
+    },
+    trend_setup: {
+      status: 'not_available',
+      metrics: {}
+    },
+    trust_layer: {
+      data_source: 'dossier_shared_truth',
+      event_date_status: 'not_applicable',
+      missing_fields: [...new Set(missingFields)]
+    },
+    fundamental_evidence: {
+      status: coverage.fundamentals === 'pending' ? 'not_available' : 'partial',
+      knowledge_timestamp: companyTruth?.fundamental_evidence?.latest_knowledge_timestamp || null,
+      period_end_date: null,
+      vendor_source: null,
+      sector_compatible: null,
+      metrics: {}
+    },
+    thesis_lifecycle: {
+      reviewed: false,
+      review_state: {
+        reviewed: false,
+        reason: 'Active company coverage is pending supporting evidence.'
+      }
+    }
+  };
+};
+
+export const buildDossierRecords = (payload) => {
+  const sharedTruth = payload?.dossier_shared_truth;
+  if (!sharedTruth) return [];
+
+  const activeTruthIndex = buildDossierTruthIndex(sharedTruth);
   const tickerMap = new Map();
 
   const getOrCreate = (ticker) => {
     const norm = normalizeTicker(ticker);
+    const companyTruth = activeTruthIndex.get(norm);
+    if (!norm || !companyTruth) return null;
     if (!tickerMap.has(norm)) {
       tickerMap.set(norm, {
         ticker: norm,
         logoUrl: buildStockLogoUrl(norm),
-        companyName: null,
+        companyName: companyTruth?.company_name || null,
+        companyTruth,
         primaryEventDetail: null,
         secondaryContexts: {
           momentumUniverse: null,
           offCycleThesis: null,
           trackedReview: null,
         },
-        sources: new Set(),
+        sources: new Set(['active_universe']),
         priorityScore: 0
       });
     }
     return tickerMap.get(norm);
   };
 
+  sharedTruth.companies.forEach((company) => getOrCreate(company.ticker));
+
   Object.entries(payload.events_detail || {}).forEach(([eventId, detail]) => {
+    if (!detail?.ticker) return;
     const rec = getOrCreate(detail.ticker);
+    if (!rec) return;
     if (!rec.companyName && detail.company_name) rec.companyName = detail.company_name;
     if (detail.company_logo_url || detail.logo_url) {
       rec.logoUrl = detail.company_logo_url || detail.logo_url;
@@ -714,6 +784,7 @@ export const buildDossierRecords = (payload) => {
 
   (payload.momentum_universe?.rankings || []).forEach(ranking => {
     const rec = getOrCreate(ranking.ticker);
+    if (!rec) return;
     rec.sources.add('momentum_universe');
     const synthetic = buildMomentumUniverseSyntheticDetail(ranking.ticker, payload);
     rec.secondaryContexts.momentumUniverse = synthetic;
@@ -725,15 +796,25 @@ export const buildDossierRecords = (payload) => {
   });
 
   const results = Array.from(tickerMap.values()).map(rec => {
+    if (!rec.primaryEventDetail) {
+      rec.primaryEventDetail = buildTrackedCoverageSyntheticDetail(rec.companyTruth);
+    }
     const primary = rec.primaryEventDetail;
+    const isCoverageOnly = primary?.status === 'coverage_pending'
+      && primary?.event_phase === 'tracked_coverage';
     const momentum = primary?.momentum_evidence || rec.secondaryContexts.momentumUniverse?.momentum_evidence || {};
     const trend = primary?.trend_setup || rec.secondaryContexts.momentumUniverse?.trend_setup || {};
     const technicalCockpit = resolveTechnicalCockpit(primary, rec.secondaryContexts.momentumUniverse, payload);
     const technicalMoveType = buildTechnicalMoveType(technicalCockpit);
 
-    const theme = momentum.industry_theme_label || momentum.industry_theme || trend.supply_chain_stage || null;
+    const theme = momentum.industry_theme_label
+      || momentum.industry_theme
+      || trend.supply_chain_stage
+      || rec.companyTruth?.sector
+      || rec.companyTruth?.primary_theme
+      || null;
 
-    let researchState = 'Catalyst Watch';
+    let researchState = isCoverageOnly ? 'Coverage Pending' : 'Catalyst Watch';
     if (rec.sources.has('post_earnings')) researchState = 'Post-Earnings Watch';
     else if (rec.sources.has('off_cycle')) researchState = 'Between Catalysts';
     else if (rec.sources.has('momentum_universe') && !rec.sources.has('tracked')) researchState = 'Momentum Candidate';
@@ -743,15 +824,15 @@ export const buildDossierRecords = (payload) => {
     const missing = primary?.trust_layer?.missing_fields || [];
     const meaningfulMissing = missing.filter(field => field !== 'options_data' && field !== 'options_chain');
 
-    let coverage = 'Needs more context';
-    if (meaningfulMissing.length === 0) {
+    let coverage = isCoverageOnly ? 'Coverage Pending' : 'Needs more context';
+    if (!isCoverageOnly && meaningfulMissing.length === 0) {
       if (primary) coverage = 'Market Evidence Available';
-    } else {
+    } else if (!isCoverageOnly) {
       coverage = `Needs more context (${meaningfulMissing.length})`;
     }
 
-    let moveType = 'Setup unavailable';
-    if (primary?.pead_signal?.status === 'available') {
+    let moveType = isCoverageOnly ? 'Coverage Pending' : 'Setup unavailable';
+    if (!isCoverageOnly && primary?.pead_signal?.status === 'available') {
        const t = primary.pead_signal.reaction?.current_post_return;
        if (t !== undefined && t !== null) moveType = `Post ${t > 0 ? '+' : ''}${t.toFixed(1)}%`;
     } else if (technicalMoveType?.en) {
@@ -768,13 +849,18 @@ export const buildDossierRecords = (payload) => {
       moveTypeLocalized: technicalMoveType,
       technicalCockpitAvailable: Boolean(technicalCockpit),
       pulseState: pulse.state,
-      coverage
+      coverage,
+      identityCoverage: rec.companyTruth?.coverage?.identity || 'pending',
+      earningsCoverage: rec.companyTruth?.coverage?.earnings || 'pending'
     };
 
     return rec;
   });
 
   return results.sort((a, b) => {
+    const coverageOnlyA = a.primaryEventDetail?.event_phase === 'tracked_coverage';
+    const coverageOnlyB = b.primaryEventDetail?.event_phase === 'tracked_coverage';
+    if (coverageOnlyA !== coverageOnlyB) return coverageOnlyA ? 1 : -1;
     const scoreA = a.primaryEventDetail?.momentum_evidence?.score || 0;
     const scoreB = b.primaryEventDetail?.momentum_evidence?.score || 0;
     if (scoreA !== scoreB) return scoreB - scoreA;

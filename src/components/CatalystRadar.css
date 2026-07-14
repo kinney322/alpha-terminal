@@ -904,6 +904,7 @@
   }
 
   .stock-dossier-index-table td::before {
+    content: attr(data-label);
     color: var(--text-muted);
     font-size: 0.68rem;
     font-weight: 900;
@@ -911,11 +912,4 @@
     text-transform: uppercase;
   }
 
-  .stock-dossier-index-table td:nth-child(1)::before { content: "Ticker"; }
-  .stock-dossier-index-table td:nth-child(2)::before { content: "Theme"; }
-  .stock-dossier-index-table td:nth-child(3)::before { content: "State"; }
-  .stock-dossier-index-table td:nth-child(4)::before { content: "Move"; }
-  .stock-dossier-index-table td:nth-child(5)::before { content: "Pulse"; }
-  .stock-dossier-index-table td:nth-child(6)::before { content: "Coverage"; }
-  .stock-dossier-index-table td:nth-child(7)::before { content: "Action"; }
 }

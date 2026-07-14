@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import AlphaScannerPanel from './components/AlphaScannerPanel.jsx';
 import EventStudyPanel from './components/EventStudyPanel.jsx';
@@ -9,6 +9,7 @@ import CrowdRiskHome from './components/CrowdRiskHome.jsx';
 import MomentumUniverseSection from './components/MomentumUniverseSection.jsx';
 import { buildMomentumUniverseSyntheticDetail } from './components/dossierHelpers.js';
 import { fetchAndNormalizeRadarPayload, fetchReferencePeerMapPayload, fetchStockPerformancePayload } from './data/payloadAdapter.js';
+import { attachDossierTruthToRadarPayload, fetchDossierTruthPayload, resolveDossierTruthFailureState } from './data/dossierTruthAdapter.js';
 import { canonicalizeTicker } from './data/tickerAliases.js';
 
 const PRODUCT_MODE = import.meta.env.VITE_PRODUCT_MODE || 'crowdrisk';
@@ -187,6 +188,10 @@ function App() {
   const [payload, setPayload] = useState(null);
   const [stockPerformancePayload, setStockPerformancePayload] = useState(null);
   const [referencePeerMapPayload, setReferencePeerMapPayload] = useState(null);
+  const [dossierTruthPayload, setDossierTruthPayload] = useState(null);
+  const dossierTruthPayloadRef = useRef(null);
+  const [dossierTruthStatus, setDossierTruthStatus] = useState('loading');
+  const [dossierTruthError, setDossierTruthError] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [dossierSeed, setDossierSeed] = useState(null);
@@ -215,6 +220,36 @@ function App() {
 
     loadPayload();
     const cancelRefresh = scheduleBackendPayloadRefresh(loadPayload);
+
+    return () => {
+      alive = false;
+      cancelRefresh();
+    };
+  }, []);
+
+  useEffect(() => {
+    let alive = true;
+    const loadDossierTruthPayload = () => {
+      fetchDossierTruthPayload()
+        .then((data) => {
+          if (!alive) return;
+          dossierTruthPayloadRef.current = data;
+          setDossierTruthPayload(data);
+          setDossierTruthStatus('ready');
+          setDossierTruthError(null);
+        })
+        .catch((err) => {
+          if (!alive) return;
+          console.warn('Failed to load CrowdRisk Dossier shared truth', err);
+          const failureState = resolveDossierTruthFailureState(dossierTruthPayloadRef.current);
+          setDossierTruthPayload(failureState.payload);
+          setDossierTruthStatus(failureState.status);
+          setDossierTruthError(err);
+        });
+    };
+
+    loadDossierTruthPayload();
+    const cancelRefresh = scheduleBackendPayloadRefresh(loadDossierTruthPayload);
 
     return () => {
       alive = false;
@@ -337,6 +372,10 @@ function App() {
   }, [loading, locale, payload]);
 
   const crowdRiskCopy = CROWDRISK_APP_COPY[locale] || CROWDRISK_APP_COPY.en;
+  const dossierPayload = useMemo(
+    () => attachDossierTruthToRadarPayload(payload, dossierTruthPayload),
+    [payload, dossierTruthPayload]
+  );
 
   const crowdRiskPanels = {
     home: (
@@ -378,11 +417,13 @@ function App() {
     ),
     'stock-dossier': (
       <StockDossierSection
-        payload={payload}
+        payload={dossierPayload}
         stockPerformancePayload={stockPerformancePayload}
         referencePeerMapPayload={referencePeerMapPayload}
-        loading={loading}
-        error={error}
+        loading={dossierTruthStatus === 'loading' && !dossierTruthPayload}
+        error={null}
+        membershipStatus={dossierTruthStatus}
+        membershipError={dossierTruthError}
         dossierSeed={dossierSeed}
         onClearSeed={() => setDossierSeed(null)}
         onOpenEventStudy={handleOpenEventStudy}

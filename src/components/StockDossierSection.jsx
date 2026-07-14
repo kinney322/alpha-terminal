@@ -25,7 +25,8 @@ const DOSSIER_SECTION_COPY = {
     noData: 'No dossier data available.',
     postEarningsWatch: 'Post-Earnings Watch',
     momentumCandidate: 'Momentum Candidate',
-    catalystWatch: 'Catalyst Watch'
+    catalystWatch: 'Catalyst Watch',
+    coveragePending: 'Coverage Pending'
   },
   zh: {
     sections: [
@@ -45,7 +46,8 @@ const DOSSIER_SECTION_COPY = {
     noData: '暫無股票檔案資料。',
     postEarningsWatch: '財報後觀察',
     momentumCandidate: '動能候選',
-    catalystWatch: '催化觀察'
+    catalystWatch: '催化觀察',
+    coveragePending: '資料覆蓋待補'
   }
 };
 
@@ -61,7 +63,7 @@ const scrollDossierToTop = () => {
   window.scrollTo(0, 0);
 };
 
-export default function StockDossierSection({ payload, stockPerformancePayload, referencePeerMapPayload, loading, error, dossierSeed, onClearSeed, onOpenEventStudy, locale = 'en' }) {
+export default function StockDossierSection({ payload, stockPerformancePayload, referencePeerMapPayload, loading, error, membershipStatus, membershipError, dossierSeed, onClearSeed, onOpenEventStudy, locale = 'en' }) {
   const copy = DOSSIER_SECTION_COPY[locale] || DOSSIER_SECTION_COPY.en;
   const sectionLabels = copy.sections || DOSSIER_SECTIONS;
   const [selectedTicker, setSelectedTicker] = useState(null);
@@ -88,16 +90,21 @@ export default function StockDossierSection({ payload, stockPerformancePayload, 
 
   const records = useMemo(() => buildDossierRecords(payload), [payload]);
 
-  const resolvedDetail = useMemo(() => {
+  const selectedRecord = useMemo(() => {
     if (!selectedTicker) return null;
-    const record = records.find(r => r.ticker === normalizeTicker(selectedTicker));
-    return record?.primaryEventDetail || selectedEventDetail;
-  }, [selectedTicker, records, selectedEventDetail]);
+    return records.find(record => record.ticker === normalizeTicker(selectedTicker)) || null;
+  }, [selectedTicker, records]);
+
+  const resolvedDetail = useMemo(() => {
+    if (!selectedRecord) return null;
+    return selectedRecord.primaryEventDetail || selectedEventDetail;
+  }, [selectedRecord, selectedEventDetail]);
 
   const dossierProfile = useMemo(() => {
     if (!selectedTicker) return null;
+    if (resolvedDetail?.status === 'coverage_pending' || resolvedDetail?.event_phase === 'tracked_coverage') return null;
     return getStockDossierProfile(selectedTicker);
-  }, [selectedTicker]);
+  }, [selectedTicker, resolvedDetail]);
 
   useEffect(() => {
     if (!selectedTicker) return undefined;
@@ -173,8 +180,16 @@ export default function StockDossierSection({ payload, stockPerformancePayload, 
     if (onClearSeed) onClearSeed();
   };
 
-  if (!selectedTicker) {
-    return <StockDossierIndex payload={payload} onOpenTicker={handleOpenTicker} locale={locale} />;
+  if (!selectedTicker || !selectedRecord) {
+    return (
+      <StockDossierIndex
+        payload={payload}
+        onOpenTicker={handleOpenTicker}
+        membershipStatus={membershipStatus}
+        membershipError={membershipError}
+        locale={locale}
+      />
+    );
   }
 
   const companyLogoUrl = dossierProfile?.logoUrl
@@ -185,11 +200,13 @@ export default function StockDossierSection({ payload, stockPerformancePayload, 
   const companyName = resolvedDetail?.company_name || dossierProfile?.companyName || selectedTicker;
   const exchange = resolvedDetail?.exchange || dossierProfile?.exchange || '';
   const tickerLine = exchange ? `${exchange}:${normalizeTicker(selectedTicker)}` : normalizeTicker(selectedTicker);
-  const researchState = resolvedDetail?.event_phase === 'post_earnings'
-    ? copy.postEarningsWatch
-    : resolvedDetail?.status === 'momentum_universe' || resolvedDetail?.event_phase === 'off_cycle_universe'
-      ? copy.momentumCandidate
-      : copy.catalystWatch;
+  const researchState = resolvedDetail?.status === 'coverage_pending' || resolvedDetail?.event_phase === 'tracked_coverage'
+    ? copy.coveragePending
+    : resolvedDetail?.event_phase === 'post_earnings'
+      ? copy.postEarningsWatch
+      : resolvedDetail?.status === 'momentum_universe' || resolvedDetail?.event_phase === 'off_cycle_universe'
+        ? copy.momentumCandidate
+        : copy.catalystWatch;
 
   return (
     <div className="stock-dossier-section fade-in">
