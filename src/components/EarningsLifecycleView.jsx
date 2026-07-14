@@ -64,10 +64,8 @@ const COPY = {
     noRows: 'No events match this view.',
     daysAway: (days) => `${days}d`,
     sampleCount: (size) => `N=${size}`,
-    dateVerified: 'Date verified',
     dateEstimated: 'Estimated date',
     timingDefault: 'Usual timing',
-    timingVerified: 'Timing verified',
     timingUnavailable: 'Timing not verified',
     complete: 'Complete',
     qualityPartial: 'Partial',
@@ -167,10 +165,8 @@ const COPY = {
     noRows: '目前沒有符合條件的事件。',
     daysAway: (days) => `${days} 日`,
     sampleCount: (size) => `${size} 次`,
-    dateVerified: '日期已核實',
     dateEstimated: '預計日期',
     timingDefault: '按慣常時段',
-    timingVerified: '時段已核實',
     timingUnavailable: '時段未核實',
     complete: '資料齊備',
     qualityPartial: '部分資料',
@@ -438,7 +434,7 @@ function Metric({ label, value }) {
 function timingValue(event, copy) {
   const timing = event.schedule?.release_timing || copy.unavailable;
   const status = event.schedule?.timing_status;
-  if (status === 'verified') return `${timing} · ${copy.timingVerified}`;
+  if (status === 'verified') return timing;
   if (status === 'profile_default') return `${timing} · ${copy.timingDefault}`;
   return `${timing} · ${copy.timingUnavailable}`;
 }
@@ -786,10 +782,18 @@ export default function EarningsLifecycleView({
           <tbody>
             {events.map((event) => (
               <RowButton key={event.event_id} event={event} onSelect={setSelectedEvent} openLabel={copy.openDetail(event.ticker)}>
-                <td data-label={copy.ticker}><strong>{event.ticker}</strong><span className={`earnings-status earnings-status--${statusTone(event)}`}>{event.schedule?.release_date_status === 'verified' ? copy.dateVerified : copy.dateEstimated}</span></td>
+                <td data-label={copy.ticker}>
+                  <strong>{event.ticker}</strong>
+                  {event.schedule?.release_date_status === 'estimated' && (
+                    <span className={`earnings-status earnings-status--${statusTone(event)}`}>{copy.dateEstimated}</span>
+                  )}
+                </td>
                 <td data-label={copy.releaseDate}>{formatDate(event.schedule?.release_date, locale, copy.unavailable)}</td>
                 {phase === 'pre_earnings' && <>
-                  <td data-label={copy.timing}><strong>{event.schedule?.release_timing || copy.unavailable}</strong><span>{event.schedule?.timing_status === 'verified' ? copy.timingVerified : copy.timingDefault}</span></td>
+                  <td data-label={copy.timing}>
+                    <strong>{event.schedule?.release_timing || copy.unavailable}</strong>
+                    {event.schedule?.timing_status !== 'verified' && <span>{copy.timingDefault}</span>}
+                  </td>
                   <td data-label={copy.days}>{hasValue(event.schedule?.days_to_event) ? copy.daysAway(event.schedule.days_to_event) : copy.unavailable}</td>
                   <td className="earnings-lifecycle-row__pre-performance" data-label={copy.historicalPreEvent}>
                     <HistoricalPreEventPerformance
