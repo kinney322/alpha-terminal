@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
 import { buildMomentumUniverseSyntheticDetail, resolveTechnicalCockpit } from './dossierHelpers.js';
 import { displayLabel } from './displayLabelHelpers.js';
+import { getMomentumUniverseCoverage } from '../data/payloadAdapter.js';
 
 const MOMENTUM_COPY = {
   en: {
@@ -19,6 +20,8 @@ const MOMENTUM_COPY = {
     action: 'Action',
     openDossier: 'View Dossier',
     rankedNames: 'Ranked names',
+    activeNames: 'active names',
+    notRankableCount: 'not yet rankable',
     leaders: 'Leadership',
     constructive: 'Constructive',
     crowded: 'Extended / crowded',
@@ -104,6 +107,8 @@ const MOMENTUM_COPY = {
     action: '動作',
     openDossier: '查看股票檔案',
     rankedNames: '已排名股票',
+    activeNames: '隻活躍股票',
+    notRankableCount: '隻暫未可排名',
     leaders: '領先度',
     constructive: '建設性轉強',
     crowded: '偏伸延 / 擁擠',
@@ -438,6 +443,7 @@ function MomentumUniverseSection({ payload, loading, error, onOpenStockDossier, 
   const [activeFilter, setActiveFilter] = useState('all');
   const rankings = payload?.momentum_universe?.rankings || [];
   const unavailableRows = payload?.momentum_universe?.unavailable || [];
+  const coverage = useMemo(() => getMomentumUniverseCoverage(payload), [payload]);
   const asOfDate = payload?.meta?.as_of_date || payload?.meta?.brief_as_of_date || payload?.meta?.generated_at?.slice(0, 10);
   const filterCounts = useMemo(() => getFilterCounts(rankings, payload), [rankings, payload]);
   const filteredRankings = useMemo(() => (
@@ -482,7 +488,11 @@ function MomentumUniverseSection({ payload, loading, error, onOpenStockDossier, 
       <div className="momentum-cockpit-summary">
         <div className="momentum-cockpit-summary__lead">
           <span>{copy.rankedNames}</span>
-          <strong>{rankings.length}</strong>
+          <strong>{coverage.rankedCount} / {coverage.activeCount}</strong>
+          <small>
+            {coverage.activeCount} {copy.activeNames}
+            {coverage.unavailableCount > 0 && ` · ${coverage.unavailableCount} ${copy.notRankableCount}`}
+          </small>
           {asOfDate && <small>{copy.asOf} {asOfDate}</small>}
           <p>{copy.body}</p>
         </div>
@@ -512,8 +522,11 @@ function MomentumUniverseSection({ payload, loading, error, onOpenStockDossier, 
       <div className="momentum-cockpit-guide" aria-label={copy.decisionPath}>
         <div className="momentum-cockpit-guide__intro">
           <span>{copy.decisionPath}</span>
-          <strong>{copy.showing} {filteredRankings.length} {copy.of} {rankings.length}</strong>
-          <small>{copy.selectedView}: {copy[TREND_FILTERS.find((filter) => filter.key === activeFilter)?.labelKey] || copy.all}</small>
+          <strong>{copy.showing} {filteredRankings.length} {copy.of} {coverage.activeCount}</strong>
+          <small>
+            {copy.selectedView}: {copy[TREND_FILTERS.find((filter) => filter.key === activeFilter)?.labelKey] || copy.all}
+            {coverage.unavailableCount > 0 && ` · ${coverage.unavailableCount} ${copy.notRankableCount}`}
+          </small>
         </div>
         <div className="momentum-cockpit-guide__steps">
           <div>

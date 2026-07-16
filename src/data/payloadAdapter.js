@@ -23,6 +23,30 @@ const PRE_EVENT_REFERENCE_STAT_FIELDS = [
   'median_return', 'mean_return', 'positive_rate', 'min_return', 'max_return'
 ];
 
+export function getMomentumUniverseCoverage(payload) {
+  const rankings = Array.isArray(payload?.momentum_universe?.rankings)
+    ? payload.momentum_universe.rankings
+    : [];
+  const unavailable = Array.isArray(payload?.momentum_universe?.unavailable)
+    ? payload.momentum_universe.unavailable
+    : [];
+  const rankedTickers = new Set(
+    rankings.map((row) => canonicalizeTicker(row?.ticker)).filter(Boolean)
+  );
+  const unavailableTickers = new Set();
+
+  unavailable.forEach((row) => {
+    const ticker = canonicalizeTicker(row?.ticker);
+    if (ticker && !rankedTickers.has(ticker)) unavailableTickers.add(ticker);
+  });
+
+  return {
+    rankedCount: rankedTickers.size,
+    unavailableCount: unavailableTickers.size,
+    activeCount: rankedTickers.size + unavailableTickers.size
+  };
+}
+
 function shouldUseLocalEnrichedPayload() {
   if (typeof window === 'undefined') return false;
   const isLocalhost = ['127.0.0.1', 'localhost', '::1'].includes(window.location.hostname);
